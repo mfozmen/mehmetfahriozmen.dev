@@ -1,4 +1,11 @@
-export const projects = [
+export interface Project {
+  name: string;
+  description: string;
+  url?: string;
+  category: string;
+}
+
+export const projects: Project[] = [
   {
     name: "Decktopus",
     description: "AI presentation platform",
@@ -50,13 +57,11 @@ export const projects = [
   {
     name: "PTT Trade",
     description: "E-commerce marketplace",
-    url: "",
     category: "Commerce",
   },
   {
     name: "Peyman Field App",
     description: "Mobile application for field operations",
-    url: "",
     category: "Internal",
   },
 ];
