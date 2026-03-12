@@ -1,107 +1,25 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { systemsGraph, GraphNode, GraphEdge } from "@/data/systemsGraph";
+import {
+  systems,
+  domains,
+  orbits,
+  SystemNode,
+  DomainNode,
+  SystemImportance,
+} from "@/data/systemsGraph";
 
 /* ------------------------------------------------------------------ */
-/*  Node appearance — keyed by node.type                              */
+/*  Background star types & helpers (unchanged from before)            */
 /* ------------------------------------------------------------------ */
-
-interface NodeStyle {
-  radius: number;
-  featuredRadius: number;
-  color: string;
-  featuredColor: string;
-  glowColor: string;
-  labelColor: string;
-  featuredLabelColor: string;
-  labelSize: number;
-}
-
-const NODE_STYLES: Record<string, NodeStyle> = {
-  system: {
-    radius: 4.5,
-    featuredRadius: 8,
-    color: "rgba(180, 190, 240, 0.85)",
-    featuredColor: "rgba(245, 247, 255, 0.97)",
-    glowColor: "rgba(170, 190, 255, 0.18)",
-    labelColor: "rgba(190, 195, 225, 0.85)",
-    featuredLabelColor: "rgba(240, 240, 255, 0.95)",
-    labelSize: 12,
-  },
-  domain: {
-    radius: 4.5,
-    featuredRadius: 5.5,
-    color: "rgba(110, 135, 200, 0.5)",
-    featuredColor: "rgba(130, 155, 220, 0.65)",
-    glowColor: "rgba(110, 140, 210, 0.08)",
-    labelColor: "rgba(140, 160, 200, 0.7)",
-    featuredLabelColor: "rgba(160, 180, 215, 0.8)",
-    labelSize: 10.5,
-  },
-  technology: {
-    radius: 4,
-    featuredRadius: 6,
-    color: "rgba(130, 200, 170, 0.7)",
-    featuredColor: "rgba(150, 230, 190, 0.9)",
-    glowColor: "rgba(130, 200, 170, 0.1)",
-    labelColor: "rgba(150, 210, 175, 0.8)",
-    featuredLabelColor: "rgba(170, 230, 195, 0.9)",
-    labelSize: 11,
-  },
-  post: {
-    radius: 3.5,
-    featuredRadius: 5,
-    color: "rgba(200, 170, 130, 0.6)",
-    featuredColor: "rgba(230, 195, 150, 0.8)",
-    glowColor: "transparent",
-    labelColor: "rgba(210, 180, 145, 0.7)",
-    featuredLabelColor: "rgba(230, 200, 165, 0.8)",
-    labelSize: 11,
-  },
-};
-
-const DEFAULT_STYLE: NodeStyle = {
-  radius: 4,
-  featuredRadius: 6,
-  color: "rgba(160, 160, 160, 0.6)",
-  featuredColor: "rgba(190, 190, 190, 0.8)",
-  glowColor: "transparent",
-  labelColor: "rgba(170, 170, 170, 0.7)",
-  featuredLabelColor: "rgba(190, 190, 190, 0.85)",
-  labelSize: 11,
-};
-
-function getStyle(type: string): NodeStyle {
-  return NODE_STYLES[type] ?? DEFAULT_STYLE;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Layout helpers                                                    */
-/* ------------------------------------------------------------------ */
-
-interface LayoutNode {
-  id: string;
-  label: string;
-  type: string;
-  featured: boolean;
-  baseX: number;
-  baseY: number;
-  x: number;
-  y: number;
-}
 
 type StarLayer = "far" | "mid" | "near";
 
-/** Per-arm asymmetry for diffraction spikes */
 interface SpikeGeometry {
-  /** Base spike length = radius * this multiplier */
   lengthMul: number;
-  /** Asymmetry per arm: [left, right, top, bottom] as 0.6–1.2 multipliers */
   arms: [number, number, number, number];
-  /** Whether this star also gets short diagonal spikes */
   diagonals: boolean;
-  /** Diagonal asymmetry per arm: [tl, br, tr, bl] */
   diagArms: [number, number, number, number];
 }
 
@@ -111,35 +29,43 @@ interface BgStar {
   r: number;
   alpha: number;
   layer: StarLayer;
-  /** Unique phase for twinkle */
   phase: number;
-  /** RGB color string */
   color: string;
-  /** Pre-computed spike geometry, or null if no spikes */
   spike: SpikeGeometry | null;
-  /** Rare bright star — slightly larger core, stronger glow & twinkle */
   bright: boolean;
 }
 
-/** Layer-specific config for depth, parallax, drift, and glow */
-const STAR_LAYERS: Record<StarLayer, {
-  radiusMin: number; radiusMax: number;
-  alphaMin: number; alphaMax: number;
-  parallax: number;
-  driftMul: number;
-  glowMul: number;    // glow radius = star radius * glowMul
-}> = {
-  far:  { radiusMin: 0.2, radiusMax: 0.5, alphaMin: 0.08, alphaMax: 0.2,  parallax: 0.3, driftMul: 0.3, glowMul: 2 },
-  mid:  { radiusMin: 0.5, radiusMax: 0.9, alphaMin: 0.15, alphaMax: 0.35, parallax: 0.7, driftMul: 0.7, glowMul: 4 },
-  near: { radiusMin: 0.9, radiusMax: 1.4, alphaMin: 0.25, alphaMax: 0.5,  parallax: 1.5, driftMul: 1.3, glowMul: 6 },
+const STAR_LAYERS: Record<
+  StarLayer,
+  {
+    radiusMin: number;
+    radiusMax: number;
+    alphaMin: number;
+    alphaMax: number;
+    parallax: number;
+    driftMul: number;
+    glowMul: number;
+  }
+> = {
+  far: {
+    radiusMin: 0.2, radiusMax: 0.5, alphaMin: 0.08, alphaMax: 0.2,
+    parallax: 0.3, driftMul: 0.3, glowMul: 2,
+  },
+  mid: {
+    radiusMin: 0.5, radiusMax: 0.9, alphaMin: 0.15, alphaMax: 0.35,
+    parallax: 0.7, driftMul: 0.7, glowMul: 4,
+  },
+  near: {
+    radiusMin: 0.9, radiusMax: 1.4, alphaMin: 0.25, alphaMax: 0.5,
+    parallax: 1.5, driftMul: 1.3, glowMul: 6,
+  },
 };
 
-/** Weighted color temperature palette for background stars */
 const STAR_COLORS = [
-  { color: "255,255,255", weight: 0.85 },   // white
-  { color: "230,240,255", weight: 0.07 },   // blue-white
-  { color: "255,210,127", weight: 0.06 },   // warm yellow
-  { color: "255,176,122", weight: 0.02 },   // soft orange
+  { color: "255,255,255", weight: 0.85 },
+  { color: "230,240,255", weight: 0.07 },
+  { color: "255,210,127", weight: 0.06 },
+  { color: "255,176,122", weight: 0.02 },
 ];
 
 interface Nebula {
@@ -149,18 +75,6 @@ interface Nebula {
   color: string;
 }
 
-function buildAdjacency(edges: GraphEdge[]) {
-  const adj = new Map<string, string[]>();
-  for (const e of edges) {
-    if (!adj.has(e.source)) adj.set(e.source, []);
-    if (!adj.has(e.target)) adj.set(e.target, []);
-    adj.get(e.source)!.push(e.target);
-    adj.get(e.target)!.push(e.source);
-  }
-  return adj;
-}
-
-/** Deterministic pseudo-random from seed */
 function seededRandom(seed: number) {
   let s = seed;
   return () => {
@@ -182,7 +96,6 @@ function pickStarColor(rand: () => number): string {
 function generateBgStars(w: number, h: number, count: number): BgStar[] {
   const rand = seededRandom(42);
   const stars: BgStar[] = [];
-  // Distribute: ~50% far, ~30% mid, ~20% near
   const layerDist: { layer: StarLayer; share: number }[] = [
     { layer: "far", share: 0.5 },
     { layer: "mid", share: 0.3 },
@@ -192,34 +105,31 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const cfg = STAR_LAYERS[layer];
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
-      // ~1% chance of a rare bright star
       const isBright = rand() < 0.01;
-
-      // Spikes: ~45% near, ~15% mid, 0% far — bright stars: ~90%
-      const spikeChance = isBright ? 0.9
-        : layer === "near" ? 0.45
-        : layer === "mid" ? 0.15
-        : 0;
+      const spikeChance = isBright
+        ? 0.9
+        : layer === "near"
+          ? 0.45
+          : layer === "mid"
+            ? 0.15
+            : 0;
       const hasSpikes = rand() < spikeChance;
       let spike: SpikeGeometry | null = null;
       if (hasSpikes) {
-        const armRand = () => 0.6 + rand() * 0.6; // 0.6–1.2
+        const armRand = () => 0.6 + rand() * 0.6;
         spike = {
-          lengthMul: 4 + rand() * 5, // 4–9× radius
+          lengthMul: 4 + rand() * 5,
           arms: [armRand(), armRand(), armRand(), armRand()],
           diagonals: rand() < 0.4,
           diagArms: [armRand(), armRand(), armRand(), armRand()],
         };
       }
-
-      // Bright stars: 1.6–2× larger radius, higher base alpha
       let r = cfg.radiusMin + rand() * (cfg.radiusMax - cfg.radiusMin);
       let alpha = cfg.alphaMin + rand() * (cfg.alphaMax - cfg.alphaMin);
       if (isBright) {
-        r *= 1.6 + rand() * 0.4; // 1.6–2× radius
-        alpha = Math.min(alpha * 1.8, 0.7); // boost but cap
+        r *= 1.6 + rand() * 0.4;
+        alpha = Math.min(alpha * 1.8, 0.7);
       }
-
       stars.push({
         x: rand() * w,
         y: rand() * h,
@@ -252,114 +162,89 @@ function generateNebulae(w: number, h: number): Nebula[] {
   }));
 }
 
-function computeRadialLayout(
-  nodes: GraphNode[],
-  edges: GraphEdge[],
+/* ------------------------------------------------------------------ */
+/*  Orbital layout helpers                                             */
+/* ------------------------------------------------------------------ */
+
+const ORBIT_SPEEDS: Record<SystemImportance, number> = {
+  primary: 0.015,
+  secondary: 0.010,
+  minor: 0.008,
+};
+
+function getOrbitPosition(
+  orbitIndex: number,
+  angle: number,
+  w: number,
+  h: number,
   cx: number,
   cy: number,
-  containerWidth: number,
-  isMobile: boolean,
-): LayoutNode[] {
-  const adj = buildAdjacency(edges);
-  const domainNodes = nodes.filter((n) => n.type === "domain");
-  const systemNodes = nodes.filter((n) => n.type !== "domain");
-
-  // Scale radii to ~42% / ~55% of container half-width
-  const outerRadius = isMobile
-    ? containerWidth * 0.38
-    : containerWidth * 0.42;
-  const innerRadius = outerRadius * 0.55;
-
-  // Place domains evenly on the inner ring
-  const domainPositions = new Map<
-    string,
-    { x: number; y: number; angle: number }
-  >();
-  domainNodes.forEach((node, i) => {
-    const angle = (i / domainNodes.length) * Math.PI * 2 - Math.PI / 2;
-    const x = cx + Math.cos(angle) * innerRadius;
-    const y = cy + Math.sin(angle) * innerRadius;
-    domainPositions.set(node.id, { x, y, angle });
-  });
-
-  // Place system nodes: average angle of connected domains, on outer ring
-  const systemPositions: LayoutNode[] = [];
-  const usedAngles: number[] = [];
-
-  for (const node of systemNodes) {
-    const connectedDomains = (adj.get(node.id) || [])
-      .map((id) => domainPositions.get(id))
-      .filter(Boolean) as { x: number; y: number; angle: number }[];
-
-    let angle: number;
-    if (connectedDomains.length > 0) {
-      const sumX = connectedDomains.reduce(
-        (s, d) => s + Math.cos(d.angle),
-        0,
-      );
-      const sumY = connectedDomains.reduce(
-        (s, d) => s + Math.sin(d.angle),
-        0,
-      );
-      angle = Math.atan2(sumY, sumX);
-    } else {
-      angle = Math.random() * Math.PI * 2;
-    }
-
-    // Nudge to avoid overlaps
-    const MIN_ANGLE_GAP = 0.3;
-    let attempts = 0;
-    while (attempts < 20) {
-      const tooClose = usedAngles.some((a) => {
-        let diff = Math.abs(angle - a);
-        if (diff > Math.PI) diff = Math.PI * 2 - diff;
-        return diff < MIN_ANGLE_GAP;
-      });
-      if (!tooClose) break;
-      angle += MIN_ANGLE_GAP * 0.6;
-      attempts++;
-    }
-    usedAngles.push(angle);
-
-    const r = outerRadius + (node.featured ? -10 : 15);
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r;
-
-    systemPositions.push({
-      id: node.id,
-      label: node.label,
-      type: node.type,
-      featured: !!node.featured,
-      baseX: x,
-      baseY: y,
-      x,
-      y,
-    });
-  }
-
-  const domainLayoutNodes: LayoutNode[] = domainNodes.map((node) => {
-    const pos = domainPositions.get(node.id)!;
-    return {
-      id: node.id,
-      label: node.label,
-      type: node.type,
-      featured: !!node.featured,
-      baseX: pos.x,
-      baseY: pos.y,
-      x: pos.x,
-      y: pos.y,
-    };
-  });
-
-  return [...domainLayoutNodes, ...systemPositions];
+) {
+  const orbit = orbits[orbitIndex];
+  const rx = orbit.rx * w;
+  const ry = orbit.ry * h;
+  const cosA = Math.cos(angle),
+    sinA = Math.sin(angle);
+  const cosR = Math.cos(orbit.rotation),
+    sinR = Math.sin(orbit.rotation);
+  const ox = rx * cosA,
+    oy = ry * sinA;
+  return {
+    x: cx + ox * cosR - oy * sinR,
+    y: cy + ox * sinR + oy * cosR,
+  };
 }
+
+function getSystemPosition(
+  sys: SystemNode,
+  time: number,
+  w: number,
+  h: number,
+  cx: number,
+  cy: number,
+) {
+  const angle = sys.angle + time * ORBIT_SPEEDS[sys.importance] * 0.001;
+  return getOrbitPosition(sys.orbit, angle, w, h, cx, cy);
+}
+
+function getDomainPosition(
+  dom: DomainNode,
+  w: number,
+  h: number,
+  cx: number,
+  cy: number,
+) {
+  const base = getOrbitPosition(dom.orbit, dom.angle, w, h, cx, cy);
+  return {
+    x: base.x + dom.offset.x * w,
+    y: base.y + dom.offset.y * h,
+  };
+}
+
+function systemStarRadius(importance: SystemImportance, sf: number): number {
+  switch (importance) {
+    case "primary":
+      return 7 * sf;
+    case "secondary":
+      return 4 * sf;
+    case "minor":
+      return 2.5 * sf;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hit detection types                                                */
+/* ------------------------------------------------------------------ */
+
+type HitResult =
+  | { type: "system"; id: string; item: SystemNode }
+  | { type: "domain"; id: string; item: DomainNode }
+  | null;
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                         */
 /* ------------------------------------------------------------------ */
 
-const EDGE_COLOR = "rgba(100, 120, 175, 0.08)";
-const EDGE_HIGHLIGHT_COLOR = "rgba(170, 185, 245, 0.45)";
 const MOBILE_BREAKPOINT = 640;
 const BG_STAR_COUNT = 800;
 
@@ -371,33 +256,39 @@ export default function SystemsGalaxy() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
-  const layoutRef = useRef<LayoutNode[]>([]);
   const bgStarsRef = useRef<BgStar[]>([]);
   const nebulaeRef = useRef<Nebula[]>([]);
   const mouseOffsetRef = useRef({ x: 0, y: 0 });
+  const mousePosRef = useRef({ x: -1, y: -1 });
+  const timeRef = useRef(0);
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 600 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [hoveredType, setHoveredType] = useState<"system" | "domain" | null>(null);
   const hoveredIdRef = useRef<string | null>(null);
+  const hoveredTypeRef = useRef<"system" | "domain" | null>(null);
 
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
   const isMobileRef = useRef(isMobile);
 
-  // Keep refs in sync for animation loop reads
   useEffect(() => { hoveredIdRef.current = hoveredId; }, [hoveredId]);
+  useEffect(() => { hoveredTypeRef.current = hoveredType; }, [hoveredType]);
   useEffect(() => { isMobileRef.current = isMobile; }, [isMobile]);
 
-  const adjacencyRef = useRef(buildAdjacency(systemsGraph.edges));
-
-  const getConnected = useCallback((nodeId: string): Set<string> => {
-    const set = new Set<string>();
-    set.add(nodeId);
-    const neighbors = adjacencyRef.current.get(nodeId);
-    if (neighbors) neighbors.forEach((id) => set.add(id));
-    return set;
+  // Build domain→systems lookup
+  const domainToSystems = useRef(new Map<string, string[]>());
+  useEffect(() => {
+    const map = new Map<string, string[]>();
+    for (const sys of systems) {
+      for (const domId of sys.domains) {
+        if (!map.has(domId)) map.set(domId, []);
+        map.get(domId)!.push(sys.id);
+      }
+    }
+    domainToSystems.current = map;
   }, []);
 
-  // Measure and layout
+  // Measure
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -410,14 +301,6 @@ export default function SystemsGalaxy() {
       setDimensions({ width: w, height: h });
       bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
       nebulaeRef.current = generateNebulae(w, h);
-      layoutRef.current = computeRadialLayout(
-        systemsGraph.nodes,
-        systemsGraph.edges,
-        w / 2,
-        h / 2,
-        w,
-        mobile,
-      );
     };
 
     measure();
@@ -426,7 +309,49 @@ export default function SystemsGalaxy() {
     return () => ro.disconnect();
   }, []);
 
-  // Animation loop — runs continuously, reads state from refs
+  // Get connected IDs for a hovered element
+  const getHighlightedIds = useCallback(
+    (id: string, type: "system" | "domain"): Set<string> => {
+      const set = new Set<string>();
+      set.add(id);
+      if (type === "system") {
+        const sys = systems.find((s) => s.id === id);
+        if (sys) sys.domains.forEach((d) => set.add(d));
+      } else {
+        const connected = domainToSystems.current.get(id);
+        if (connected) connected.forEach((s) => set.add(s));
+      }
+      return set;
+    },
+    [],
+  );
+
+  // Hit test helper
+  const hitTest = useCallback(
+    (mx: number, my: number, time: number, w: number, h: number, cx: number, cy: number, sf: number): HitResult => {
+      // Check systems first
+      for (const sys of systems) {
+        const pos = getSystemPosition(sys, time, w, h, cx, cy);
+        const hitR = systemStarRadius(sys.importance, sf) * 3 + 10;
+        const dx = mx - pos.x, dy = my - pos.y;
+        if (dx * dx + dy * dy < hitR * hitR) {
+          return { type: "system", id: sys.id, item: sys };
+        }
+      }
+      // Then domains
+      for (const dom of domains) {
+        const pos = getDomainPosition(dom, w, h, cx, cy);
+        const dx = mx - pos.x, dy = my - pos.y;
+        if (dx * dx + dy * dy < 20 * 20) {
+          return { type: "domain", id: dom.id, item: dom };
+        }
+      }
+      return null;
+    },
+    [],
+  );
+
+  // Animation loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -438,8 +363,8 @@ export default function SystemsGalaxy() {
         return;
       }
 
-      // Time in seconds from rAF timestamp
       const time = timestamp / 1000;
+      timeRef.current = time;
 
       const dpr = window.devicePixelRatio || 1;
       const w = dimensions.width;
@@ -456,31 +381,26 @@ export default function SystemsGalaxy() {
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
 
-      // Slow directional drift — linear flow toward upper-left
-      // ~3px/sec horizontal, ~1.5px/sec vertical
+      // Background drift
       const driftSpeed = 3;
-      const driftAngle = -2.6; // roughly toward upper-left (radians)
+      const driftAngle = -2.6;
       const driftX = time * driftSpeed * Math.cos(driftAngle);
       const driftY = time * driftSpeed * Math.sin(driftAngle);
 
-      // Nebula layer (behind everything) — bounded slow oscillation
+      // --- Nebulae ---
       const nebulaDriftX = Math.sin(time * 0.15) * 6 * Math.cos(driftAngle);
       const nebulaDriftY = Math.sin(time * 0.15) * 6 * Math.sin(driftAngle);
       for (const neb of nebulaeRef.current) {
         const nx = neb.x + nebulaDriftX + px * 0.5;
         const ny = neb.y + nebulaDriftY + py * 0.5;
-        const gradient = ctx.createRadialGradient(
-          nx, ny, 0,
-          nx, ny, neb.radius,
-        );
+        const gradient = ctx.createRadialGradient(nx, ny, 0, nx, ny, neb.radius);
         gradient.addColorStop(0, neb.color);
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Star field — layered depth with glow + core
-      // Galactic center falloff: stars near center appear slightly brighter
+      // --- Background stars ---
       const cx = w / 2;
       const cy = h / 2;
       const maxDist = Math.sqrt(cx * cx + cy * cy);
@@ -493,22 +413,18 @@ export default function SystemsGalaxy() {
         sx = ((sx % w) + w) % w;
         sy = ((sy % h) + h) % h;
 
-        // Galactic center brightness falloff (non-linear)
         const dx = sx - cx;
         const dy = sy - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const falloff = Math.pow(1 - dist / maxDist, 1.8);
 
-        // Twinkle modulates both glow and core — bright stars pulse more
         const twinkleAmp = star.bright ? 0.3 : 0.15;
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * twinkleAmp;
         const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6);
 
-        // Soft radial glow — bright stars get 50% larger glow radius
         const glowR = star.r * cfg.glowMul * (star.bright ? 1.5 : 1);
         const glowGradient = ctx.createRadialGradient(
-          sx, sy, star.r * 0.3,
-          sx, sy, glowR,
+          sx, sy, star.r * 0.3, sx, sy, glowR,
         );
         glowGradient.addColorStop(0, `rgba(${star.color}, ${baseAlpha * 0.4})`);
         glowGradient.addColorStop(0.5, `rgba(${star.color}, ${baseAlpha * 0.1})`);
@@ -519,14 +435,12 @@ export default function SystemsGalaxy() {
         ctx.fillStyle = glowGradient;
         ctx.fill();
 
-        // Bright core
         ctx.globalAlpha = baseAlpha;
         ctx.beginPath();
         ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgb(${star.color})`;
         ctx.fill();
 
-        // Diffraction spikes — asymmetrical cross lines
         if (star.spike) {
           const sp = star.spike;
           const baseLen = star.r * sp.lengthMul * (0.85 + twinkle * 0.15);
@@ -534,20 +448,17 @@ export default function SystemsGalaxy() {
           ctx.strokeStyle = `rgb(${star.color})`;
           ctx.lineWidth = 0.5;
 
-          // Horizontal: left / right with independent asymmetry
           ctx.globalAlpha = spikeAlpha;
           ctx.beginPath();
           ctx.moveTo(sx - baseLen * sp.arms[0], sy);
           ctx.lineTo(sx + baseLen * sp.arms[1], sy);
           ctx.stroke();
 
-          // Vertical: top / bottom
           ctx.beginPath();
           ctx.moveTo(sx, sy - baseLen * sp.arms[2]);
           ctx.lineTo(sx, sy + baseLen * sp.arms[3]);
           ctx.stroke();
 
-          // Optional short diagonals (~50% base length)
           if (sp.diagonals) {
             const diagBase = baseLen * 0.5;
             ctx.globalAlpha = spikeAlpha * 0.45;
@@ -564,12 +475,11 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // Galactic dust band — subtle dark lane across the center
-      // Rendered after stars so it softly darkens them, before constellation nodes
+      // --- Dust band ---
       ctx.save();
       ctx.translate(w / 2, h / 2);
-      ctx.rotate(-0.18); // slight tilt (~10°)
-      const bandH = h * 0.35; // vertical extent of the gradient band
+      ctx.rotate(-0.18);
+      const bandH = h * 0.35;
       const dustGrad = ctx.createLinearGradient(0, -bandH / 2, 0, bandH / 2);
       dustGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
       dustGrad.addColorStop(0.3, "rgba(0, 0, 0, 0.12)");
@@ -580,165 +490,301 @@ export default function SystemsGalaxy() {
       ctx.fillRect(-w, -bandH / 2, w * 2, bandH);
       ctx.restore();
 
-      const nodes = layoutRef.current;
-      if (nodes.length === 0) {
-        animFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
+      // --- Center radial glow ---
+      const centerGlow = ctx.createRadialGradient(
+        cx, cy, 0, cx, cy, Math.min(w, h) * 0.45,
+      );
+      centerGlow.addColorStop(0, "rgba(180, 160, 120, 0.08)");
+      centerGlow.addColorStop(0.3, "rgba(120, 110, 90, 0.04)");
+      centerGlow.addColorStop(0.7, "rgba(60, 55, 50, 0.01)");
+      centerGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = centerGlow;
+      ctx.fillRect(0, 0, w, h);
 
-      // Constellation nodes — bounded oscillation keeps them centered
-      // Gentle directional float within ±4px range
-      const constellationDriftX = Math.sin(time * 0.25) * 4 * Math.cos(driftAngle);
-      const constellationDriftY = Math.sin(time * 0.25) * 4 * Math.sin(driftAngle);
-      const nodeMap = new Map<string, LayoutNode>();
-      for (const node of nodes) {
-        let hash = 0;
-        for (let i = 0; i < node.id.length; i++) {
-          hash = ((hash << 5) - hash + node.id.charCodeAt(i)) | 0;
-        }
-        const phase = ((hash % 1000) / 1000) * Math.PI * 2;
-        const noiseX = Math.sin(time * 0.3 + phase) * 0.5;
-        const noiseY = Math.cos(time * 0.25 + phase + 1) * 0.5;
-
-        node.x = node.baseX + constellationDriftX + px + noiseX;
-        node.y = node.baseY + constellationDriftY + py + noiseY;
-        nodeMap.set(node.id, node);
-      }
-
-      const currentHoveredId = hoveredIdRef.current;
-      const highlighted = currentHoveredId ? getConnected(currentHoveredId) : null;
-
-      // Draw edges
-      for (const edge of systemsGraph.edges) {
-        const from = nodeMap.get(edge.source);
-        const to = nodeMap.get(edge.target);
-        if (!from || !to) continue;
-
-        const isHL =
-          highlighted &&
-          highlighted.has(edge.source) &&
-          highlighted.has(edge.target);
-        const faded = highlighted && !isHL;
-
+      // --- Orbit ellipses ---
+      for (const orbit of orbits) {
+        ctx.strokeStyle = `rgba(150, 170, 200, ${orbit.opacity})`;
+        ctx.lineWidth = 0.5;
+        ctx.save();
+        ctx.translate(cx + px, cy + py);
+        ctx.rotate(orbit.rotation);
         ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.lineTo(to.x, to.y);
-        ctx.strokeStyle = isHL ? EDGE_HIGHLIGHT_COLOR : EDGE_COLOR;
-        ctx.lineWidth = isHL ? 1.5 : 0.5;
-        ctx.globalAlpha = faded ? 0.03 : 1;
+        ctx.ellipse(0, 0, orbit.rx * w, orbit.ry * h, 0, 0, Math.PI * 2);
+        ctx.restore();
         ctx.stroke();
       }
 
-      ctx.globalAlpha = 1;
+      // --- Center name ---
+      const nameSize = Math.max(16, w * 0.028);
+      const subtitleSize = Math.max(11, w * 0.014);
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(230, 225, 215, 0.85)";
+      ctx.font = `500 ${nameSize}px system-ui, -apple-system, sans-serif`;
+      ctx.fillText("Mehmet Fahri Özmen", cx + px, cy + py - 6);
+      ctx.fillStyle = "rgba(180, 175, 165, 0.5)";
+      ctx.font = `400 ${subtitleSize}px system-ui, -apple-system, sans-serif`;
+      ctx.fillText(
+        "Backend Systems Architect  ·  Engineering Leader",
+        cx + px,
+        cy + py + 14,
+      );
+
+      // --- Hover state ---
+      const currentHoveredId = hoveredIdRef.current;
+      const currentHoveredType = hoveredTypeRef.current;
+      const highlighted =
+        currentHoveredId && currentHoveredType
+          ? getHighlightedIds(currentHoveredId, currentHoveredType)
+          : null;
 
       const sf = isMobileRef.current ? 0.75 : 1;
 
-      // Draw nodes
-      for (const node of nodes) {
-        const style = getStyle(node.type);
-        const isFeatured = node.featured;
-        const isSystem = node.type !== "domain";
-        const isHL = !highlighted || highlighted.has(node.id);
-        const isHovered = node.id === currentHoveredId;
+      // --- Connection lines (hover only) ---
+      if (highlighted && currentHoveredId) {
+        ctx.strokeStyle = "rgba(120, 180, 240, 0.2)";
+        ctx.lineWidth = 0.8;
+        ctx.setLineDash([3, 4]);
 
-        // Compute per-node hash for twinkle phase
+        if (currentHoveredType === "system") {
+          const sys = systems.find((s) => s.id === currentHoveredId);
+          if (sys) {
+            const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
+            for (const domId of sys.domains) {
+              const dom = domains.find((d) => d.id === domId);
+              if (dom) {
+                const domPos = getDomainPosition(dom, w, h, cx, cy);
+                ctx.beginPath();
+                ctx.moveTo(sysPos.x + px, sysPos.y + py);
+                ctx.lineTo(domPos.x + px, domPos.y + py);
+                ctx.stroke();
+              }
+            }
+          }
+        } else if (currentHoveredType === "domain") {
+          const dom = domains.find((d) => d.id === currentHoveredId);
+          if (dom) {
+            const domPos = getDomainPosition(dom, w, h, cx, cy);
+            const connectedSystems = domainToSystems.current.get(currentHoveredId) || [];
+            for (const sysId of connectedSystems) {
+              const sys = systems.find((s) => s.id === sysId);
+              if (sys) {
+                const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
+                ctx.beginPath();
+                ctx.moveTo(domPos.x + px, domPos.y + py);
+                ctx.lineTo(sysPos.x + px, sysPos.y + py);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+        ctx.setLineDash([]);
+      }
+
+      // --- Domain nodes ---
+      for (const dom of domains) {
+        const pos = getDomainPosition(dom, w, h, cx, cy);
+        const dx = pos.x + px;
+        const dy = pos.y + py;
+        const isActive = highlighted?.has(dom.id);
+        const isDimmed = highlighted && !isActive;
+
+        if (isDimmed) {
+          ctx.globalAlpha = 0.05;
+        } else {
+          ctx.globalAlpha = 1;
+        }
+
+        const domR = isActive ? 13 * sf : 9 * sf;
+        // Subtle pulse when active
+        const pulseR = isActive
+          ? domR + Math.sin(time * 2) * 1.5
+          : domR;
+
+        // Fill
+        ctx.beginPath();
+        ctx.arc(dx, dy, pulseR, 0, Math.PI * 2);
+        ctx.fillStyle = isActive
+          ? "rgba(80, 140, 200, 0.25)"
+          : "rgba(80, 140, 200, 0.15)";
+        ctx.fill();
+
+        // Border
+        ctx.strokeStyle = isActive
+          ? "rgba(100, 160, 220, 0.45)"
+          : "rgba(100, 160, 220, 0.15)";
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+
+        // Label
+        ctx.font = `400 ${9 * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.letterSpacing = "1px";
+        ctx.fillStyle = isActive
+          ? "rgba(140, 186, 232, 0.85)"
+          : "rgba(96, 120, 136, 0.22)";
+        ctx.fillText(dom.name.toUpperCase(), dx, dy + pulseR + 4);
+        ctx.letterSpacing = "0px";
+      }
+      ctx.globalAlpha = 1;
+
+      // --- System stars ---
+      for (const sys of systems) {
+        const pos = getSystemPosition(sys, time, w, h, cx, cy);
+        const sx = pos.x + px;
+        const sy = pos.y + py;
+        const isHL = !highlighted || highlighted.has(sys.id);
+        const isHovered = sys.id === currentHoveredId;
+        const isDimmed = highlighted && !isHL;
+
+        // Per-system twinkle phase
         let hash = 0;
-        for (let c = 0; c < node.id.length; c++) {
-          hash = ((hash << 5) - hash + node.id.charCodeAt(c)) | 0;
+        for (let c = 0; c < sys.id.length; c++) {
+          hash = ((hash << 5) - hash + sys.id.charCodeAt(c)) | 0;
         }
         const nodePhase = ((hash % 1000) / 1000) * Math.PI * 2;
+        const twinkle = 1 + Math.sin(time * 1.2 + nodePhase) * 0.1;
 
-        // Base radius with hover boost for system nodes
-        let r = (isFeatured ? style.featuredRadius : style.radius) * sf;
-        if (isHovered && isSystem) r *= 1.25;
+        let r = systemStarRadius(sys.importance, sf);
+        if (isHovered) r *= 1.3;
 
-        const color = isFeatured ? style.featuredColor : style.color;
+        if (isDimmed) {
+          ctx.globalAlpha = 0.15;
+        } else {
+          ctx.globalAlpha = 1;
+        }
 
-        ctx.globalAlpha = highlighted && !isHL ? 0.06 : 1;
-
-        // Twinkle for system nodes: subtle brightness pulse (±10%)
-        const twinkle = isSystem
-          ? 1 + Math.sin(time * 1.2 + nodePhase) * 0.1
-          : 1;
-
-        if (isSystem) {
-          // --- System nodes: star-like glow using shadowBlur ---
-
-          // Radial gradient glow layer
-          const glowR = isHovered ? r * 5 : isFeatured ? r * 4 : r * 2.8;
-          const glowAlpha = (isHovered ? 0.35 : isFeatured ? 0.25 : 0.12) * twinkle;
+        if (sys.importance === "primary") {
+          // Warm gold primary stars
+          const glowR = isHovered ? r * 5 : r * 4;
+          const glowAlpha = (isHovered ? 0.4 : 0.3) * twinkle;
           const gradient = ctx.createRadialGradient(
-            node.x, node.y, r * 0.15,
-            node.x, node.y, glowR,
+            sx, sy, r * 0.15, sx, sy, glowR,
           );
-          gradient.addColorStop(0, `rgba(180, 200, 255, ${glowAlpha})`);
-          gradient.addColorStop(0.4, `rgba(160, 185, 255, ${glowAlpha * 0.4})`);
-          gradient.addColorStop(1, "rgba(160, 185, 255, 0)");
+          gradient.addColorStop(0, `rgba(240, 192, 64, ${glowAlpha})`);
+          gradient.addColorStop(0.4, `rgba(240, 192, 64, ${glowAlpha * 0.3})`);
+          gradient.addColorStop(1, "rgba(240, 192, 64, 0)");
           ctx.beginPath();
-          ctx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
+          ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
           ctx.fillStyle = gradient;
           ctx.fill();
 
-          // Core dot with canvas shadowBlur
-          const blurAmount = isHovered ? 20 : isFeatured ? 16 : 8;
+          // Core
           ctx.save();
-          ctx.shadowColor = isFeatured
-            ? "rgba(200, 215, 255, 0.7)"
-            : "rgba(180, 195, 255, 0.5)";
-          ctx.shadowBlur = blurAmount * twinkle;
+          ctx.shadowColor = "rgba(240, 200, 80, 0.6)";
+          ctx.shadowBlur = (isHovered ? 18 : 14) * twinkle;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-          ctx.fillStyle = color;
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          ctx.fillStyle = "#f0c040";
+          ctx.fill();
+          ctx.restore();
+
+          // Diffraction spikes for primary stars
+          const spikeLen = r * (3 + twinkle * 2);
+          const spikeAlpha = (isDimmed ? 0.15 : 1) * 0.25 * twinkle;
+          ctx.globalAlpha = spikeAlpha;
+          ctx.strokeStyle = "#f0c040";
+          ctx.lineWidth = 0.5;
+          // Cross (+)
+          ctx.beginPath();
+          ctx.moveTo(sx - spikeLen, sy);
+          ctx.lineTo(sx + spikeLen, sy);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(sx, sy - spikeLen);
+          ctx.lineTo(sx, sy + spikeLen);
+          ctx.stroke();
+          // Diagonal (×) — thinner
+          const diagLen = spikeLen * 0.6;
+          ctx.globalAlpha = spikeAlpha * 0.5;
+          ctx.lineWidth = 0.3;
+          ctx.beginPath();
+          ctx.moveTo(sx - diagLen, sy - diagLen);
+          ctx.lineTo(sx + diagLen, sy + diagLen);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(sx + diagLen, sy - diagLen);
+          ctx.lineTo(sx - diagLen, sy + diagLen);
+          ctx.stroke();
+
+          ctx.globalAlpha = isDimmed ? 0.15 : 1;
+        } else if (sys.importance === "secondary") {
+          // Blue-white secondary stars
+          const glowR = isHovered ? r * 4 : r * 2.5;
+          const glowAlpha = (isHovered ? 0.25 : 0.12) * twinkle;
+          const gradient = ctx.createRadialGradient(
+            sx, sy, r * 0.15, sx, sy, glowR,
+          );
+          gradient.addColorStop(0, `rgba(168, 196, 220, ${glowAlpha})`);
+          gradient.addColorStop(0.5, `rgba(168, 196, 220, ${glowAlpha * 0.3})`);
+          gradient.addColorStop(1, "rgba(168, 196, 220, 0)");
+          ctx.beginPath();
+          ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+
+          ctx.save();
+          ctx.shadowColor = "rgba(168, 196, 220, 0.4)";
+          ctx.shadowBlur = (isHovered ? 12 : 6) * twinkle;
+          ctx.beginPath();
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          ctx.fillStyle = "#a8c4dc";
           ctx.fill();
           ctx.restore();
         } else {
-          // --- Domain nodes: soft subtle dot ---
-          if (style.glowColor !== "transparent") {
-            const glowR = r * 2;
-            const gradient = ctx.createRadialGradient(
-              node.x, node.y, r * 0.2,
-              node.x, node.y, glowR,
-            );
-            gradient.addColorStop(0, "rgba(110, 140, 210, 0.06)");
-            gradient.addColorStop(1, "rgba(110, 140, 210, 0)");
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
-            ctx.fillStyle = gradient;
-            ctx.fill();
-          }
+          // Dim minor stars
+          const glowR = r * 1.8;
+          const glowAlpha = 0.06 * twinkle;
+          const gradient = ctx.createRadialGradient(
+            sx, sy, r * 0.2, sx, sy, glowR,
+          );
+          gradient.addColorStop(0, `rgba(74, 85, 101, ${glowAlpha})`);
+          gradient.addColorStop(1, "rgba(74, 85, 101, 0)");
+          ctx.beginPath();
+          ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
 
           ctx.beginPath();
-          ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-          ctx.fillStyle = color;
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          ctx.fillStyle = "#4a5565";
           ctx.fill();
         }
 
-        // Label
-        const baseFontSize = isFeatured
-          ? style.labelSize + 1
-          : style.labelSize;
-        const fontSize = baseFontSize * sf;
-        const weight = isFeatured ? 600 : 400;
-        ctx.font = `${weight} ${fontSize}px system-ui, -apple-system, sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        ctx.fillStyle = isFeatured
-          ? style.featuredLabelColor
-          : style.labelColor;
-
-        const labelText =
-          node.type === "domain"
-            ? node.label.toUpperCase()
-            : node.label;
-
-        if (node.type === "domain") {
-          ctx.letterSpacing = "1.5px";
-          ctx.fillText(labelText, node.x, node.y + r + 5);
-          ctx.letterSpacing = "0px";
-        } else {
-          ctx.fillText(labelText, node.x, node.y + r + 4);
+        // Hover ring
+        if (isHovered) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, r * 2.2, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
         }
 
+        // Label
+        const labelSize =
+          sys.importance === "primary" ? 13 : 11;
+        const labelWeight = sys.importance === "primary" ? 500 : 400;
+        const labelAlpha = isHovered
+          ? 1.0
+          : isDimmed
+            ? 0.15
+            : sys.importance === "primary"
+              ? 0.8
+              : sys.importance === "secondary"
+                ? 0.55
+                : 0.3;
+
+        ctx.globalAlpha = labelAlpha;
+        ctx.font = `${labelWeight} ${labelSize * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillStyle =
+          sys.importance === "primary"
+            ? "rgba(240, 220, 170, 1)"
+            : sys.importance === "secondary"
+              ? "rgba(190, 210, 230, 1)"
+              : "rgba(130, 140, 150, 1)";
+        ctx.fillText(sys.name, sx, sy + r + 4);
         ctx.globalAlpha = 1;
       }
 
@@ -747,9 +793,9 @@ export default function SystemsGalaxy() {
 
     animFrameRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [dimensions, getConnected]);
+  }, [dimensions, getHighlightedIds]);
 
-  // Mouse interaction — hover detection + parallax offset
+  // Mouse interaction
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
@@ -758,51 +804,68 @@ export default function SystemsGalaxy() {
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
 
-      // Parallax: normalize mouse to -1..1 from center, scale to 3px max
       const nx = (mx / rect.width - 0.5) * 2;
       const ny = (my / rect.height - 0.5) * 2;
       mouseOffsetRef.current = { x: nx * 3, y: ny * 3 };
+      mousePosRef.current = { x: mx, y: my };
 
-      let closest: LayoutNode | null = null;
-      let closestDist = Infinity;
+      const w = dimensions.width;
+      const h = dimensions.height;
+      const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
+      const hit = hitTest(mx, my, timeRef.current, w, h, w / 2, h / 2, sf);
 
-      for (const node of layoutRef.current) {
-        const style = getStyle(node.type);
-        const r = node.featured ? style.featuredRadius : style.radius;
-        const hitRadius = r + 14;
-        const dx = node.x - mx;
-        const dy = node.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < hitRadius && dist < closestDist) {
-          closest = node;
-          closestDist = dist;
-        }
+      if (hit) {
+        setHoveredId(hit.id);
+        setHoveredType(hit.type);
+      } else {
+        setHoveredId(null);
+        setHoveredType(null);
       }
-
-      setHoveredId(closest?.id ?? null);
     },
-    [],
+    [dimensions, hitTest],
   );
 
   const handleMouseLeave = useCallback(() => {
     setHoveredId(null);
+    setHoveredType(null);
     mouseOffsetRef.current = { x: 0, y: 0 };
   }, []);
 
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const w = dimensions.width;
+      const h = dimensions.height;
+      const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
+      const hit = hitTest(mx, my, timeRef.current, w, h, w / 2, h / 2, sf);
+      if (hit?.type === "system" && hit.item.url) {
+        window.open(hit.item.url, "_blank");
+      }
+    },
+    [dimensions, hitTest],
+  );
+
+  const cursorStyle =
+    hoveredId && hoveredType === "system"
+      ? "pointer"
+      : "default";
+
   return (
     <section className="pt-6 pb-12 sm:pt-10 sm:pb-20">
-      {/* Heading */}
       <div className="mx-auto mb-4 max-w-2xl px-4 text-center sm:mb-8">
         <h2 className="text-2xl font-semibold tracking-tight text-neutral-100 sm:text-3xl">
           Systems I&apos;ve helped build
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base">
-          A constellation of systems across commerce, search platforms
-          and distributed infrastructure.
+          A constellation of systems across commerce, search platforms and
+          distributed infrastructure.
         </p>
       </div>
 
-      {/* Canvas */}
       <div
         ref={containerRef}
         className="relative mx-auto w-full max-w-5xl"
@@ -811,9 +874,10 @@ export default function SystemsGalaxy() {
         <canvas
           ref={canvasRef}
           className="absolute inset-0 h-full w-full"
-          style={{ cursor: hoveredId ? "pointer" : "default" }}
+          style={{ cursor: cursorStyle }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
         />
       </div>
     </section>

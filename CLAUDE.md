@@ -43,30 +43,33 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 
 ## Graph Data Architecture
 
-The systems visualization is powered by structured graph data.
+The systems visualization uses an orbital layout with data defined in `data/systemsGraph.ts`.
 
-- All nodes and relationships are defined in the `data/` directory.
+- All systems, domains, and orbit configs are defined in `data/systemsGraph.ts`.
 - Components must not hardcode nodes or relationships — they are pure UI renderers.
-- Graph structure is defined in a single source of truth: `data/systemsGraph.ts`.
-
-Node types: `system`, `domain` (future: `technology`, `post`)
+- Systems reference domains by ID via `domains: string[]`.
 
 ```ts
 // data/systemsGraph.ts
-export interface GraphNode {
-  id: string;
-  label: string;
-  type: "system" | "domain";
-  featured?: boolean;
-}
+export type SystemImportance = "primary" | "secondary" | "minor";
 
-export interface GraphEdge {
-  source: string;
-  target: string;
-}
+export type SystemNode = {
+  id: string; name: string; url?: string;
+  importance: SystemImportance;
+  domains: string[];       // domain id references
+  angle: number;           // starting angle on orbit (radians)
+  orbit: number;           // 0 = outer, 1 = middle, 2 = inner
+};
 
-export interface SystemsGraph {
-  nodes: GraphNode[];
-  edges: GraphEdge[];
-}
+export type DomainNode = {
+  id: string; name: string;
+  angle: number; orbit: number;
+  offset: { x: number; y: number };  // normalized offset from orbit path
+};
+
+export type OrbitConfig = {
+  rx: number; ry: number;  // radius as fraction of canvas size
+  rotation: number;        // tilt in radians
+  opacity: number;         // line opacity
+};
 ```
