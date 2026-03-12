@@ -98,6 +98,8 @@ interface BgStar {
   alpha: number;
   /** Depth layer 0–1 for parallax (0 = far, 1 = near) */
   depth: number;
+  /** Unique phase for twinkle and idle drift */
+  phase: number;
 }
 
 interface Nebula {
@@ -137,6 +139,7 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
       r: 0.2 + rand() * 1.0,
       alpha: 0.1 + rand() * 0.4,
       depth: rand(),
+      phase: rand() * Math.PI * 2,
     });
   }
   return stars;
@@ -280,13 +283,18 @@ export default function SystemsGalaxy() {
   const layoutRef = useRef<LayoutNode[]>([]);
   const bgStarsRef = useRef<BgStar[]>([]);
   const nebulaeRef = useRef<Nebula[]>([]);
-  const timeRef = useRef(0);
   const mouseOffsetRef = useRef({ x: 0, y: 0 });
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 600 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const hoveredIdRef = useRef<string | null>(null);
 
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
+  const isMobileRef = useRef(isMobile);
+
+  // Keep refs in sync for animation loop reads
+  useEffect(() => { hoveredIdRef.current = hoveredId; }, [hoveredId]);
+  useEffect(() => { isMobileRef.current = isMobile; }, [isMobile]);
 
   const adjacencyRef = useRef(buildAdjacency(systemsGraph.edges));
 
@@ -327,14 +335,20 @@ export default function SystemsGalaxy() {
     return () => ro.disconnect();
   }, []);
 
-  // Animation loop
+  // Animation loop — runs continuously, reads state from refs
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const draw = () => {
+    const animate = (timestamp: number) => {
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      if (!ctx) {
+        animFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Time in seconds from rAF timestamp
+      const time = timestamp / 1000;
 
       const dpr = window.devicePixelRatio || 1;
       const w = dimensions.width;
@@ -351,15 +365,17 @@ export default function SystemsGalaxy() {
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
 
+      // Global idle drift — slow, visible 1.5px amplitude
+      const idleX = Math.sin(time * 0.3) * 1.5;
+      const idleY = Math.cos(time * 0.22) * 1.5;
+
       // Nebula layer (behind everything)
       for (const neb of nebulaeRef.current) {
+        const nx = neb.x + idleX + px * 0.5;
+        const ny = neb.y + idleY + py * 0.5;
         const gradient = ctx.createRadialGradient(
-          neb.x + px * 0.5,
-          neb.y + py * 0.5,
-          0,
-          neb.x + px * 0.5,
-          neb.y + py * 0.5,
-          neb.radius,
+          nx, ny, 0,
+          nx, ny, neb.radius,
         );
         gradient.addColorStop(0, neb.color);
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
@@ -367,12 +383,13 @@ export default function SystemsGalaxy() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Star field with parallax
+      // Star field with idle drift + mouse parallax + twinkle
       for (const star of bgStarsRef.current) {
-        const parallax = 1 + star.depth * 2; // 1–3px amplitude
-        const sx = star.x + px * parallax;
-        const sy = star.y + py * parallax;
-        ctx.globalAlpha = star.alpha;
+        const parallax = 1 + star.depth * 2;
+        const sx = star.x + idleX * parallax + px * parallax;
+        const sy = star.y + idleY * parallax + py * parallax;
+        const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
+        ctx.globalAlpha = star.alpha * twinkle;
         ctx.beginPath();
         ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(200, 210, 240, 1)";
@@ -382,30 +399,28 @@ export default function SystemsGalaxy() {
 
       const nodes = layoutRef.current;
       if (nodes.length === 0) {
-        animFrameRef.current = requestAnimationFrame(draw);
+        animFrameRef.current = requestAnimationFrame(animate);
         return;
       }
 
-      const time = timeRef.current;
-      timeRef.current += 0.003;
-
-      // Update positions with subtle drift
+      // Update node positions: global idle drift + mouse parallax + tiny per-node wobble
       const nodeMap = new Map<string, LayoutNode>();
       for (const node of nodes) {
-        const drift = node.type === "domain" ? 2 : 4;
-        const speed = node.featured ? 0.4 : 0.6;
         let hash = 0;
         for (let i = 0; i < node.id.length; i++) {
           hash = ((hash << 5) - hash + node.id.charCodeAt(i)) | 0;
         }
         const phase = ((hash % 1000) / 1000) * Math.PI * 2;
-        node.x = node.baseX + Math.sin(time * speed + phase) * drift;
-        node.y =
-          node.baseY + Math.cos(time * speed * 0.7 + phase + 1) * drift;
+        const wobbleX = Math.sin(time * 0.5 + phase) * 0.8;
+        const wobbleY = Math.cos(time * 0.4 + phase + 1) * 0.8;
+
+        node.x = node.baseX + idleX + px + wobbleX;
+        node.y = node.baseY + idleY + py + wobbleY;
         nodeMap.set(node.id, node);
       }
 
-      const highlighted = hoveredId ? getConnected(hoveredId) : null;
+      const currentHoveredId = hoveredIdRef.current;
+      const highlighted = currentHoveredId ? getConnected(currentHoveredId) : null;
 
       // Draw edges
       for (const edge of systemsGraph.edges) {
@@ -430,51 +445,87 @@ export default function SystemsGalaxy() {
 
       ctx.globalAlpha = 1;
 
-      const sf = isMobile ? 0.75 : 1;
+      const sf = isMobileRef.current ? 0.75 : 1;
 
       // Draw nodes
       for (const node of nodes) {
         const style = getStyle(node.type);
         const isFeatured = node.featured;
-        const r = (isFeatured ? style.featuredRadius : style.radius) * sf;
-        const color = isFeatured ? style.featuredColor : style.color;
+        const isSystem = node.type !== "domain";
         const isHL = !highlighted || highlighted.has(node.id);
-        const isHovered = node.id === hoveredId;
+        const isHovered = node.id === currentHoveredId;
+
+        // Compute per-node hash for twinkle phase
+        let hash = 0;
+        for (let c = 0; c < node.id.length; c++) {
+          hash = ((hash << 5) - hash + node.id.charCodeAt(c)) | 0;
+        }
+        const nodePhase = ((hash % 1000) / 1000) * Math.PI * 2;
+
+        // Base radius with hover boost for system nodes
+        let r = (isFeatured ? style.featuredRadius : style.radius) * sf;
+        if (isHovered && isSystem) r *= 1.25;
+
+        const color = isFeatured ? style.featuredColor : style.color;
 
         ctx.globalAlpha = highlighted && !isHL ? 0.06 : 1;
 
-        // Glow for featured / hovered / domain nodes
-        if (style.glowColor !== "transparent") {
-          const glowR = isHovered
-            ? r * 4
-            : isFeatured
-              ? r * 3.8
-              : r * 2.2;
-          const glowAlpha = isHovered ? 0.3 : isFeatured ? 0.22 : 0.08;
+        // Twinkle for system nodes: subtle brightness pulse (±10%)
+        const twinkle = isSystem
+          ? 1 + Math.sin(time * 1.2 + nodePhase) * 0.1
+          : 1;
+
+        if (isSystem) {
+          // --- System nodes: star-like glow using shadowBlur ---
+
+          // Radial gradient glow layer
+          const glowR = isHovered ? r * 5 : isFeatured ? r * 4 : r * 2.8;
+          const glowAlpha = (isHovered ? 0.35 : isFeatured ? 0.25 : 0.12) * twinkle;
           const gradient = ctx.createRadialGradient(
-            node.x,
-            node.y,
-            r * 0.2,
-            node.x,
-            node.y,
-            glowR,
+            node.x, node.y, r * 0.15,
+            node.x, node.y, glowR,
           );
-          gradient.addColorStop(
-            0,
-            `rgba(180, 195, 255, ${glowAlpha})`,
-          );
-          gradient.addColorStop(1, "rgba(180, 195, 255, 0)");
+          gradient.addColorStop(0, `rgba(180, 200, 255, ${glowAlpha})`);
+          gradient.addColorStop(0.4, `rgba(160, 185, 255, ${glowAlpha * 0.4})`);
+          gradient.addColorStop(1, "rgba(160, 185, 255, 0)");
           ctx.beginPath();
           ctx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
           ctx.fillStyle = gradient;
           ctx.fill();
-        }
 
-        // Node dot
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
+          // Core dot with canvas shadowBlur
+          const blurAmount = isHovered ? 20 : isFeatured ? 16 : 8;
+          ctx.save();
+          ctx.shadowColor = isFeatured
+            ? "rgba(200, 215, 255, 0.7)"
+            : "rgba(180, 195, 255, 0.5)";
+          ctx.shadowBlur = blurAmount * twinkle;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.restore();
+        } else {
+          // --- Domain nodes: soft subtle dot ---
+          if (style.glowColor !== "transparent") {
+            const glowR = r * 2;
+            const gradient = ctx.createRadialGradient(
+              node.x, node.y, r * 0.2,
+              node.x, node.y, glowR,
+            );
+            gradient.addColorStop(0, "rgba(110, 140, 210, 0.06)");
+            gradient.addColorStop(1, "rgba(110, 140, 210, 0)");
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+          }
+
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
 
         // Label
         const baseFontSize = isFeatured
@@ -495,7 +546,6 @@ export default function SystemsGalaxy() {
             : node.label;
 
         if (node.type === "domain") {
-          // Letter-spaced domain labels
           ctx.letterSpacing = "1.5px";
           ctx.fillText(labelText, node.x, node.y + r + 5);
           ctx.letterSpacing = "0px";
@@ -506,12 +556,12 @@ export default function SystemsGalaxy() {
         ctx.globalAlpha = 1;
       }
 
-      animFrameRef.current = requestAnimationFrame(draw);
+      animFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animFrameRef.current = requestAnimationFrame(draw);
+    animFrameRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [dimensions, hoveredId, isMobile, getConnected]);
+  }, [dimensions, getConnected]);
 
   // Mouse interaction — hover detection + parallax offset
   const handleMouseMove = useCallback(
