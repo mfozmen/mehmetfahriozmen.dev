@@ -1,13 +1,23 @@
+import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import ProjectsGrid from "@/components/ProjectsGrid";
+import SystemsGalaxy from "@/components/SystemsGalaxy";
+import FeaturedSystems from "@/components/FeaturedSystems";
+import Domains from "@/components/Domains";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-      <Hero />
-      <div className="mt-24">
-        <ProjectsGrid />
-      </div>
-    </main>
+    <>
+      <Navigation />
+      <main className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+        <Hero />
+        <SystemsGalaxy />
+        <div className="space-y-24">
+          <FeaturedSystems />
+          <Domains />
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }
