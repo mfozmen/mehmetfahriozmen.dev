@@ -520,13 +520,13 @@ export default function SystemsGalaxy() {
       ctx.textAlign = "center";
       ctx.fillStyle = "rgba(230, 225, 215, 0.85)";
       ctx.font = `500 ${nameSize}px system-ui, -apple-system, sans-serif`;
-      ctx.fillText("Mehmet Fahri Özmen", cx + px, cy + py - 6);
+      ctx.fillText("Mehmet Fahri Özmen", cx + px, cy + py - 14);
       ctx.fillStyle = "rgba(180, 175, 165, 0.5)";
       ctx.font = `400 ${subtitleSize}px system-ui, -apple-system, sans-serif`;
       ctx.fillText(
         "Backend Systems Architect  ·  Engineering Leader",
         cx + px,
-        cy + py + 14,
+        cy + py + 4,
       );
 
       // --- Hover state ---
@@ -594,7 +594,7 @@ export default function SystemsGalaxy() {
           ctx.globalAlpha = 1;
         }
 
-        const domR = isActive ? 13 * sf : 9 * sf;
+        const domR = isActive ? 11 * sf : 7 * sf;
         // Subtle pulse when active
         const pulseR = isActive
           ? domR + Math.sin(time * 2) * 1.5
@@ -616,13 +616,13 @@ export default function SystemsGalaxy() {
         ctx.stroke();
 
         // Label
-        ctx.font = `400 ${9 * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.font = `500 ${8 * sf}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         ctx.letterSpacing = "1px";
         ctx.fillStyle = isActive
           ? "rgba(140, 186, 232, 0.85)"
-          : "rgba(96, 120, 136, 0.22)";
+          : "rgba(96, 120, 136, 0.18)";
         ctx.fillText(dom.name.toUpperCase(), dx, dy + pulseR + 4);
         ctx.letterSpacing = "0px";
       }
