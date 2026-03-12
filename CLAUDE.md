@@ -43,33 +43,22 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 
 ## Graph Data Architecture
 
-The systems visualization uses an orbital layout with data defined in `data/systemsGraph.ts`.
+The systems visualization uses a 3-layer orbital layout with data defined in `data/systemsGraph.ts`.
 
-- All systems, domains, and orbit configs are defined in `data/systemsGraph.ts`.
+- All systems, domains, tech clusters, and orbit configs are defined in `data/systemsGraph.ts`.
 - Components must not hardcode nodes or relationships — they are pure UI renderers.
-- Systems reference domains by ID via `domains: string[]`.
+- Systems reference domains via `domains: string[]` and tech clusters via `techClusters: string[]`.
+- 4 orbit rings: primary systems (0), secondary systems (1), minor systems (2), tech clusters (3).
 
 ```ts
-// data/systemsGraph.ts
-export type SystemImportance = "primary" | "secondary" | "minor";
-
+// data/systemsGraph.ts — key types
 export type SystemNode = {
   id: string; name: string; url?: string;
-  importance: SystemImportance;
-  domains: string[];       // domain id references
-  angle: number;           // starting angle on orbit (radians)
-  orbit: number;           // 0 = outer, 1 = middle, 2 = inner
-};
-
-export type DomainNode = {
-  id: string; name: string;
+  importance: "primary" | "secondary" | "minor";
+  domains: string[]; techClusters: string[];
   angle: number; orbit: number;
-  offset: { x: number; y: number };  // normalized offset from orbit path
 };
-
-export type OrbitConfig = {
-  rx: number; ry: number;  // radius as fraction of canvas size
-  rotation: number;        // tilt in radians
-  opacity: number;         // line opacity
-};
+export type DomainNode = { id: string; name: string; angle: number; orbit: number; offset: { x: number; y: number } };
+export type TechClusterNode = { id: string; name: string; angle: number; technologies: string[] };
+export type OrbitConfig = { rx: number; ry: number; rotation: number; opacity: number };
 ```

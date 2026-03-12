@@ -4,14 +4,16 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import {
   systems,
   domains,
+  techClusters,
   orbits,
   SystemNode,
   DomainNode,
+  TechClusterNode,
   SystemImportance,
 } from "@/data/systemsGraph";
 
 /* ------------------------------------------------------------------ */
-/*  Background star types & helpers (unchanged from before)            */
+/*  Background star types & helpers                                    */
 /* ------------------------------------------------------------------ */
 
 type StarLayer = "far" | "mid" | "near";
@@ -221,6 +223,16 @@ function getDomainPosition(
   };
 }
 
+function getTechClusterPosition(
+  tc: TechClusterNode,
+  w: number,
+  h: number,
+  cx: number,
+  cy: number,
+) {
+  return getOrbitPosition(3, tc.angle, w, h, cx, cy);
+}
+
 function systemStarRadius(importance: SystemImportance, sf: number): number {
   switch (importance) {
     case "primary":
@@ -239,6 +251,7 @@ function systemStarRadius(importance: SystemImportance, sf: number): number {
 type HitResult =
   | { type: "system"; id: string; item: SystemNode }
   | { type: "domain"; id: string; item: DomainNode }
+  | { type: "tech"; id: string; item: TechClusterNode }
   | null;
 
 /* ------------------------------------------------------------------ */
@@ -259,14 +272,13 @@ export default function SystemsGalaxy() {
   const bgStarsRef = useRef<BgStar[]>([]);
   const nebulaeRef = useRef<Nebula[]>([]);
   const mouseOffsetRef = useRef({ x: 0, y: 0 });
-  const mousePosRef = useRef({ x: -1, y: -1 });
   const timeRef = useRef(0);
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 600 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [hoveredType, setHoveredType] = useState<"system" | "domain" | null>(null);
+  const [hoveredType, setHoveredType] = useState<"system" | "domain" | "tech" | null>(null);
   const hoveredIdRef = useRef<string | null>(null);
-  const hoveredTypeRef = useRef<"system" | "domain" | null>(null);
+  const hoveredTypeRef = useRef<"system" | "domain" | "tech" | null>(null);
 
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
   const isMobileRef = useRef(isMobile);
@@ -275,17 +287,24 @@ export default function SystemsGalaxy() {
   useEffect(() => { hoveredTypeRef.current = hoveredType; }, [hoveredType]);
   useEffect(() => { isMobileRef.current = isMobile; }, [isMobile]);
 
-  // Build domain→systems lookup
+  // Lookup maps
   const domainToSystems = useRef(new Map<string, string[]>());
+  const techToSystems = useRef(new Map<string, string[]>());
   useEffect(() => {
-    const map = new Map<string, string[]>();
+    const domMap = new Map<string, string[]>();
+    const techMap = new Map<string, string[]>();
     for (const sys of systems) {
       for (const domId of sys.domains) {
-        if (!map.has(domId)) map.set(domId, []);
-        map.get(domId)!.push(sys.id);
+        if (!domMap.has(domId)) domMap.set(domId, []);
+        domMap.get(domId)!.push(sys.id);
+      }
+      for (const tcId of sys.techClusters) {
+        if (!techMap.has(tcId)) techMap.set(tcId, []);
+        techMap.get(tcId)!.push(sys.id);
       }
     }
-    domainToSystems.current = map;
+    domainToSystems.current = domMap;
+    techToSystems.current = techMap;
   }, []);
 
   // Measure
@@ -311,14 +330,20 @@ export default function SystemsGalaxy() {
 
   // Get connected IDs for a hovered element
   const getHighlightedIds = useCallback(
-    (id: string, type: "system" | "domain"): Set<string> => {
+    (id: string, type: "system" | "domain" | "tech"): Set<string> => {
       const set = new Set<string>();
       set.add(id);
       if (type === "system") {
         const sys = systems.find((s) => s.id === id);
-        if (sys) sys.domains.forEach((d) => set.add(d));
-      } else {
+        if (sys) {
+          sys.domains.forEach((d) => set.add(d));
+          sys.techClusters.forEach((t) => set.add(t));
+        }
+      } else if (type === "domain") {
         const connected = domainToSystems.current.get(id);
+        if (connected) connected.forEach((s) => set.add(s));
+      } else {
+        const connected = techToSystems.current.get(id);
         if (connected) connected.forEach((s) => set.add(s));
       }
       return set;
@@ -329,7 +354,7 @@ export default function SystemsGalaxy() {
   // Hit test helper
   const hitTest = useCallback(
     (mx: number, my: number, time: number, w: number, h: number, cx: number, cy: number, sf: number): HitResult => {
-      // Check systems first
+      // Systems first
       for (const sys of systems) {
         const pos = getSystemPosition(sys, time, w, h, cx, cy);
         const hitR = systemStarRadius(sys.importance, sf) * 3 + 10;
@@ -338,12 +363,20 @@ export default function SystemsGalaxy() {
           return { type: "system", id: sys.id, item: sys };
         }
       }
-      // Then domains
+      // Domains
       for (const dom of domains) {
         const pos = getDomainPosition(dom, w, h, cx, cy);
         const dx = mx - pos.x, dy = my - pos.y;
         if (dx * dx + dy * dy < 20 * 20) {
           return { type: "domain", id: dom.id, item: dom };
+        }
+      }
+      // Tech clusters
+      for (const tc of techClusters) {
+        const pos = getTechClusterPosition(tc, w, h, cx, cy);
+        const dx = mx - pos.x, dy = my - pos.y;
+        if (dx * dx + dy * dy < 16 * 16) {
+          return { type: "tech", id: tc.id, item: tc };
         }
       }
       return null;
@@ -387,7 +420,7 @@ export default function SystemsGalaxy() {
       const driftX = time * driftSpeed * Math.cos(driftAngle);
       const driftY = time * driftSpeed * Math.sin(driftAngle);
 
-      // --- Nebulae ---
+      // --- 1. Nebulae ---
       const nebulaDriftX = Math.sin(time * 0.15) * 6 * Math.cos(driftAngle);
       const nebulaDriftY = Math.sin(time * 0.15) * 6 * Math.sin(driftAngle);
       for (const neb of nebulaeRef.current) {
@@ -400,7 +433,7 @@ export default function SystemsGalaxy() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // --- Background stars ---
+      // --- 2. Background stars ---
       const cx = w / 2;
       const cy = h / 2;
       const maxDist = Math.sqrt(cx * cx + cy * cy);
@@ -413,9 +446,9 @@ export default function SystemsGalaxy() {
         sx = ((sx % w) + w) % w;
         sy = ((sy % h) + h) % h;
 
-        const dx = sx - cx;
-        const dy = sy - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const sdx = sx - cx;
+        const sdy = sy - cy;
+        const dist = Math.sqrt(sdx * sdx + sdy * sdy);
         const falloff = Math.pow(1 - dist / maxDist, 1.8);
 
         const twinkleAmp = star.bright ? 0.3 : 0.15;
@@ -453,7 +486,6 @@ export default function SystemsGalaxy() {
           ctx.moveTo(sx - baseLen * sp.arms[0], sy);
           ctx.lineTo(sx + baseLen * sp.arms[1], sy);
           ctx.stroke();
-
           ctx.beginPath();
           ctx.moveTo(sx, sy - baseLen * sp.arms[2]);
           ctx.lineTo(sx, sy + baseLen * sp.arms[3]);
@@ -475,7 +507,7 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // --- Dust band ---
+      // --- 3. Dust band ---
       ctx.save();
       ctx.translate(w / 2, h / 2);
       ctx.rotate(-0.18);
@@ -490,7 +522,7 @@ export default function SystemsGalaxy() {
       ctx.fillRect(-w, -bandH / 2, w * 2, bandH);
       ctx.restore();
 
-      // --- Center radial glow ---
+      // --- 4. Center radial glow ---
       const centerGlow = ctx.createRadialGradient(
         cx, cy, 0, cx, cy, Math.min(w, h) * 0.45,
       );
@@ -501,7 +533,7 @@ export default function SystemsGalaxy() {
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, w, h);
 
-      // --- Orbit ellipses ---
+      // --- 5. Orbit ellipses (4 rings) ---
       for (const orbit of orbits) {
         ctx.strokeStyle = `rgba(150, 170, 200, ${orbit.opacity})`;
         ctx.lineWidth = 0.5;
@@ -514,7 +546,7 @@ export default function SystemsGalaxy() {
         ctx.stroke();
       }
 
-      // --- Center name ---
+      // --- 6. Center name ---
       const nameSize = Math.max(16, w * 0.028);
       const subtitleSize = Math.max(11, w * 0.014);
       ctx.textAlign = "center";
@@ -539,7 +571,52 @@ export default function SystemsGalaxy() {
 
       const sf = isMobileRef.current ? 0.75 : 1;
 
-      // --- Connection lines (hover only) ---
+      // --- 7. Connection lines: tech cluster ↔ system (purple, thinnest) ---
+      if (highlighted && currentHoveredId) {
+        if (currentHoveredType === "system") {
+          const sys = systems.find((s) => s.id === currentHoveredId);
+          if (sys) {
+            const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
+            // Tech cluster connections
+            ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
+            ctx.lineWidth = 0.6;
+            ctx.setLineDash([2, 3]);
+            for (const tcId of sys.techClusters) {
+              const tc = techClusters.find((t) => t.id === tcId);
+              if (tc) {
+                const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
+                ctx.beginPath();
+                ctx.moveTo(sysPos.x + px, sysPos.y + py);
+                ctx.lineTo(tcPos.x + px, tcPos.y + py);
+                ctx.stroke();
+              }
+            }
+            ctx.setLineDash([]);
+          }
+        } else if (currentHoveredType === "tech") {
+          const tc = techClusters.find((t) => t.id === currentHoveredId);
+          if (tc) {
+            const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
+            const connectedSystems = techToSystems.current.get(currentHoveredId) || [];
+            ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
+            ctx.lineWidth = 0.6;
+            ctx.setLineDash([2, 3]);
+            for (const sysId of connectedSystems) {
+              const sys = systems.find((s) => s.id === sysId);
+              if (sys) {
+                const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
+                ctx.beginPath();
+                ctx.moveTo(tcPos.x + px, tcPos.y + py);
+                ctx.lineTo(sysPos.x + px, sysPos.y + py);
+                ctx.stroke();
+              }
+            }
+            ctx.setLineDash([]);
+          }
+        }
+      }
+
+      // --- 8. Connection lines: domain ↔ system (blue) ---
       if (highlighted && currentHoveredId) {
         ctx.strokeStyle = "rgba(120, 180, 240, 0.2)";
         ctx.lineWidth = 0.8;
@@ -580,7 +657,48 @@ export default function SystemsGalaxy() {
         ctx.setLineDash([]);
       }
 
-      // --- Domain nodes ---
+      // --- 9. Tech cluster nodes ---
+      for (const tc of techClusters) {
+        const pos = getTechClusterPosition(tc, w, h, cx, cy);
+        const tx = pos.x + px;
+        const ty = pos.y + py;
+        const isActive = highlighted?.has(tc.id);
+        const isDimmed = highlighted && !isActive;
+
+        ctx.globalAlpha = isDimmed ? 0.04 : 1;
+
+        const tcR = isActive ? 8 * sf : 5 * sf;
+        const pulseR = isActive ? tcR + Math.sin(time * 2) * 1 : tcR;
+
+        // Fill
+        ctx.beginPath();
+        ctx.arc(tx, ty, pulseR, 0, Math.PI * 2);
+        ctx.fillStyle = isActive
+          ? "rgba(140, 120, 180, 0.4)"
+          : "rgba(140, 120, 180, 0.12)";
+        ctx.fill();
+
+        // Border
+        ctx.strokeStyle = isActive
+          ? "rgba(140, 120, 180, 0.5)"
+          : "rgba(140, 120, 180, 0.15)";
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+
+        // Label
+        ctx.font = `500 ${8 * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.letterSpacing = "1px";
+        ctx.fillStyle = isActive
+          ? "rgba(170, 150, 210, 0.75)"
+          : "rgba(140, 120, 180, 0.15)";
+        ctx.fillText(tc.name.toUpperCase(), tx, ty + pulseR + 3);
+        ctx.letterSpacing = "0px";
+      }
+      ctx.globalAlpha = 1;
+
+      // --- 10. Domain nodes ---
       for (const dom of domains) {
         const pos = getDomainPosition(dom, w, h, cx, cy);
         const dx = pos.x + px;
@@ -588,19 +706,11 @@ export default function SystemsGalaxy() {
         const isActive = highlighted?.has(dom.id);
         const isDimmed = highlighted && !isActive;
 
-        if (isDimmed) {
-          ctx.globalAlpha = 0.05;
-        } else {
-          ctx.globalAlpha = 1;
-        }
+        ctx.globalAlpha = isDimmed ? 0.05 : 1;
 
         const domR = isActive ? 11 * sf : 7 * sf;
-        // Subtle pulse when active
-        const pulseR = isActive
-          ? domR + Math.sin(time * 2) * 1.5
-          : domR;
+        const pulseR = isActive ? domR + Math.sin(time * 2) * 1.5 : domR;
 
-        // Fill
         ctx.beginPath();
         ctx.arc(dx, dy, pulseR, 0, Math.PI * 2);
         ctx.fillStyle = isActive
@@ -608,14 +718,12 @@ export default function SystemsGalaxy() {
           : "rgba(80, 140, 200, 0.15)";
         ctx.fill();
 
-        // Border
         ctx.strokeStyle = isActive
           ? "rgba(100, 160, 220, 0.45)"
           : "rgba(100, 160, 220, 0.15)";
         ctx.lineWidth = 0.5;
         ctx.stroke();
 
-        // Label
         ctx.font = `500 ${8 * sf}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
@@ -628,7 +736,7 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // --- System stars ---
+      // --- 11. System stars ---
       for (const sys of systems) {
         const pos = getSystemPosition(sys, time, w, h, cx, cy);
         const sx = pos.x + px;
@@ -637,7 +745,6 @@ export default function SystemsGalaxy() {
         const isHovered = sys.id === currentHoveredId;
         const isDimmed = highlighted && !isHL;
 
-        // Per-system twinkle phase
         let hash = 0;
         for (let c = 0; c < sys.id.length; c++) {
           hash = ((hash << 5) - hash + sys.id.charCodeAt(c)) | 0;
@@ -648,14 +755,9 @@ export default function SystemsGalaxy() {
         let r = systemStarRadius(sys.importance, sf);
         if (isHovered) r *= 1.3;
 
-        if (isDimmed) {
-          ctx.globalAlpha = 0.15;
-        } else {
-          ctx.globalAlpha = 1;
-        }
+        ctx.globalAlpha = isDimmed ? 0.15 : 1;
 
         if (sys.importance === "primary") {
-          // Warm gold primary stars
           const glowR = isHovered ? r * 5 : r * 4;
           const glowAlpha = (isHovered ? 0.4 : 0.3) * twinkle;
           const gradient = ctx.createRadialGradient(
@@ -669,7 +771,6 @@ export default function SystemsGalaxy() {
           ctx.fillStyle = gradient;
           ctx.fill();
 
-          // Core
           ctx.save();
           ctx.shadowColor = "rgba(240, 200, 80, 0.6)";
           ctx.shadowBlur = (isHovered ? 18 : 14) * twinkle;
@@ -679,13 +780,12 @@ export default function SystemsGalaxy() {
           ctx.fill();
           ctx.restore();
 
-          // Diffraction spikes for primary stars
+          // Diffraction spikes
           const spikeLen = r * (3 + twinkle * 2);
           const spikeAlpha = (isDimmed ? 0.15 : 1) * 0.25 * twinkle;
           ctx.globalAlpha = spikeAlpha;
           ctx.strokeStyle = "#f0c040";
           ctx.lineWidth = 0.5;
-          // Cross (+)
           ctx.beginPath();
           ctx.moveTo(sx - spikeLen, sy);
           ctx.lineTo(sx + spikeLen, sy);
@@ -694,7 +794,6 @@ export default function SystemsGalaxy() {
           ctx.moveTo(sx, sy - spikeLen);
           ctx.lineTo(sx, sy + spikeLen);
           ctx.stroke();
-          // Diagonal (×) — thinner
           const diagLen = spikeLen * 0.6;
           ctx.globalAlpha = spikeAlpha * 0.5;
           ctx.lineWidth = 0.3;
@@ -709,7 +808,6 @@ export default function SystemsGalaxy() {
 
           ctx.globalAlpha = isDimmed ? 0.15 : 1;
         } else if (sys.importance === "secondary") {
-          // Blue-white secondary stars
           const glowR = isHovered ? r * 4 : r * 2.5;
           const glowAlpha = (isHovered ? 0.25 : 0.12) * twinkle;
           const gradient = ctx.createRadialGradient(
@@ -732,7 +830,6 @@ export default function SystemsGalaxy() {
           ctx.fill();
           ctx.restore();
         } else {
-          // Dim minor stars
           const glowR = r * 1.8;
           const glowAlpha = 0.06 * twinkle;
           const gradient = ctx.createRadialGradient(
@@ -761,8 +858,7 @@ export default function SystemsGalaxy() {
         }
 
         // Label
-        const labelSize =
-          sys.importance === "primary" ? 13 : 11;
+        const labelSize = sys.importance === "primary" ? 13 : 11;
         const labelWeight = sys.importance === "primary" ? 500 : 400;
         const labelAlpha = isHovered
           ? 1.0
@@ -807,7 +903,6 @@ export default function SystemsGalaxy() {
       const nx = (mx / rect.width - 0.5) * 2;
       const ny = (my / rect.height - 0.5) * 2;
       mouseOffsetRef.current = { x: nx * 3, y: ny * 3 };
-      mousePosRef.current = { x: mx, y: my };
 
       const w = dimensions.width;
       const h = dimensions.height;
