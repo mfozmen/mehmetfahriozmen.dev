@@ -365,9 +365,10 @@ export default function SystemsGalaxy() {
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
 
-      // Global idle drift — slow, visible 1.5px amplitude
-      const idleX = Math.sin(time * 0.3) * 1.5;
-      const idleY = Math.cos(time * 0.22) * 1.5;
+      // Global idle drift — two layered sine waves for organic floating
+      // Primary: ~5s cycle, ±4px | Secondary: ~14s cycle, ±2px
+      const idleX = Math.sin(time * 1.2) * 4 + Math.sin(time * 0.45) * 2;
+      const idleY = Math.cos(time * 0.9) * 4 + Math.cos(time * 0.35) * 2;
 
       // Nebula layer (behind everything)
       for (const neb of nebulaeRef.current) {
