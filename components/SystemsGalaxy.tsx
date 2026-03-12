@@ -35,9 +35,9 @@ const NODE_STYLES: Record<string, NodeStyle> = {
     color: "rgba(110, 135, 200, 0.5)",
     featuredColor: "rgba(130, 155, 220, 0.65)",
     glowColor: "rgba(110, 140, 210, 0.08)",
-    labelColor: "rgba(120, 140, 180, 0.6)",
-    featuredLabelColor: "rgba(140, 160, 200, 0.75)",
-    labelSize: 9,
+    labelColor: "rgba(140, 160, 200, 0.7)",
+    featuredLabelColor: "rgba(160, 180, 215, 0.8)",
+    labelSize: 10.5,
   },
   technology: {
     radius: 4,
@@ -397,9 +397,9 @@ export default function SystemsGalaxy() {
           const glowR = isHovered
             ? r * 4
             : isFeatured
-              ? r * 3.2
+              ? r * 3.8
               : r * 2.2;
-          const glowAlpha = isHovered ? 0.28 : isFeatured ? 0.18 : 0.08;
+          const glowAlpha = isHovered ? 0.3 : isFeatured ? 0.22 : 0.08;
           const gradient = ctx.createRadialGradient(
             node.x,
             node.y,
@@ -442,7 +442,15 @@ export default function SystemsGalaxy() {
           node.type === "domain"
             ? node.label.toUpperCase()
             : node.label;
-        ctx.fillText(labelText, node.x, node.y + r + 4);
+
+        if (node.type === "domain") {
+          // Letter-spaced domain labels
+          ctx.letterSpacing = "1.5px";
+          ctx.fillText(labelText, node.x, node.y + r + 5);
+          ctx.letterSpacing = "0px";
+        } else {
+          ctx.fillText(labelText, node.x, node.y + r + 4);
+        }
 
         ctx.globalAlpha = 1;
       }
@@ -489,9 +497,9 @@ export default function SystemsGalaxy() {
   }, []);
 
   return (
-    <section className="py-12 sm:py-20">
+    <section className="pt-6 pb-12 sm:pt-10 sm:pb-20">
       {/* Heading */}
-      <div className="mx-auto mb-8 max-w-2xl px-4 text-center sm:mb-12">
+      <div className="mx-auto mb-4 max-w-2xl px-4 text-center sm:mb-8">
         <h2 className="text-2xl font-semibold tracking-tight text-neutral-100 sm:text-3xl">
           Systems I&apos;ve helped build
         </h2>
