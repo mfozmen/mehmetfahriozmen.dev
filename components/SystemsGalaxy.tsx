@@ -105,16 +105,17 @@ interface BgStar {
   color: string;
 }
 
-/** Layer-specific config for depth, parallax, and drift */
+/** Layer-specific config for depth, parallax, drift, and glow */
 const STAR_LAYERS: Record<StarLayer, {
   radiusMin: number; radiusMax: number;
   alphaMin: number; alphaMax: number;
-  parallax: number;   // mouse parallax multiplier
-  driftMul: number;   // directional drift multiplier
+  parallax: number;
+  driftMul: number;
+  glowMul: number;    // glow radius = star radius * glowMul
 }> = {
-  far:  { radiusMin: 0.2, radiusMax: 0.5, alphaMin: 0.08, alphaMax: 0.2,  parallax: 0.3, driftMul: 0.3 },
-  mid:  { radiusMin: 0.5, radiusMax: 0.9, alphaMin: 0.15, alphaMax: 0.35, parallax: 0.7, driftMul: 0.7 },
-  near: { radiusMin: 0.9, radiusMax: 1.4, alphaMin: 0.25, alphaMax: 0.5,  parallax: 1.5, driftMul: 1.3 },
+  far:  { radiusMin: 0.2, radiusMax: 0.5, alphaMin: 0.08, alphaMax: 0.2,  parallax: 0.3, driftMul: 0.3, glowMul: 2 },
+  mid:  { radiusMin: 0.5, radiusMax: 0.9, alphaMin: 0.15, alphaMax: 0.35, parallax: 0.7, driftMul: 0.7, glowMul: 4 },
+  near: { radiusMin: 0.9, radiusMax: 1.4, alphaMin: 0.25, alphaMax: 0.5,  parallax: 1.5, driftMul: 1.3, glowMul: 6 },
 };
 
 /** Weighted color temperature palette for background stars */
@@ -430,20 +431,37 @@ export default function SystemsGalaxy() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Star field — layered depth with color temperature
+      // Star field — layered depth with glow + core
       for (const star of bgStarsRef.current) {
         const cfg = STAR_LAYERS[star.layer];
         let sx = star.x + driftX * cfg.driftMul + px * cfg.parallax;
         let sy = star.y + driftY * cfg.driftMul + py * cfg.parallax;
-        // Subtle noise per star
         sx += Math.sin(time * 0.3 + star.phase) * 0.5;
         sy += Math.cos(time * 0.25 + star.phase) * 0.5;
-        // Wrap around canvas edges
         sx = ((sx % w) + w) % w;
         sy = ((sy % h) + h) % h;
-        // Twinkle modulates alpha, preserving base color
+
+        // Twinkle modulates both glow and core
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
-        ctx.globalAlpha = star.alpha * twinkle;
+        const baseAlpha = star.alpha * twinkle;
+
+        // Soft radial glow
+        const glowR = star.r * cfg.glowMul;
+        const glowGradient = ctx.createRadialGradient(
+          sx, sy, star.r * 0.3,
+          sx, sy, glowR,
+        );
+        glowGradient.addColorStop(0, `rgba(${star.color}, ${baseAlpha * 0.4})`);
+        glowGradient.addColorStop(0.5, `rgba(${star.color}, ${baseAlpha * 0.1})`);
+        glowGradient.addColorStop(1, `rgba(${star.color}, 0)`);
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
+        ctx.fillStyle = glowGradient;
+        ctx.fill();
+
+        // Bright core
+        ctx.globalAlpha = baseAlpha;
         ctx.beginPath();
         ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgb(${star.color})`;
