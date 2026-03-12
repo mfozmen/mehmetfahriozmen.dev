@@ -96,6 +96,15 @@ interface BgStar {
   y: number;
   r: number;
   alpha: number;
+  /** Depth layer 0–1 for parallax (0 = far, 1 = near) */
+  depth: number;
+}
+
+interface Nebula {
+  x: number;
+  y: number;
+  radius: number;
+  color: string;
 }
 
 function buildAdjacency(edges: GraphEdge[]) {
@@ -125,11 +134,28 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     stars.push({
       x: rand() * w,
       y: rand() * h,
-      r: 0.5 + rand() * 0.8,
-      alpha: 0.04 + rand() * 0.05,
+      r: 0.2 + rand() * 1.0,
+      alpha: 0.1 + rand() * 0.4,
+      depth: rand(),
     });
   }
   return stars;
+}
+
+function generateNebulae(w: number, h: number): Nebula[] {
+  const rand = seededRandom(7);
+  const colors = [
+    "rgba(120, 150, 255, 0.06)",
+    "rgba(255, 200, 120, 0.05)",
+    "rgba(160, 120, 255, 0.04)",
+    "rgba(100, 200, 220, 0.04)",
+  ];
+  return colors.map((color) => ({
+    x: w * 0.15 + rand() * w * 0.7,
+    y: h * 0.15 + rand() * h * 0.7,
+    radius: Math.min(w, h) * (0.25 + rand() * 0.2),
+    color,
+  }));
 }
 
 function computeRadialLayout(
@@ -241,7 +267,7 @@ function computeRadialLayout(
 const EDGE_COLOR = "rgba(100, 120, 175, 0.08)";
 const EDGE_HIGHLIGHT_COLOR = "rgba(170, 185, 245, 0.45)";
 const MOBILE_BREAKPOINT = 640;
-const BG_STAR_COUNT = 60;
+const BG_STAR_COUNT = 800;
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                         */
@@ -253,7 +279,9 @@ export default function SystemsGalaxy() {
   const animFrameRef = useRef<number>(0);
   const layoutRef = useRef<LayoutNode[]>([]);
   const bgStarsRef = useRef<BgStar[]>([]);
+  const nebulaeRef = useRef<Nebula[]>([]);
   const timeRef = useRef(0);
+  const mouseOffsetRef = useRef({ x: 0, y: 0 });
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 600 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -282,6 +310,7 @@ export default function SystemsGalaxy() {
       const h = mobile ? 450 : 600;
       setDimensions({ width: w, height: h });
       bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
+      nebulaeRef.current = generateNebulae(w, h);
       layoutRef.current = computeRadialLayout(
         systemsGraph.nodes,
         systemsGraph.edges,
@@ -319,11 +348,33 @@ export default function SystemsGalaxy() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Background stars
+      const px = mouseOffsetRef.current.x;
+      const py = mouseOffsetRef.current.y;
+
+      // Nebula layer (behind everything)
+      for (const neb of nebulaeRef.current) {
+        const gradient = ctx.createRadialGradient(
+          neb.x + px * 0.5,
+          neb.y + py * 0.5,
+          0,
+          neb.x + px * 0.5,
+          neb.y + py * 0.5,
+          neb.radius,
+        );
+        gradient.addColorStop(0, neb.color);
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Star field with parallax
       for (const star of bgStarsRef.current) {
+        const parallax = 1 + star.depth * 2; // 1–3px amplitude
+        const sx = star.x + px * parallax;
+        const sy = star.y + py * parallax;
         ctx.globalAlpha = star.alpha;
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(200, 210, 240, 1)";
         ctx.fill();
       }
@@ -462,7 +513,7 @@ export default function SystemsGalaxy() {
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [dimensions, hoveredId, isMobile, getConnected]);
 
-  // Mouse interaction
+  // Mouse interaction — hover detection + parallax offset
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
@@ -470,6 +521,11 @@ export default function SystemsGalaxy() {
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
+
+      // Parallax: normalize mouse to -1..1 from center, scale to 3px max
+      const nx = (mx / rect.width - 0.5) * 2;
+      const ny = (my / rect.height - 0.5) * 2;
+      mouseOffsetRef.current = { x: nx * 3, y: ny * 3 };
 
       let closest: LayoutNode | null = null;
       let closestDist = Infinity;
@@ -494,6 +550,7 @@ export default function SystemsGalaxy() {
 
   const handleMouseLeave = useCallback(() => {
     setHoveredId(null);
+    mouseOffsetRef.current = { x: 0, y: 0 };
   }, []);
 
   return (
