@@ -365,15 +365,17 @@ export default function SystemsGalaxy() {
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
 
-      // Global idle drift — two layered sine waves for organic floating
-      // Primary: ~5s cycle, ±4px | Secondary: ~14s cycle, ±2px
-      const idleX = Math.sin(time * 1.2) * 4 + Math.sin(time * 0.45) * 2;
-      const idleY = Math.cos(time * 0.9) * 4 + Math.cos(time * 0.35) * 2;
+      // Slow directional drift — linear flow toward upper-left
+      // ~3px/sec horizontal, ~1.5px/sec vertical
+      const driftSpeed = 3;
+      const driftAngle = -2.6; // roughly toward upper-left (radians)
+      const driftX = time * driftSpeed * Math.cos(driftAngle);
+      const driftY = time * driftSpeed * Math.sin(driftAngle);
 
-      // Nebula layer (behind everything)
+      // Nebula layer (behind everything) — drifts slowly with scene
       for (const neb of nebulaeRef.current) {
-        const nx = neb.x + idleX + px * 0.5;
-        const ny = neb.y + idleY + py * 0.5;
+        const nx = neb.x + driftX * 0.3 + px * 0.5;
+        const ny = neb.y + driftY * 0.3 + py * 0.5;
         const gradient = ctx.createRadialGradient(
           nx, ny, 0,
           nx, ny, neb.radius,
@@ -384,11 +386,17 @@ export default function SystemsGalaxy() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Star field with idle drift + mouse parallax + twinkle
+      // Star field — drifts faster based on depth, wraps around edges
       for (const star of bgStarsRef.current) {
-        const parallax = 1 + star.depth * 2;
-        const sx = star.x + idleX * parallax + px * parallax;
-        const sy = star.y + idleY * parallax + py * parallax;
+        const depthMul = 0.5 + star.depth * 1.5; // 0.5–2x speed
+        let sx = star.x + driftX * depthMul + px * (1 + star.depth);
+        let sy = star.y + driftY * depthMul + py * (1 + star.depth);
+        // Subtle noise per star
+        sx += Math.sin(time * 0.3 + star.phase) * 0.5;
+        sy += Math.cos(time * 0.25 + star.phase) * 0.5;
+        // Wrap around canvas edges
+        sx = ((sx % w) + w) % w;
+        sy = ((sy % h) + h) % h;
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
         ctx.globalAlpha = star.alpha * twinkle;
         ctx.beginPath();
@@ -404,7 +412,10 @@ export default function SystemsGalaxy() {
         return;
       }
 
-      // Update node positions: global idle drift + mouse parallax + tiny per-node wobble
+      // Constellation nodes — slow drift + subtle noise per node
+      // Nodes drift at a fraction of star speed to create depth separation
+      const constellationDriftX = driftX * 0.15;
+      const constellationDriftY = driftY * 0.15;
       const nodeMap = new Map<string, LayoutNode>();
       for (const node of nodes) {
         let hash = 0;
@@ -412,11 +423,11 @@ export default function SystemsGalaxy() {
           hash = ((hash << 5) - hash + node.id.charCodeAt(i)) | 0;
         }
         const phase = ((hash % 1000) / 1000) * Math.PI * 2;
-        const wobbleX = Math.sin(time * 0.5 + phase) * 0.8;
-        const wobbleY = Math.cos(time * 0.4 + phase + 1) * 0.8;
+        const noiseX = Math.sin(time * 0.3 + phase) * 0.5;
+        const noiseY = Math.cos(time * 0.25 + phase + 1) * 0.5;
 
-        node.x = node.baseX + idleX + px + wobbleX;
-        node.y = node.baseY + idleY + py + wobbleY;
+        node.x = node.baseX + constellationDriftX + px + noiseX;
+        node.y = node.baseY + constellationDriftY + py + noiseY;
         nodeMap.set(node.id, node);
       }
 
