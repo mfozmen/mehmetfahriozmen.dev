@@ -117,6 +117,8 @@ interface BgStar {
   color: string;
   /** Pre-computed spike geometry, or null if no spikes */
   spike: SpikeGeometry | null;
+  /** Rare bright star — slightly larger core, stronger glow & twinkle */
+  bright: boolean;
 }
 
 /** Layer-specific config for depth, parallax, drift, and glow */
@@ -190,8 +192,14 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const cfg = STAR_LAYERS[layer];
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
-      // Spikes: ~45% near, ~15% mid, 0% far
-      const spikeChance = layer === "near" ? 0.45 : layer === "mid" ? 0.15 : 0;
+      // ~1% chance of a rare bright star
+      const isBright = rand() < 0.01;
+
+      // Spikes: ~45% near, ~15% mid, 0% far — bright stars: ~90%
+      const spikeChance = isBright ? 0.9
+        : layer === "near" ? 0.45
+        : layer === "mid" ? 0.15
+        : 0;
       const hasSpikes = rand() < spikeChance;
       let spike: SpikeGeometry | null = null;
       if (hasSpikes) {
@@ -199,19 +207,29 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
         spike = {
           lengthMul: 4 + rand() * 5, // 4–9× radius
           arms: [armRand(), armRand(), armRand(), armRand()],
-          diagonals: rand() < 0.4, // 40% of spiked stars get diagonals
+          diagonals: rand() < 0.4,
           diagArms: [armRand(), armRand(), armRand(), armRand()],
         };
       }
+
+      // Bright stars: 1.6–2× larger radius, higher base alpha
+      let r = cfg.radiusMin + rand() * (cfg.radiusMax - cfg.radiusMin);
+      let alpha = cfg.alphaMin + rand() * (cfg.alphaMax - cfg.alphaMin);
+      if (isBright) {
+        r *= 1.6 + rand() * 0.4; // 1.6–2× radius
+        alpha = Math.min(alpha * 1.8, 0.7); // boost but cap
+      }
+
       stars.push({
         x: rand() * w,
         y: rand() * h,
-        r: cfg.radiusMin + rand() * (cfg.radiusMax - cfg.radiusMin),
-        alpha: cfg.alphaMin + rand() * (cfg.alphaMax - cfg.alphaMin),
+        r,
+        alpha,
         layer,
         phase: rand() * Math.PI * 2,
         color: pickStarColor(rand),
         spike,
+        bright: isBright,
       });
     }
   }
@@ -481,12 +499,13 @@ export default function SystemsGalaxy() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         const falloff = Math.pow(1 - dist / maxDist, 1.8);
 
-        // Twinkle modulates both glow and core
-        const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
+        // Twinkle modulates both glow and core — bright stars pulse more
+        const twinkleAmp = star.bright ? 0.3 : 0.15;
+        const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * twinkleAmp;
         const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6);
 
-        // Soft radial glow
-        const glowR = star.r * cfg.glowMul;
+        // Soft radial glow — bright stars get 50% larger glow radius
+        const glowR = star.r * cfg.glowMul * (star.bright ? 1.5 : 1);
         const glowGradient = ctx.createRadialGradient(
           sx, sy, star.r * 0.3,
           sx, sy, glowR,
