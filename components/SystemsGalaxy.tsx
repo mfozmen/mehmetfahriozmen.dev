@@ -103,6 +103,8 @@ interface BgStar {
   phase: number;
   /** RGB color string */
   color: string;
+  /** Whether this star shows diffraction spikes */
+  spikes: boolean;
 }
 
 /** Layer-specific config for depth, parallax, drift, and glow */
@@ -176,6 +178,8 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const cfg = STAR_LAYERS[layer];
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
+      // Spikes: all near stars, ~30% of mid stars, no far stars
+      const hasSpikeChance = layer === "near" ? 1 : layer === "mid" ? 0.3 : 0;
       stars.push({
         x: rand() * w,
         y: rand() * h,
@@ -184,6 +188,7 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
         layer,
         phase: rand() * Math.PI * 2,
         color: pickStarColor(rand),
+        spikes: rand() < hasSpikeChance,
       });
     }
   }
@@ -466,6 +471,36 @@ export default function SystemsGalaxy() {
         ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgb(${star.color})`;
         ctx.fill();
+
+        // Diffraction spikes — thin cross lines
+        if (star.spikes) {
+          const spikeLen = star.r * (3 + twinkle * 2); // 3–5× radius, modulated by twinkle
+          const spikeAlpha = baseAlpha * 0.3;
+          ctx.globalAlpha = spikeAlpha;
+          ctx.strokeStyle = `rgb(${star.color})`;
+          ctx.lineWidth = 0.5;
+          // Horizontal
+          ctx.beginPath();
+          ctx.moveTo(sx - spikeLen, sy);
+          ctx.lineTo(sx + spikeLen, sy);
+          ctx.stroke();
+          // Vertical
+          ctx.beginPath();
+          ctx.moveTo(sx, sy - spikeLen);
+          ctx.lineTo(sx, sy + spikeLen);
+          ctx.stroke();
+          // Short diagonals (~60% length)
+          const diagLen = spikeLen * 0.6;
+          ctx.globalAlpha = spikeAlpha * 0.5;
+          ctx.beginPath();
+          ctx.moveTo(sx - diagLen, sy - diagLen);
+          ctx.lineTo(sx + diagLen, sy + diagLen);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(sx + diagLen, sy - diagLen);
+          ctx.lineTo(sx - diagLen, sy + diagLen);
+          ctx.stroke();
+        }
       }
       ctx.globalAlpha = 1;
 
