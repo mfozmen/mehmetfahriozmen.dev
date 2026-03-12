@@ -21,22 +21,22 @@ interface NodeStyle {
 const NODE_STYLES: Record<string, NodeStyle> = {
   system: {
     radius: 4.5,
-    featuredRadius: 7,
+    featuredRadius: 8,
     color: "rgba(180, 190, 240, 0.85)",
-    featuredColor: "rgba(240, 243, 255, 0.95)",
-    glowColor: "rgba(180, 195, 255, 0.12)",
+    featuredColor: "rgba(245, 247, 255, 0.97)",
+    glowColor: "rgba(170, 190, 255, 0.18)",
     labelColor: "rgba(190, 195, 225, 0.85)",
     featuredLabelColor: "rgba(240, 240, 255, 0.95)",
     labelSize: 12,
   },
   domain: {
-    radius: 3,
-    featuredRadius: 4,
-    color: "rgba(100, 125, 185, 0.45)",
-    featuredColor: "rgba(120, 145, 205, 0.6)",
-    glowColor: "transparent",
-    labelColor: "rgba(110, 130, 170, 0.55)",
-    featuredLabelColor: "rgba(130, 150, 190, 0.7)",
+    radius: 4.5,
+    featuredRadius: 5.5,
+    color: "rgba(110, 135, 200, 0.5)",
+    featuredColor: "rgba(130, 155, 220, 0.65)",
+    glowColor: "rgba(110, 140, 210, 0.08)",
+    labelColor: "rgba(120, 140, 180, 0.6)",
+    featuredLabelColor: "rgba(140, 160, 200, 0.75)",
     labelSize: 9,
   },
   technology: {
@@ -91,6 +91,13 @@ interface LayoutNode {
   y: number;
 }
 
+interface BgStar {
+  x: number;
+  y: number;
+  r: number;
+  alpha: number;
+}
+
 function buildAdjacency(edges: GraphEdge[]) {
   const adj = new Map<string, string[]>();
   for (const e of edges) {
@@ -102,22 +109,52 @@ function buildAdjacency(edges: GraphEdge[]) {
   return adj;
 }
 
+/** Deterministic pseudo-random from seed */
+function seededRandom(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+function generateBgStars(w: number, h: number, count: number): BgStar[] {
+  const rand = seededRandom(42);
+  const stars: BgStar[] = [];
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: rand() * w,
+      y: rand() * h,
+      r: 0.5 + rand() * 0.8,
+      alpha: 0.04 + rand() * 0.05,
+    });
+  }
+  return stars;
+}
+
 function computeRadialLayout(
   nodes: GraphNode[],
   edges: GraphEdge[],
   cx: number,
   cy: number,
+  containerWidth: number,
   isMobile: boolean,
 ): LayoutNode[] {
   const adj = buildAdjacency(edges);
   const domainNodes = nodes.filter((n) => n.type === "domain");
   const systemNodes = nodes.filter((n) => n.type !== "domain");
 
-  const innerRadius = isMobile ? 100 : 160;
-  const outerRadius = isMobile ? 185 : 270;
+  // Scale radii to ~42% / ~55% of container half-width
+  const outerRadius = isMobile
+    ? containerWidth * 0.38
+    : containerWidth * 0.42;
+  const innerRadius = outerRadius * 0.55;
 
   // Place domains evenly on the inner ring
-  const domainPositions = new Map<string, { x: number; y: number; angle: number }>();
+  const domainPositions = new Map<
+    string,
+    { x: number; y: number; angle: number }
+  >();
   domainNodes.forEach((node, i) => {
     const angle = (i / domainNodes.length) * Math.PI * 2 - Math.PI / 2;
     const x = cx + Math.cos(angle) * innerRadius;
@@ -136,15 +173,20 @@ function computeRadialLayout(
 
     let angle: number;
     if (connectedDomains.length > 0) {
-      // Average angle of connected domains using atan2 of mean vector
-      const sumX = connectedDomains.reduce((s, d) => s + Math.cos(d.angle), 0);
-      const sumY = connectedDomains.reduce((s, d) => s + Math.sin(d.angle), 0);
+      const sumX = connectedDomains.reduce(
+        (s, d) => s + Math.cos(d.angle),
+        0,
+      );
+      const sumY = connectedDomains.reduce(
+        (s, d) => s + Math.sin(d.angle),
+        0,
+      );
       angle = Math.atan2(sumY, sumX);
     } else {
       angle = Math.random() * Math.PI * 2;
     }
 
-    // Nudge to avoid overlaps with other system nodes
+    // Nudge to avoid overlaps
     const MIN_ANGLE_GAP = 0.3;
     let attempts = 0;
     while (attempts < 20) {
@@ -159,7 +201,7 @@ function computeRadialLayout(
     }
     usedAngles.push(angle);
 
-    const r = outerRadius + (node.featured ? -15 : 10);
+    const r = outerRadius + (node.featured ? -10 : 15);
     const x = cx + Math.cos(angle) * r;
     const y = cy + Math.sin(angle) * r;
 
@@ -175,7 +217,6 @@ function computeRadialLayout(
     });
   }
 
-  // Build domain layout nodes
   const domainLayoutNodes: LayoutNode[] = domainNodes.map((node) => {
     const pos = domainPositions.get(node.id)!;
     return {
@@ -200,6 +241,7 @@ function computeRadialLayout(
 const EDGE_COLOR = "rgba(100, 120, 175, 0.08)";
 const EDGE_HIGHLIGHT_COLOR = "rgba(170, 185, 245, 0.45)";
 const MOBILE_BREAKPOINT = 640;
+const BG_STAR_COUNT = 60;
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                         */
@@ -210,6 +252,7 @@ export default function SystemsGalaxy() {
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
   const layoutRef = useRef<LayoutNode[]>([]);
+  const bgStarsRef = useRef<BgStar[]>([]);
   const timeRef = useRef(0);
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 600 });
@@ -217,7 +260,6 @@ export default function SystemsGalaxy() {
 
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
 
-  // Adjacency for highlight lookups — stable since graph data is static
   const adjacencyRef = useRef(buildAdjacency(systemsGraph.edges));
 
   const getConnected = useCallback((nodeId: string): Set<string> => {
@@ -239,11 +281,13 @@ export default function SystemsGalaxy() {
       const mobile = w < MOBILE_BREAKPOINT;
       const h = mobile ? 450 : 600;
       setDimensions({ width: w, height: h });
+      bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
       layoutRef.current = computeRadialLayout(
         systemsGraph.nodes,
         systemsGraph.edges,
         w / 2,
         h / 2,
+        w,
         mobile,
       );
     };
@@ -254,7 +298,7 @@ export default function SystemsGalaxy() {
     return () => ro.disconnect();
   }, []);
 
-  // Animation loop — subtle floating
+  // Animation loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -275,6 +319,16 @@ export default function SystemsGalaxy() {
 
       ctx.clearRect(0, 0, w, h);
 
+      // Background stars
+      for (const star of bgStarsRef.current) {
+        ctx.globalAlpha = star.alpha;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(200, 210, 240, 1)";
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
       const nodes = layoutRef.current;
       if (nodes.length === 0) {
         animFrameRef.current = requestAnimationFrame(draw);
@@ -289,14 +343,14 @@ export default function SystemsGalaxy() {
       for (const node of nodes) {
         const drift = node.type === "domain" ? 2 : 4;
         const speed = node.featured ? 0.4 : 0.6;
-        // Use node id hash for unique phase offset
         let hash = 0;
         for (let i = 0; i < node.id.length; i++) {
           hash = ((hash << 5) - hash + node.id.charCodeAt(i)) | 0;
         }
-        const phase = (hash % 1000) / 1000 * Math.PI * 2;
+        const phase = ((hash % 1000) / 1000) * Math.PI * 2;
         node.x = node.baseX + Math.sin(time * speed + phase) * drift;
-        node.y = node.baseY + Math.cos(time * speed * 0.7 + phase + 1) * drift;
+        node.y =
+          node.baseY + Math.cos(time * speed * 0.7 + phase + 1) * drift;
         nodeMap.set(node.id, node);
       }
 
@@ -325,11 +379,12 @@ export default function SystemsGalaxy() {
 
       ctx.globalAlpha = 1;
 
+      const sf = isMobile ? 0.75 : 1;
+
       // Draw nodes
       for (const node of nodes) {
         const style = getStyle(node.type);
         const isFeatured = node.featured;
-        const sf = isMobile ? 0.75 : 1;
         const r = (isFeatured ? style.featuredRadius : style.radius) * sf;
         const color = isFeatured ? style.featuredColor : style.color;
         const isHL = !highlighted || highlighted.has(node.id);
@@ -337,15 +392,26 @@ export default function SystemsGalaxy() {
 
         ctx.globalAlpha = highlighted && !isHL ? 0.06 : 1;
 
-        // Glow for featured / hovered nodes
-        if ((isFeatured || isHovered) && style.glowColor !== "transparent") {
-          const glowR = isHovered ? r * 3.5 : r * 2.5;
-          const glowAlpha = isHovered ? 0.2 : 0.12;
+        // Glow for featured / hovered / domain nodes
+        if (style.glowColor !== "transparent") {
+          const glowR = isHovered
+            ? r * 4
+            : isFeatured
+              ? r * 3.2
+              : r * 2.2;
+          const glowAlpha = isHovered ? 0.28 : isFeatured ? 0.18 : 0.08;
           const gradient = ctx.createRadialGradient(
-            node.x, node.y, r * 0.3,
-            node.x, node.y, glowR,
+            node.x,
+            node.y,
+            r * 0.2,
+            node.x,
+            node.y,
+            glowR,
           );
-          gradient.addColorStop(0, `rgba(180, 195, 255, ${glowAlpha})`);
+          gradient.addColorStop(
+            0,
+            `rgba(180, 195, 255, ${glowAlpha})`,
+          );
           gradient.addColorStop(1, "rgba(180, 195, 255, 0)");
           ctx.beginPath();
           ctx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
@@ -360,16 +426,22 @@ export default function SystemsGalaxy() {
         ctx.fill();
 
         // Label
-        const baseFontSize = isFeatured ? style.labelSize + 1 : style.labelSize;
+        const baseFontSize = isFeatured
+          ? style.labelSize + 1
+          : style.labelSize;
         const fontSize = baseFontSize * sf;
         const weight = isFeatured ? 600 : 400;
         ctx.font = `${weight} ${fontSize}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.fillStyle = isFeatured ? style.featuredLabelColor : style.labelColor;
+        ctx.fillStyle = isFeatured
+          ? style.featuredLabelColor
+          : style.labelColor;
 
         const labelText =
-          node.type === "domain" ? node.label.toUpperCase() : node.label;
+          node.type === "domain"
+            ? node.label.toUpperCase()
+            : node.label;
         ctx.fillText(labelText, node.x, node.y + r + 4);
 
         ctx.globalAlpha = 1;
@@ -382,7 +454,7 @@ export default function SystemsGalaxy() {
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [dimensions, hoveredId, isMobile, getConnected]);
 
-  // Mouse interaction — find nearest node
+  // Mouse interaction
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
@@ -397,7 +469,7 @@ export default function SystemsGalaxy() {
       for (const node of layoutRef.current) {
         const style = getStyle(node.type);
         const r = node.featured ? style.featuredRadius : style.radius;
-        const hitRadius = r + 12;
+        const hitRadius = r + 14;
         const dx = node.x - mx;
         const dy = node.y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -418,6 +490,18 @@ export default function SystemsGalaxy() {
 
   return (
     <section className="py-12 sm:py-20">
+      {/* Heading */}
+      <div className="mx-auto mb-8 max-w-2xl px-4 text-center sm:mb-12">
+        <h2 className="text-2xl font-semibold tracking-tight text-neutral-100 sm:text-3xl">
+          Systems I&apos;ve helped build
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base">
+          A constellation of systems across commerce, search platforms
+          and distributed infrastructure.
+        </p>
+      </div>
+
+      {/* Canvas */}
       <div
         ref={containerRef}
         className="relative mx-auto w-full max-w-5xl"
