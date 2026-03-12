@@ -39,6 +39,9 @@ yarn-error.log*
 # claude code
 .claude/
 
+# playwright
+.playwright-mcp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
