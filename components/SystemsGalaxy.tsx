@@ -91,16 +91,39 @@ interface LayoutNode {
   y: number;
 }
 
+type StarLayer = "far" | "mid" | "near";
+
 interface BgStar {
   x: number;
   y: number;
   r: number;
   alpha: number;
-  /** Depth layer 0–1 for parallax (0 = far, 1 = near) */
-  depth: number;
-  /** Unique phase for twinkle and idle drift */
+  layer: StarLayer;
+  /** Unique phase for twinkle */
   phase: number;
+  /** RGB color string */
+  color: string;
 }
+
+/** Layer-specific config for depth, parallax, and drift */
+const STAR_LAYERS: Record<StarLayer, {
+  radiusMin: number; radiusMax: number;
+  alphaMin: number; alphaMax: number;
+  parallax: number;   // mouse parallax multiplier
+  driftMul: number;   // directional drift multiplier
+}> = {
+  far:  { radiusMin: 0.2, radiusMax: 0.5, alphaMin: 0.08, alphaMax: 0.2,  parallax: 0.3, driftMul: 0.3 },
+  mid:  { radiusMin: 0.5, radiusMax: 0.9, alphaMin: 0.15, alphaMax: 0.35, parallax: 0.7, driftMul: 0.7 },
+  near: { radiusMin: 0.9, radiusMax: 1.4, alphaMin: 0.25, alphaMax: 0.5,  parallax: 1.5, driftMul: 1.3 },
+};
+
+/** Weighted color temperature palette for background stars */
+const STAR_COLORS = [
+  { color: "255,255,255", weight: 0.85 },   // white
+  { color: "230,240,255", weight: 0.07 },   // blue-white
+  { color: "255,210,127", weight: 0.06 },   // warm yellow
+  { color: "255,176,122", weight: 0.02 },   // soft orange
+];
 
 interface Nebula {
   x: number;
@@ -129,18 +152,39 @@ function seededRandom(seed: number) {
   };
 }
 
+function pickStarColor(rand: () => number): string {
+  const roll = rand();
+  let cumulative = 0;
+  for (const entry of STAR_COLORS) {
+    cumulative += entry.weight;
+    if (roll < cumulative) return entry.color;
+  }
+  return STAR_COLORS[0].color;
+}
+
 function generateBgStars(w: number, h: number, count: number): BgStar[] {
   const rand = seededRandom(42);
   const stars: BgStar[] = [];
-  for (let i = 0; i < count; i++) {
-    stars.push({
-      x: rand() * w,
-      y: rand() * h,
-      r: 0.2 + rand() * 1.0,
-      alpha: 0.1 + rand() * 0.4,
-      depth: rand(),
-      phase: rand() * Math.PI * 2,
-    });
+  // Distribute: ~50% far, ~30% mid, ~20% near
+  const layerDist: { layer: StarLayer; share: number }[] = [
+    { layer: "far", share: 0.5 },
+    { layer: "mid", share: 0.3 },
+    { layer: "near", share: 0.2 },
+  ];
+  for (const { layer, share } of layerDist) {
+    const cfg = STAR_LAYERS[layer];
+    const n = Math.round(count * share);
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: rand() * w,
+        y: rand() * h,
+        r: cfg.radiusMin + rand() * (cfg.radiusMax - cfg.radiusMin),
+        alpha: cfg.alphaMin + rand() * (cfg.alphaMax - cfg.alphaMin),
+        layer,
+        phase: rand() * Math.PI * 2,
+        color: pickStarColor(rand),
+      });
+    }
   }
   return stars;
 }
@@ -386,22 +430,23 @@ export default function SystemsGalaxy() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Star field — drifts faster based on depth, wraps around edges
+      // Star field — layered depth with color temperature
       for (const star of bgStarsRef.current) {
-        const depthMul = 0.5 + star.depth * 1.5; // 0.5–2x speed
-        let sx = star.x + driftX * depthMul + px * (1 + star.depth);
-        let sy = star.y + driftY * depthMul + py * (1 + star.depth);
+        const cfg = STAR_LAYERS[star.layer];
+        let sx = star.x + driftX * cfg.driftMul + px * cfg.parallax;
+        let sy = star.y + driftY * cfg.driftMul + py * cfg.parallax;
         // Subtle noise per star
         sx += Math.sin(time * 0.3 + star.phase) * 0.5;
         sy += Math.cos(time * 0.25 + star.phase) * 0.5;
         // Wrap around canvas edges
         sx = ((sx % w) + w) % w;
         sy = ((sy % h) + h) % h;
+        // Twinkle modulates alpha, preserving base color
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
         ctx.globalAlpha = star.alpha * twinkle;
         ctx.beginPath();
         ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(200, 210, 240, 1)";
+        ctx.fillStyle = `rgb(${star.color})`;
         ctx.fill();
       }
       ctx.globalAlpha = 1;
