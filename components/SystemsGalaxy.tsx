@@ -545,6 +545,22 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
+      // Galactic dust band — subtle dark lane across the center
+      // Rendered after stars so it softly darkens them, before constellation nodes
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+      ctx.rotate(-0.18); // slight tilt (~10°)
+      const bandH = h * 0.35; // vertical extent of the gradient band
+      const dustGrad = ctx.createLinearGradient(0, -bandH / 2, 0, bandH / 2);
+      dustGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+      dustGrad.addColorStop(0.3, "rgba(0, 0, 0, 0.12)");
+      dustGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.18)");
+      dustGrad.addColorStop(0.7, "rgba(0, 0, 0, 0.12)");
+      dustGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = dustGrad;
+      ctx.fillRect(-w, -bandH / 2, w * 2, bandH);
+      ctx.restore();
+
       const nodes = layoutRef.current;
       if (nodes.length === 0) {
         animFrameRef.current = requestAnimationFrame(animate);
