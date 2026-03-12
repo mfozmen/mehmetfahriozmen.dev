@@ -40,3 +40,33 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - **Never commit automatically.** Always show proposed changes, commit message, and modified files — then ask the user for explicit approval before committing.
 - Never push commits automatically or run destructive git commands.
 - Never modify unrelated files.
+
+## Graph Data Architecture
+
+The systems visualization is powered by structured graph data.
+
+- All nodes and relationships are defined in the `data/` directory.
+- Components must not hardcode nodes or relationships — they are pure UI renderers.
+- Graph structure is defined in a single source of truth: `data/systemsGraph.ts`.
+
+Node types: `system`, `domain` (future: `technology`, `post`)
+
+```ts
+// data/systemsGraph.ts
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: "system" | "domain";
+  featured?: boolean;
+}
+
+export interface GraphEdge {
+  source: string;
+  target: string;
+}
+
+export interface SystemsGraph {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+```
