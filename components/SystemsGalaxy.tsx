@@ -462,6 +462,10 @@ export default function SystemsGalaxy() {
       }
 
       // Star field — layered depth with glow + core
+      // Galactic center falloff: stars near center appear slightly brighter
+      const cx = w / 2;
+      const cy = h / 2;
+      const maxDist = Math.sqrt(cx * cx + cy * cy);
       for (const star of bgStarsRef.current) {
         const cfg = STAR_LAYERS[star.layer];
         let sx = star.x + driftX * cfg.driftMul + px * cfg.parallax;
@@ -471,9 +475,15 @@ export default function SystemsGalaxy() {
         sx = ((sx % w) + w) % w;
         sy = ((sy % h) + h) % h;
 
+        // Galactic center brightness falloff (non-linear)
+        const dx = sx - cx;
+        const dy = sy - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const falloff = Math.pow(1 - dist / maxDist, 1.8);
+
         // Twinkle modulates both glow and core
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * 0.15;
-        const baseAlpha = star.alpha * twinkle;
+        const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6);
 
         // Soft radial glow
         const glowR = star.r * cfg.glowMul;
