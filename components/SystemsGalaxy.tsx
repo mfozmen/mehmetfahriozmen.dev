@@ -93,6 +93,18 @@ interface LayoutNode {
 
 type StarLayer = "far" | "mid" | "near";
 
+/** Per-arm asymmetry for diffraction spikes */
+interface SpikeGeometry {
+  /** Base spike length = radius * this multiplier */
+  lengthMul: number;
+  /** Asymmetry per arm: [left, right, top, bottom] as 0.6–1.2 multipliers */
+  arms: [number, number, number, number];
+  /** Whether this star also gets short diagonal spikes */
+  diagonals: boolean;
+  /** Diagonal asymmetry per arm: [tl, br, tr, bl] */
+  diagArms: [number, number, number, number];
+}
+
 interface BgStar {
   x: number;
   y: number;
@@ -103,8 +115,8 @@ interface BgStar {
   phase: number;
   /** RGB color string */
   color: string;
-  /** Whether this star shows diffraction spikes */
-  spikes: boolean;
+  /** Pre-computed spike geometry, or null if no spikes */
+  spike: SpikeGeometry | null;
 }
 
 /** Layer-specific config for depth, parallax, drift, and glow */
@@ -178,8 +190,19 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const cfg = STAR_LAYERS[layer];
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
-      // Spikes: all near stars, ~30% of mid stars, no far stars
-      const hasSpikeChance = layer === "near" ? 1 : layer === "mid" ? 0.3 : 0;
+      // Spikes: ~45% near, ~15% mid, 0% far
+      const spikeChance = layer === "near" ? 0.45 : layer === "mid" ? 0.15 : 0;
+      const hasSpikes = rand() < spikeChance;
+      let spike: SpikeGeometry | null = null;
+      if (hasSpikes) {
+        const armRand = () => 0.6 + rand() * 0.6; // 0.6–1.2
+        spike = {
+          lengthMul: 4 + rand() * 5, // 4–9× radius
+          arms: [armRand(), armRand(), armRand(), armRand()],
+          diagonals: rand() < 0.4, // 40% of spiked stars get diagonals
+          diagArms: [armRand(), armRand(), armRand(), armRand()],
+        };
+      }
       stars.push({
         x: rand() * w,
         y: rand() * h,
@@ -188,7 +211,7 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
         layer,
         phase: rand() * Math.PI * 2,
         color: pickStarColor(rand),
-        spikes: rand() < hasSpikeChance,
+        spike,
       });
     }
   }
@@ -422,10 +445,12 @@ export default function SystemsGalaxy() {
       const driftX = time * driftSpeed * Math.cos(driftAngle);
       const driftY = time * driftSpeed * Math.sin(driftAngle);
 
-      // Nebula layer (behind everything) — drifts slowly with scene
+      // Nebula layer (behind everything) — bounded slow oscillation
+      const nebulaDriftX = Math.sin(time * 0.15) * 6 * Math.cos(driftAngle);
+      const nebulaDriftY = Math.sin(time * 0.15) * 6 * Math.sin(driftAngle);
       for (const neb of nebulaeRef.current) {
-        const nx = neb.x + driftX * 0.3 + px * 0.5;
-        const ny = neb.y + driftY * 0.3 + py * 0.5;
+        const nx = neb.x + nebulaDriftX + px * 0.5;
+        const ny = neb.y + nebulaDriftY + py * 0.5;
         const gradient = ctx.createRadialGradient(
           nx, ny, 0,
           nx, ny, neb.radius,
@@ -472,34 +497,40 @@ export default function SystemsGalaxy() {
         ctx.fillStyle = `rgb(${star.color})`;
         ctx.fill();
 
-        // Diffraction spikes — thin cross lines
-        if (star.spikes) {
-          const spikeLen = star.r * (3 + twinkle * 2); // 3–5× radius, modulated by twinkle
+        // Diffraction spikes — asymmetrical cross lines
+        if (star.spike) {
+          const sp = star.spike;
+          const baseLen = star.r * sp.lengthMul * (0.85 + twinkle * 0.15);
           const spikeAlpha = baseAlpha * 0.3;
-          ctx.globalAlpha = spikeAlpha;
           ctx.strokeStyle = `rgb(${star.color})`;
           ctx.lineWidth = 0.5;
-          // Horizontal
+
+          // Horizontal: left / right with independent asymmetry
+          ctx.globalAlpha = spikeAlpha;
           ctx.beginPath();
-          ctx.moveTo(sx - spikeLen, sy);
-          ctx.lineTo(sx + spikeLen, sy);
+          ctx.moveTo(sx - baseLen * sp.arms[0], sy);
+          ctx.lineTo(sx + baseLen * sp.arms[1], sy);
           ctx.stroke();
-          // Vertical
+
+          // Vertical: top / bottom
           ctx.beginPath();
-          ctx.moveTo(sx, sy - spikeLen);
-          ctx.lineTo(sx, sy + spikeLen);
+          ctx.moveTo(sx, sy - baseLen * sp.arms[2]);
+          ctx.lineTo(sx, sy + baseLen * sp.arms[3]);
           ctx.stroke();
-          // Short diagonals (~60% length)
-          const diagLen = spikeLen * 0.6;
-          ctx.globalAlpha = spikeAlpha * 0.5;
-          ctx.beginPath();
-          ctx.moveTo(sx - diagLen, sy - diagLen);
-          ctx.lineTo(sx + diagLen, sy + diagLen);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(sx + diagLen, sy - diagLen);
-          ctx.lineTo(sx - diagLen, sy + diagLen);
-          ctx.stroke();
+
+          // Optional short diagonals (~50% base length)
+          if (sp.diagonals) {
+            const diagBase = baseLen * 0.5;
+            ctx.globalAlpha = spikeAlpha * 0.45;
+            ctx.beginPath();
+            ctx.moveTo(sx - diagBase * sp.diagArms[0], sy - diagBase * sp.diagArms[0]);
+            ctx.lineTo(sx + diagBase * sp.diagArms[1], sy + diagBase * sp.diagArms[1]);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(sx + diagBase * sp.diagArms[2], sy - diagBase * sp.diagArms[2]);
+            ctx.lineTo(sx - diagBase * sp.diagArms[3], sy + diagBase * sp.diagArms[3]);
+            ctx.stroke();
+          }
         }
       }
       ctx.globalAlpha = 1;
@@ -510,10 +541,10 @@ export default function SystemsGalaxy() {
         return;
       }
 
-      // Constellation nodes — slow drift + subtle noise per node
-      // Nodes drift at a fraction of star speed to create depth separation
-      const constellationDriftX = driftX * 0.15;
-      const constellationDriftY = driftY * 0.15;
+      // Constellation nodes — bounded oscillation keeps them centered
+      // Gentle directional float within ±4px range
+      const constellationDriftX = Math.sin(time * 0.25) * 4 * Math.cos(driftAngle);
+      const constellationDriftY = Math.sin(time * 0.25) * 4 * Math.sin(driftAngle);
       const nodeMap = new Map<string, LayoutNode>();
       for (const node of nodes) {
         let hash = 0;
