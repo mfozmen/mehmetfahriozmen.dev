@@ -640,9 +640,9 @@ export default function SystemsGalaxy() {
       const centerGlow = ctx.createRadialGradient(
         cx, cy, 0, cx, cy, Math.min(w, h) * 0.45,
       );
-      centerGlow.addColorStop(0, "rgba(180, 160, 120, 0.08)");
-      centerGlow.addColorStop(0.3, "rgba(120, 110, 90, 0.04)");
-      centerGlow.addColorStop(0.7, "rgba(60, 55, 50, 0.01)");
+      centerGlow.addColorStop(0, "rgba(180, 160, 120, 0.12)");
+      centerGlow.addColorStop(0.3, "rgba(120, 110, 90, 0.06)");
+      centerGlow.addColorStop(0.7, "rgba(60, 55, 50, 0.02)");
       centerGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, w, h);
@@ -659,21 +659,6 @@ export default function SystemsGalaxy() {
         ctx.restore();
         ctx.stroke();
       }
-
-      // --- 6. Center name ---
-      const nameSize = Math.max(16, w * 0.028);
-      const subtitleSize = Math.max(11, w * 0.014);
-      ctx.textAlign = "center";
-      ctx.fillStyle = "rgba(230, 225, 215, 0.85)";
-      ctx.font = `500 ${nameSize}px system-ui, -apple-system, sans-serif`;
-      ctx.fillText("Mehmet Fahri Özmen", cx + px, cy + py - 14);
-      ctx.fillStyle = "rgba(180, 175, 165, 0.5)";
-      ctx.font = `400 ${subtitleSize}px system-ui, -apple-system, sans-serif`;
-      ctx.fillText(
-        "Backend Systems Architect  ·  Engineering Leader",
-        cx + px,
-        cy + py + 4,
-      );
 
       // --- Hover state ---
       const currentHoveredId = hoveredIdRef.current;
