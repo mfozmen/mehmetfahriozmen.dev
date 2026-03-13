@@ -41,6 +41,10 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Never push commits automatically or run destructive git commands.
 - Never modify unrelated files.
 
+## Testing
+
+- For visual QA and browser testing, use the Playwright MCP tool directly (launch browser, navigate, screenshot, hover via tool commands). Do NOT write standalone Playwright script files.
+
 ## Graph Data Architecture
 
 The systems visualization uses a 3-layer orbital layout with data defined in `data/systemsGraph.ts`.

@@ -667,7 +667,7 @@ export default function SystemsGalaxy() {
 
         ctx.globalAlpha = isDimmed ? 0.04 : 1;
 
-        const tcR = isActive ? 8 * sf : 5 * sf;
+        const tcR = isActive ? 8 * sf : 6 * sf;
         const pulseR = isActive ? tcR + Math.sin(time * 2) * 1 : tcR;
 
         // Fill
@@ -675,13 +675,13 @@ export default function SystemsGalaxy() {
         ctx.arc(tx, ty, pulseR, 0, Math.PI * 2);
         ctx.fillStyle = isActive
           ? "rgba(140, 120, 180, 0.4)"
-          : "rgba(140, 120, 180, 0.12)";
+          : "rgba(140, 120, 180, 0.2)";
         ctx.fill();
 
         // Border
         ctx.strokeStyle = isActive
           ? "rgba(140, 120, 180, 0.5)"
-          : "rgba(140, 120, 180, 0.15)";
+          : "rgba(140, 120, 180, 0.25)";
         ctx.lineWidth = 0.5;
         ctx.stroke();
 
@@ -692,7 +692,7 @@ export default function SystemsGalaxy() {
         ctx.letterSpacing = "1px";
         ctx.fillStyle = isActive
           ? "rgba(170, 150, 210, 0.75)"
-          : "rgba(140, 120, 180, 0.15)";
+          : "rgba(140, 120, 180, 0.25)";
         ctx.fillText(tc.name.toUpperCase(), tx, ty + pulseR + 3);
         ctx.letterSpacing = "0px";
       }

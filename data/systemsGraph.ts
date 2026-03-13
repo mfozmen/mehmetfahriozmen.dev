@@ -36,8 +36,8 @@ export type OrbitConfig = {
 export const orbits: OrbitConfig[] = [
   { rx: 0.42, ry: 0.38, rotation: -0.12, opacity: 0.07 },
   { rx: 0.30, ry: 0.26, rotation: -0.08, opacity: 0.06 },
-  { rx: 0.20, ry: 0.17, rotation: -0.05, opacity: 0.04 },
-  { rx: 0.12, ry: 0.10, rotation: -0.02, opacity: 0.03 },
+  { rx: 0.22, ry: 0.18, rotation: -0.05, opacity: 0.04 },
+  { rx: 0.13, ry: 0.11, rotation: -0.02, opacity: 0.03 },
 ];
 
 export const systems: SystemNode[] = [
@@ -124,7 +124,7 @@ export const systems: SystemNode[] = [
     id: "ihtiyac",
     name: "İhtiyaç Haritası",
     importance: "secondary",
-    angle: 3.8,
+    angle: 4.1,
     orbit: 1,
     domains: ["social"],
     techClusters: ["backend"],
