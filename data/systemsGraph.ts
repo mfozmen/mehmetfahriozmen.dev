@@ -37,7 +37,7 @@ export const orbits: OrbitConfig[] = [
   { rx: 0.42, ry: 0.38, rotation: -0.12, opacity: 0.07 },
   { rx: 0.30, ry: 0.26, rotation: -0.08, opacity: 0.06 },
   { rx: 0.22, ry: 0.18, rotation: -0.05, opacity: 0.04 },
-  { rx: 0.13, ry: 0.11, rotation: -0.02, opacity: 0.03 },
+  { rx: 0.16, ry: 0.13, rotation: -0.02, opacity: 0.03 },
 ];
 
 export const systems: SystemNode[] = [
@@ -189,7 +189,7 @@ export const domains: DomainNode[] = [
     name: "Distributed Systems",
     angle: 3.0,
     orbit: 0,
-    offset: { x: -0.06, y: -0.07 },
+    offset: { x: 0.06, y: -0.07 },
   },
   {
     id: "education",
