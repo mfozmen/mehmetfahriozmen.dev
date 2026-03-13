@@ -239,7 +239,10 @@ function getTechClusterPosition(
   cx: number,
   cy: number,
 ) {
-  return getOrbitPosition(3, tc.angle, w, h, cx, cy);
+  return {
+    x: cx + tc.position.x * w,
+    y: cy + tc.position.y * h,
+  };
 }
 
 function systemStarRadius(importance: SystemImportance, sf: number): number {
@@ -392,18 +395,18 @@ function drawLightRays(ctx: CanvasRenderingContext2D, cx: number, cy: number, w:
     const wobble = Math.sin(time * 0.0003 + i * 1.7) * 0.05;
     const angle = baseAngle + wobble;
     const length = maxLen * (0.6 + Math.sin(i * 2.3) * 0.4);
-    const opacity = 0.03 + Math.sin(i * 1.1) * 0.015;
+    const opacity = 0.08 + Math.sin(i * 1.1) * 0.04;
 
     const endX = cx + Math.cos(angle) * length;
     const endY = cy + Math.sin(angle) * length;
 
     const grad = ctx.createLinearGradient(cx, cy, endX, endY);
-    grad.addColorStop(0, `rgba(220, 200, 160, ${opacity * 2})`);
-    grad.addColorStop(0.3, `rgba(200, 180, 140, ${opacity})`);
+    grad.addColorStop(0, `rgba(220, 200, 160, ${opacity * 2.5})`);
+    grad.addColorStop(0.3, `rgba(200, 180, 140, ${opacity * 1.5})`);
     grad.addColorStop(1, "rgba(0, 0, 0, 0)");
 
     ctx.strokeStyle = grad;
-    ctx.lineWidth = 1.5 + Math.sin(i * 0.7) * 0.5;
+    ctx.lineWidth = 2.5 + Math.sin(i * 0.7) * 1;
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.lineTo(endX, endY);
@@ -424,19 +427,19 @@ function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: n
   const bandY = cy - bandHeight / 2;
   const dust = ctx.createLinearGradient(0, bandY, 0, bandY + bandHeight);
   dust.addColorStop(0, "rgba(0, 0, 0, 0)");
-  dust.addColorStop(0.2, "rgba(80, 65, 40, 0.04)");
-  dust.addColorStop(0.35, "rgba(100, 80, 50, 0.07)");
-  dust.addColorStop(0.5, "rgba(110, 90, 55, 0.09)");
-  dust.addColorStop(0.65, "rgba(100, 80, 50, 0.07)");
-  dust.addColorStop(0.8, "rgba(80, 65, 40, 0.04)");
+  dust.addColorStop(0.2, "rgba(80, 65, 40, 0.08)");
+  dust.addColorStop(0.35, "rgba(100, 80, 50, 0.14)");
+  dust.addColorStop(0.5, "rgba(110, 90, 55, 0.18)");
+  dust.addColorStop(0.65, "rgba(100, 80, 50, 0.14)");
+  dust.addColorStop(0.8, "rgba(80, 65, 40, 0.08)");
   dust.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = dust;
   ctx.fillRect(0, bandY, w, bandHeight);
 
   // Horizontal falloff — dust is denser near center
   const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
-  hFade.addColorStop(0, "rgba(90, 75, 50, 0.05)");
-  hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.02)");
+  hFade.addColorStop(0, "rgba(90, 75, 50, 0.10)");
+  hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.04)");
   hFade.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = hFade;
   ctx.fillRect(0, bandY, w, bandHeight);

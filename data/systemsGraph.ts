@@ -22,8 +22,8 @@ export type DomainNode = {
 export type TechClusterNode = {
   id: string;
   name: string;
-  angle: number;
   technologies: string[];
+  position: { x: number; y: number };
 };
 
 export type OrbitConfig = {
@@ -34,10 +34,9 @@ export type OrbitConfig = {
 };
 
 export const orbits: OrbitConfig[] = [
-  { rx: 0.42, ry: 0.38, rotation: -0.12, opacity: 0.07 },
+  { rx: 0.44, ry: 0.40, rotation: -0.12, opacity: 0.07 },
   { rx: 0.30, ry: 0.26, rotation: -0.08, opacity: 0.06 },
   { rx: 0.22, ry: 0.18, rotation: -0.05, opacity: 0.04 },
-  { rx: 0.16, ry: 0.13, rotation: -0.02, opacity: 0.03 },
 ];
 
 export const systems: SystemNode[] = [
@@ -215,70 +214,15 @@ export const domains: DomainNode[] = [
 ];
 
 export const techClusters: TechClusterNode[] = [
-  {
-    id: "databases",
-    name: "Databases",
-    angle: 0.0,
-    technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"],
-  },
-  {
-    id: "search",
-    name: "Search",
-    angle: 0.571,
-    technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"],
-  },
-  {
-    id: "cloud",
-    name: "Cloud",
-    angle: 1.142,
-    technologies: ["AWS", "Azure", "DigitalOcean"],
-  },
-  {
-    id: "devops",
-    name: "DevOps",
-    angle: 1.713,
-    technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"],
-  },
-  {
-    id: "api",
-    name: "API",
-    angle: 2.284,
-    technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"],
-  },
-  {
-    id: "architecture",
-    name: "Architecture",
-    angle: 2.855,
-    technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"],
-  },
-  {
-    id: "messaging",
-    name: "Messaging",
-    angle: 3.426,
-    technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"],
-  },
-  {
-    id: "frameworks",
-    name: "Frameworks",
-    angle: 3.997,
-    technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"],
-  },
-  {
-    id: "monitoring",
-    name: "Monitoring",
-    angle: 4.568,
-    technologies: ["Grafana", "Elasticsearch"],
-  },
-  {
-    id: "data_analysis",
-    name: "Data Analysis",
-    angle: 5.139,
-    technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"],
-  },
-  {
-    id: "methodologies",
-    name: "Methodologies",
-    angle: 5.71,
-    technologies: ["Agile/Scrum", "TDD", "BDD"],
-  },
+  { id: "databases", name: "Databases", position: { x: 0.12, y: -0.02 }, technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"] },
+  { id: "search", name: "Search", position: { x: 0.06, y: -0.09 }, technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"] },
+  { id: "cloud", name: "Cloud", position: { x: -0.04, y: -0.11 }, technologies: ["AWS", "Azure", "DigitalOcean"] },
+  { id: "devops", name: "DevOps", position: { x: -0.12, y: -0.05 }, technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"] },
+  { id: "api", name: "API", position: { x: -0.10, y: 0.04 }, technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"] },
+  { id: "architecture", name: "Architecture", position: { x: -0.04, y: 0.10 }, technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"] },
+  { id: "messaging", name: "Messaging", position: { x: 0.06, y: 0.09 }, technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"] },
+  { id: "frameworks", name: "Frameworks", position: { x: 0.13, y: 0.05 }, technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
+  { id: "monitoring", name: "Monitoring", position: { x: -0.13, y: -0.10 }, technologies: ["Grafana", "Elasticsearch"] },
+  { id: "data_analysis", name: "Data Analysis", position: { x: 0.13, y: -0.08 }, technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
+  { id: "methodologies", name: "Methodologies", position: { x: -0.01, y: -0.02 }, technologies: ["Agile/Scrum", "TDD", "BDD"] },
 ];
