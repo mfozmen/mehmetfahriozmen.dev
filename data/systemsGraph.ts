@@ -49,7 +49,7 @@ export const systems: SystemNode[] = [
     angle: 0.5,
     orbit: 0,
     domains: ["ecommerce", "distributed"],
-    techClusters: ["backend", "databases", "cloud", "devops", "architecture"],
+    techClusters: ["databases", "cloud", "devops", "architecture"],
     url: "https://www.mobilet.com",
   },
   {
@@ -59,7 +59,7 @@ export const systems: SystemNode[] = [
     angle: 1.55,
     orbit: 0,
     domains: ["adtech", "distributed"],
-    techClusters: ["backend", "databases", "cloud", "architecture"],
+    techClusters: ["databases", "cloud", "architecture"],
   },
   {
     id: "villasepeti",
@@ -68,7 +68,7 @@ export const systems: SystemNode[] = [
     angle: 2.6,
     orbit: 0,
     domains: ["ecommerce", "distributed"],
-    techClusters: ["backend", "databases", "cloud"],
+    techClusters: ["databases", "cloud"],
     url: "https://www.villasepeti.com",
   },
   {
@@ -78,7 +78,7 @@ export const systems: SystemNode[] = [
     angle: 3.65,
     orbit: 0,
     domains: ["ecommerce"],
-    techClusters: ["backend", "databases"],
+    techClusters: ["databases"],
   },
   {
     id: "beforesunset",
@@ -87,7 +87,7 @@ export const systems: SystemNode[] = [
     angle: 4.7,
     orbit: 0,
     domains: ["productivity"],
-    techClusters: ["backend", "cloud"],
+    techClusters: ["cloud"],
     url: "https://www.beforesunset.ai",
   },
   {
@@ -97,7 +97,7 @@ export const systems: SystemNode[] = [
     angle: 5.75,
     orbit: 0,
     domains: ["productivity"],
-    techClusters: ["backend", "cloud"],
+    techClusters: ["cloud"],
     url: "https://www.decktopus.com",
   },
 
@@ -109,7 +109,7 @@ export const systems: SystemNode[] = [
     angle: 0.6,
     orbit: 1,
     domains: ["education"],
-    techClusters: ["backend", "databases"],
+    techClusters: ["databases"],
   },
   {
     id: "room3d",
@@ -118,7 +118,7 @@ export const systems: SystemNode[] = [
     angle: 2.2,
     orbit: 1,
     domains: ["realtime"],
-    techClusters: ["backend", "cloud"],
+    techClusters: ["cloud"],
   },
   {
     id: "ihtiyac",
@@ -126,8 +126,9 @@ export const systems: SystemNode[] = [
     importance: "secondary",
     angle: 4.1,
     orbit: 1,
-    domains: ["social"],
-    techClusters: ["backend"],
+    domains: ["nonprofit"],
+    techClusters: [],
+    url: "https://sosyalpazaryeri.ihtiyacharitasi.org/",
   },
   {
     id: "coknet",
@@ -136,7 +137,8 @@ export const systems: SystemNode[] = [
     angle: 5.4,
     orbit: 1,
     domains: ["education"],
-    techClusters: ["backend"],
+    techClusters: [],
+    url: "https://app.cok.net.tr/",
   },
 
   // Minor — orbit 2, opposite sides
@@ -147,7 +149,7 @@ export const systems: SystemNode[] = [
     angle: 1.2,
     orbit: 2,
     domains: ["ecommerce"],
-    techClusters: ["backend", "databases"],
+    techClusters: ["databases"],
   },
   {
     id: "megatons",
@@ -155,8 +157,8 @@ export const systems: SystemNode[] = [
     importance: "minor",
     angle: 4.4,
     orbit: 2,
-    domains: ["social"],
-    techClusters: ["backend"],
+    domains: ["nonprofit"],
+    techClusters: [],
   },
 ];
 
@@ -197,8 +199,8 @@ export const domains: DomainNode[] = [
     offset: { x: 0.07, y: -0.06 },
   },
   {
-    id: "social",
-    name: "Social Platforms",
+    id: "nonprofit",
+    name: "Non-Profit",
     angle: 4.0,
     orbit: 1,
     offset: { x: -0.07, y: 0.06 },
@@ -214,33 +216,69 @@ export const domains: DomainNode[] = [
 
 export const techClusters: TechClusterNode[] = [
   {
-    id: "backend",
-    name: "Backend",
-    angle: 0.0,
-    technologies: ["Node.js", "NestJS", ".NET", "Java", "PHP", "Go"],
-  },
-  {
     id: "databases",
     name: "Databases",
-    angle: 1.26,
-    technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase", "Elasticsearch"],
+    angle: 0.0,
+    technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"],
+  },
+  {
+    id: "search",
+    name: "Search",
+    angle: 0.571,
+    technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"],
   },
   {
     id: "cloud",
     name: "Cloud",
-    angle: 2.51,
-    technologies: ["AWS", "Azure", "DigitalOcean", "Docker", "Kubernetes"],
+    angle: 1.142,
+    technologies: ["AWS", "Azure", "DigitalOcean"],
   },
   {
     id: "devops",
     name: "DevOps",
-    angle: 3.77,
-    technologies: ["CircleCI", "Bitbucket Pipelines", "GitHub Actions"],
+    angle: 1.713,
+    technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"],
+  },
+  {
+    id: "api",
+    name: "API",
+    angle: 2.284,
+    technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"],
   },
   {
     id: "architecture",
     name: "Architecture",
-    angle: 5.03,
-    technologies: ["Event-Driven", "GraphQL", "REST", "CQRS", "Hasura", "Directus"],
+    angle: 2.855,
+    technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"],
+  },
+  {
+    id: "messaging",
+    name: "Messaging",
+    angle: 3.426,
+    technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"],
+  },
+  {
+    id: "frameworks",
+    name: "Frameworks",
+    angle: 3.997,
+    technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", "C#", "Golang"],
+  },
+  {
+    id: "monitoring",
+    name: "Monitoring",
+    angle: 4.568,
+    technologies: ["Grafana", "Elasticsearch"],
+  },
+  {
+    id: "data_analysis",
+    name: "Data Analysis",
+    angle: 5.139,
+    technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset"],
+  },
+  {
+    id: "methodologies",
+    name: "Methodologies",
+    angle: 5.71,
+    technologies: ["Agile/Scrum", "TDD", "BDD"],
   },
 ];
