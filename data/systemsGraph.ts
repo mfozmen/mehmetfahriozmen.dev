@@ -49,7 +49,7 @@ export const systems: SystemNode[] = [
     angle: 0.5,
     orbit: 0,
     domains: ["ecommerce", "distributed"],
-    techClusters: ["databases", "cloud", "devops", "architecture"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks", "monitoring", "data_analysis", "methodologies"],
     url: "https://www.mobilet.com",
   },
   {
@@ -59,7 +59,7 @@ export const systems: SystemNode[] = [
     angle: 1.55,
     orbit: 0,
     domains: ["adtech", "distributed"],
-    techClusters: ["databases", "cloud", "architecture"],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"],
   },
   {
     id: "villasepeti",
@@ -68,7 +68,7 @@ export const systems: SystemNode[] = [
     angle: 2.6,
     orbit: 0,
     domains: ["ecommerce", "distributed"],
-    techClusters: ["databases", "cloud"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "methodologies"],
     url: "https://www.villasepeti.com",
   },
   {
@@ -78,7 +78,7 @@ export const systems: SystemNode[] = [
     angle: 3.65,
     orbit: 0,
     domains: ["ecommerce"],
-    techClusters: ["databases"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks"],
   },
   {
     id: "beforesunset",
@@ -87,7 +87,7 @@ export const systems: SystemNode[] = [
     angle: 4.7,
     orbit: 0,
     domains: ["productivity"],
-    techClusters: ["cloud"],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
     url: "https://www.beforesunset.ai",
   },
   {
@@ -97,7 +97,7 @@ export const systems: SystemNode[] = [
     angle: 5.75,
     orbit: 0,
     domains: ["productivity"],
-    techClusters: ["cloud"],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
     url: "https://www.decktopus.com",
   },
 
@@ -109,7 +109,7 @@ export const systems: SystemNode[] = [
     angle: 0.6,
     orbit: 1,
     domains: ["education"],
-    techClusters: ["databases"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
   },
   {
     id: "room3d",
@@ -118,7 +118,7 @@ export const systems: SystemNode[] = [
     angle: 2.2,
     orbit: 1,
     domains: ["realtime"],
-    techClusters: ["cloud"],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
   },
   {
     id: "ihtiyac",
@@ -127,7 +127,7 @@ export const systems: SystemNode[] = [
     angle: 4.1,
     orbit: 1,
     domains: ["nonprofit"],
-    techClusters: [],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
     url: "https://sosyalpazaryeri.ihtiyacharitasi.org/",
   },
   {
@@ -137,7 +137,7 @@ export const systems: SystemNode[] = [
     angle: 5.4,
     orbit: 1,
     domains: ["education"],
-    techClusters: [],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"],
     url: "https://app.cok.net.tr/",
   },
 
@@ -149,7 +149,7 @@ export const systems: SystemNode[] = [
     angle: 1.2,
     orbit: 2,
     domains: ["ecommerce"],
-    techClusters: ["databases"],
+    techClusters: ["databases", "search", "cloud", "api", "architecture", "frameworks", "methodologies"],
   },
   {
     id: "megatons",
@@ -158,7 +158,7 @@ export const systems: SystemNode[] = [
     angle: 4.4,
     orbit: 2,
     domains: ["nonprofit"],
-    techClusters: [],
+    techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
   },
 ];
 
@@ -261,7 +261,7 @@ export const techClusters: TechClusterNode[] = [
     id: "frameworks",
     name: "Frameworks",
     angle: 3.997,
-    technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", "C#", "Golang"],
+    technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"],
   },
   {
     id: "monitoring",
@@ -273,7 +273,7 @@ export const techClusters: TechClusterNode[] = [
     id: "data_analysis",
     name: "Data Analysis",
     angle: 5.139,
-    technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset"],
+    technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"],
   },
   {
     id: "methodologies",
