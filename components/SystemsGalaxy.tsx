@@ -245,6 +245,102 @@ function systemStarRadius(importance: SystemImportance, sf: number): number {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Satellite helpers                                                  */
+/* ------------------------------------------------------------------ */
+
+function getSatellitePosition(
+  clusterX: number,
+  clusterY: number,
+  techIndex: number,
+  totalTechs: number,
+  animProgress: number,
+  time: number,
+): { x: number; y: number } {
+  const baseAngle = (Math.PI * 2 / totalTechs) * techIndex - Math.PI / 2;
+  const orbitRadius = 40 + totalTechs * 4;
+  const wobble = Math.sin(time * 0.002 + techIndex * 0.7) * 0.03;
+  const angle = baseAngle + wobble;
+  const ease = 1 - Math.pow(1 - animProgress, 3);
+  return {
+    x: clusterX + Math.cos(angle) * orbitRadius * ease,
+    y: clusterY + Math.sin(angle) * orbitRadius * ease,
+  };
+}
+
+function drawSatellites(
+  ctx: CanvasRenderingContext2D,
+  cluster: TechClusterNode,
+  clusterPos: { x: number; y: number },
+  animProgress: number,
+  time: number,
+  mobile: boolean,
+) {
+  const techs = cluster.technologies;
+  const total = techs.length;
+  const orbitRadius = 40 + total * 4;
+  const ease = 1 - Math.pow(1 - animProgress, 3);
+
+  ctx.save();
+
+  // Faint orbit ring
+  ctx.strokeStyle = `rgba(140, 120, 180, ${0.08 * ease})`;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.arc(clusterPos.x, clusterPos.y, orbitRadius * ease, 0, Math.PI * 2);
+  ctx.stroke();
+
+  for (let i = 0; i < total; i++) {
+    const pos = getSatellitePosition(clusterPos.x, clusterPos.y, i, total, animProgress, time);
+
+    // Connector line from cluster to satellite
+    ctx.strokeStyle = `rgba(140, 120, 180, ${0.12 * ease})`;
+    ctx.lineWidth = 0.3;
+    ctx.beginPath();
+    ctx.moveTo(clusterPos.x, clusterPos.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+
+    // Satellite glow
+    const grd = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 8);
+    grd.addColorStop(0, `rgba(170, 150, 210, ${0.25 * ease})`);
+    grd.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Satellite dot
+    ctx.fillStyle = `rgba(180, 160, 220, ${0.7 * ease})`;
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Satellite label — position outward from cluster center
+    const angle = Math.atan2(pos.y - clusterPos.y, pos.x - clusterPos.x);
+    const labelDistance = 14;
+    const labelX = pos.x + Math.cos(angle) * labelDistance;
+    const labelY = pos.y + Math.sin(angle) * labelDistance;
+
+    ctx.globalAlpha = 0.75 * ease;
+    ctx.fillStyle = "#c0b0e0";
+    ctx.font = `400 ${mobile ? 8 : 10}px sans-serif`;
+
+    if (Math.abs(angle) < Math.PI / 4 || Math.abs(angle) > 3 * Math.PI / 4) {
+      ctx.textAlign = angle > -Math.PI / 2 && angle < Math.PI / 2 ? "left" : "right";
+      ctx.textBaseline = "middle";
+    } else {
+      ctx.textAlign = "center";
+      ctx.textBaseline = angle > 0 ? "top" : "bottom";
+    }
+
+    ctx.fillText(techs[i], labelX, labelY);
+    ctx.globalAlpha = 1;
+  }
+
+  ctx.restore();
+}
+
+/* ------------------------------------------------------------------ */
 /*  Hit detection types                                                */
 /* ------------------------------------------------------------------ */
 
@@ -279,6 +375,9 @@ export default function SystemsGalaxy() {
   const [hoveredType, setHoveredType] = useState<"system" | "domain" | "tech" | null>(null);
   const hoveredIdRef = useRef<string | null>(null);
   const hoveredTypeRef = useRef<"system" | "domain" | "tech" | null>(null);
+  const satelliteAnimRef = useRef(0);
+  const lastHoveredClusterRef = useRef<string | null>(null);
+  const prevTimestampRef = useRef(0);
 
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
   const isMobileRef = useRef(isMobile);
@@ -398,6 +497,21 @@ export default function SystemsGalaxy() {
 
       const time = timestamp / 1000;
       timeRef.current = time;
+      const dt = prevTimestampRef.current > 0 ? (timestamp - prevTimestampRef.current) / 1000 : 0;
+      prevTimestampRef.current = timestamp;
+
+      // Satellite animation progress
+      const currentHovType = hoveredTypeRef.current;
+      const currentHovId = hoveredIdRef.current;
+      if (currentHovType === "tech") {
+        if (lastHoveredClusterRef.current !== currentHovId) {
+          satelliteAnimRef.current = 0;
+          lastHoveredClusterRef.current = currentHovId;
+        }
+        satelliteAnimRef.current = Math.min(1, satelliteAnimRef.current + dt * 2.5);
+      } else {
+        satelliteAnimRef.current = Math.max(0, satelliteAnimRef.current - dt * 4);
+      }
 
       const dpr = window.devicePixelRatio || 1;
       const w = dimensions.width;
@@ -657,7 +771,23 @@ export default function SystemsGalaxy() {
         ctx.setLineDash([]);
       }
 
-      // --- 9. Tech cluster nodes ---
+      // --- 9. Satellites (tech cluster hover) ---
+      if (satelliteAnimRef.current > 0 && lastHoveredClusterRef.current) {
+        const satCluster = techClusters.find((t) => t.id === lastHoveredClusterRef.current);
+        if (satCluster) {
+          const satPos = getTechClusterPosition(satCluster, w, h, cx, cy);
+          drawSatellites(
+            ctx,
+            satCluster,
+            { x: satPos.x + px, y: satPos.y + py },
+            satelliteAnimRef.current,
+            timestamp,
+            isMobileRef.current,
+          );
+        }
+      }
+
+      // --- 10. Tech cluster nodes ---
       for (const tc of techClusters) {
         const pos = getTechClusterPosition(tc, w, h, cx, cy);
         const tx = pos.x + px;
@@ -698,7 +828,7 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // --- 10. Domain nodes ---
+      // --- 11. Domain nodes ---
       for (const dom of domains) {
         const pos = getDomainPosition(dom, w, h, cx, cy);
         const dx = pos.x + px;
@@ -736,7 +866,7 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // --- 11. System stars ---
+      // --- 12. System stars ---
       for (const sys of systems) {
         const pos = getSystemPosition(sys, time, w, h, cx, cy);
         const sx = pos.x + px;
