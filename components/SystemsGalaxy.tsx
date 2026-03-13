@@ -95,9 +95,18 @@ function pickStarColor(rand: () => number): string {
   return STAR_COLORS[0].color;
 }
 
+function seededGaussian(rand: () => number): number {
+  const u1 = rand();
+  const u2 = rand();
+  const z = Math.sqrt(-2 * Math.log(Math.max(u1, 1e-10))) * Math.cos(2 * Math.PI * u2);
+  return Math.max(-1, Math.min(1, z * 0.35));
+}
+
 function generateBgStars(w: number, h: number, count: number): BgStar[] {
   const rand = seededRandom(42);
   const stars: BgStar[] = [];
+  const cx = w / 2;
+  const cy = h / 2;
   const layerDist: { layer: StarLayer; share: number }[] = [
     { layer: "far", share: 0.5 },
     { layer: "mid", share: 0.3 },
@@ -107,7 +116,7 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const cfg = STAR_LAYERS[layer];
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
-      const isBright = rand() < 0.01;
+      const isBright = rand() < 0.02;
       const spikeChance = isBright
         ? 0.9
         : layer === "near"
@@ -133,8 +142,8 @@ function generateBgStars(w: number, h: number, count: number): BgStar[] {
         alpha = Math.min(alpha * 1.8, 0.7);
       }
       stars.push({
-        x: rand() * w,
-        y: rand() * h,
+        x: cx + seededGaussian(rand) * w * 0.5,
+        y: cy + seededGaussian(rand) * h * 0.5,
         r,
         alpha,
         layer,
@@ -341,6 +350,111 @@ function drawSatellites(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Galaxy atmosphere helpers                                          */
+/* ------------------------------------------------------------------ */
+
+function drawGalacticCenter(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number) {
+  const r = Math.min(w, h);
+
+  // Layer 1: Tight bright core
+  const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.06);
+  core.addColorStop(0, "rgba(255, 245, 220, 0.25)");
+  core.addColorStop(0.5, "rgba(240, 220, 180, 0.12)");
+  core.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = core;
+  ctx.beginPath(); ctx.arc(cx, cy, r * 0.06, 0, Math.PI * 2); ctx.fill();
+
+  // Layer 2: Inner warm glow
+  const inner = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.2);
+  inner.addColorStop(0, "rgba(220, 200, 160, 0.15)");
+  inner.addColorStop(0.4, "rgba(180, 160, 120, 0.08)");
+  inner.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = inner;
+  ctx.beginPath(); ctx.arc(cx, cy, r * 0.2, 0, Math.PI * 2); ctx.fill();
+
+  // Layer 3: Wide ambient glow
+  const wide = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.45);
+  wide.addColorStop(0, "rgba(150, 130, 100, 0.08)");
+  wide.addColorStop(0.3, "rgba(100, 90, 70, 0.04)");
+  wide.addColorStop(0.7, "rgba(60, 55, 45, 0.015)");
+  wide.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = wide;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function drawLightRays(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number, time: number) {
+  ctx.save();
+  const rayCount = 8;
+  const maxLen = Math.min(w, h) * 0.35;
+
+  for (let i = 0; i < rayCount; i++) {
+    const baseAngle = (Math.PI * 2 / rayCount) * i + 0.3;
+    const wobble = Math.sin(time * 0.0003 + i * 1.7) * 0.05;
+    const angle = baseAngle + wobble;
+    const length = maxLen * (0.6 + Math.sin(i * 2.3) * 0.4);
+    const opacity = 0.03 + Math.sin(i * 1.1) * 0.015;
+
+    const endX = cx + Math.cos(angle) * length;
+    const endY = cy + Math.sin(angle) * length;
+
+    const grad = ctx.createLinearGradient(cx, cy, endX, endY);
+    grad.addColorStop(0, `rgba(220, 200, 160, ${opacity * 2})`);
+    grad.addColorStop(0.3, `rgba(200, 180, 140, ${opacity})`);
+    grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5 + Math.sin(i * 0.7) * 0.5;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
+  ctx.save();
+
+  ctx.translate(cx, cy);
+  ctx.rotate(-0.1);
+  ctx.translate(-cx, -cy);
+
+  // Main dust band — warm tones
+  const bandHeight = h * 0.35;
+  const bandY = cy - bandHeight / 2;
+  const dust = ctx.createLinearGradient(0, bandY, 0, bandY + bandHeight);
+  dust.addColorStop(0, "rgba(0, 0, 0, 0)");
+  dust.addColorStop(0.2, "rgba(80, 65, 40, 0.04)");
+  dust.addColorStop(0.35, "rgba(100, 80, 50, 0.07)");
+  dust.addColorStop(0.5, "rgba(110, 90, 55, 0.09)");
+  dust.addColorStop(0.65, "rgba(100, 80, 50, 0.07)");
+  dust.addColorStop(0.8, "rgba(80, 65, 40, 0.04)");
+  dust.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = dust;
+  ctx.fillRect(0, bandY, w, bandHeight);
+
+  // Horizontal falloff — dust is denser near center
+  const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
+  hFade.addColorStop(0, "rgba(90, 75, 50, 0.05)");
+  hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.02)");
+  hFade.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = hFade;
+  ctx.fillRect(0, bandY, w, bandHeight);
+
+  ctx.restore();
+}
+
+function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
+  const maxR = Math.sqrt(cx * cx + cy * cy);
+  const vig = ctx.createRadialGradient(cx, cy, maxR * 0.4, cx, cy, maxR);
+  vig.addColorStop(0, "rgba(0, 0, 0, 0)");
+  vig.addColorStop(0.7, "rgba(0, 0, 0, 0.15)");
+  vig.addColorStop(1, "rgba(0, 0, 0, 0.4)");
+  ctx.fillStyle = vig;
+  ctx.fillRect(0, 0, w, h);
+}
+
+/* ------------------------------------------------------------------ */
 /*  Hit detection types                                                */
 /* ------------------------------------------------------------------ */
 
@@ -355,7 +469,7 @@ type HitResult =
 /* ------------------------------------------------------------------ */
 
 const MOBILE_BREAKPOINT = 640;
-const BG_STAR_COUNT = 800;
+const BG_STAR_COUNT = 1200;
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                         */
@@ -569,7 +683,7 @@ export default function SystemsGalaxy() {
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * twinkleAmp;
         const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6);
 
-        const glowR = star.r * cfg.glowMul * (star.bright ? 1.5 : 1);
+        const glowR = star.r * cfg.glowMul * (star.bright ? 2.25 : 1);
         const glowGradient = ctx.createRadialGradient(
           sx, sy, star.r * 0.3, sx, sy, glowR,
         );
@@ -621,33 +735,19 @@ export default function SystemsGalaxy() {
       }
       ctx.globalAlpha = 1;
 
-      // --- 3. Dust band ---
-      ctx.save();
-      ctx.translate(w / 2, h / 2);
-      ctx.rotate(-0.18);
-      const bandH = h * 0.35;
-      const dustGrad = ctx.createLinearGradient(0, -bandH / 2, 0, bandH / 2);
-      dustGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
-      dustGrad.addColorStop(0.3, "rgba(0, 0, 0, 0.12)");
-      dustGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.18)");
-      dustGrad.addColorStop(0.7, "rgba(0, 0, 0, 0.12)");
-      dustGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = dustGrad;
-      ctx.fillRect(-w, -bandH / 2, w * 2, bandH);
-      ctx.restore();
+      // --- 3. Enhanced dust band ---
+      drawDustBand(ctx, w, h, cx, cy);
 
-      // --- 4. Center radial glow ---
-      const centerGlow = ctx.createRadialGradient(
-        cx, cy, 0, cx, cy, Math.min(w, h) * 0.45,
-      );
-      centerGlow.addColorStop(0, "rgba(180, 160, 120, 0.12)");
-      centerGlow.addColorStop(0.3, "rgba(120, 110, 90, 0.06)");
-      centerGlow.addColorStop(0.7, "rgba(60, 55, 50, 0.02)");
-      centerGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = centerGlow;
-      ctx.fillRect(0, 0, w, h);
+      // --- 4. Multi-layer galactic center glow ---
+      drawGalacticCenter(ctx, cx, cy, w, h);
 
-      // --- 5. Orbit ellipses (4 rings) ---
+      // --- 5. Light rays from center ---
+      drawLightRays(ctx, cx, cy, w, h, timestamp);
+
+      // --- 6. Vignette (edge darkening) ---
+      drawVignette(ctx, w, h, cx, cy);
+
+      // --- 7. Orbit ellipses (4 rings) ---
       for (const orbit of orbits) {
         ctx.strokeStyle = `rgba(150, 170, 200, ${orbit.opacity})`;
         ctx.lineWidth = 0.5;
