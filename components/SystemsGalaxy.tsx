@@ -261,10 +261,10 @@ function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: n
 
 function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
   const maxR = Math.sqrt(cx * cx + cy * cy);
-  const vig = ctx.createRadialGradient(cx, cy, maxR * 0.4, cx, cy, maxR);
+  const vig = ctx.createRadialGradient(cx, cy, maxR * 0.3, cx, cy, maxR);
   vig.addColorStop(0, "rgba(0, 0, 0, 0)");
-  vig.addColorStop(0.7, "rgba(0, 0, 0, 0.15)");
-  vig.addColorStop(1, "rgba(0, 0, 0, 0.4)");
+  vig.addColorStop(0.6, "rgba(0, 0, 0, 0.06)");
+  vig.addColorStop(1, "rgba(0, 0, 0, 0.15)");
   ctx.fillStyle = vig;
   ctx.fillRect(0, 0, w, h);
 }
