@@ -1,12 +1,12 @@
 import { Project } from "@/data/projects";
 
 export default function ProjectCard(props: Readonly<Project>) {
-  const { name, description, url, category } = props;
+  const { name, description, url, importance } = props;
   return (
     <div className="flex flex-col justify-between rounded-xl border border-neutral-800 bg-neutral-900 p-6 transition-transform duration-200 hover:-translate-y-1">
       <div>
         <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-          {category}
+          {importance}
         </span>
         <h3 className="mt-1 text-lg font-semibold text-white">{name}</h3>
         <p className="mt-2 text-sm leading-relaxed text-neutral-400">
