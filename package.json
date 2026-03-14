@@ -2,6 +2,10 @@
   "name": "mehmetfahriozmen.dev",
   "version": "0.2.2",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mfozmen/mehmetfahriozmen.dev.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
