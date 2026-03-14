@@ -491,7 +491,7 @@ export default function SystemsGalaxy() {
 
         const twinkleAmp = star.bright ? 0.3 : 0.15;
         const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * twinkleAmp;
-        const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6);
+        const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6) * drifted.fadeIn;
 
         const glowR = star.r * cfg.glowMul * (star.bright ? 2.25 : 1);
         const glowGradient = ctx.createRadialGradient(

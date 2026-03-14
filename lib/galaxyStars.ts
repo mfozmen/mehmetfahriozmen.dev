@@ -150,22 +150,34 @@ export function generateBgStars(w: number, h: number, count: number): BgStar[] {
 
 export const DRIFT_SPEED = 3;
 export const DRIFT_ANGLE = -2.6;
+export const FADE_IN_DURATION = 2.5; // seconds
+
+export interface DriftResult {
+  x: number;
+  y: number;
+  wrapped: boolean;
+  /** 0 = just wrapped (invisible), 1 = fully visible */
+  fadeIn: number;
+}
 
 /**
  * Compute a star's drifted position at a given time.
  * When a star wraps past the canvas edge, it reappears at a
  * center-biased position (gaussian) on the opposite side,
  * preserving the center density invariant over time.
+ * Returns a fadeIn factor (0→1) that ramps over 2.5s after wrap.
  */
 export function applyStarDrift(
   star: BgStar,
   time: number,
   w: number,
   h: number,
-): { x: number; y: number } {
+): DriftResult {
   const cfg = STAR_LAYERS[star.layer];
-  const dx = time * DRIFT_SPEED * Math.cos(DRIFT_ANGLE) * cfg.driftMul;
-  const dy = time * DRIFT_SPEED * Math.sin(DRIFT_ANGLE) * cfg.driftMul;
+  const vx = DRIFT_SPEED * Math.cos(DRIFT_ANGLE) * cfg.driftMul;
+  const vy = DRIFT_SPEED * Math.sin(DRIFT_ANGLE) * cfg.driftMul;
+  const dx = time * vx;
+  const dy = time * vy;
 
   let sx = star.x + dx;
   let sy = star.y + dy;
@@ -174,7 +186,45 @@ export function applyStarDrift(
   const cy = h / 2;
   const wrapped = sx < 0 || sx > w || sy < 0 || sy > h;
 
+  let fadeIn = 1;
+
   if (wrapped) {
+    // Compute when the most recent wrap happened by finding the last
+    // time the star crossed a canvas boundary
+    let lastWrapTime = 0;
+
+    if (Math.abs(vx) > 0.001) {
+      // Time to reach each horizontal boundary from initial position
+      // Star wraps every w pixels of travel
+      const travelX = Math.abs(dx);
+      // Distance from star to the exit edge in drift direction
+      const distToEdgeX = vx > 0 ? w - star.x : star.x;
+      if (travelX > distToEdgeX) {
+        // How far past the first wrap
+        const pastFirst = travelX - distToEdgeX;
+        // Each subsequent wrap is w pixels apart
+        const fullWraps = Math.floor(pastFirst / w);
+        const lastWrapDist = distToEdgeX + fullWraps * w;
+        const tWrap = lastWrapDist / Math.abs(vx);
+        if (tWrap > lastWrapTime) lastWrapTime = tWrap;
+      }
+    }
+
+    if (Math.abs(vy) > 0.001) {
+      const travelY = Math.abs(dy);
+      const distToEdgeY = vy > 0 ? h - star.y : star.y;
+      if (travelY > distToEdgeY) {
+        const pastFirst = travelY - distToEdgeY;
+        const fullWraps = Math.floor(pastFirst / h);
+        const lastWrapDist = distToEdgeY + fullWraps * h;
+        const tWrap = lastWrapDist / Math.abs(vy);
+        if (tWrap > lastWrapTime) lastWrapTime = tWrap;
+      }
+    }
+
+    const timeSinceWrap = time - lastWrapTime;
+    fadeIn = Math.min(1, timeSinceWrap / FADE_IN_DURATION);
+
     // Seed from star identity + wrap count for deterministic repositioning
     const wrapCount = Math.floor(Math.abs(dx) / w) + Math.floor(Math.abs(dy) / h);
     const wrapRand = seededRandom(
@@ -192,5 +242,5 @@ export function applyStarDrift(
     sy = sy * 0.3 + gy * 0.7;
   }
 
-  return { x: sx, y: sy };
+  return { x: sx, y: sy, wrapped, fadeIn };
 }

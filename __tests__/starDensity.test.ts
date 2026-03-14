@@ -106,4 +106,76 @@ describe("Star drift behavior", () => {
       },
     );
   });
+
+  describe("star fade-in after wrap", () => {
+    // Find a star that wraps by advancing time until it leaves the canvas
+    function findWrapTime(star: ReturnType<typeof generateBgStars>[0]): number | null {
+      // Use fine steps (0.1s) to find the wrap moment precisely
+      for (let t = 1; t <= 5000; t++) {
+        const time = t * 0.1;
+        const result = applyStarDrift(star, time, W, H);
+        if (result.wrapped) return time;
+      }
+      return null;
+    }
+
+    it("applyStarDrift returns fadeIn=1 for unwrapped stars", () => {
+      // At t=0 no star has wrapped
+      const result = applyStarDrift(stars[0], 0, W, H);
+      expect(result.fadeIn).toBe(1);
+    });
+
+    it("newly wrapped star has fadeIn near 0", () => {
+      // Find any star that wraps
+      let wrapTime: number | null = null;
+      let wrappingStar: (typeof stars)[0] | null = null;
+      for (const star of stars) {
+        wrapTime = findWrapTime(star);
+        if (wrapTime !== null) {
+          wrappingStar = star;
+          break;
+        }
+      }
+      expect(wrappingStar, "Should find at least one star that wraps").not.toBeNull();
+
+      // Right at wrap time, fadeIn should be near 0
+      const atWrap = applyStarDrift(wrappingStar!, wrapTime!, W, H);
+      expect(atWrap.fadeIn).toBeLessThan(0.1);
+    });
+
+    it("wrapped star reaches full opacity after 2.5 seconds", () => {
+      let wrapTime: number | null = null;
+      let wrappingStar: (typeof stars)[0] | null = null;
+      for (const star of stars) {
+        wrapTime = findWrapTime(star);
+        if (wrapTime !== null) {
+          wrappingStar = star;
+          break;
+        }
+      }
+      expect(wrappingStar).not.toBeNull();
+
+      // 2.5s after wrap, fadeIn should be 1
+      const after = applyStarDrift(wrappingStar!, wrapTime! + 2.5, W, H);
+      expect(after.fadeIn).toBeGreaterThanOrEqual(0.99);
+    });
+
+    it("wrapped star is partially faded at 1 second after wrap", () => {
+      let wrapTime: number | null = null;
+      let wrappingStar: (typeof stars)[0] | null = null;
+      for (const star of stars) {
+        wrapTime = findWrapTime(star);
+        if (wrapTime !== null) {
+          wrappingStar = star;
+          break;
+        }
+      }
+      expect(wrappingStar).not.toBeNull();
+
+      // 1s after wrap, fadeIn should be between 0.2 and 0.6
+      const mid = applyStarDrift(wrappingStar!, wrapTime! + 1, W, H);
+      expect(mid.fadeIn).toBeGreaterThan(0.2);
+      expect(mid.fadeIn).toBeLessThan(0.7);
+    });
+  });
 });
