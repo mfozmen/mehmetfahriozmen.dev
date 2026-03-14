@@ -10,7 +10,6 @@ import { featuredSystems } from "@/data/featuredSystems";
 const domainIds = new Set(domains.map((d) => d.id));
 const techClusterIds = new Set(techClusters.map((tc) => tc.id));
 const systemIds = new Set(systems.map((s) => s.id));
-const systemNames = new Set(systems.map((s) => s.name));
 const validOrbitIndices = new Set(orbits.map((_, i) => i));
 
 describe("Data referential integrity", () => {
