@@ -17,6 +17,7 @@ import {
   getTechClusterPosition,
 } from "@/lib/galaxyLayout";
 import {
+  type BgStar,
   STAR_LAYERS,
   DRIFT_ANGLE,
   seededRandom,
