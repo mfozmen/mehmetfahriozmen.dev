@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="mt-6 flex items-center justify-center gap-6">
         {/* GitHub */}
         <a
-          href="https://github.com/mehmetfahriozmen"
+          href="https://github.com/mfozmen"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -26,7 +26,7 @@ export default function Footer() {
         </a>
         {/* LinkedIn */}
         <a
-          href="https://linkedin.com/in/mehmetfahriozmen"
+          href="https://linkedin.com/in/mfozmen"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
@@ -44,7 +44,7 @@ export default function Footer() {
         </a>
         {/* Email */}
         <a
-          href="mailto:hello@mehmetfahriozmen.dev"
+          href="mailto:mehmetfahriozmen@gmail.com"
           aria-label="Email"
           className="text-neutral-500 transition-colors hover:text-white"
         >
