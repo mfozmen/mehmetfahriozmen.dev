@@ -670,12 +670,14 @@ export default function SystemsGalaxy() {
       const maxDist = Math.sqrt(cx * cx + cy * cy);
       for (const star of bgStarsRef.current) {
         const cfg = STAR_LAYERS[star.layer];
-        let sx = star.x + driftX * cfg.driftMul + px * cfg.parallax;
-        let sy = star.y + driftY * cfg.driftMul + py * cfg.parallax;
-        sx += Math.sin(time * 0.3 + star.phase) * 0.5;
-        sy += Math.cos(time * 0.25 + star.phase) * 0.5;
-        sx = ((sx % w) + w) % w;
-        sy = ((sy % h) + h) % h;
+        const offsetX = driftX * cfg.driftMul + px * cfg.parallax + Math.sin(time * 0.3 + star.phase) * 0.5;
+        const offsetY = driftY * cfg.driftMul + py * cfg.parallax + Math.cos(time * 0.25 + star.phase) * 0.5;
+        let sx = star.x + ((offsetX % w) + w) % w;
+        let sy = star.y + ((offsetY % h) + h) % h;
+        if (sx > w) sx -= w;
+        if (sx < 0) sx += w;
+        if (sy > h) sy -= h;
+        if (sy < 0) sy += h;
 
         const sdx = sx - cx;
         const sdy = sy - cy;
@@ -753,7 +755,7 @@ export default function SystemsGalaxy() {
       // --- 7. Orbit ellipses (4 rings) ---
       for (const orbit of orbits) {
         ctx.strokeStyle = `rgba(150, 170, 200, ${orbit.opacity})`;
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = 0.8;
         ctx.save();
         ctx.translate(cx + px, cy + py);
         ctx.rotate(orbit.rotation);
