@@ -71,13 +71,14 @@ export const systems: SystemNode[] = [
     url: "https://www.villasepeti.com",
   },
   {
-    id: "ptttrade",
-    name: "PTT Trade",
+    id: "magicpags",
+    name: "MagicPags",
     importance: "primary",
     angle: 3.65,
     orbit: 0,
-    domains: ["ecommerce"],
-    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks"],
+    domains: ["education"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
+    url: "https://www.magicpags.com/",
   },
   {
     id: "beforesunset",
@@ -102,14 +103,13 @@ export const systems: SystemNode[] = [
 
   // Secondary — orbit 1, ~90° apart
   {
-    id: "magicpags",
-    name: "MagicPags",
+    id: "ptttrade",
+    name: "PTT Trade",
     importance: "secondary",
     angle: 0.6,
     orbit: 1,
-    domains: ["education"],
-    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
-    url: "https://www.magicpags.com/",
+    domains: ["ecommerce"],
+    techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks"],
   },
   {
     id: "room3d",
