@@ -167,7 +167,7 @@ export const domains: DomainNode[] = [
   {
     id: "ecommerce",
     name: "E-Commerce",
-    angle: 1.0,
+    angle: 1,
     orbit: 0,
     offset: { x: -0.07, y: 0.08 },
   },
@@ -188,7 +188,7 @@ export const domains: DomainNode[] = [
   {
     id: "distributed",
     name: "Distributed Systems",
-    angle: 3.0,
+    angle: 3,
     orbit: 0,
     offset: { x: 0.06, y: -0.07 },
   },
@@ -202,7 +202,7 @@ export const domains: DomainNode[] = [
   {
     id: "nonprofit",
     name: "Non-Profit",
-    angle: 4.0,
+    angle: 4,
     orbit: 1,
     offset: { x: -0.07, y: 0.06 },
   },

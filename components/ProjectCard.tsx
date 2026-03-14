@@ -1,6 +1,6 @@
 import { Project } from "@/data/projects";
 
-export default function ProjectCard(props: Project) {
+export default function ProjectCard(props: Readonly<Project>) {
   const { name, description, url, category } = props;
   return (
     <div className="flex flex-col justify-between rounded-xl border border-neutral-800 bg-neutral-900 p-6 transition-transform duration-200 hover:-translate-y-1">

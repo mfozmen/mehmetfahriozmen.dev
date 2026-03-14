@@ -419,7 +419,7 @@ export default function SystemsGalaxy() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const animate = (timestamp: number) => {
+    const animate = (timestamp: number) => { // NOSONAR: S3776 — canvas render loop, complexity is inherent
       const ctx = canvas.getContext("2d");
       if (!ctx) {
         animFrameRef.current = requestAnimationFrame(animate);
