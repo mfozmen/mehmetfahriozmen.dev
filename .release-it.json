@@ -18,7 +18,12 @@
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "conventionalcommits",
-      "infile": "CHANGELOG.md"
+      "infile": "CHANGELOG.md",
+      "context": {
+        "host": "https://github.com",
+        "owner": "mfozmen",
+        "repository": "mehmetfahriozmen.dev"
+      }
     }
   }
 }
