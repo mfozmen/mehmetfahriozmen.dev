@@ -12,6 +12,9 @@
   "npm": {
     "publish": false
   },
+  "hooks": {
+    "after:release": "git branch release/v${version} && git push origin release/v${version}"
+  },
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "conventionalcommits",
