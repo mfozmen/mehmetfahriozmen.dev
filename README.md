@@ -24,4 +24,13 @@ npm run lint           # ESLint
 npm test               # Run all tests
 npm run test:coverage  # Tests with coverage report
 npm run check:overlaps # Galaxy overlap tests only
+npm run release        # Bump version, tag, push to main
 ```
+
+## Development & Release
+
+- **Development:** work on `dev` branch
+- **Preview:** push to `dev` → Vercel preview deploy
+- **Release:** `npm run release` (on dev) → bumps version, tags, pushes to main → Vercel production deploy
+- **GitHub Release:** auto-created by CI on tag push
+- **Rollback:** Vercel dashboard → Deployments → Promote old deployment
