@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1](https://github.com/mfozmen/mehmetfahriozmen/compare/v0.2.0...v0.2.1) (2026-03-14)
+
+### Bug Fixes
+
+* remove unused variable and exclude coverage from eslint ([cfc3c54](https://github.com/mfozmen/mehmetfahriozmen/commit/cfc3c54fae299a22b602beee640134c74c12c873))
+* resolve remaining SonarCloud issues ([702325d](https://github.com/mfozmen/mehmetfahriozmen/commit/702325db40b70d1a0d5e8c7cbfd6b3849a5eecd7))
+* resolve SonarCloud code quality issues ([54b1a30](https://github.com/mfozmen/mehmetfahriozmen/commit/54b1a309e6b50bc201bba892dfd33449701fbf18))
+* update social links in footer ([21d5f18](https://github.com/mfozmen/mehmetfahriozmen/commit/21d5f1824532d00b549757064295e358149c8c71))
+
 ## 0.2.0 (2026-03-14)
 
 ### Features
