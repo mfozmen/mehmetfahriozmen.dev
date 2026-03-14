@@ -12,6 +12,8 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - `npm run build` — production build
 - `npm run start` — serve production build
 - `npm run lint` — run ESLint (flat config with next/core-web-vitals and next/typescript)
+- `npm test` — run vitest (includes galaxy overlap detection)
+- `npm run check:overlaps` — run only the galaxy overlap test
 
 ## Architecture
 
@@ -43,6 +45,14 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 
 ## Testing
 
+- **Strict TDD workflow** for all changes:
+  1. Write tests FIRST — before any implementation, write failing tests that define expected behavior
+  2. Show the tests for review before proceeding
+  3. Implement — make the tests pass
+  4. Run ALL tests — `npm test` must pass completely
+  5. Verify with Playwright — visual confirmation
+  6. Then commit
+- After ANY change to galaxy positions, angles, offsets, or tech cluster data, always run `npm test` before committing. If tests fail, fix the overlaps before proceeding.
 - For visual QA and browser testing, use the Playwright MCP tool directly (launch browser, navigate, screenshot, hover via tool commands). Do NOT write standalone Playwright script files.
 
 ## Graph Data Architecture
@@ -52,7 +62,10 @@ The systems visualization uses a 3-layer orbital layout with data defined in `da
 - All systems, domains, tech clusters, and orbit configs are defined in `data/systemsGraph.ts`.
 - Components must not hardcode nodes or relationships — they are pure UI renderers.
 - Systems reference domains via `domains: string[]` and tech clusters via `techClusters: string[]`.
-- 4 orbit rings: primary systems (0), secondary systems (1), minor systems (2), tech clusters (3).
+- 3 orbit rings: primary systems (0), secondary systems (1), minor systems (2).
+- Tech clusters are positioned freely in the interior via `position: { x, y }` (normalized coords relative to center).
+- After modifying any positions, angles, or adding new systems/domains/tech clusters, run `npm test` to verify no labels collide.
+- Layout calculation functions live in `lib/galaxyLayout.ts` — shared between the component and tests. Do not duplicate layout math.
 
 ```ts
 // data/systemsGraph.ts — key types
@@ -63,6 +76,6 @@ export type SystemNode = {
   angle: number; orbit: number;
 };
 export type DomainNode = { id: string; name: string; angle: number; orbit: number; offset: { x: number; y: number } };
-export type TechClusterNode = { id: string; name: string; angle: number; technologies: string[] };
+export type TechClusterNode = { id: string; name: string; technologies: string[]; position: { x: number; y: number } };
 export type OrbitConfig = { rx: number; ry: number; rotation: number; opacity: number };
 ```

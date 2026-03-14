@@ -9,8 +9,13 @@ import {
   SystemNode,
   DomainNode,
   TechClusterNode,
-  SystemImportance,
 } from "@/data/systemsGraph";
+import {
+  satelliteOrbitRadius,
+  getSystemPosition,
+  getDomainPosition,
+  getTechClusterPosition,
+} from "@/lib/galaxyLayout";
 
 /* ------------------------------------------------------------------ */
 /*  Background star types & helpers                                    */
@@ -174,76 +179,10 @@ function generateNebulae(w: number, h: number): Nebula[] {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Orbital layout helpers                                             */
+/*  Local rendering helpers                                            */
 /* ------------------------------------------------------------------ */
 
-const ORBIT_SPEEDS: Record<SystemImportance, number> = {
-  primary: 0.015,
-  secondary: 0.010,
-  minor: 0.008,
-};
-
-function getOrbitPosition(
-  orbitIndex: number,
-  angle: number,
-  w: number,
-  h: number,
-  cx: number,
-  cy: number,
-) {
-  const orbit = orbits[orbitIndex];
-  const rx = orbit.rx * w;
-  const ry = orbit.ry * h;
-  const cosA = Math.cos(angle),
-    sinA = Math.sin(angle);
-  const cosR = Math.cos(orbit.rotation),
-    sinR = Math.sin(orbit.rotation);
-  const ox = rx * cosA,
-    oy = ry * sinA;
-  return {
-    x: cx + ox * cosR - oy * sinR,
-    y: cy + ox * sinR + oy * cosR,
-  };
-}
-
-function getSystemPosition(
-  sys: SystemNode,
-  time: number,
-  w: number,
-  h: number,
-  cx: number,
-  cy: number,
-) {
-  const angle = sys.angle + time * ORBIT_SPEEDS[sys.importance] * 0.001;
-  return getOrbitPosition(sys.orbit, angle, w, h, cx, cy);
-}
-
-function getDomainPosition(
-  dom: DomainNode,
-  w: number,
-  h: number,
-  cx: number,
-  cy: number,
-) {
-  const base = getOrbitPosition(dom.orbit, dom.angle, w, h, cx, cy);
-  return {
-    x: base.x + dom.offset.x * w,
-    y: base.y + dom.offset.y * h,
-  };
-}
-
-function getTechClusterPosition(
-  tc: TechClusterNode,
-  w: number,
-  h: number,
-  cx: number,
-  cy: number,
-) {
-  return {
-    x: cx + tc.position.x * w,
-    y: cy + tc.position.y * h,
-  };
-}
+type SystemImportance = "primary" | "secondary" | "minor";
 
 function systemStarRadius(importance: SystemImportance, sf: number): number {
   switch (importance) {
@@ -269,7 +208,7 @@ function getSatellitePosition(
   time: number,
 ): { x: number; y: number } {
   const baseAngle = (Math.PI * 2 / totalTechs) * techIndex - Math.PI / 2;
-  const orbitRadius = 40 + totalTechs * 4;
+  const orbitRadius = satelliteOrbitRadius(totalTechs);
   const wobble = Math.sin(time * 0.002 + techIndex * 0.7) * 0.03;
   const angle = baseAngle + wobble;
   const ease = 1 - Math.pow(1 - animProgress, 3);
@@ -289,7 +228,7 @@ function drawSatellites(
 ) {
   const techs = cluster.technologies;
   const total = techs.length;
-  const orbitRadius = 40 + total * 4;
+  const orbitRadius = satelliteOrbitRadius(total);
   const ease = 1 - Math.pow(1 - animProgress, 3);
 
   ctx.save();
