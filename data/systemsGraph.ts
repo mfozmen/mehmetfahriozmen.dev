@@ -109,6 +109,7 @@ export const systems: SystemNode[] = [
     orbit: 1,
     domains: ["education"],
     techClusters: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
+    url: "https://www.magicpags.com/",
   },
   {
     id: "room3d",
@@ -118,6 +119,7 @@ export const systems: SystemNode[] = [
     orbit: 1,
     domains: ["realtime"],
     techClusters: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
+    url: "https://room3d.net/",
   },
   {
     id: "ihtiyac",
