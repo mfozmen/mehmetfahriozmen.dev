@@ -17,10 +17,11 @@ import {
   getTechClusterPosition,
 } from "@/lib/galaxyLayout";
 import {
-  type BgStar,
   STAR_LAYERS,
+  DRIFT_ANGLE,
   seededRandom,
   generateBgStars,
+  applyStarDrift,
 } from "@/lib/galaxyStars";
 
 /* ------------------------------------------------------------------ */
@@ -456,15 +457,9 @@ export default function SystemsGalaxy() {
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
 
-      // Background drift
-      const driftSpeed = 3;
-      const driftAngle = -2.6;
-      const driftX = time * driftSpeed * Math.cos(driftAngle);
-      const driftY = time * driftSpeed * Math.sin(driftAngle);
-
       // --- 1. Nebulae ---
-      const nebulaDriftX = Math.sin(time * 0.15) * 6 * Math.cos(driftAngle);
-      const nebulaDriftY = Math.sin(time * 0.15) * 6 * Math.sin(driftAngle);
+      const nebulaDriftX = Math.sin(time * 0.15) * 6 * Math.cos(DRIFT_ANGLE);
+      const nebulaDriftY = Math.sin(time * 0.15) * 6 * Math.sin(DRIFT_ANGLE);
       for (const neb of nebulaeRef.current) {
         const nx = neb.x + nebulaDriftX + px * 0.5;
         const ny = neb.y + nebulaDriftY + py * 0.5;
@@ -481,14 +476,13 @@ export default function SystemsGalaxy() {
       const maxDist = Math.sqrt(cx * cx + cy * cy);
       for (const star of bgStarsRef.current) {
         const cfg = STAR_LAYERS[star.layer];
-        const offsetX = driftX * cfg.driftMul + px * cfg.parallax + Math.sin(time * 0.3 + star.phase) * 0.5;
-        const offsetY = driftY * cfg.driftMul + py * cfg.parallax + Math.cos(time * 0.25 + star.phase) * 0.5;
-        let sx = star.x + ((offsetX % w) + w) % w;
-        let sy = star.y + ((offsetY % h) + h) % h;
-        if (sx > w) sx -= w;
-        if (sx < 0) sx += w;
-        if (sy > h) sy -= h;
-        if (sy < 0) sy += h;
+        const drifted = applyStarDrift(star, time, w, h);
+        // Add parallax and twinkle wobble on top of drift
+        let sx = drifted.x + px * cfg.parallax + Math.sin(time * 0.3 + star.phase) * 0.5;
+        let sy = drifted.y + py * cfg.parallax + Math.cos(time * 0.25 + star.phase) * 0.5;
+        // Clamp to canvas (parallax/wobble are small, simple clamp is fine)
+        if (sx > w) sx -= w; if (sx < 0) sx += w;
+        if (sy > h) sy -= h; if (sy < 0) sy += h;
 
         const sdx = sx - cx;
         const sdy = sy - cy;

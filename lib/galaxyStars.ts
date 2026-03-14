@@ -76,6 +76,10 @@ function pickStarColor(rand: () => number): string {
 }
 
 function seededGaussian(rand: () => number, spread: number = 0.35): number {
+  return seededGaussianFromRand(rand, spread);
+}
+
+function seededGaussianFromRand(rand: () => number, spread: number): number {
   const u1 = rand();
   const u2 = rand();
   const z = Math.sqrt(-2 * Math.log(Math.max(u1, 1e-10))) * Math.cos(2 * Math.PI * u2);
@@ -138,4 +142,55 @@ export function generateBgStars(w: number, h: number, count: number): BgStar[] {
     }
   }
   return stars;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Star drift                                                         */
+/* ------------------------------------------------------------------ */
+
+export const DRIFT_SPEED = 3;
+export const DRIFT_ANGLE = -2.6;
+
+/**
+ * Compute a star's drifted position at a given time.
+ * When a star wraps past the canvas edge, it reappears at a
+ * center-biased position (gaussian) on the opposite side,
+ * preserving the center density invariant over time.
+ */
+export function applyStarDrift(
+  star: BgStar,
+  time: number,
+  w: number,
+  h: number,
+): { x: number; y: number } {
+  const cfg = STAR_LAYERS[star.layer];
+  const dx = time * DRIFT_SPEED * Math.cos(DRIFT_ANGLE) * cfg.driftMul;
+  const dy = time * DRIFT_SPEED * Math.sin(DRIFT_ANGLE) * cfg.driftMul;
+
+  let sx = star.x + dx;
+  let sy = star.y + dy;
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const wrapped = sx < 0 || sx > w || sy < 0 || sy > h;
+
+  if (wrapped) {
+    // Seed from star identity + wrap count for deterministic repositioning
+    const wrapCount = Math.floor(Math.abs(dx) / w) + Math.floor(Math.abs(dy) / h);
+    const wrapRand = seededRandom(
+      Math.round(star.phase * 10000 + wrapCount * 31),
+    );
+
+    // Simple modular wrap to get base position on canvas
+    sx = ((sx % w) + w) % w;
+    sy = ((sy % h) + h) % h;
+
+    // Blend toward center with gaussian bias (70% gaussian, 30% wrapped position)
+    const gx = cx + seededGaussianFromRand(wrapRand, 0.25) * w * 0.5;
+    const gy = cy + seededGaussianFromRand(wrapRand, 0.25) * h * 0.5;
+    sx = sx * 0.3 + gx * 0.7;
+    sy = sy * 0.3 + gy * 0.7;
+  }
+
+  return { x: sx, y: sy };
 }
