@@ -55,6 +55,15 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - After ANY change to galaxy positions, angles, offsets, or tech cluster data, always run `npm test` before committing. If tests fail, fix the overlaps before proceeding.
 - For visual QA and browser testing, use the Playwright MCP tool directly (launch browser, navigate, screenshot, hover via tool commands). Do NOT write standalone Playwright script files.
 
+## Development & Release Flow
+
+- All development happens on `dev` branch — never commit directly to `main`
+- To release: `npm run release` on dev → bumps version, creates tag, pushes to main
+- CI: tag push triggers GitHub Release creation (auto-generated notes)
+- Vercel: main push = production deploy, dev push = preview deploy
+- Rollback: Vercel dashboard → Deployments → Promote old deployment
+- On release, main and dev are synced to the same commit
+
 ## Graph Data Architecture
 
 The systems visualization uses a 3-layer orbital layout with data defined in `data/systemsGraph.ts`.

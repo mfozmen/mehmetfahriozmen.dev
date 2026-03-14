@@ -3,7 +3,8 @@
     "commitMessage": "chore: release v${version}",
     "tagName": "v${version}",
     "push": true,
-    "requireCleanWorkingDir": true
+    "requireCleanWorkingDir": true,
+    "requireBranch": "dev"
   },
   "github": {
     "release": false
@@ -12,7 +13,7 @@
     "publish": false
   },
   "hooks": {
-    "after:release": "git branch release/v${version} && git push origin release/v${version}"
+    "after:release": "git push origin HEAD:main"
   },
   "plugins": {
     "@release-it/conventional-changelog": {
