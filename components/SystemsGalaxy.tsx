@@ -261,7 +261,7 @@ function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: n
 }
 
 function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
-  const maxR = Math.sqrt(cx * cx + cy * cy);
+  const maxR = Math.hypot(cx, cy);
   const vig = ctx.createRadialGradient(cx, cy, maxR * 0.3, cx, cy, maxR);
   vig.addColorStop(0, "rgba(0, 0, 0, 0)");
   vig.addColorStop(0.6, "rgba(0, 0, 0, 0.06)");
@@ -382,7 +382,8 @@ export default function SystemsGalaxy() {
 
   // Hit test helper
   const hitTest = useCallback(
-    (mx: number, my: number, time: number, w: number, h: number, cx: number, cy: number, sf: number): HitResult => {
+    (opts: { mx: number; my: number; time: number; w: number; h: number; cx: number; cy: number; sf: number }): HitResult => {
+      const { mx, my, time, w, h, cx, cy, sf } = opts;
       // Systems first
       for (const sys of systems) {
         const pos = getSystemPosition(sys, time, w, h, cx, cy);
@@ -474,7 +475,7 @@ export default function SystemsGalaxy() {
       // --- 2. Background stars ---
       const cx = w / 2;
       const cy = h / 2;
-      const maxDist = Math.sqrt(cx * cx + cy * cy);
+      const maxDist = Math.hypot(cx, cy);
       for (const star of bgStarsRef.current) {
         const cfg = STAR_LAYERS[star.layer];
         const drifted = applyStarDrift(star, time, w, h);
@@ -482,12 +483,12 @@ export default function SystemsGalaxy() {
         let sx = drifted.x + px * cfg.parallax + Math.sin(time * 0.3 + star.phase) * 0.5;
         let sy = drifted.y + py * cfg.parallax + Math.cos(time * 0.25 + star.phase) * 0.5;
         // Clamp to canvas (parallax/wobble are small, simple clamp is fine)
-        if (sx > w) sx -= w; if (sx < 0) sx += w;
-        if (sy > h) sy -= h; if (sy < 0) sy += h;
+        if (sx > w) { sx -= w; } else if (sx < 0) { sx += w; }
+        if (sy > h) { sy -= h; } else if (sy < 0) { sy += h; }
 
         const sdx = sx - cx;
         const sdy = sy - cy;
-        const dist = Math.sqrt(sdx * sdx + sdy * sdy);
+        const dist = Math.hypot(sdx, sdy);
         const falloff = Math.pow(1 - dist / maxDist, 1.8);
 
         const twinkleAmp = star.bright ? 0.3 : 0.15;
@@ -772,8 +773,8 @@ export default function SystemsGalaxy() {
         const isDimmed = highlighted && !isHL;
 
         let hash = 0;
-        for (let c = 0; c < sys.id.length; c++) {
-          hash = ((hash << 5) - hash + sys.id.charCodeAt(c)) | 0;
+        for (const ch of sys.id) {
+          hash = Math.trunc((hash << 5) - hash + ch.codePointAt(0)!);
         }
         const nodePhase = ((hash % 1000) / 1000) * Math.PI * 2;
         const twinkle = 1 + Math.sin(time * 1.2 + nodePhase) * 0.1;
@@ -884,28 +885,28 @@ export default function SystemsGalaxy() {
         }
 
         // Label
-        const labelSize = sys.importance === "primary" ? 13 : 11;
-        const labelWeight = sys.importance === "primary" ? 500 : 400;
-        const labelAlpha = isHovered
-          ? 1.0
-          : isDimmed
-            ? 0.15
-            : sys.importance === "primary"
-              ? 0.8
-              : sys.importance === "secondary"
-                ? 0.55
-                : 0.3;
+        const isPrimary = sys.importance === "primary";
+        const isSecondary = sys.importance === "secondary";
+        const labelSize = isPrimary ? 13 : 11;
+        const labelWeight = isPrimary ? 500 : 400;
+
+        let labelAlpha: number;
+        if (isHovered) { labelAlpha = 1; }
+        else if (isDimmed) { labelAlpha = 0.15; }
+        else if (isPrimary) { labelAlpha = 0.8; }
+        else if (isSecondary) { labelAlpha = 0.55; }
+        else { labelAlpha = 0.3; }
+
+        let labelColor: string;
+        if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
+        else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
+        else { labelColor = "rgba(130, 140, 150, 1)"; }
 
         ctx.globalAlpha = labelAlpha;
         ctx.font = `${labelWeight} ${labelSize * sf}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.fillStyle =
-          sys.importance === "primary"
-            ? "rgba(240, 220, 170, 1)"
-            : sys.importance === "secondary"
-              ? "rgba(190, 210, 230, 1)"
-              : "rgba(130, 140, 150, 1)";
+        ctx.fillStyle = labelColor;
         ctx.fillText(sys.name, sx, sy + r + 4);
         ctx.globalAlpha = 1;
       }
@@ -933,7 +934,7 @@ export default function SystemsGalaxy() {
       const w = dimensions.width;
       const h = dimensions.height;
       const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
-      const hit = hitTest(mx, my, timeRef.current, w, h, w / 2, h / 2, sf);
+      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
 
       if (hit) {
         setHoveredId(hit.id);
@@ -962,7 +963,7 @@ export default function SystemsGalaxy() {
       const w = dimensions.width;
       const h = dimensions.height;
       const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
-      const hit = hitTest(mx, my, timeRef.current, w, h, w / 2, h / 2, sf);
+      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
       if (hit?.type === "system" && hit.item.url) {
         window.open(hit.item.url, "_blank");
       }

@@ -34,9 +34,9 @@ export type OrbitConfig = {
 };
 
 export const orbits: OrbitConfig[] = [
-  { rx: 0.44, ry: 0.40, rotation: -0.12, opacity: 0.18 },
+  { rx: 0.44, ry: 0.4, rotation: -0.12, opacity: 0.18 },
   { rx: 0.36, ry: 0.32, rotation: -0.08, opacity: 0.15 },
-  { rx: 0.30, ry: 0.30, rotation: -0.05, opacity: 0.11 },
+  { rx: 0.3, ry: 0.3, rotation: -0.05, opacity: 0.11 },
 ];
 
 export const systems: SystemNode[] = [
@@ -176,7 +176,7 @@ export const domains: DomainNode[] = [
     name: "AdTech",
     angle: 1.8,
     orbit: 0,
-    offset: { x: 0.10, y: -0.10 },
+    offset: { x: 0.1, y: -0.1 },
   },
   {
     id: "productivity",
@@ -211,7 +211,7 @@ export const domains: DomainNode[] = [
     name: "Real-time Collaboration",
     angle: 2.2,
     orbit: 1,
-    offset: { x: -0.10, y: 0.08 },
+    offset: { x: -0.1, y: 0.08 },
   },
 ];
 
@@ -226,5 +226,5 @@ export const techClusters: TechClusterNode[] = [
   { id: "frameworks", name: "Frameworks", position: { x: -0.13, y: -0.14 }, technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
   { id: "monitoring", name: "Monitoring", position: { x: -0.14, y: -0.04 }, technologies: ["Grafana", "Elasticsearch"] },
   { id: "data_analysis", name: "Data Analysis", position: { x: 0.14, y: 0.08 }, technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
-  { id: "methodologies", name: "Methodologies", position: { x: -0.10, y: 0.14 }, technologies: ["Agile/Scrum", "TDD", "BDD"] },
+  { id: "methodologies", name: "Methodologies", position: { x: -0.1, y: 0.14 }, technologies: ["Agile/Scrum", "TDD", "BDD"] },
 ];

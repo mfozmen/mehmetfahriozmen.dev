@@ -101,13 +101,10 @@ export function generateBgStars(w: number, h: number, count: number): BgStar[] {
     const n = Math.round(count * share);
     for (let i = 0; i < n; i++) {
       const isBright = rand() < 0.02;
-      const spikeChance = isBright
-        ? 0.9
-        : layer === "near"
-          ? 0.45
-          : layer === "mid"
-            ? 0.15
-            : 0;
+      let spikeChance = 0;
+      if (isBright) { spikeChance = 0.9; }
+      else if (layer === "near") { spikeChance = 0.45; }
+      else if (layer === "mid") { spikeChance = 0.15; }
       const hasSpikes = rand() < spikeChance;
       let spike: SpikeGeometry | null = null;
       if (hasSpikes) {

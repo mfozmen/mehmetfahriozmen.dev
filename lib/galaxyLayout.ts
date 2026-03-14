@@ -13,7 +13,7 @@ import {
 
 export const ORBIT_SPEEDS: Record<SystemImportance, number> = {
   primary: 0.015,
-  secondary: 0.010,
+  secondary: 0.01,
   minor: 0.008,
 };
 
