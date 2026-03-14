@@ -7,4 +7,12 @@ export default defineConfig({
       "@": path.resolve(__dirname),
     },
   },
+  test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "lcov"],
+      include: ["lib/**", "data/**", "components/**"],
+      exclude: ["**/*.test.ts"],
+    },
+  },
 });
