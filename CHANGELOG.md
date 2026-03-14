@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.3](https://github.com/mfozmen/mehmetfahriozmen/compare/v0.2.2...v0.2.3) (2026-03-14)
+
+### Bug Fixes
+
+* correct repository URL in package.json and CHANGELOG.md ([cc37f55](https://github.com/mfozmen/mehmetfahriozmen/commit/cc37f556bf361df6db48d41517ed53ade3add17b)), closes [#0a0a0a](https://github.com/mfozmen/mehmetfahriozmen/issues/0a0a0a)
+
 ## [0.2.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.1...v0.2.2) (2026-03-14)
 
 ## [0.2.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.0...v0.2.1) (2026-03-14)
