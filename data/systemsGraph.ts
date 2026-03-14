@@ -214,15 +214,15 @@ export const domains: DomainNode[] = [
 ];
 
 export const techClusters: TechClusterNode[] = [
-  { id: "search", name: "Search", position: { x: 0.00, y: -0.19 }, technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"] },
-  { id: "messaging", name: "Messaging", position: { x: 0.07, y: -0.16 }, technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"] },
-  { id: "databases", name: "Databases", position: { x: 0.11, y: -0.08 }, technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"] },
-  { id: "methodologies", name: "Methodologies", position: { x: 0.13, y: 0.02 }, technologies: ["Agile/Scrum", "TDD", "BDD"] },
-  { id: "data_analysis", name: "Data Analysis", position: { x: 0.10, y: 0.12 }, technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
-  { id: "architecture", name: "Architecture", position: { x: 0.04, y: 0.18 }, technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"] },
-  { id: "api", name: "API", position: { x: -0.04, y: 0.18 }, technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"] },
-  { id: "devops", name: "DevOps", position: { x: -0.10, y: 0.12 }, technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"] },
-  { id: "monitoring", name: "Monitoring", position: { x: -0.13, y: 0.02 }, technologies: ["Grafana", "Elasticsearch"] },
-  { id: "cloud", name: "Cloud", position: { x: -0.11, y: -0.08 }, technologies: ["AWS", "Azure", "DigitalOcean"] },
-  { id: "frameworks", name: "Frameworks", position: { x: -0.07, y: -0.16 }, technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
+  { id: "databases", name: "Databases", position: { x: 0.13, y: -0.02 }, technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"] },
+  { id: "search", name: "Search", position: { x: 0.03, y: -0.17 }, technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"] },
+  { id: "cloud", name: "Cloud", position: { x: -0.06, y: -0.12 }, technologies: ["AWS", "Azure", "DigitalOcean"] },
+  { id: "devops", name: "DevOps", position: { x: -0.14, y: 0.06 }, technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"] },
+  { id: "api", name: "API", position: { x: -0.02, y: 0.16 }, technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"] },
+  { id: "architecture", name: "Architecture", position: { x: 0.06, y: 0.15 }, technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"] },
+  { id: "messaging", name: "Messaging", position: { x: 0.12, y: -0.12 }, technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"] },
+  { id: "frameworks", name: "Frameworks", position: { x: -0.13, y: -0.14 }, technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
+  { id: "monitoring", name: "Monitoring", position: { x: -0.14, y: -0.04 }, technologies: ["Grafana", "Elasticsearch"] },
+  { id: "data_analysis", name: "Data Analysis", position: { x: 0.14, y: 0.08 }, technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
+  { id: "methodologies", name: "Methodologies", position: { x: -0.10, y: 0.14 }, technologies: ["Agile/Scrum", "TDD", "BDD"] },
 ];
