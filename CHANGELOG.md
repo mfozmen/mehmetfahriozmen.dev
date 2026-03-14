@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.4](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.3...v0.2.4) (2026-03-14)
+
+### Bug Fixes
+
+* set explicit repo context for conventional-changelog ([0ccccf4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0ccccf41dcab5bcc544a882a1b988844c3b3bf4f))
+
 ## [0.2.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.2...v0.2.3) (2026-03-14)
 
 ### Bug Fixes
