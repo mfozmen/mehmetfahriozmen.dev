@@ -755,7 +755,7 @@ export default function SystemsGalaxy() {
       // --- 7. Orbit ellipses (4 rings) ---
       for (const orbit of orbits) {
         ctx.strokeStyle = `rgba(150, 170, 200, ${orbit.opacity})`;
-        ctx.lineWidth = 0.8;
+        ctx.lineWidth = 1;
         ctx.save();
         ctx.translate(cx + px, cy + py);
         ctx.rotate(orbit.rotation);

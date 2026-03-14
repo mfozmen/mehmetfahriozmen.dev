@@ -34,9 +34,9 @@ export type OrbitConfig = {
 };
 
 export const orbits: OrbitConfig[] = [
-  { rx: 0.44, ry: 0.40, rotation: -0.12, opacity: 0.14 },
-  { rx: 0.30, ry: 0.26, rotation: -0.08, opacity: 0.12 },
-  { rx: 0.22, ry: 0.18, rotation: -0.05, opacity: 0.09 },
+  { rx: 0.44, ry: 0.40, rotation: -0.12, opacity: 0.18 },
+  { rx: 0.30, ry: 0.26, rotation: -0.08, opacity: 0.15 },
+  { rx: 0.22, ry: 0.18, rotation: -0.05, opacity: 0.11 },
 ];
 
 export const systems: SystemNode[] = [
@@ -216,11 +216,11 @@ export const domains: DomainNode[] = [
 export const techClusters: TechClusterNode[] = [
   { id: "databases", name: "Databases", position: { x: 0.20, y: -0.08 }, technologies: ["PostgreSQL", "MySQL", "MSSQL", "Redis", "Couchbase"] },
   { id: "search", name: "Search", position: { x: 0.10, y: -0.16 }, technologies: ["Elasticsearch", "Meilisearch", "Typesense", "Algolia"] },
-  { id: "cloud", name: "Cloud", position: { x: -0.08, y: -0.17 }, technologies: ["AWS", "Azure", "DigitalOcean"] },
+  { id: "cloud", name: "Cloud", position: { x: -0.14, y: -0.10 }, technologies: ["AWS", "Azure", "DigitalOcean"] },
   { id: "devops", name: "DevOps", position: { x: -0.20, y: -0.09 }, technologies: ["Docker", "Kubernetes", "CircleCI", "Bitbucket Pipelines", "GitHub Actions", "Vercel"] },
   { id: "api", name: "API", position: { x: -0.21, y: 0.07 }, technologies: ["Hasura", "Directus", "Supabase", "GraphQL", "REST", "WebSocket"] },
   { id: "architecture", name: "Architecture", position: { x: -0.10, y: 0.16 }, technologies: ["Event-Driven", "CQRS", "Microservices", "Monolith", "Monorepo"] },
-  { id: "messaging", name: "Messaging", position: { x: 0.08, y: 0.15 }, technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"] },
+  { id: "messaging", name: "Messaging", position: { x: 0.14, y: 0.10 }, technologies: ["RabbitMQ", "Kafka", "Redis Pub/Sub", "AWS SQS/SNS"] },
   { id: "frameworks", name: "Frameworks", position: { x: 0.21, y: 0.08 }, technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
   { id: "monitoring", name: "Monitoring", position: { x: -0.18, y: -0.15 }, technologies: ["Grafana", "Elasticsearch"] },
   { id: "data_analysis", name: "Data Analysis", position: { x: 0.19, y: -0.14 }, technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
