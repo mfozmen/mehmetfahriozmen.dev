@@ -111,6 +111,26 @@ export interface NebulaTexture {
   data: Uint8ClampedArray;
 }
 
+/** Cosine fade factor for a normalized coordinate (0-1) within an edge band. */
+function edgeFadeFactor(t: number, band: number): number {
+  if (t < band) return (1 - Math.cos((Math.PI * t) / band)) / 2;
+  if (t > 1 - band) return (1 - Math.cos((Math.PI * (1 - t)) / band)) / 2;
+  return 1;
+}
+
+/** Apply smooth cosine fade to alpha channel at all edges. */
+function applyEdgeFade(data: Uint8ClampedArray, w: number, h: number) {
+  const band = 0.3;
+  for (let y = 0; y < h; y++) {
+    const fadeY = edgeFadeFactor(y / h, band);
+    for (let x = 0; x < w; x++) {
+      const fadeX = edgeFadeFactor(x / w, band);
+      const i = (y * w + x) * 4;
+      data[i + 3] = Math.round(data[i + 3] * fadeX * fadeY);
+    }
+  }
+}
+
 /**
  * Generate a warm-toned nebula noise texture concentrated along the galactic plane.
  * Returns an ImageData-compatible object. Generated once, composited per-frame.
@@ -124,68 +144,29 @@ export function generateNebulaTexture(w: number, h: number): NebulaTexture {
 
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      // Normalized coordinates
       const nx = x / w;
       const ny = y / h;
 
-      // Noise at multiple scales for organic cloud structure
       const noise = fbm(nx * 6, ny * 6, 5);
-      // Map from [-1,1] to [0,1]
       const n = (noise + 1) * 0.5;
 
-      // Galactic plane envelope — gaussian falloff from center band
       const distFromPlane = Math.abs(y - cy) / (h * 0.5);
       const planeEnvelope = Math.exp(-distFromPlane * distFromPlane * 4);
 
-      // Horizontal density — denser near center, fades at edges
       const distFromCenterX = Math.abs(x - cx) / (w * 0.5);
       const hEnvelope = Math.exp(-distFromCenterX * distFromCenterX * 1.5);
 
-      // Combined intensity — boost contrast with power curve
-      const raw = n * planeEnvelope * hEnvelope;
-      const intensity = Math.pow(raw, 0.6); // Boost midtones
-
-      // Warm amber/brown tones — more vivid
-      const r = Math.round(intensity * 180);
-      const g = Math.round(intensity * 120);
-      const b = Math.round(intensity * 50);
-      const a = Math.round(intensity * 90);
+      const intensity = Math.pow(n * planeEnvelope * hEnvelope, 0.6);
 
       const i = (y * w + x) * 4;
-      data[i] = r;
-      data[i + 1] = g;
-      data[i + 2] = b;
-      data[i + 3] = a;
+      data[i] = Math.round(intensity * 180);
+      data[i + 1] = Math.round(intensity * 120);
+      data[i + 2] = Math.round(intensity * 50);
+      data[i + 3] = Math.round(intensity * 90);
     }
   }
 
-  // Edge fade mask — smooth cosine falloff in the outer 30% of each edge
-  const edgeFade = 0.3;
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      let fadeX = 1,
-        fadeY = 1;
-      const nx = x / w;
-      const ny = y / h;
-
-      if (nx < edgeFade) {
-        fadeX = (1 - Math.cos((Math.PI * nx) / edgeFade)) / 2;
-      }
-      if (nx > 1 - edgeFade) {
-        fadeX = (1 - Math.cos((Math.PI * (1 - nx)) / edgeFade)) / 2;
-      }
-
-      if (ny < edgeFade) {
-        fadeY = (1 - Math.cos((Math.PI * ny) / edgeFade)) / 2;
-      }
-      if (ny > 1 - edgeFade) {
-        fadeY = (1 - Math.cos((Math.PI * (1 - ny)) / edgeFade)) / 2;
-      }
-
-      const i = (y * w + x) * 4;
-      data[i + 3] = Math.round(data[i + 3] * fadeX * fadeY);
-    }
-  }
+  applyEdgeFade(data, w, h);
 
   return { width: w, height: h, data };
 }
