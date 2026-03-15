@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { useGalaxySetup } from "./useGalaxySetup";
 import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
 import { hitTest } from "@/lib/galaxyInteraction";
+import { updateSatelliteAnim } from "@/lib/galaxyRenderers";
 
 export default function DesktopGalaxy() {
   const {
@@ -30,17 +31,12 @@ export default function DesktopGalaxy() {
       const dt = prevTimestampRef.current > 0 ? (timestamp - prevTimestampRef.current) / 1000 : 0;
       prevTimestampRef.current = timestamp;
 
-      const hovType = hoveredTypeRef.current;
-      const hovId = hoveredIdRef.current;
-      if (hovType === "tech") {
-        if (lastHoveredClusterRef.current !== hovId) {
-          satelliteAnimRef.current = 0;
-          lastHoveredClusterRef.current = hovId;
-        }
-        satelliteAnimRef.current = Math.min(1, satelliteAnimRef.current + dt * 2.5);
-      } else {
-        satelliteAnimRef.current = Math.max(0, satelliteAnimRef.current - dt * 4);
-      }
+      const satUpdate = updateSatelliteAnim(
+        hoveredTypeRef.current, hoveredIdRef.current,
+        lastHoveredClusterRef.current, satelliteAnimRef.current, dt,
+      );
+      satelliteAnimRef.current = satUpdate.anim;
+      lastHoveredClusterRef.current = satUpdate.lastCluster;
 
       const dpr = window.devicePixelRatio || 1;
       const { width: w, height: h } = dimensions;

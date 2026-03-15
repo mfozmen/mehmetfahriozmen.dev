@@ -22,12 +22,14 @@ import {
 } from "@/lib/galaxyStars";
 import {
   type Nebula,
-  systemStarRadius,
   drawSatellites,
   drawGalacticCenter,
   drawLightRays,
   drawDustBand,
   drawVignette,
+  drawTechConnections,
+  drawDomainConnections,
+  drawSystemStar,
 } from "@/lib/galaxyRenderers";
 import { getHighlightedIds } from "@/lib/galaxyInteraction";
 
@@ -201,89 +203,10 @@ export function renderGalaxyFrame(
 
   const smallScreen = sf < 0.7;
 
-  // --- 8. Connection lines: tech cluster ↔ system ---
-  if (highlighted && hoveredId) {
-    if (hoveredType === "system") {
-      const sys = systems.find((s) => s.id === hoveredId);
-      if (sys) {
-        const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-        ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
-        ctx.lineWidth = 0.6;
-        ctx.setLineDash([2, 3]);
-        for (const tcId of sys.techClusters) {
-          const tc = techClusters.find((t) => t.id === tcId);
-          if (tc) {
-            const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
-            ctx.beginPath();
-            ctx.moveTo(sysPos.x + px, sysPos.y + py);
-            ctx.lineTo(tcPos.x + px, tcPos.y + py);
-            ctx.stroke();
-          }
-        }
-        ctx.setLineDash([]);
-      }
-    } else if (hoveredType === "tech") {
-      const tc = techClusters.find((t) => t.id === hoveredId);
-      if (tc) {
-        const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
-        const connectedSystems = techToSystems.get(hoveredId) || [];
-        ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
-        ctx.lineWidth = 0.6;
-        ctx.setLineDash([2, 3]);
-        for (const sysId of connectedSystems) {
-          const sys = systems.find((s) => s.id === sysId);
-          if (sys) {
-            const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-            ctx.beginPath();
-            ctx.moveTo(tcPos.x + px, tcPos.y + py);
-            ctx.lineTo(sysPos.x + px, sysPos.y + py);
-            ctx.stroke();
-          }
-        }
-        ctx.setLineDash([]);
-      }
-    }
-  }
-
-  // --- 9. Connection lines: domain ↔ system ---
-  if (highlighted && hoveredId) {
-    ctx.strokeStyle = "rgba(120, 180, 240, 0.2)";
-    ctx.lineWidth = 0.8;
-    ctx.setLineDash([3, 4]);
-
-    if (hoveredType === "system") {
-      const sys = systems.find((s) => s.id === hoveredId);
-      if (sys) {
-        const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-        for (const domId of sys.domains) {
-          const dom = domains.find((d) => d.id === domId);
-          if (dom) {
-            const domPos = getDomainPosition(dom, w, h, cx, cy);
-            ctx.beginPath();
-            ctx.moveTo(sysPos.x + px, sysPos.y + py);
-            ctx.lineTo(domPos.x + px, domPos.y + py);
-            ctx.stroke();
-          }
-        }
-      }
-    } else if (hoveredType === "domain") {
-      const dom = domains.find((d) => d.id === hoveredId);
-      if (dom) {
-        const domPos = getDomainPosition(dom, w, h, cx, cy);
-        const connectedSystems = domainToSystems.get(hoveredId) || [];
-        for (const sysId of connectedSystems) {
-          const sys = systems.find((s) => s.id === sysId);
-          if (sys) {
-            const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-            ctx.beginPath();
-            ctx.moveTo(domPos.x + px, domPos.y + py);
-            ctx.lineTo(sysPos.x + px, sysPos.y + py);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-    ctx.setLineDash([]);
+  // --- 8. Connection lines ---
+  if (highlighted && hoveredId && hoveredType) {
+    drawTechConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, techToSystems);
+    drawDomainConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, domainToSystems);
   }
 
   // --- 10. Satellites ---
@@ -368,106 +291,10 @@ export function renderGalaxyFrame(
   ctx.globalAlpha = 1;
 
   // --- 13. System stars ---
-  for (const sys of systems) { // NOSONAR: S3776 — canvas render loop
+  for (const sys of systems) {
     const pos = getSystemPosition(sys, time, w, h, cx, cy);
-    const sx = pos.x + px;
-    const sy = pos.y + py;
     const isHL = !highlighted || highlighted.has(sys.id);
-    const isHovered = sys.id === hoveredId;
     const isDimmed = highlighted && !isHL;
-
-    let hash = 0;
-    for (const ch of sys.id) {
-      hash = Math.trunc((hash << 5) - hash + ch.codePointAt(0)!);
-    }
-    const nodePhase = ((hash % 1000) / 1000) * Math.PI * 2;
-    const twinkle = 1 + Math.sin(time * 1.2 + nodePhase) * 0.1;
-
-    let r = systemStarRadius(sys.importance, sf);
-    if (isHovered) { r *= 1.3; }
-
-    ctx.globalAlpha = isDimmed ? 0.15 : 1;
-
-    if (sys.importance === "primary") {
-      const glowR = isHovered ? r * 5 : r * 4;
-      const glowAlpha = (isHovered ? 0.4 : 0.3) * twinkle;
-      const gradient = ctx.createRadialGradient(sx, sy, r * 0.15, sx, sy, glowR);
-      gradient.addColorStop(0, `rgba(240, 192, 64, ${glowAlpha})`);
-      gradient.addColorStop(0.4, `rgba(240, 192, 64, ${glowAlpha * 0.3})`);
-      gradient.addColorStop(1, "rgba(240, 192, 64, 0)");
-      ctx.beginPath(); ctx.arc(sx, sy, glowR, 0, Math.PI * 2); ctx.fillStyle = gradient; ctx.fill();
-
-      ctx.save();
-      ctx.shadowColor = "rgba(240, 200, 80, 0.6)";
-      ctx.shadowBlur = (isHovered ? 18 : 14) * twinkle;
-      ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fillStyle = "#f0c040"; ctx.fill();
-      ctx.restore();
-
-      const spikeLen = r * (3 + twinkle * 2);
-      const spikeAlpha = (isDimmed ? 0.15 : 1) * 0.25 * twinkle;
-      ctx.globalAlpha = spikeAlpha;
-      ctx.strokeStyle = "#f0c040";
-      ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(sx - spikeLen, sy); ctx.lineTo(sx + spikeLen, sy); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(sx, sy - spikeLen); ctx.lineTo(sx, sy + spikeLen); ctx.stroke();
-      const diagLen = spikeLen * 0.6;
-      ctx.globalAlpha = spikeAlpha * 0.5;
-      ctx.lineWidth = 0.3;
-      ctx.beginPath(); ctx.moveTo(sx - diagLen, sy - diagLen); ctx.lineTo(sx + diagLen, sy + diagLen); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(sx + diagLen, sy - diagLen); ctx.lineTo(sx - diagLen, sy + diagLen); ctx.stroke();
-      ctx.globalAlpha = isDimmed ? 0.15 : 1;
-    } else if (sys.importance === "secondary") {
-      const glowR = isHovered ? r * 4 : r * 2.5;
-      const glowAlpha = (isHovered ? 0.25 : 0.12) * twinkle;
-      const gradient = ctx.createRadialGradient(sx, sy, r * 0.15, sx, sy, glowR);
-      gradient.addColorStop(0, `rgba(168, 196, 220, ${glowAlpha})`);
-      gradient.addColorStop(0.5, `rgba(168, 196, 220, ${glowAlpha * 0.3})`);
-      gradient.addColorStop(1, "rgba(168, 196, 220, 0)");
-      ctx.beginPath(); ctx.arc(sx, sy, glowR, 0, Math.PI * 2); ctx.fillStyle = gradient; ctx.fill();
-
-      ctx.save();
-      ctx.shadowColor = "rgba(168, 196, 220, 0.4)";
-      ctx.shadowBlur = (isHovered ? 12 : 6) * twinkle;
-      ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fillStyle = "#a8c4dc"; ctx.fill();
-      ctx.restore();
-    } else {
-      const glowR = r * 1.8;
-      const glowAlpha = 0.06 * twinkle;
-      const gradient = ctx.createRadialGradient(sx, sy, r * 0.2, sx, sy, glowR);
-      gradient.addColorStop(0, `rgba(74, 85, 101, ${glowAlpha})`);
-      gradient.addColorStop(1, "rgba(74, 85, 101, 0)");
-      ctx.beginPath(); ctx.arc(sx, sy, glowR, 0, Math.PI * 2); ctx.fillStyle = gradient; ctx.fill();
-      ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fillStyle = "#4a5565"; ctx.fill();
-    }
-
-    if (isHovered) {
-      ctx.beginPath(); ctx.arc(sx, sy, r * 2.2, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.2)"; ctx.lineWidth = 0.5; ctx.stroke();
-    }
-
-    const isPrimary = sys.importance === "primary";
-    const isSecondary = sys.importance === "secondary";
-    const labelSize = isPrimary ? 13 : 11;
-    const labelWeight = isPrimary ? 500 : 400;
-
-    let labelAlpha: number;
-    if (isHovered) { labelAlpha = 1; }
-    else if (isDimmed) { labelAlpha = 0.15; }
-    else if (isPrimary) { labelAlpha = 0.8; }
-    else if (isSecondary) { labelAlpha = 0.55; }
-    else { labelAlpha = 0.3; }
-
-    let labelColor: string;
-    if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
-    else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
-    else { labelColor = "rgba(130, 140, 150, 1)"; }
-
-    ctx.globalAlpha = labelAlpha;
-    ctx.font = `${labelWeight} ${labelSize * sf}px system-ui, -apple-system, sans-serif`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.fillStyle = labelColor;
-    ctx.fillText(sys.name, sx, sy + r + 4);
-    ctx.globalAlpha = 1;
+    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed);
   }
 }
