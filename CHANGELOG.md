@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.4...v0.3.0) (2026-03-15)
+
+### Features
+
+* add simplex noise nebula texture to galaxy visualization ([2437e9e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2437e9eaf72b9d8c1140fd1a4cd0efd4c929b3b9))
+
 ## [0.2.4](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.3...v0.2.4) (2026-03-14)
 
 ### Bug Fixes
