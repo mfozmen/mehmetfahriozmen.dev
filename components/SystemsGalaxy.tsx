@@ -25,6 +25,7 @@ import {
   applyStarDrift,
 } from "@/lib/galaxyStars";
 import { generateNebulaTexture } from "@/lib/galaxyNebula";
+import { ASPECT_RATIO, clampZoom, clampPan, computePinchZoom } from "@/lib/galaxyTouch";
 
 /* ------------------------------------------------------------------ */
 /*  Background helpers                                                 */
@@ -316,6 +317,19 @@ export default function SystemsGalaxy() {
   const lastHoveredClusterRef = useRef<string | null>(null);
   const prevTimestampRef = useRef(0);
 
+  // Zoom/pan state for pinch-zoom on touch
+  const zoomRef = useRef(1);
+  const panRef = useRef({ x: 0, y: 0 });
+  const touchStateRef = useRef<{
+    type: "none" | "pan" | "pinch";
+    startX: number;
+    startY: number;
+    startPanX: number;
+    startPanY: number;
+    initialDistance: number;
+    initialZoom: number;
+  }>({ type: "none", startX: 0, startY: 0, startPanX: 0, startPanY: 0, initialDistance: 0, initialZoom: 1 });
+
   const isMobile = dimensions.width < MOBILE_BREAKPOINT;
   const isMobileRef = useRef(isMobile);
 
@@ -351,8 +365,7 @@ export default function SystemsGalaxy() {
     const measure = () => {
       const w = Math.round(el.getBoundingClientRect().width);
       if (w <= 0) return;
-      const mobile = w < MOBILE_BREAKPOINT;
-      const h = mobile ? 450 : 600;
+      const h = Math.round(w / ASPECT_RATIO);
       setDimensions({ width: w, height: h });
       bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
       nebulaeRef.current = generateNebulae(w, h);
@@ -401,10 +414,12 @@ export default function SystemsGalaxy() {
   const hitTest = useCallback(
     (opts: { mx: number; my: number; time: number; w: number; h: number; cx: number; cy: number; sf: number }): HitResult => {
       const { mx, my, time, w, h, cx, cy, sf } = opts;
+      // 50% larger hit targets on mobile for fat finger tolerance
+      const touchBoost = isMobileRef.current ? 1.5 : 1;
       // Systems first
       for (const sys of systems) {
         const pos = getSystemPosition(sys, time, w, h, cx, cy);
-        const hitR = systemStarRadius(sys.importance, sf) * 3 + 10;
+        const hitR = (systemStarRadius(sys.importance, sf) * 3 + 10) * touchBoost;
         const dx = mx - pos.x, dy = my - pos.y;
         if (dx * dx + dy * dy < hitR * hitR) {
           return { type: "system", id: sys.id, item: sys };
@@ -414,7 +429,8 @@ export default function SystemsGalaxy() {
       for (const dom of domains) {
         const pos = getDomainPosition(dom, w, h, cx, cy);
         const dx = mx - pos.x, dy = my - pos.y;
-        if (dx * dx + dy * dy < 20 * 20) {
+        const domHitR = 20 * touchBoost;
+        if (dx * dx + dy * dy < domHitR * domHitR) {
           return { type: "domain", id: dom.id, item: dom };
         }
       }
@@ -422,7 +438,8 @@ export default function SystemsGalaxy() {
       for (const tc of techClusters) {
         const pos = getTechClusterPosition(tc, w, h, cx, cy);
         const dx = mx - pos.x, dy = my - pos.y;
-        if (dx * dx + dy * dy < 16 * 16) {
+        const tcHitR = 16 * touchBoost;
+        if (dx * dx + dy * dy < tcHitR * tcHitR) {
           return { type: "tech", id: tc.id, item: tc };
         }
       }
@@ -471,7 +488,18 @@ export default function SystemsGalaxy() {
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      ctx.clearRect(0, 0, w, h);
+      // Apply zoom/pan transform
+      const zoom = zoomRef.current;
+      const pan = panRef.current;
+      if (zoom > 1) {
+        const cx0 = w / 2;
+        const cy0 = h / 2;
+        ctx.translate(cx0 + pan.x, cy0 + pan.y);
+        ctx.scale(zoom, zoom);
+        ctx.translate(-cx0, -cy0);
+      }
+
+      ctx.clearRect(-w, -h, w * 3, h * 3);
 
       const px = mouseOffsetRef.current.x;
       const py = mouseOffsetRef.current.y;
@@ -995,6 +1023,115 @@ export default function SystemsGalaxy() {
     [dimensions, hitTest],
   );
 
+  // --- Touch handlers ---
+
+  const getTouchPos = useCallback((e: React.TouchEvent<HTMLCanvasElement>, index: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[index];
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  }, []);
+
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLCanvasElement>) => {
+      if (e.touches.length === 2) {
+        // Pinch start
+        const t0 = getTouchPos(e, 0);
+        const t1 = getTouchPos(e, 1);
+        const dist = Math.hypot(t1.x - t0.x, t1.y - t0.y);
+        touchStateRef.current = {
+          type: "pinch",
+          startX: 0, startY: 0,
+          startPanX: panRef.current.x, startPanY: panRef.current.y,
+          initialDistance: dist,
+          initialZoom: zoomRef.current,
+        };
+      } else if (e.touches.length === 1) {
+        const t = getTouchPos(e, 0);
+        touchStateRef.current = {
+          type: "pan",
+          startX: t.x, startY: t.y,
+          startPanX: panRef.current.x, startPanY: panRef.current.y,
+          initialDistance: 0,
+          initialZoom: zoomRef.current,
+        };
+      }
+    },
+    [getTouchPos],
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
+      const state = touchStateRef.current;
+      const w = dimensions.width;
+      const h = dimensions.height;
+
+      if (state.type === "pinch" && e.touches.length === 2) {
+        const t0 = getTouchPos(e, 0);
+        const t1 = getTouchPos(e, 1);
+        const dist = Math.hypot(t1.x - t0.x, t1.y - t0.y);
+        zoomRef.current = clampZoom(computePinchZoom({
+          initialDistance: state.initialDistance,
+          currentDistance: dist,
+          initialZoom: state.initialZoom,
+        }));
+      } else if (state.type === "pan" && e.touches.length === 1 && zoomRef.current > 1) {
+        const t = getTouchPos(e, 0);
+        const dx = t.x - state.startX;
+        const dy = t.y - state.startY;
+        const clamped = clampPan(state.startPanX + dx, state.startPanY + dy, zoomRef.current, w, h);
+        panRef.current = clamped;
+      }
+    },
+    [dimensions, getTouchPos],
+  );
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent<HTMLCanvasElement>) => {
+      const state = touchStateRef.current;
+
+      // Single tap detection: pan type, no significant movement
+      if (state.type === "pan" && e.changedTouches.length === 1) {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.changedTouches[0];
+        const mx = touch.clientX - rect.left;
+        const my = touch.clientY - rect.top;
+        const dx = mx - state.startX;
+        const dy = my - state.startY;
+
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+          // It's a tap, not a drag
+          const w = dimensions.width;
+          const h = dimensions.height;
+          const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
+          const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
+
+          if (hit) {
+            if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {
+              // Second tap on active system → open URL
+              window.open(hit.item.url, "_blank");
+            } else {
+              // First tap → activate hover
+              setHoveredId(hit.id);
+              setHoveredType(hit.type);
+            }
+          } else {
+            // Tap empty space → reset
+            setHoveredId(null);
+            setHoveredType(null);
+          }
+        }
+      }
+
+      touchStateRef.current = { type: "none", startX: 0, startY: 0, startPanX: 0, startPanY: 0, initialDistance: 0, initialZoom: 1 };
+    },
+    [dimensions, hitTest],
+  );
+
   const cursorStyle =
     hoveredId && hoveredType === "system"
       ? "pointer"
@@ -1024,6 +1161,9 @@ export default function SystemsGalaxy() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onClick={handleClick}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         />
       </div>
     </section>
