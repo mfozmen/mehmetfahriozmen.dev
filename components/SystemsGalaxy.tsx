@@ -37,7 +37,6 @@ import { hitTest, getHighlightedIds } from "@/lib/galaxyInteraction";
 /*  Constants                                                         */
 /* ------------------------------------------------------------------ */
 
-const MOBILE_BREAKPOINT = 640;
 const BG_STAR_COUNT = 1200;
 
 /* ------------------------------------------------------------------ */
@@ -76,12 +75,11 @@ export default function SystemsGalaxy() {
     initialZoom: number;
   }>({ type: "none", startX: 0, startY: 0, startPanX: 0, startPanY: 0, initialDistance: 0, initialZoom: 1 });
 
-  const isMobile = dimensions.width < MOBILE_BREAKPOINT;
-  const isMobileRef = useRef(isMobile);
+  const sfRef = useRef(Math.min(1, dimensions.width / 900));
 
   useEffect(() => { hoveredIdRef.current = hoveredId; }, [hoveredId]);
   useEffect(() => { hoveredTypeRef.current = hoveredType; }, [hoveredType]);
-  useEffect(() => { isMobileRef.current = isMobile; }, [isMobile]);
+  useEffect(() => { sfRef.current = Math.min(1, dimensions.width / 900); }, [dimensions]);
 
   // Lookup maps
   const domainToSystems = useRef(new Map<string, string[]>());
@@ -317,8 +315,8 @@ export default function SystemsGalaxy() {
           ? getHighlightedIds(currentHoveredId, currentHoveredType, domainToSystems.current, techToSystems.current)
           : null;
 
-      const mobile = isMobileRef.current;
-      const sf = mobile ? 0.75 : 1;
+      const sf = sfRef.current;
+      const smallScreen = sf < 0.7;
 
       // --- 7. Connection lines: tech cluster ↔ system (purple, thinnest) ---
       if (highlighted && currentHoveredId) {
@@ -417,7 +415,7 @@ export default function SystemsGalaxy() {
             { x: satPos.x + px, y: satPos.y + py },
             satelliteAnimRef.current,
             timestamp,
-            isMobileRef.current,
+            smallScreen,
           );
         }
       }
@@ -451,7 +449,7 @@ export default function SystemsGalaxy() {
         ctx.stroke();
 
         // Label — hidden on mobile unless active
-        if (isActive || !mobile) {
+        if (isActive || !smallScreen) {
           ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "top";
@@ -492,7 +490,7 @@ export default function SystemsGalaxy() {
         ctx.stroke();
 
         // Label — hidden on mobile unless active
-        if (isActive || !mobile) {
+        if (isActive || !smallScreen) {
           ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "top";
@@ -676,8 +674,8 @@ export default function SystemsGalaxy() {
 
       const w = dimensions.width;
       const h = dimensions.height;
-      const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
-      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf, mobile: isMobileRef.current });
+      const sf = sfRef.current;
+      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
 
       if (hit) {
         setHoveredId(hit.id);
@@ -705,8 +703,8 @@ export default function SystemsGalaxy() {
       const my = e.clientY - rect.top;
       const w = dimensions.width;
       const h = dimensions.height;
-      const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
-      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf, mobile: isMobileRef.current });
+      const sf = sfRef.current;
+      const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
       if (hit?.type === "system" && hit.item.url) {
         window.open(hit.item.url, "_blank");
       }
@@ -798,8 +796,8 @@ export default function SystemsGalaxy() {
           // It's a tap, not a drag
           const w = dimensions.width;
           const h = dimensions.height;
-          const sf = w < MOBILE_BREAKPOINT ? 0.75 : 1;
-          const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf, mobile: isMobileRef.current });
+          const sf = sfRef.current;
+          const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf });
 
           if (hit) {
             if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {

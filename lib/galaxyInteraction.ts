@@ -33,10 +33,10 @@ export function hitTest(opts: {
   cx: number;
   cy: number;
   sf: number;
-  mobile: boolean;
 }): HitResult {
-  const { mx, my, time, w, h, cx, cy, sf, mobile } = opts;
-  const touchBoost = mobile ? 1.5 : 1;
+  const { mx, my, time, w, h, cx, cy, sf } = opts;
+  // Larger hit targets on small screens for fat finger tolerance
+  const touchBoost = sf < 0.7 ? 1.5 : 1;
 
   for (const sys of systems) {
     const pos = getSystemPosition(sys, time, w, h, cx, cy);
