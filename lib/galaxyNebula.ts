@@ -8,8 +8,14 @@
 // Permutation table (seeded, deterministic)
 const PERM = new Uint8Array(512);
 const GRAD2 = [
-  [1, 1], [-1, 1], [1, -1], [-1, -1],
-  [1, 0], [-1, 0], [0, 1], [0, -1],
+  [1, 1],
+  [-1, 1],
+  [1, -1],
+  [-1, -1],
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
 ];
 
 function initPerm(seed: number) {
@@ -53,7 +59,9 @@ function simplex2(x: number, y: number): number {
   const ii = i & 255;
   const jj = j & 255;
 
-  let n0 = 0, n1 = 0, n2 = 0;
+  let n0 = 0,
+    n1 = 0,
+    n2 = 0;
 
   let t0 = 0.5 - x0 * x0 - y0 * y0;
   if (t0 >= 0) {
@@ -148,6 +156,34 @@ export function generateNebulaTexture(w: number, h: number): NebulaTexture {
       data[i + 1] = g;
       data[i + 2] = b;
       data[i + 3] = a;
+    }
+  }
+
+  // Edge fade mask — smooth cosine falloff in the outer 30% of each edge
+  const edgeFade = 0.3;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let fadeX = 1,
+        fadeY = 1;
+      const nx = x / w;
+      const ny = y / h;
+
+      if (nx < edgeFade) {
+        fadeX = (1 - Math.cos((Math.PI * nx) / edgeFade)) / 2;
+      }
+      if (nx > 1 - edgeFade) {
+        fadeX = (1 - Math.cos((Math.PI * (1 - nx)) / edgeFade)) / 2;
+      }
+
+      if (ny < edgeFade) {
+        fadeY = (1 - Math.cos((Math.PI * ny) / edgeFade)) / 2;
+      }
+      if (ny > 1 - edgeFade) {
+        fadeY = (1 - Math.cos((Math.PI * (1 - ny)) / edgeFade)) / 2;
+      }
+
+      const i = (y * w + x) * 4;
+      data[i + 3] = Math.round(data[i + 3] * fadeX * fadeY);
     }
   }
 

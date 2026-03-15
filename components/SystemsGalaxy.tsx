@@ -196,7 +196,9 @@ function drawGalacticCenter(ctx: CanvasRenderingContext2D, cx: number, cy: numbe
   wide.addColorStop(0.7, "rgba(60, 55, 45, 0.015)");
   wide.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = wide;
-  ctx.fillRect(0, 0, w, h);
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.45, 0, Math.PI * 2);
+  ctx.fill();
 }
 
 function drawLightRays(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number, time: number) {
@@ -481,7 +483,9 @@ export default function SystemsGalaxy() {
         gradient.addColorStop(0, neb.color);
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, w, h);
+        ctx.beginPath();
+        ctx.arc(nx, ny, neb.radius, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // --- 2. Background stars ---
