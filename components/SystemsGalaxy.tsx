@@ -730,13 +730,13 @@ export default function SystemsGalaxy() {
         ctx.stroke();
 
         // Label
-        ctx.font = `500 ${8 * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         ctx.letterSpacing = "1px";
         ctx.fillStyle = isActive
           ? "rgba(170, 150, 210, 0.75)"
-          : "rgba(140, 120, 180, 0.25)";
+          : "rgba(180, 170, 210, 0.35)";
         ctx.fillText(tc.name.toUpperCase(), tx, ty + pulseR + 3);
         ctx.letterSpacing = "0px";
       }
@@ -768,13 +768,13 @@ export default function SystemsGalaxy() {
         ctx.lineWidth = 0.5;
         ctx.stroke();
 
-        ctx.font = `500 ${8 * sf}px system-ui, -apple-system, sans-serif`;
+        ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         ctx.letterSpacing = "1px";
         ctx.fillStyle = isActive
           ? "rgba(140, 186, 232, 0.85)"
-          : "rgba(96, 120, 136, 0.18)";
+          : "rgba(130, 160, 190, 0.35)";
         ctx.fillText(dom.name.toUpperCase(), dx, dy + pulseR + 4);
         ctx.letterSpacing = "0px";
       }
