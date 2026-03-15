@@ -238,27 +238,30 @@ function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: n
   ctx.rotate(-0.1);
   ctx.translate(-cx, -cy);
 
-  // Main dust band — warm tones
-  const bandHeight = h * 0.35;
-  const bandY = cy - bandHeight / 2;
-  const dust = ctx.createLinearGradient(0, bandY, 0, bandY + bandHeight);
+  // Main dust band — use full canvas height so gradient edges
+  // extend well beyond visible area (no hard cutoff)
+  const dust = ctx.createLinearGradient(0, 0, 0, h);
   dust.addColorStop(0, "rgba(0, 0, 0, 0)");
-  dust.addColorStop(0.2, "rgba(80, 65, 40, 0.08)");
-  dust.addColorStop(0.35, "rgba(100, 80, 50, 0.14)");
+  dust.addColorStop(0.3, "rgba(0, 0, 0, 0)");
+  dust.addColorStop(0.4, "rgba(80, 65, 40, 0.08)");
+  dust.addColorStop(0.47, "rgba(100, 80, 50, 0.14)");
   dust.addColorStop(0.5, "rgba(110, 90, 55, 0.18)");
-  dust.addColorStop(0.65, "rgba(100, 80, 50, 0.14)");
-  dust.addColorStop(0.8, "rgba(80, 65, 40, 0.08)");
+  dust.addColorStop(0.53, "rgba(100, 80, 50, 0.14)");
+  dust.addColorStop(0.6, "rgba(80, 65, 40, 0.08)");
+  dust.addColorStop(0.7, "rgba(0, 0, 0, 0)");
   dust.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = dust;
-  ctx.fillRect(0, bandY, w, bandHeight);
+  ctx.fillRect(-w * 0.2, 0, w * 1.4, h);
 
-  // Horizontal falloff — dust is denser near center
+  // Horizontal falloff — clipped to radial area
   const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
   hFade.addColorStop(0, "rgba(90, 75, 50, 0.10)");
   hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.04)");
   hFade.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = hFade;
-  ctx.fillRect(0, bandY, w, bandHeight);
+  ctx.beginPath();
+  ctx.arc(cx, cy, w * 0.5, 0, Math.PI * 2);
+  ctx.fill();
 
   ctx.restore();
 }
