@@ -24,6 +24,7 @@ import {
   generateBgStars,
   applyStarDrift,
 } from "@/lib/galaxyStars";
+import { generateNebulaTexture } from "@/lib/galaxyNebula";
 
 /* ------------------------------------------------------------------ */
 /*  Background helpers                                                 */
@@ -297,6 +298,7 @@ export default function SystemsGalaxy() {
   const animFrameRef = useRef<number>(0);
   const bgStarsRef = useRef<BgStar[]>([]);
   const nebulaeRef = useRef<Nebula[]>([]);
+  const nebulaCanvasRef = useRef<OffscreenCanvas | null>(null);
   const mouseOffsetRef = useRef({ x: 0, y: 0 });
   const timeRef = useRef(0);
 
@@ -349,6 +351,16 @@ export default function SystemsGalaxy() {
       setDimensions({ width: w, height: h });
       bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
       nebulaeRef.current = generateNebulae(w, h);
+
+      // Generate nebula noise texture on offscreen canvas (once)
+      const nebulaTexture = generateNebulaTexture(w, h);
+      const offscreen = new OffscreenCanvas(w, h);
+      const offCtx = offscreen.getContext("2d");
+      if (offCtx) {
+        const imgData = new ImageData(new Uint8ClampedArray(nebulaTexture.data), w, h);
+        offCtx.putImageData(imgData, 0, 0);
+      }
+      nebulaCanvasRef.current = offscreen;
     };
 
     measure();
@@ -549,6 +561,11 @@ export default function SystemsGalaxy() {
 
       // --- 3. Enhanced dust band ---
       drawDustBand(ctx, w, h, cx, cy);
+
+      // --- 3b. Nebula noise texture ---
+      if (nebulaCanvasRef.current) {
+        ctx.drawImage(nebulaCanvasRef.current, 0, 0);
+      }
 
       // --- 4. Multi-layer galactic center glow ---
       drawGalacticCenter(ctx, cx, cy, w, h);
