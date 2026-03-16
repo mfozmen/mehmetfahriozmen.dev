@@ -32,6 +32,7 @@ import {
   drawSystemStar,
 } from "@/lib/galaxyRenderers";
 import { getHighlightedIds } from "@/lib/galaxyInteraction";
+import { mobileLabelSize } from "@/lib/galaxyMobileConfig";
 
 export interface RenderOpts {
   w: number;
@@ -53,6 +54,8 @@ export interface RenderOpts {
   satelliteAnim: number;
   lastHoveredCluster: string | null;
   showLabels: { domains: boolean; techClusters: boolean };
+  centerGlowScale: number;
+  driftSpeedMultiplier: number;
 }
 
 export function renderGalaxyFrame(
@@ -65,6 +68,7 @@ export function renderGalaxyFrame(
     hoveredId, hoveredType,
     domainToSystems, techToSystems,
     satelliteAnim, lastHoveredCluster,
+    centerGlowScale, driftSpeedMultiplier,
     showLabels,
   } = opts;
 
@@ -100,7 +104,7 @@ export function renderGalaxyFrame(
   const maxDist = Math.hypot(cx, cy);
   for (const star of stars) {
     const cfg = STAR_LAYERS[star.layer];
-    const drifted = applyStarDrift(star, time, w, h);
+    const drifted = applyStarDrift(star, time * driftSpeedMultiplier, w, h);
     let sx = drifted.x + px * cfg.parallax + Math.sin(time * 0.3 + star.phase) * 0.5;
     let sy = drifted.y + py * cfg.parallax + Math.cos(time * 0.25 + star.phase) * 0.5;
     if (sx > w) { sx -= w; } else if (sx < 0) { sx += w; }
@@ -174,7 +178,7 @@ export function renderGalaxyFrame(
   }
 
   // --- 4. Galactic center glow ---
-  drawGalacticCenter(ctx, cx, cy, w, h);
+  drawGalacticCenter(ctx, cx, cy, w, h, centerGlowScale);
 
   // --- 5. Light rays ---
   drawLightRays(ctx, cx, cy, w, h, timestamp);
@@ -245,7 +249,7 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.techClusters || isActive) && !isDimmed) {
-      ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
+      ctx.font = `500 ${mobileLabelSize(9, sf, 8)}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       ctx.letterSpacing = "1px";
@@ -279,7 +283,7 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.domains || isActive) && !isDimmed) {
-      ctx.font = `500 ${9 * sf}px system-ui, -apple-system, sans-serif`;
+      ctx.font = `500 ${mobileLabelSize(9, sf, 8)}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       ctx.letterSpacing = "1px";

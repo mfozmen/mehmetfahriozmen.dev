@@ -62,6 +62,8 @@ export default function DesktopGalaxy() {
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
         showLabels: { domains: true, techClusters: true },
+        centerGlowScale: 1,
+        driftSpeedMultiplier: 1,
       });
 
       animFrameRef.current = requestAnimationFrame(animate);

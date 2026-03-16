@@ -17,6 +17,7 @@ import {
 } from "@/lib/galaxyLayout";
 import { satelliteOrbitRadius } from "@/lib/galaxyLayout";
 import { seededRandom } from "@/lib/galaxyStars";
+import { mobileLabelSize, mobileLabelAlpha } from "@/lib/galaxyMobileConfig";
 
 // --- Types ---
 
@@ -151,27 +152,28 @@ export function drawSatellites(
 
 // --- Atmosphere rendering ---
 
-export function drawGalacticCenter(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number) {
+export function drawGalacticCenter(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number, glowScale: number = 1) {
   const r = Math.min(w, h);
+  const g = glowScale;
 
   const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.06);
-  core.addColorStop(0, "rgba(255, 245, 220, 0.25)");
-  core.addColorStop(0.5, "rgba(240, 220, 180, 0.12)");
+  core.addColorStop(0, `rgba(255, 245, 220, ${0.25 * g})`);
+  core.addColorStop(0.5, `rgba(240, 220, 180, ${0.12 * g})`);
   core.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = core;
   ctx.beginPath(); ctx.arc(cx, cy, r * 0.06, 0, Math.PI * 2); ctx.fill();
 
   const inner = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.2);
-  inner.addColorStop(0, "rgba(220, 200, 160, 0.15)");
-  inner.addColorStop(0.4, "rgba(180, 160, 120, 0.08)");
+  inner.addColorStop(0, `rgba(220, 200, 160, ${0.15 * g})`);
+  inner.addColorStop(0.4, `rgba(180, 160, 120, ${0.08 * g})`);
   inner.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = inner;
   ctx.beginPath(); ctx.arc(cx, cy, r * 0.2, 0, Math.PI * 2); ctx.fill();
 
   const wide = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.45);
-  wide.addColorStop(0, "rgba(150, 130, 100, 0.08)");
-  wide.addColorStop(0.3, "rgba(100, 90, 70, 0.04)");
-  wide.addColorStop(0.7, "rgba(60, 55, 45, 0.015)");
+  wide.addColorStop(0, `rgba(150, 130, 100, ${0.08 * g})`);
+  wide.addColorStop(0.3, `rgba(100, 90, 70, ${0.04 * g})`);
+  wide.addColorStop(0.7, `rgba(60, 55, 45, ${0.015 * g})`);
   wide.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = wide;
   ctx.beginPath();
@@ -446,17 +448,16 @@ export function drawSystemStar(
   let labelAlpha: number;
   if (isHovered) { labelAlpha = 1; }
   else if (isDimmed) { labelAlpha = 0.15; }
-  else if (isPrimary) { labelAlpha = 0.8; }
-  else if (isSecondary) { labelAlpha = 0.55; }
-  else { labelAlpha = 0.3; }
+  else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
 
   let labelColor: string;
   if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
   else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
   else { labelColor = "rgba(130, 140, 150, 1)"; }
 
+  const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
   ctx.globalAlpha = labelAlpha;
-  ctx.font = `${isPrimary ? 500 : 400} ${(isPrimary ? 13 : 11) * sf}px system-ui, -apple-system, sans-serif`;
+  ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.fillStyle = labelColor;

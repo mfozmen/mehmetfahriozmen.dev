@@ -71,6 +71,8 @@ export default function MobileGalaxy() {
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
         showLabels: { domains: hasHover, techClusters: hasHover },
+        centerGlowScale: 0.6,
+        driftSpeedMultiplier: 0.5,
       });
 
       animFrameRef.current = requestAnimationFrame(animate);
