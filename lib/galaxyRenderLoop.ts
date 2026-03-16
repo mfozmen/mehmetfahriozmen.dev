@@ -53,7 +53,12 @@ export interface RenderOpts {
   techToSystems: Map<string, string[]>;
   satelliteAnim: number;
   lastHoveredCluster: string | null;
-  showLabels: { domains: boolean; techClusters: boolean };
+  showLabels: {
+    domains: boolean;
+    techClusters: boolean;
+    secondarySystems: boolean;
+    minorSystems: boolean;
+  };
   centerGlowScale: number;
   driftSpeedMultiplier: number;
 }
@@ -299,6 +304,9 @@ export function renderGalaxyFrame(
     const pos = getSystemPosition(sys, time, w, h, cx, cy);
     const isHL = !highlighted || highlighted.has(sys.id);
     const isDimmed = highlighted && !isHL;
-    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed);
+    let showLabel = true;
+    if (sys.importance === "secondary") { showLabel = showLabels.secondarySystems; }
+    else if (sys.importance === "minor") { showLabel = showLabels.minorSystems; }
+    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed, showLabel);
   }
 }

@@ -65,7 +65,7 @@ const projectLayout: Record<string, { angle: number; orbit: number }> = {
   ihtiyac:      { angle: 4.1, orbit: 1 },
   coknet:       { angle: 5.4, orbit: 1 },
   fsd:          { angle: 1.2, orbit: 2 },
-  megatons:     { angle: 4.4, orbit: 2 },
+  megatons:     { angle: 5.0, orbit: 2 },
 };
 
 // --- Galaxy layout per domain ---

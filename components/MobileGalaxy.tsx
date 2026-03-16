@@ -70,7 +70,7 @@ export default function MobileGalaxy() {
         techToSystems: techToSystems.current,
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
-        showLabels: { domains: hasHover, techClusters: hasHover },
+        showLabels: { domains: hasHover, techClusters: hasHover, secondarySystems: hasHover, minorSystems: hasHover },
         centerGlowScale: 0.6,
         driftSpeedMultiplier: 0.5,
       });

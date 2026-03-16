@@ -61,7 +61,7 @@ export default function DesktopGalaxy() {
         techToSystems: techToSystems.current,
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
-        showLabels: { domains: true, techClusters: true },
+        showLabels: { domains: true, techClusters: true, secondarySystems: true, minorSystems: true },
         centerGlowScale: 1,
         driftSpeedMultiplier: 1,
       });

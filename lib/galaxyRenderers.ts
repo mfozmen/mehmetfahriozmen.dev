@@ -415,6 +415,7 @@ export function drawSystemStar(
   sx: number, sy: number,
   sf: number, time: number,
   isHovered: boolean, isDimmed: boolean,
+  showLabel: boolean = true,
 ) {
   let hash = 0;
   for (const ch of sys.id) {
@@ -441,27 +442,29 @@ export function drawSystemStar(
     ctx.strokeStyle = "rgba(255, 255, 255, 0.2)"; ctx.lineWidth = 0.5; ctx.stroke();
   }
 
-  // Label
-  const isPrimary = sys.importance === "primary";
-  const isSecondary = sys.importance === "secondary";
+  // Label — only draw if showLabel is true (or if hovered)
+  if (showLabel || isHovered) {
+    const isPrimary = sys.importance === "primary";
+    const isSecondary = sys.importance === "secondary";
 
-  let labelAlpha: number;
-  if (isHovered) { labelAlpha = 1; }
-  else if (isDimmed) { labelAlpha = 0.15; }
-  else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
+    let labelAlpha: number;
+    if (isHovered) { labelAlpha = 1; }
+    else if (isDimmed) { labelAlpha = 0.15; }
+    else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
 
-  let labelColor: string;
-  if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
-  else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
-  else { labelColor = "rgba(130, 140, 150, 1)"; }
+    let labelColor: string;
+    if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
+    else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
+    else { labelColor = "rgba(130, 140, 150, 1)"; }
 
-  const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
-  ctx.globalAlpha = labelAlpha;
-  ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.fillStyle = labelColor;
-  ctx.fillText(sys.name, sx, sy + r + 4);
+    const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
+    ctx.globalAlpha = labelAlpha;
+    ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = labelColor;
+    ctx.fillText(sys.name, sx, sy + r + 4);
+  }
   ctx.globalAlpha = 1;
 }
 

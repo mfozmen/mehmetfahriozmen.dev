@@ -182,3 +182,62 @@ describe("Galaxy label overlap detection", () => {
     }
   });
 });
+
+// --- Mobile overlap checks ---
+
+const MW = 390;
+const MH = Math.round(MW / 1.6); // 244
+const MCX = MW / 2;
+const MCY = MH / 2;
+const MOBILE_STATIC_MIN_DIST = 22; // Proportional to desktop 60px * (390/948)
+const MOBILE_TIME_SAMPLES = [0, 10_000, 50_000, 100_000];
+
+function getAllMobilePositions(time: number): Point[] {
+  const points: Point[] = [];
+  for (const sys of systems) {
+    const pos = getSystemPosition(sys, time, MW, MH, MCX, MCY);
+    points.push({ name: sys.name, category: "system", ...pos });
+  }
+  for (const dom of domains) {
+    const pos = getDomainPosition(dom, MW, MH, MCX, MCY);
+    points.push({ name: dom.name, category: "domain", ...pos });
+  }
+  for (const tc of techClusters) {
+    const pos = getTechClusterPosition(tc, MW, MH, MCX, MCY);
+    points.push({ name: tc.name, category: "tech", ...pos });
+  }
+  return points;
+}
+
+describe("Mobile galaxy label overlap detection (390px)", () => {
+  it("tech clusters maintain minimum distance at mobile size", () => {
+    const statics = getAllMobilePositions(0).filter((p) => p.category === "tech");
+    const violations = findViolations(statics, MOBILE_STATIC_MIN_DIST);
+    expect(violations, `Mobile tech cluster overlaps:\n${violations.join("\n")}`).toHaveLength(0);
+  });
+
+  it("tech clusters don't overlap domains at mobile size", () => {
+    const nonSystems = getAllMobilePositions(0).filter((p) => p.category !== "system");
+    const violations = findViolations(nonSystems, MOBILE_STATIC_MIN_DIST);
+    expect(violations, `Mobile static overlaps:\n${violations.join("\n")}`).toHaveLength(0);
+  });
+
+  it.each(MOBILE_TIME_SAMPLES)(
+    "no system-system label collision at mobile t=%i",
+    (t) => {
+      const sysSystems = getAllMobilePositions(t).filter((p) => p.category === "system");
+      const violations: string[] = [];
+      for (let i = 0; i < sysSystems.length; i++) {
+        for (let j = i + 1; j < sysSystems.length; j++) {
+          const d = dist(sysSystems[i], sysSystems[j]);
+          if (d < 10) {
+            violations.push(
+              `${sysSystems[i].name} ↔ ${sysSystems[j].name} = ${d.toFixed(0)}px`,
+            );
+          }
+        }
+      }
+      expect(violations, `Mobile system overlaps at t=${t}:\n${violations.join("\n")}`).toHaveLength(0);
+    },
+  );
+});
