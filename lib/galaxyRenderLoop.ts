@@ -254,12 +254,23 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.techClusters || isActive) && !isDimmed) {
-      ctx.font = `500 ${mobileLabelSize(9, sf, 8)}px system-ui, -apple-system, sans-serif`;
+      const smallScreen = sf < 0.7;
+      const tcFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
+      const tcAlpha = smallScreen
+        ? (isActive ? 0.6 : 0.5)
+        : (isActive ? 0.75 : 0.35);
+      ctx.font = `500 ${tcFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
-      ctx.textBaseline = "top";
       ctx.letterSpacing = "1px";
-      ctx.fillStyle = isActive ? "rgba(170, 150, 210, 0.75)" : "rgba(180, 170, 210, 0.35)";
-      ctx.fillText(tc.name.toUpperCase(), tx, ty + pulseR + 3);
+      ctx.fillStyle = isActive ? `rgba(170, 150, 210, ${tcAlpha})` : `rgba(180, 170, 210, ${tcAlpha})`;
+      // On mobile, alternate label placement above/below based on position
+      if (smallScreen && ty < cy) {
+        ctx.textBaseline = "bottom";
+        ctx.fillText(tc.name.toUpperCase(), tx, ty - pulseR - 2);
+      } else {
+        ctx.textBaseline = "top";
+        ctx.fillText(tc.name.toUpperCase(), tx, ty + pulseR + 3);
+      }
       ctx.letterSpacing = "0px";
     }
   }

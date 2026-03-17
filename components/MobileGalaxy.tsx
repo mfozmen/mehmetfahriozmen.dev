@@ -54,8 +54,6 @@ export default function MobileGalaxy() {
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const hasHover = !!hoveredIdRef.current;
-
       renderGalaxyFrame(ctx, {
         w, h, time, timestamp,
         stars: bgStarsRef.current,
@@ -70,7 +68,7 @@ export default function MobileGalaxy() {
         techToSystems: techToSystems.current,
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
-        showLabels: { domains: hasHover, techClusters: hasHover, secondarySystems: hasHover, minorSystems: hasHover },
+        showLabels: { domains: !!hoveredIdRef.current, techClusters: !!hoveredIdRef.current, secondarySystems: false, minorSystems: false },
         centerGlowScale: 0.6,
         driftSpeedMultiplier: 0.5,
       });
