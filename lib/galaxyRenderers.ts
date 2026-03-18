@@ -415,7 +415,7 @@ export function drawSystemStar(
   sx: number, sy: number,
   sf: number, time: number,
   isHovered: boolean, isDimmed: boolean,
-  showLabel: boolean = true,
+  showLabel: boolean = true, isActive: boolean = false,
 ) {
   let hash = 0;
   for (const ch of sys.id) {
@@ -450,6 +450,7 @@ export function drawSystemStar(
     let labelAlpha: number;
     if (isHovered) { labelAlpha = 1; }
     else if (isDimmed) { labelAlpha = 0.15; }
+    else if (isActive) { labelAlpha = Math.max(0.7, mobileLabelAlpha(sys.importance, sf)); }
     else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
 
     let labelColor: string;

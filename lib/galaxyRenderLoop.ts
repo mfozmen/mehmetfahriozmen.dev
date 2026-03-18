@@ -329,6 +329,7 @@ export function renderGalaxyFrame(
     let showLabel = true;
     if (sys.importance === "secondary") { showLabel = showLabels.secondarySystems; }
     else if (sys.importance === "minor") { showLabel = showLabels.minorSystems; }
-    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed, showLabel);
+    const isActive = !!highlighted && isHL && sys.id !== hoveredId;
+    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed, showLabel, isActive);
   }
 }

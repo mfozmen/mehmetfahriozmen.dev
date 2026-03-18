@@ -60,7 +60,7 @@ const projectLayout: Record<string, { angle: number; orbit: number }> = {
   magicpags:    { angle: 3.65, orbit: 0 },
   beforesunset: { angle: 4.7, orbit: 0 },
   decktopus:    { angle: 5.75, orbit: 0 },
-  ptttrade:     { angle: 0.6, orbit: 1 },
+  ptttrade:     { angle: 0.8, orbit: 1 },
   room3d:       { angle: 2.2, orbit: 1 },
   ihtiyac:      { angle: 4.1, orbit: 1 },
   coknet:       { angle: 5.4, orbit: 1 },
