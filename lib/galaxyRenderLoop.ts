@@ -267,8 +267,8 @@ export function renderGalaxyFrame(
       const smallScreen = sf < 0.7;
       const tcFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
       const tcAlpha = smallScreen
-        ? (isActive ? 0.6 : 0.5)
-        : (isActive ? 0.75 : 0.35);
+        ? (isActive ? 0.7 : 0.7)
+        : (isActive ? 0.85 : 0.45);
       ctx.font = `500 ${tcFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.letterSpacing = "1px";

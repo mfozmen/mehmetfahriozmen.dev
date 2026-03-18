@@ -7,9 +7,12 @@ import { generateNebulaTexture } from "@/lib/galaxyNebula";
 import { type Nebula, generateNebulae } from "@/lib/galaxyRenderers";
 import { ASPECT_RATIO } from "@/lib/galaxyTouch";
 
-const BG_STAR_COUNT = 1200;
+const DEFAULT_STAR_COUNT = 1200;
+const DEFAULT_CENTER_BIAS = 0.25;
 
-export function useGalaxySetup() {
+export function useGalaxySetup(opts?: { starCount?: number; centerBias?: number }) {
+  const starCount = opts?.starCount ?? DEFAULT_STAR_COUNT;
+  const centerBias = opts?.centerBias ?? DEFAULT_CENTER_BIAS;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
@@ -62,7 +65,7 @@ export function useGalaxySetup() {
       if (w <= 0) return;
       const h = Math.round(w / ASPECT_RATIO);
       setDimensions({ width: w, height: h });
-      bgStarsRef.current = generateBgStars(w, h, BG_STAR_COUNT);
+      bgStarsRef.current = generateBgStars(w, h, starCount, centerBias);
       nebulaeRef.current = generateNebulae(w, h);
 
       const nebulaTexture = generateNebulaTexture(w, h);

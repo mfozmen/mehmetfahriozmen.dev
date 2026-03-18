@@ -86,7 +86,7 @@ function seededGaussianFromRand(rand: () => number, spread: number): number {
   return Math.max(-1, Math.min(1, z * spread));
 }
 
-export function generateBgStars(w: number, h: number, count: number): BgStar[] {
+export function generateBgStars(w: number, h: number, count: number, centerBias: number = 0.25): BgStar[] {
   const rand = seededRandom(42);
   const stars: BgStar[] = [];
   const cx = w / 2;
@@ -123,11 +123,10 @@ export function generateBgStars(w: number, h: number, count: number): BgStar[] {
         alpha = Math.min(alpha * 1.8, 0.7);
       }
 
-      // Center-biased distribution: tighter gaussian (spread=0.25)
-      // creates 3-4x density near center vs edges
+      // Center-biased distribution: tighter gaussian = more center density
       stars.push({
-        x: cx + seededGaussian(rand, 0.25) * w * 0.5,
-        y: cy + seededGaussian(rand, 0.25) * h * 0.5,
+        x: cx + seededGaussian(rand, centerBias) * w * 0.5,
+        y: cy + seededGaussian(rand, centerBias) * h * 0.5,
         r,
         alpha,
         layer,

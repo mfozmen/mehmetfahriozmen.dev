@@ -17,7 +17,7 @@ export default function MobileGalaxy() {
     setHoveredType, hoveredTypeRef,
     satelliteAnimRef, lastHoveredClusterRef, prevTimestampRef,
     sfRef, domainToSystems, techToSystems,
-  } = useGalaxySetup();
+  } = useGalaxySetup({ starCount: 600, centerBias: 0.4 });
   const zoomRef = useRef(1);
   const panRef = useRef({ x: 0, y: 0 });
   const touchStateRef = useRef<{
@@ -70,7 +70,7 @@ export default function MobileGalaxy() {
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
         showLabels: { domains: !!hoveredIdRef.current, techClusters: !!hoveredIdRef.current, secondarySystems: false, minorSystems: false },
-        centerGlowScale: 0.6,
+        centerGlowScale: 0.4,
         driftSpeedMultiplier: 0.5,
         techClusterPositionOverrides: techClusterMobilePositions,
       });
