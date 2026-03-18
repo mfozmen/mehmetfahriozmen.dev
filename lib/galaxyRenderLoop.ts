@@ -61,6 +61,7 @@ export interface RenderOpts {
   };
   centerGlowScale: number;
   driftSpeedMultiplier: number;
+  techClusterPositionOverrides?: Record<string, { x: number; y: number }>;
 }
 
 export function renderGalaxyFrame(
@@ -74,8 +75,17 @@ export function renderGalaxyFrame(
     domainToSystems, techToSystems,
     satelliteAnim, lastHoveredCluster,
     centerGlowScale, driftSpeedMultiplier,
-    showLabels,
+    showLabels, techClusterPositionOverrides,
   } = opts;
+
+  // Tech cluster position helper — uses overrides if provided
+  const tcPos = (tc: typeof techClusters[number]) => {
+    if (techClusterPositionOverrides?.[tc.id]) {
+      const p = techClusterPositionOverrides[tc.id];
+      return { x: w / 2 + p.x * w, y: h / 2 + p.y * h };
+    }
+    return getTechClusterPosition(tc, w, h, w / 2, h / 2);
+  };
 
   // Apply zoom/pan transform
   if (zoom > 1) {
@@ -222,7 +232,7 @@ export function renderGalaxyFrame(
   if (satelliteAnim > 0 && lastHoveredCluster) {
     const satCluster = techClusters.find((t) => t.id === lastHoveredCluster);
     if (satCluster) {
-      const satPos = getTechClusterPosition(satCluster, w, h, cx, cy);
+      const satPos = tcPos(satCluster);
       drawSatellites(
         ctx, satCluster,
         { x: satPos.x + px, y: satPos.y + py },
@@ -233,7 +243,7 @@ export function renderGalaxyFrame(
 
   // --- 11. Tech cluster nodes ---
   for (const tc of techClusters) {
-    const pos = getTechClusterPosition(tc, w, h, cx, cy);
+    const pos = tcPos(tc);
     const tx = pos.x + px;
     const ty = pos.y + py;
     const isActive = highlighted?.has(tc.id);
@@ -299,7 +309,8 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.domains || isActive) && !isDimmed) {
-      ctx.font = `500 ${mobileLabelSize(9, sf, 8)}px system-ui, -apple-system, sans-serif`;
+      const domFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
+      ctx.font = `500 ${domFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       ctx.letterSpacing = "1px";

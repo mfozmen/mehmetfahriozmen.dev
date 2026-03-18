@@ -6,6 +6,7 @@ import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
 import { hitTest } from "@/lib/galaxyInteraction";
 import { updateSatelliteAnim } from "@/lib/galaxyRenderers";
 import { clampZoom, clampPan, computePinchZoom } from "@/lib/galaxyTouch";
+import { techClusterMobilePositions } from "@/data/systemsGraph";
 
 export default function MobileGalaxy() {
   const {
@@ -71,6 +72,7 @@ export default function MobileGalaxy() {
         showLabels: { domains: !!hoveredIdRef.current, techClusters: !!hoveredIdRef.current, secondarySystems: false, minorSystems: false },
         centerGlowScale: 0.6,
         driftSpeedMultiplier: 0.5,
+        techClusterPositionOverrides: techClusterMobilePositions,
       });
 
       animFrameRef.current = requestAnimationFrame(animate);

@@ -93,8 +93,29 @@ const techClusterPositions: Record<string, { x: number; y: number }> = {
   frameworks:    { x: -0.13, y: -0.14 },
   monitoring:    { x: -0.14, y: -0.04 },
   data_analysis: { x: 0.14, y: 0.08 },
-  methodologies: { x: -0.1, y: 0.14 },
+  methodologies: { x: -0.10, y: 0.14 },
 };
+
+// Computed radial positions for mobile — equal angular spacing guarantees no overlaps
+function computeMobilePositions(ids: string[]): Record<string, { x: number; y: number }> {
+  const radius = 0.22;
+  const result: Record<string, { x: number; y: number }> = {};
+  for (let i = 0; i < ids.length; i++) {
+    const angle = (2 * Math.PI * i) / ids.length - Math.PI / 2;
+    result[ids[i]] = {
+      x: Math.round(Math.cos(angle) * radius * 1000) / 1000,
+      y: Math.round(Math.sin(angle) * radius * 0.85 * 1000) / 1000,
+    };
+  }
+  return result;
+}
+
+// Radial order: alternate long/short names so wide labels never neighbor each other
+const techClusterRadialOrder = [
+  "databases", "api", "methodologies", "search", "frameworks",
+  "cloud", "data_analysis", "devops", "architecture", "monitoring", "messaging",
+];
+export const techClusterMobilePositions = computeMobilePositions(techClusterRadialOrder);
 
 // --- Build exported arrays by merging data + layout ---
 
