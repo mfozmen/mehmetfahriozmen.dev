@@ -226,6 +226,15 @@ describe("Mobile galaxy label overlap detection (390px)", () => {
     expect(violations, `Mobile static overlaps:\n${violations.join("\n")}`).toHaveLength(0);
   });
 
+  it("all tech clusters have mobile radial positions", () => {
+    const mobileIds = Object.keys(techClusterMobilePositions);
+    const missing = techClusters.filter((tc) => !mobileIds.includes(tc.id));
+    expect(
+      missing.map((tc) => tc.id),
+      `Tech clusters missing from techClusterRadialOrder: ${missing.map((tc) => tc.id).join(", ")}`,
+    ).toHaveLength(0);
+  });
+
   it.each(MOBILE_TIME_SAMPLES)(
     "no system-system label collision at mobile t=%i",
     (t) => {

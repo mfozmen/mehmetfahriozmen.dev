@@ -241,6 +241,9 @@ export function renderGalaxyFrame(
     }
   }
 
+  // Shared label font size for tech clusters and domains
+  const clusterFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
+
   // --- 11. Tech cluster nodes ---
   for (const tc of techClusters) {
     const pos = tcPos(tc);
@@ -264,12 +267,8 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.techClusters || isActive) && !isDimmed) {
-      const smallScreen = sf < 0.7;
-      const tcFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
-      const tcAlpha = smallScreen
-        ? (isActive ? 0.7 : 0.7)
-        : (isActive ? 0.85 : 0.45);
-      ctx.font = `500 ${tcFontSize}px system-ui, -apple-system, sans-serif`;
+      const tcAlpha = smallScreen ? 0.7 : (isActive ? 0.85 : 0.45);
+      ctx.font = `500 ${clusterFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.letterSpacing = "1px";
       ctx.fillStyle = isActive ? `rgba(170, 150, 210, ${tcAlpha})` : `rgba(180, 170, 210, ${tcAlpha})`;
@@ -309,8 +308,7 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.domains || isActive) && !isDimmed) {
-      const domFontSize = smallScreen ? 6 : mobileLabelSize(9, sf, 8);
-      ctx.font = `500 ${domFontSize}px system-ui, -apple-system, sans-serif`;
+      ctx.font = `500 ${clusterFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       ctx.letterSpacing = "1px";
