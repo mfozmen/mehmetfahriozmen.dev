@@ -262,6 +262,7 @@ export function drawTechConnections(
   time: number, w: number, h: number, cx: number, cy: number,
   px: number, py: number,
   techToSystems: Map<string, string[]>,
+  resolveTcPos: (tc: typeof techClusters[number]) => { x: number; y: number },
 ) {
   ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
   ctx.lineWidth = 0.6;
@@ -274,10 +275,10 @@ export function drawTechConnections(
       for (const tcId of sys.techClusters) {
         const tc = techClusters.find((t) => t.id === tcId);
         if (tc) {
-          const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
+          const pos = resolveTcPos(tc);
           ctx.beginPath();
           ctx.moveTo(sysPos.x + px, sysPos.y + py);
-          ctx.lineTo(tcPos.x + px, tcPos.y + py);
+          ctx.lineTo(pos.x + px, pos.y + py);
           ctx.stroke();
         }
       }
@@ -285,14 +286,14 @@ export function drawTechConnections(
   } else if (hoveredType === "tech") {
     const tc = techClusters.find((t) => t.id === hoveredId);
     if (tc) {
-      const tcPos = getTechClusterPosition(tc, w, h, cx, cy);
+      const pos = resolveTcPos(tc);
       const connected = techToSystems.get(hoveredId) || [];
       for (const sysId of connected) {
         const sys = systems.find((s) => s.id === sysId);
         if (sys) {
           const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
           ctx.beginPath();
-          ctx.moveTo(tcPos.x + px, tcPos.y + py);
+          ctx.moveTo(pos.x + px, pos.y + py);
           ctx.lineTo(sysPos.x + px, sysPos.y + py);
           ctx.stroke();
         }

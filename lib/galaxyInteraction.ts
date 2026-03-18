@@ -33,8 +33,9 @@ export function hitTest(opts: {
   cx: number;
   cy: number;
   sf: number;
+  techClusterPositionOverrides?: Record<string, { x: number; y: number }>;
 }): HitResult {
-  const { mx, my, time, w, h, cx, cy, sf } = opts;
+  const { mx, my, time, w, h, cx, cy, sf, techClusterPositionOverrides } = opts;
   // Larger hit targets on small screens for fat finger tolerance
   const touchBoost = sf < 0.7 ? 1.5 : 1;
 
@@ -57,7 +58,10 @@ export function hitTest(opts: {
   }
 
   for (const tc of techClusters) {
-    const pos = getTechClusterPosition(tc, w, h, cx, cy);
+    const override = techClusterPositionOverrides?.[tc.id];
+    const pos = override
+      ? { x: w / 2 + override.x * w, y: h / 2 + override.y * h }
+      : getTechClusterPosition(tc, w, h, cx, cy);
     const dx = mx - pos.x, dy = my - pos.y;
     const tcHitR = 16 * touchBoost;
     if (dx * dx + dy * dy < tcHitR * tcHitR) {

@@ -148,7 +148,7 @@ export default function MobileGalaxy() {
 
       if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
         const { width: w, height: h } = dimensions;
-        const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current });
+        const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current, techClusterPositionOverrides: techClusterMobilePositions });
 
         if (hit) {
           if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {

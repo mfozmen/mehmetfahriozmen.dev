@@ -224,7 +224,7 @@ export function renderGalaxyFrame(
 
   // --- 8. Connection lines ---
   if (highlighted && hoveredId && hoveredType) {
-    drawTechConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, techToSystems);
+    drawTechConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, techToSystems, tcPos);
     drawDomainConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, domainToSystems);
   }
 
