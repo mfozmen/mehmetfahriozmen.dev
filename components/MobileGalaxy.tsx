@@ -69,7 +69,7 @@ export default function MobileGalaxy() {
         techToSystems: techToSystems.current,
         satelliteAnim: satelliteAnimRef.current,
         lastHoveredCluster: lastHoveredClusterRef.current,
-        showLabels: { domains: !!hoveredIdRef.current, techClusters: !!hoveredIdRef.current, secondarySystems: false, minorSystems: false },
+        showLabels: { domains: !!hoveredIdRef.current, techClusters: !!hoveredIdRef.current, secondarySystems: !!hoveredIdRef.current, minorSystems: !!hoveredIdRef.current },
         centerGlowScale: 0.4,
         driftSpeedMultiplier: 0.5,
         techClusterPositionOverrides: techClusterMobilePositions,
