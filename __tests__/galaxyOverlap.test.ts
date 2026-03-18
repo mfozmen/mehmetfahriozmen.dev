@@ -3,6 +3,7 @@ import {
   systems,
   domains,
   techClusters,
+  techClusterMobilePositions,
 } from "@/data/systemsGraph";
 import {
   getOrbitPosition,
@@ -203,7 +204,10 @@ function getAllMobilePositions(time: number): Point[] {
     points.push({ name: dom.name, category: "domain", ...pos });
   }
   for (const tc of techClusters) {
-    const pos = getTechClusterPosition(tc, MW, MH, MCX, MCY);
+    const override = techClusterMobilePositions[tc.id];
+    const pos = override
+      ? { x: MCX + override.x * MW, y: MCY + override.y * MH }
+      : getTechClusterPosition(tc, MW, MH, MCX, MCY);
     points.push({ name: tc.name, category: "tech", ...pos });
   }
   return points;

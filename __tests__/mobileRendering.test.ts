@@ -2,8 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   mobileLabelSize,
   mobileLabelAlpha,
-  mobileCenterGlowScale,
-  mobileDriftSpeed,
 } from "@/lib/galaxyMobileConfig";
 
 describe("Mobile label sizing", () => {
@@ -53,22 +51,3 @@ describe("Mobile label alpha boost", () => {
   });
 });
 
-describe("Mobile center glow", () => {
-  it("returns 0.6 scale on mobile (40% reduction)", () => {
-    expect(mobileCenterGlowScale(0.5)).toBe(0.6);
-  });
-
-  it("returns 1.0 on desktop", () => {
-    expect(mobileCenterGlowScale(1.0)).toBe(1);
-  });
-});
-
-describe("Mobile drift speed", () => {
-  it("returns 0.5 multiplier on mobile", () => {
-    expect(mobileDriftSpeed(0.5)).toBe(0.5);
-  });
-
-  it("returns 1.0 on desktop", () => {
-    expect(mobileDriftSpeed(1.0)).toBe(1);
-  });
-});

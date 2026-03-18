@@ -21,10 +21,3 @@ export function mobileLabelAlpha(
   return 0.3;
 }
 
-export function mobileCenterGlowScale(sf: number): number {
-  return sf < 0.7 ? 0.6 : 1;
-}
-
-export function mobileDriftSpeed(sf: number): number {
-  return sf < 0.7 ? 0.5 : 1;
-}
