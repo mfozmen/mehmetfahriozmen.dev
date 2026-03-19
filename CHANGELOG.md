@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.3.0...v0.4.0) (2026-03-19)
+
+### Features
+
+* add mobile responsive layout with touch interaction ([a0a6616](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a0a6616ff9be4e095e66f72de9a59926e52e0e46))
+* hide domain and tech cluster labels on mobile ([2e9a40a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2e9a40a9948da1a0f4ccd570e2be7c37817b5334))
+* hide secondary/minor system labels on mobile, add mobile overlap tests ([46063e6](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/46063e69c4d314653d1860555ae903e4931ba0ba))
+* improve mobile rendering with label floors, glow reduction, and slower drift ([126be0e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/126be0e42b6fbee29ee0f0022e7d986ad5db0de9))
+* **mobile:** improve label readability with higher alpha, fewer stars, reduced glow ([110be5b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/110be5b7f9af4fcf22c75d449ad77d611cd304d7))
+* **mobile:** improve mobile layout with radial tech clusters, smaller domain labels ([0d0ec17](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0d0ec17184d5ba6283f5464790dd8d23bc39b851))
+
+### Bug Fixes
+
+* boost connected system label alpha and separate PTT Trade from Mobilet ([0d8a153](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0d8a1535f235764c94100ab4ec502c769b503aca))
+* eliminate canvas rectangular edge by clipping radial fills ([0cba73e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0cba73e33f13612a9cf1b71803e0f2fad0ccb297))
+* eliminate dust band hard edge with full-height gradient ([cf784ec](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cf784ec53a9a0151d8d8beee18746304c98fcc68))
+* mobile overlap tests, interaction coverage, and dead code removal ([34f1a96](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/34f1a9608f631d0dacdcd2e520afdd220838e5f0))
+* **mobile:** show secondary/minor system labels when element is tapped ([3bb161b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3bb161b38e3a85ee1a434676869fb66682ffb3ae))
+* replace vacuous test assertion with unconditional check ([022bd44](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/022bd445ac646d883cb7f32fbfe27028ab15edf2))
+* show connected tech cluster labels on mobile with tiny font and alternating placement ([637ef36](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/637ef3637d98c1933683f81df0783190ed1f5984))
+* use mobile tech cluster positions for hit-testing and connection lines ([ca297e1](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ca297e109845198481c7e30133b429848a0527bd))
+
 ## [0.3.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.2.4...v0.3.0) (2026-03-15)
 
 ### Features
