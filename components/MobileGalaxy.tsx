@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import { useGalaxySetup } from "./useGalaxySetup";
 import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
 import { hitTest } from "@/lib/galaxyInteraction";
-import { updateSatelliteAnim } from "@/lib/galaxyRenderers";
+import { prepareFrame } from "@/lib/galaxyAnimationSetup";
 import { clampZoom, clampPan, computePinchZoom } from "@/lib/galaxyTouch";
 import { techClusterMobilePositions } from "@/data/systemsGraph";
 
@@ -31,29 +31,15 @@ export default function MobileGalaxy() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const refs = {
+      canvasRef, animFrameRef, timeRef, prevTimestampRef,
+      hoveredTypeRef, hoveredIdRef, lastHoveredClusterRef, satelliteAnimRef,
+    };
+
     const animate = (timestamp: number) => {
-      const ctx = canvas.getContext("2d");
-      if (!ctx) { animFrameRef.current = requestAnimationFrame(animate); return; }
-
-      const time = timestamp / 1000;
-      timeRef.current = time;
-      const dt = prevTimestampRef.current > 0 ? (timestamp - prevTimestampRef.current) / 1000 : 0;
-      prevTimestampRef.current = timestamp;
-
-      const satUpdate = updateSatelliteAnim(
-        hoveredTypeRef.current, hoveredIdRef.current,
-        lastHoveredClusterRef.current, satelliteAnimRef.current, dt,
-      );
-      satelliteAnimRef.current = satUpdate.anim;
-      lastHoveredClusterRef.current = satUpdate.lastCluster;
-
-      const dpr = window.devicePixelRatio || 1;
-      const { width: w, height: h } = dimensions;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const frame = prepareFrame(canvas, timestamp, refs, dimensions);
+      if (!frame) { animFrameRef.current = requestAnimationFrame(animate); return; }
+      const { ctx, time, w, h } = frame;
 
       renderGalaxyFrame(ctx, {
         w, h, time, timestamp,

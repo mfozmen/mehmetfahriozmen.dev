@@ -51,18 +51,25 @@ function dist(a: Point, b: Point) {
   return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }
 
-function getAllPositions(time: number): Point[] {
+function getAllPositions(
+  time: number,
+  w = W, h = H, cx = CX, cy = CY,
+  tcOverrides?: Record<string, { x: number; y: number }>,
+): Point[] {
   const points: Point[] = [];
   for (const sys of systems) {
-    const pos = getSystemPosition(sys, time, W, H, CX, CY);
+    const pos = getSystemPosition(sys, time, w, h, cx, cy);
     points.push({ name: sys.name, category: "system", ...pos });
   }
   for (const dom of domains) {
-    const pos = getDomainPosition(dom, W, H, CX, CY);
+    const pos = getDomainPosition(dom, w, h, cx, cy);
     points.push({ name: dom.name, category: "domain", ...pos });
   }
   for (const tc of techClusters) {
-    const pos = getTechClusterPosition(tc, W, H, CX, CY);
+    const override = tcOverrides?.[tc.id];
+    const pos = override
+      ? { x: cx + override.x * w, y: cy + override.y * h }
+      : getTechClusterPosition(tc, w, h, cx, cy);
     points.push({ name: tc.name, category: "tech", ...pos });
   }
   return points;
@@ -194,23 +201,7 @@ const MOBILE_STATIC_MIN_DIST = 22; // Proportional to desktop 60px * (390/948)
 const MOBILE_TIME_SAMPLES = [0, 10_000, 50_000, 100_000];
 
 function getAllMobilePositions(time: number): Point[] {
-  const points: Point[] = [];
-  for (const sys of systems) {
-    const pos = getSystemPosition(sys, time, MW, MH, MCX, MCY);
-    points.push({ name: sys.name, category: "system", ...pos });
-  }
-  for (const dom of domains) {
-    const pos = getDomainPosition(dom, MW, MH, MCX, MCY);
-    points.push({ name: dom.name, category: "domain", ...pos });
-  }
-  for (const tc of techClusters) {
-    const override = techClusterMobilePositions[tc.id];
-    const pos = override
-      ? { x: MCX + override.x * MW, y: MCY + override.y * MH }
-      : getTechClusterPosition(tc, MW, MH, MCX, MCY);
-    points.push({ name: tc.name, category: "tech", ...pos });
-  }
-  return points;
+  return getAllPositions(time, MW, MH, MCX, MCY, techClusterMobilePositions);
 }
 
 describe("Mobile galaxy label overlap detection (390px)", () => {

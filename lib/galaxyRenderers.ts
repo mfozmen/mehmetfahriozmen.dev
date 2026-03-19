@@ -255,27 +255,34 @@ export function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number
 
 // --- Connection line rendering ---
 
-export function drawTechConnections(
+interface ConnectionConfig {
+  nodeType: string;
+  strokeStyle: string;
+  lineWidth: number;
+  dash: number[];
+  getNodeIds: (sys: typeof systems[number]) => string[];
+  resolveNodePos: (id: string) => { x: number; y: number } | null;
+  nodeToSystems: Map<string, string[]>;
+}
+
+function drawConnections(
   ctx: CanvasRenderingContext2D,
-  hoveredId: string,
-  hoveredType: string,
+  hoveredId: string, hoveredType: string,
   time: number, w: number, h: number, cx: number, cy: number,
   px: number, py: number,
-  techToSystems: Map<string, string[]>,
-  resolveTcPos: (tc: typeof techClusters[number]) => { x: number; y: number },
+  config: ConnectionConfig,
 ) {
-  ctx.strokeStyle = "rgba(160, 140, 200, 0.15)";
-  ctx.lineWidth = 0.6;
-  ctx.setLineDash([2, 3]);
+  ctx.strokeStyle = config.strokeStyle;
+  ctx.lineWidth = config.lineWidth;
+  ctx.setLineDash(config.dash);
 
   if (hoveredType === "system") {
     const sys = systems.find((s) => s.id === hoveredId);
     if (sys) {
       const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-      for (const tcId of sys.techClusters) {
-        const tc = techClusters.find((t) => t.id === tcId);
-        if (tc) {
-          const pos = resolveTcPos(tc);
+      for (const nodeId of config.getNodeIds(sys)) {
+        const pos = config.resolveNodePos(nodeId);
+        if (pos) {
           ctx.beginPath();
           ctx.moveTo(sysPos.x + px, sysPos.y + py);
           ctx.lineTo(pos.x + px, pos.y + py);
@@ -283,11 +290,10 @@ export function drawTechConnections(
         }
       }
     }
-  } else if (hoveredType === "tech") {
-    const tc = techClusters.find((t) => t.id === hoveredId);
-    if (tc) {
-      const pos = resolveTcPos(tc);
-      const connected = techToSystems.get(hoveredId) || [];
+  } else if (hoveredType === config.nodeType) {
+    const pos = config.resolveNodePos(hoveredId);
+    if (pos) {
+      const connected = config.nodeToSystems.get(hoveredId) || [];
       for (const sysId of connected) {
         const sys = systems.find((s) => s.id === sysId);
         if (sys) {
@@ -304,52 +310,47 @@ export function drawTechConnections(
   ctx.setLineDash([]);
 }
 
+export function drawTechConnections(
+  ctx: CanvasRenderingContext2D,
+  hoveredId: string, hoveredType: string,
+  time: number, w: number, h: number, cx: number, cy: number,
+  px: number, py: number,
+  techToSystems: Map<string, string[]>,
+  resolveTcPos: (tc: typeof techClusters[number]) => { x: number; y: number },
+) {
+  drawConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, {
+    nodeType: "tech",
+    strokeStyle: "rgba(160, 140, 200, 0.15)",
+    lineWidth: 0.6,
+    dash: [2, 3],
+    getNodeIds: (sys) => sys.techClusters,
+    resolveNodePos: (id) => {
+      const tc = techClusters.find((t) => t.id === id);
+      return tc ? resolveTcPos(tc) : null;
+    },
+    nodeToSystems: techToSystems,
+  });
+}
+
 export function drawDomainConnections(
   ctx: CanvasRenderingContext2D,
-  hoveredId: string,
-  hoveredType: string,
+  hoveredId: string, hoveredType: string,
   time: number, w: number, h: number, cx: number, cy: number,
   px: number, py: number,
   domainToSystems: Map<string, string[]>,
 ) {
-  ctx.strokeStyle = "rgba(120, 180, 240, 0.2)";
-  ctx.lineWidth = 0.8;
-  ctx.setLineDash([3, 4]);
-
-  if (hoveredType === "system") {
-    const sys = systems.find((s) => s.id === hoveredId);
-    if (sys) {
-      const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-      for (const domId of sys.domains) {
-        const dom = domains.find((d) => d.id === domId);
-        if (dom) {
-          const domPos = getDomainPosition(dom, w, h, cx, cy);
-          ctx.beginPath();
-          ctx.moveTo(sysPos.x + px, sysPos.y + py);
-          ctx.lineTo(domPos.x + px, domPos.y + py);
-          ctx.stroke();
-        }
-      }
-    }
-  } else if (hoveredType === "domain") {
-    const dom = domains.find((d) => d.id === hoveredId);
-    if (dom) {
-      const domPos = getDomainPosition(dom, w, h, cx, cy);
-      const connected = domainToSystems.get(hoveredId) || [];
-      for (const sysId of connected) {
-        const sys = systems.find((s) => s.id === sysId);
-        if (sys) {
-          const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-          ctx.beginPath();
-          ctx.moveTo(domPos.x + px, domPos.y + py);
-          ctx.lineTo(sysPos.x + px, sysPos.y + py);
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  ctx.setLineDash([]);
+  drawConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, {
+    nodeType: "domain",
+    strokeStyle: "rgba(120, 180, 240, 0.2)",
+    lineWidth: 0.8,
+    dash: [3, 4],
+    getNodeIds: (sys) => sys.domains,
+    resolveNodePos: (id) => {
+      const dom = domains.find((d) => d.id === id);
+      return dom ? getDomainPosition(dom, w, h, cx, cy) : null;
+    },
+    nodeToSystems: domainToSystems,
+  });
 }
 
 // --- System star rendering ---
