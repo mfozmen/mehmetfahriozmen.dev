@@ -447,16 +447,19 @@ export function drawSystemStar(
   }
 
   if (showLabel || isHovered) {
-    drawSystemLabel(ctx, sys, sx, sy + r + 4, sf, isHovered, isDimmed, isActive);
+    drawSystemLabel(ctx, { sys, x: sx, y: sy + r + 4, sf, isHovered, isDimmed, isActive });
   }
   ctx.globalAlpha = 1;
 }
 
-function drawSystemLabel(
-  ctx: CanvasRenderingContext2D,
-  sys: SystemNode, x: number, y: number, sf: number,
-  isHovered: boolean, isDimmed: boolean, isActive: boolean,
-) {
+interface SystemLabelOpts {
+  sys: SystemNode;
+  x: number; y: number; sf: number;
+  isHovered: boolean; isDimmed: boolean; isActive: boolean;
+}
+
+function drawSystemLabel(ctx: CanvasRenderingContext2D, opts: SystemLabelOpts) {
+  const { sys, x, y, sf, isHovered, isDimmed, isActive } = opts;
   const isPrimary = sys.importance === "primary";
   const isSecondary = sys.importance === "secondary";
 
