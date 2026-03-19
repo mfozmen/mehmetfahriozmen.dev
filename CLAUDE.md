@@ -35,6 +35,16 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Prefer small reusable components.
 - Avoid unnecessary dependencies.
 
+## Code Quality Rules
+
+- No function longer than 50 lines. If a function exceeds this, extract smaller functions.
+- No file longer than 300 lines. If a file exceeds this, split into modules.
+- Apply extract method refactoring proactively — don't wait for review.
+
+### Exceptions
+- `lib/galaxyRenderLoop.ts` and `lib/galaxyRenderers.ts` may exceed 300 lines — they are collections of pure canvas rendering functions, each individually under 50 lines.
+- `renderGalaxyFrame` orchestrates 13 rendering layers in sequence — splitting it further would reduce readability.
+
 ## Git Rules
 
 - **Conventional Commits** format: `type(scope): message`
