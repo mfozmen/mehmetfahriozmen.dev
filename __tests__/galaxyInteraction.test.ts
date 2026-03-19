@@ -76,25 +76,23 @@ describe("hitTest — mobile (with position overrides)", () => {
   });
 
   it("does NOT hit tech cluster at desktop position when overrides are active", () => {
-    const tc = techClusters[0];
-    const desktopPos = getTechClusterPosition(tc, MW, MH, MCX, MCY);
-    const override = techClusterMobilePositions[tc.id];
-    const mobilePos = { x: MCX + override.x * MW, y: MCY + override.y * MH };
+    // Find a tech cluster whose desktop and mobile positions differ significantly
+    const tc = techClusters.find((t) => {
+      const dp = getTechClusterPosition(t, MW, MH, MCX, MCY);
+      const ov = techClusterMobilePositions[t.id];
+      const mp = { x: MCX + ov.x * MW, y: MCY + ov.y * MH };
+      return Math.hypot(dp.x - mp.x, dp.y - mp.y) > 30;
+    });
+    expect(tc, "No tech cluster has significantly different desktop vs mobile positions").toBeTruthy();
 
-    // Only test if positions actually differ significantly
-    const dx = desktopPos.x - mobilePos.x;
-    const dy = desktopPos.y - mobilePos.y;
-    if (Math.sqrt(dx * dx + dy * dy) > 30) {
-      const result = hitTest({
-        mx: desktopPos.x, my: desktopPos.y, time: 0,
-        w: MW, h: MH, cx: MCX, cy: MCY, sf: MSF,
-        techClusterPositionOverrides: techClusterMobilePositions,
-      });
-      // Should not hit the same tech cluster at desktop position
-      if (result?.type === "tech") {
-        expect(result.id).not.toBe(tc.id);
-      }
-    }
+    const desktopPos = getTechClusterPosition(tc!, MW, MH, MCX, MCY);
+    const result = hitTest({
+      mx: desktopPos.x, my: desktopPos.y, time: 0,
+      w: MW, h: MH, cx: MCX, cy: MCY, sf: MSF,
+      techClusterPositionOverrides: techClusterMobilePositions,
+    });
+    // Tapping the desktop position should not hit this cluster when mobile overrides are active
+    expect(result?.id).not.toBe(tc!.id);
   });
 
   it("mobile touch boost increases hit radius", () => {
