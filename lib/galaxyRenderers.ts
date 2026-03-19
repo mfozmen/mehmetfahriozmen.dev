@@ -13,9 +13,8 @@ import {
 import {
   getSystemPosition,
   getDomainPosition,
-  getTechClusterPosition,
+  satelliteOrbitRadius,
 } from "@/lib/galaxyLayout";
-import { satelliteOrbitRadius } from "@/lib/galaxyLayout";
 import { seededRandom } from "@/lib/galaxyStars";
 import { mobileLabelSize, mobileLabelAlpha } from "@/lib/galaxyMobileConfig";
 
@@ -255,6 +254,12 @@ export function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number
 
 // --- Connection line rendering ---
 
+export interface DrawContext {
+  ctx: CanvasRenderingContext2D;
+  time: number; w: number; h: number; cx: number; cy: number;
+  px: number; py: number;
+}
+
 interface ConnectionConfig {
   nodeType: string;
   strokeStyle: string;
@@ -265,60 +270,60 @@ interface ConnectionConfig {
   nodeToSystems: Map<string, string[]>;
 }
 
-function drawConnections(
-  ctx: CanvasRenderingContext2D,
-  hoveredId: string, hoveredType: string,
-  time: number, w: number, h: number, cx: number, cy: number,
-  px: number, py: number,
-  config: ConnectionConfig,
+function drawConnectionsForSystem(
+  dc: DrawContext, sys: typeof systems[number], config: ConnectionConfig,
 ) {
-  ctx.strokeStyle = config.strokeStyle;
-  ctx.lineWidth = config.lineWidth;
-  ctx.setLineDash(config.dash);
+  const sysPos = getSystemPosition(sys, dc.time, dc.w, dc.h, dc.cx, dc.cy);
+  for (const nodeId of config.getNodeIds(sys)) {
+    const pos = config.resolveNodePos(nodeId);
+    if (pos) {
+      dc.ctx.beginPath();
+      dc.ctx.moveTo(sysPos.x + dc.px, sysPos.y + dc.py);
+      dc.ctx.lineTo(pos.x + dc.px, pos.y + dc.py);
+      dc.ctx.stroke();
+    }
+  }
+}
+
+function drawConnectionsForNode(
+  dc: DrawContext, pos: { x: number; y: number }, connectedSystems: string[],
+) {
+  for (const sysId of connectedSystems) {
+    const sys = systems.find((s) => s.id === sysId);
+    if (sys) {
+      const sysPos = getSystemPosition(sys, dc.time, dc.w, dc.h, dc.cx, dc.cy);
+      dc.ctx.beginPath();
+      dc.ctx.moveTo(pos.x + dc.px, pos.y + dc.py);
+      dc.ctx.lineTo(sysPos.x + dc.px, sysPos.y + dc.py);
+      dc.ctx.stroke();
+    }
+  }
+}
+
+function drawConnections(
+  dc: DrawContext, hoveredId: string, hoveredType: string, config: ConnectionConfig,
+) {
+  dc.ctx.strokeStyle = config.strokeStyle;
+  dc.ctx.lineWidth = config.lineWidth;
+  dc.ctx.setLineDash(config.dash);
 
   if (hoveredType === "system") {
     const sys = systems.find((s) => s.id === hoveredId);
-    if (sys) {
-      const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-      for (const nodeId of config.getNodeIds(sys)) {
-        const pos = config.resolveNodePos(nodeId);
-        if (pos) {
-          ctx.beginPath();
-          ctx.moveTo(sysPos.x + px, sysPos.y + py);
-          ctx.lineTo(pos.x + px, pos.y + py);
-          ctx.stroke();
-        }
-      }
-    }
+    if (sys) drawConnectionsForSystem(dc, sys, config);
   } else if (hoveredType === config.nodeType) {
     const pos = config.resolveNodePos(hoveredId);
-    if (pos) {
-      const connected = config.nodeToSystems.get(hoveredId) || [];
-      for (const sysId of connected) {
-        const sys = systems.find((s) => s.id === sysId);
-        if (sys) {
-          const sysPos = getSystemPosition(sys, time, w, h, cx, cy);
-          ctx.beginPath();
-          ctx.moveTo(pos.x + px, pos.y + py);
-          ctx.lineTo(sysPos.x + px, sysPos.y + py);
-          ctx.stroke();
-        }
-      }
-    }
+    if (pos) drawConnectionsForNode(dc, pos, config.nodeToSystems.get(hoveredId) || []);
   }
 
-  ctx.setLineDash([]);
+  dc.ctx.setLineDash([]);
 }
 
 export function drawTechConnections(
-  ctx: CanvasRenderingContext2D,
-  hoveredId: string, hoveredType: string,
-  time: number, w: number, h: number, cx: number, cy: number,
-  px: number, py: number,
+  dc: DrawContext, hoveredId: string, hoveredType: string,
   techToSystems: Map<string, string[]>,
   resolveTcPos: (tc: typeof techClusters[number]) => { x: number; y: number },
 ) {
-  drawConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, {
+  drawConnections(dc, hoveredId, hoveredType, {
     nodeType: "tech",
     strokeStyle: "rgba(160, 140, 200, 0.15)",
     lineWidth: 0.6,
@@ -333,13 +338,10 @@ export function drawTechConnections(
 }
 
 export function drawDomainConnections(
-  ctx: CanvasRenderingContext2D,
-  hoveredId: string, hoveredType: string,
-  time: number, w: number, h: number, cx: number, cy: number,
-  px: number, py: number,
+  dc: DrawContext, hoveredId: string, hoveredType: string,
   domainToSystems: Map<string, string[]>,
 ) {
-  drawConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, {
+  drawConnections(dc, hoveredId, hoveredType, {
     nodeType: "domain",
     strokeStyle: "rgba(120, 180, 240, 0.2)",
     lineWidth: 0.8,
@@ -347,7 +349,7 @@ export function drawDomainConnections(
     getNodeIds: (sys) => sys.domains,
     resolveNodePos: (id) => {
       const dom = domains.find((d) => d.id === id);
-      return dom ? getDomainPosition(dom, w, h, cx, cy) : null;
+      return dom ? getDomainPosition(dom, dc.w, dc.h, dc.cx, dc.cy) : null;
     },
     nodeToSystems: domainToSystems,
   });
@@ -416,9 +418,9 @@ export function drawSystemStar(
   sys: SystemNode,
   sx: number, sy: number,
   sf: number, time: number,
-  isHovered: boolean, isDimmed: boolean,
-  showLabel: boolean = true, isActive: boolean = false,
+  opts: { isHovered: boolean; isDimmed: boolean; showLabel?: boolean; isActive?: boolean },
 ) {
+  const { isHovered, isDimmed, showLabel = true, isActive = false } = opts;
   let hash = 0;
   for (const ch of sys.id) {
     hash = Math.trunc((hash << 5) - hash + ch.codePointAt(0)!);
@@ -444,31 +446,38 @@ export function drawSystemStar(
     ctx.strokeStyle = "rgba(255, 255, 255, 0.2)"; ctx.lineWidth = 0.5; ctx.stroke();
   }
 
-  // Label — only draw if showLabel is true (or if hovered)
   if (showLabel || isHovered) {
-    const isPrimary = sys.importance === "primary";
-    const isSecondary = sys.importance === "secondary";
-
-    let labelAlpha: number;
-    if (isHovered) { labelAlpha = 1; }
-    else if (isDimmed) { labelAlpha = 0.15; }
-    else if (isActive) { labelAlpha = Math.max(0.7, mobileLabelAlpha(sys.importance, sf)); }
-    else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
-
-    let labelColor: string;
-    if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
-    else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
-    else { labelColor = "rgba(130, 140, 150, 1)"; }
-
-    const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
-    ctx.globalAlpha = labelAlpha;
-    ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.fillStyle = labelColor;
-    ctx.fillText(sys.name, sx, sy + r + 4);
+    drawSystemLabel(ctx, sys, sx, sy + r + 4, sf, isHovered, isDimmed, isActive);
   }
   ctx.globalAlpha = 1;
+}
+
+function drawSystemLabel(
+  ctx: CanvasRenderingContext2D,
+  sys: SystemNode, x: number, y: number, sf: number,
+  isHovered: boolean, isDimmed: boolean, isActive: boolean,
+) {
+  const isPrimary = sys.importance === "primary";
+  const isSecondary = sys.importance === "secondary";
+
+  let labelAlpha: number;
+  if (isHovered) { labelAlpha = 1; }
+  else if (isDimmed) { labelAlpha = 0.15; }
+  else if (isActive) { labelAlpha = Math.max(0.7, mobileLabelAlpha(sys.importance, sf)); }
+  else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
+
+  let labelColor: string;
+  if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
+  else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
+  else { labelColor = "rgba(130, 140, 150, 1)"; }
+
+  const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
+  ctx.globalAlpha = labelAlpha;
+  ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = labelColor;
+  ctx.fillText(sys.name, x, y);
 }
 
 // --- Satellite animation helper ---
@@ -481,8 +490,9 @@ export function updateSatelliteAnim(
   dt: number,
 ): { anim: number; lastCluster: string | null } {
   if (hoveredType === "tech") {
-    const lastCluster = lastHoveredCluster !== hoveredId ? hoveredId : lastHoveredCluster;
-    const anim = lastHoveredCluster !== hoveredId ? Math.min(1, dt * 2.5) : Math.min(1, currentAnim + dt * 2.5);
+    const isNewCluster = lastHoveredCluster === hoveredId;
+    const lastCluster = isNewCluster ? lastHoveredCluster : hoveredId;
+    const anim = isNewCluster ? Math.min(1, currentAnim + dt * 2.5) : Math.min(1, dt * 2.5);
     return { anim, lastCluster };
   }
   return { anim: Math.max(0, currentAnim - dt * 4), lastCluster: lastHoveredCluster };

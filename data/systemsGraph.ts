@@ -65,7 +65,7 @@ const projectLayout: Record<string, { angle: number; orbit: number }> = {
   ihtiyac:      { angle: 4.1, orbit: 1 },
   coknet:       { angle: 5.4, orbit: 1 },
   fsd:          { angle: 1.2, orbit: 2 },
-  megatons:     { angle: 5.0, orbit: 2 },
+  megatons:     { angle: 5, orbit: 2 },
 };
 
 // --- Galaxy layout per domain ---
@@ -93,7 +93,7 @@ const techClusterPositions: Record<string, { x: number; y: number }> = {
   frameworks:    { x: -0.13, y: -0.14 },
   monitoring:    { x: -0.14, y: -0.04 },
   data_analysis: { x: 0.14, y: 0.08 },
-  methodologies: { x: -0.10, y: 0.14 },
+  methodologies: { x: -0.1, y: 0.14 },
 };
 
 // Computed radial positions for mobile — equal angular spacing guarantees no overlaps

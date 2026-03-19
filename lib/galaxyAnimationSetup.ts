@@ -7,13 +7,13 @@ import { updateSatelliteAnim } from "@/lib/galaxyRenderers";
 
 export interface GalaxyRefs {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  animFrameRef: React.MutableRefObject<number>;
-  timeRef: React.MutableRefObject<number>;
-  prevTimestampRef: React.MutableRefObject<number>;
-  hoveredTypeRef: React.MutableRefObject<string | null>;
-  hoveredIdRef: React.MutableRefObject<string | null>;
-  lastHoveredClusterRef: React.MutableRefObject<string | null>;
-  satelliteAnimRef: React.MutableRefObject<number>;
+  animFrameRef: React.RefObject<number>;
+  timeRef: React.RefObject<number>;
+  prevTimestampRef: React.RefObject<number>;
+  hoveredTypeRef: React.RefObject<string | null>;
+  hoveredIdRef: React.RefObject<string | null>;
+  lastHoveredClusterRef: React.RefObject<string | null>;
+  satelliteAnimRef: React.RefObject<number>;
 }
 
 export interface FrameContext {

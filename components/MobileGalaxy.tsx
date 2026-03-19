@@ -119,6 +119,22 @@ export default function MobileGalaxy() {
     }
   }
 
+  function handleTap(mx: number, my: number) {
+    const { width: w, height: h } = dimensions;
+    const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current, techClusterPositionOverrides: techClusterMobilePositions });
+    if (hit) {
+      if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {
+        window.open(hit.item.url, "_blank");
+      } else {
+        setHoveredId(hit.id);
+        setHoveredType(hit.type);
+      }
+    } else {
+      setHoveredId(null);
+      setHoveredType(null);
+    }
+  }
+
   function handleTouchEnd(e: React.TouchEvent<HTMLCanvasElement>) {
     const state = touchStateRef.current;
 
@@ -129,24 +145,8 @@ export default function MobileGalaxy() {
       const touch = e.changedTouches[0];
       const mx = touch.clientX - rect.left;
       const my = touch.clientY - rect.top;
-      const dx = mx - state.startX;
-      const dy = my - state.startY;
-
-      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-        const { width: w, height: h } = dimensions;
-        const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current, techClusterPositionOverrides: techClusterMobilePositions });
-
-        if (hit) {
-          if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {
-            window.open(hit.item.url, "_blank");
-          } else {
-            setHoveredId(hit.id);
-            setHoveredType(hit.type);
-          }
-        } else {
-          setHoveredId(null);
-          setHoveredType(null);
-        }
+      if (Math.abs(mx - state.startX) < 10 && Math.abs(my - state.startY) < 10) {
+        handleTap(mx, my);
       }
     }
 

@@ -64,7 +64,7 @@ export interface RenderOpts {
   techClusterPositionOverrides?: Record<string, { x: number; y: number }>;
 }
 
-export function renderGalaxyFrame(
+export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestration, see CLAUDE.md exceptions
   ctx: CanvasRenderingContext2D,
   opts: RenderOpts,
 ): void {
@@ -224,8 +224,9 @@ export function renderGalaxyFrame(
 
   // --- 8. Connection lines ---
   if (highlighted && hoveredId && hoveredType) {
-    drawTechConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, techToSystems, tcPos);
-    drawDomainConnections(ctx, hoveredId, hoveredType, time, w, h, cx, cy, px, py, domainToSystems);
+    const dc = { ctx, time, w, h, cx, cy, px, py };
+    drawTechConnections(dc, hoveredId, hoveredType, techToSystems, tcPos);
+    drawDomainConnections(dc, hoveredId, hoveredType, domainToSystems);
   }
 
   // --- 10. Satellites ---
@@ -267,7 +268,8 @@ export function renderGalaxyFrame(
     ctx.stroke();
 
     if ((showLabels.techClusters || isActive) && !isDimmed) {
-      const tcAlpha = smallScreen ? 0.7 : (isActive ? 0.85 : 0.45);
+      let tcAlpha = 0.7;
+      if (!smallScreen) { tcAlpha = isActive ? 0.85 : 0.45; }
       ctx.font = `500 ${clusterFontSize}px system-ui, -apple-system, sans-serif`;
       ctx.textAlign = "center";
       ctx.letterSpacing = "1px";
@@ -328,6 +330,6 @@ export function renderGalaxyFrame(
     if (sys.importance === "secondary") { showLabel = showLabels.secondarySystems; }
     else if (sys.importance === "minor") { showLabel = showLabels.minorSystems; }
     const isActive = !!highlighted && isHL && sys.id !== hoveredId;
-    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, sys.id === hoveredId, !!isDimmed, showLabel, isActive);
+    drawSystemStar(ctx, sys, pos.x + px, pos.y + py, sf, time, { isHovered: sys.id === hoveredId, isDimmed: !!isDimmed, showLabel, isActive });
   }
 }
