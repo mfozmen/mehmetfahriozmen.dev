@@ -49,7 +49,7 @@ export const projects: Project[] = [
   },
   {
     id: "beforesunset",
-    name: "BeforeSunset",
+    name: "BeforeSunset AI",
     url: "https://www.beforesunset.ai",
     description: "AI productivity assistant",
     importance: "primary",
@@ -58,7 +58,7 @@ export const projects: Project[] = [
   },
   {
     id: "decktopus",
-    name: "Decktopus",
+    name: "Decktopus AI",
     url: "https://www.decktopus.com",
     description: "AI presentation platform",
     importance: "primary",
