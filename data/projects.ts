@@ -5,6 +5,7 @@ export type Project = {
   name: string;
   url?: string;
   description?: string;
+  highlights?: string[];
   importance: ProjectImportance;
   domains: string[];
   technologyCategories: string[];
@@ -16,7 +17,8 @@ export const projects: Project[] = [
     id: "mobilet",
     name: "Mobilet",
     url: "https://www.mobilet.com",
-    description: "Event ticketing platform handling millions of transactions with scalable payment infrastructure",
+    description: "Event ticketing platform with CMS, campaign engine, QR gate entry, and scalable payment infrastructure serving millions",
+    highlights: ["80K tickets/hour peak capacity", "Dynamic campaign engine", "Microservices on K8s with multi-POS integration"],
     importance: "primary",
     domains: ["ecommerce", "distributed"],
     technologyCategories: ["databases", "search", "cloud", "devops", "api", "architecture", "frameworks", "monitoring", "data_analysis", "methodologies"],
@@ -24,7 +26,8 @@ export const projects: Project[] = [
   {
     id: "shubuo",
     name: "Shubuo",
-    description: "Digital advertising platform with real-time bidding and distributed ad-serving systems",
+    description: "Digital advertising platform with smart ad scheduling that optimizes campaign delivery against contracts throughout the day",
+    highlights: ["Smart ad scheduling engine", "Contract-based delivery optimization", "Real-time campaign pacing"],
     importance: "primary",
     domains: ["adtech", "distributed"],
     technologyCategories: ["databases", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"],
@@ -33,7 +36,8 @@ export const projects: Project[] = [
     id: "villasepeti",
     name: "VillaSepeti",
     url: "https://www.villasepeti.com",
-    description: "Vacation rental marketplace with high-volume booking engine and inventory management",
+    description: "Vacation rental marketplace with intelligent search — complex manual filtering rules transformed into automated Elasticsearch indexing",
+    highlights: ["5K+ properties with advanced search", "Complex rule-based availability indexing", "Elasticsearch-powered filtering"],
     importance: "primary",
     domains: ["ecommerce", "distributed"],
     technologyCategories: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "methodologies"],
@@ -42,7 +46,8 @@ export const projects: Project[] = [
     id: "magicpags",
     name: "MagicPags",
     url: "https://www.magicpags.com/",
-    description: "Educational mobile platform for kids with interactive games and audio story backend",
+    description: "Educational platform teaching kids to read through interactive Unity games and audio storytelling, powered by a custom backend",
+    highlights: ["Audio storytelling engine for kids", "Unity game backend integration", "Child-safe content delivery"],
     importance: "primary",
     domains: ["education"],
     technologyCategories: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
@@ -52,6 +57,7 @@ export const projects: Project[] = [
     name: "BeforeSunset AI",
     url: "https://www.beforesunset.ai",
     description: "AI-powered productivity assistant with intelligent task planning and calendar optimization",
+    highlights: ["AI-powered task planning", "Calendar optimization engine", "Intelligent scheduling"],
     importance: "primary",
     domains: ["productivity"],
     technologyCategories: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
@@ -61,6 +67,7 @@ export const projects: Project[] = [
     name: "Decktopus AI",
     url: "https://www.decktopus.com",
     description: "AI presentation platform with automated content generation and template engine",
+    highlights: ["AI content generation", "Template rendering engine", "Real-time collaboration"],
     importance: "primary",
     domains: ["productivity"],
     technologyCategories: ["databases", "cloud", "devops", "api", "architecture", "methodologies"],
