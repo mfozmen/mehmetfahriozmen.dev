@@ -26,6 +26,14 @@ export function clampPan(
   };
 }
 
+export const DOUBLE_TAP_THRESHOLD = 300; // ms
+
+export function isDoubleTap(lastTapTime: number, now: number): boolean {
+  if (lastTapTime <= 0) return false;
+  const dt = now - lastTapTime;
+  return dt > 0 && dt <= DOUBLE_TAP_THRESHOLD;
+}
+
 export function computePinchZoom(opts: {
   initialDistance: number;
   currentDistance: number;

@@ -5,7 +5,7 @@ import { useGalaxySetup } from "./useGalaxySetup";
 import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
 import { hitTest } from "@/lib/galaxyInteraction";
 import { prepareFrame } from "@/lib/galaxyAnimationSetup";
-import { clampZoom, clampPan, computePinchZoom } from "@/lib/galaxyTouch";
+import { clampZoom, clampPan, computePinchZoom, isDoubleTap } from "@/lib/galaxyTouch";
 import { techClusterMobilePositions } from "@/data/systemsGraph";
 
 export default function MobileGalaxy() {
@@ -20,6 +20,7 @@ export default function MobileGalaxy() {
   } = useGalaxySetup({ starCount: 600, centerBias: 0.4 });
   const zoomRef = useRef(1);
   const panRef = useRef({ x: 0, y: 0 });
+  const lastEmptyTapRef = useRef(0);
   const touchStateRef = useRef<{
     type: "none" | "pan" | "pinch";
     startX: number; startY: number;
@@ -129,7 +130,16 @@ export default function MobileGalaxy() {
         setHoveredId(hit.id);
         setHoveredType(hit.type);
       }
+      lastEmptyTapRef.current = 0;
     } else {
+      const now = Date.now();
+      if (isDoubleTap(lastEmptyTapRef.current, now)) {
+        zoomRef.current = 1;
+        panRef.current = { x: 0, y: 0 };
+        lastEmptyTapRef.current = 0;
+      } else {
+        lastEmptyTapRef.current = now;
+      }
       setHoveredId(null);
       setHoveredType(null);
     }

@@ -3,7 +3,9 @@ import {
   clampZoom,
   clampPan,
   computePinchZoom,
+  isDoubleTap,
   ASPECT_RATIO,
+  DOUBLE_TAP_THRESHOLD,
   MIN_ZOOM,
   MAX_ZOOM,
 } from "@/lib/galaxyTouch";
@@ -74,6 +76,30 @@ describe("Zoom clamping", () => {
     expect(clampZoom(2)).toBe(2);
     expect(clampZoom(3)).toBe(3);
     expect(clampZoom(1.5)).toBe(1.5);
+  });
+});
+
+describe("Double-tap detection", () => {
+  it("DOUBLE_TAP_THRESHOLD is 300ms", () => {
+    expect(DOUBLE_TAP_THRESHOLD).toBe(300);
+  });
+
+  it("returns true when two taps are within threshold", () => {
+    expect(isDoubleTap(1000, 1200)).toBe(true);
+    expect(isDoubleTap(1000, 1300)).toBe(true); // exactly at threshold
+  });
+
+  it("returns false when taps are too far apart", () => {
+    expect(isDoubleTap(1000, 1301)).toBe(false);
+    expect(isDoubleTap(1000, 2000)).toBe(false);
+  });
+
+  it("returns false when there is no previous tap (lastTapTime=0)", () => {
+    expect(isDoubleTap(0, 1000)).toBe(false);
+  });
+
+  it("returns false for negative intervals", () => {
+    expect(isDoubleTap(2000, 1000)).toBe(false);
   });
 });
 
