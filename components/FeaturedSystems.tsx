@@ -1,7 +1,9 @@
 import { projects } from "@/data/projects";
 import { domains } from "@/data/domains";
+import { technologyCategories } from "@/data/technologies";
 
 const domainNames = new Map(domains.map((d) => [d.id, d.name]));
+const techNames = new Map(technologyCategories.map((t) => [t.id, t.name]));
 const primarySystems = projects.filter((p) => p.importance === "primary");
 
 export default function FeaturedSystems() {
@@ -44,6 +46,11 @@ export default function FeaturedSystems() {
                 </span>
               ))}
             </div>
+            <p className="mt-3 text-xs leading-relaxed text-neutral-600">
+              {system.technologyCategories
+                .map((id) => techNames.get(id) ?? id)
+                .join(" · ")}
+            </p>
           </div>
         ))}
       </div>
