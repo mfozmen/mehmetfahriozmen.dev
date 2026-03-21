@@ -230,6 +230,19 @@ export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number
   ctx.fillStyle = dust;
   ctx.fillRect(-w * 0.2, 0, w * 1.4, h);
 
+  // Horizontal edge fades — blend dust band into page background (0a0a0a)
+  const leftFade = ctx.createLinearGradient(0, 0, w * 0.25, 0);
+  leftFade.addColorStop(0, "rgba(10, 10, 10, 0.8)");
+  leftFade.addColorStop(1, "rgba(10, 10, 10, 0)");
+  ctx.fillStyle = leftFade;
+  ctx.fillRect(0, 0, w * 0.25, h);
+
+  const rightFade = ctx.createLinearGradient(w * 0.75, 0, w, 0);
+  rightFade.addColorStop(0, "rgba(10, 10, 10, 0)");
+  rightFade.addColorStop(1, "rgba(10, 10, 10, 0.8)");
+  ctx.fillStyle = rightFade;
+  ctx.fillRect(w * 0.75, 0, w * 0.25, h);
+
   const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
   hFade.addColorStop(0, "rgba(90, 75, 50, 0.10)");
   hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.04)");
