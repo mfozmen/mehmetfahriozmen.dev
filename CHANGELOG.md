@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.5.0...v0.5.1) (2026-03-21)
+
+### Bug Fixes
+
+* add distributed domain to MagicPags, redesign highlights as vertical list ([1f6b279](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1f6b27996810d15c4f66abf3a0bed331ece8d997))
+
 ## [0.5.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.4.0...v0.5.0) (2026-03-21)
 
 ### Features
