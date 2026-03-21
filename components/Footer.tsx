@@ -64,6 +64,9 @@ export default function Footer() {
           </svg>
         </a>
       </div>
+      <p className="mt-8 text-xs text-neutral-600">
+        &copy; {new Date().getFullYear()} Mehmet Fahri Özmen. All rights reserved.
+      </p>
     </footer>
   );
 }
