@@ -217,7 +217,13 @@ export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number
   ctx.rotate(-0.1);
   ctx.translate(-cx, -cy);
 
-  const dust = ctx.createLinearGradient(0, 0, 0, h);
+  // Paint dust band with radial alpha falloff using an offscreen canvas
+  // so the edges fade smoothly instead of clipping hard
+  const off = new OffscreenCanvas(w, h);
+  const oc = off.getContext("2d")!;
+
+  // Step 1: draw vertical dust gradient
+  const dust = oc.createLinearGradient(0, 0, 0, h);
   dust.addColorStop(0, "rgba(0, 0, 0, 0)");
   dust.addColorStop(0.3, "rgba(0, 0, 0, 0)");
   dust.addColorStop(0.4, "rgba(80, 65, 40, 0.08)");
@@ -227,22 +233,22 @@ export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number
   dust.addColorStop(0.6, "rgba(80, 65, 40, 0.08)");
   dust.addColorStop(0.7, "rgba(0, 0, 0, 0)");
   dust.addColorStop(1, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = dust;
-  ctx.fillRect(-w * 0.2, 0, w * 1.4, h);
+  oc.fillStyle = dust;
+  oc.fillRect(0, 0, w, h);
 
-  // Horizontal edge fades — blend dust band into page background (0a0a0a)
-  const leftFade = ctx.createLinearGradient(0, 0, w * 0.25, 0);
-  leftFade.addColorStop(0, "rgba(10, 10, 10, 0.8)");
-  leftFade.addColorStop(1, "rgba(10, 10, 10, 0)");
-  ctx.fillStyle = leftFade;
-  ctx.fillRect(0, 0, w * 0.25, h);
+  // Step 2: mask with radial gradient — keeps center, fades edges smoothly
+  oc.globalCompositeOperation = "destination-in";
+  const mask = oc.createRadialGradient(cx, cy, 0, cx, cy, w * 0.52);
+  mask.addColorStop(0, "rgba(255, 255, 255, 1)");
+  mask.addColorStop(0.7, "rgba(255, 255, 255, 1)");
+  mask.addColorStop(1, "rgba(255, 255, 255, 0)");
+  oc.fillStyle = mask;
+  oc.fillRect(0, 0, w, h);
 
-  const rightFade = ctx.createLinearGradient(w * 0.75, 0, w, 0);
-  rightFade.addColorStop(0, "rgba(10, 10, 10, 0)");
-  rightFade.addColorStop(1, "rgba(10, 10, 10, 0.8)");
-  ctx.fillStyle = rightFade;
-  ctx.fillRect(w * 0.75, 0, w * 0.25, h);
+  // Step 3: composite onto main canvas
+  ctx.drawImage(off, 0, 0);
 
+  // Warm radial glow overlay
   const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
   hFade.addColorStop(0, "rgba(90, 75, 50, 0.10)");
   hFade.addColorStop(0.5, "rgba(70, 60, 40, 0.04)");
