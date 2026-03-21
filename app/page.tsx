@@ -9,9 +9,11 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <main className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+      <main className="mx-auto max-w-6xl px-6 pt-16 pb-16 sm:pt-24 sm:pb-24">
         <Hero />
-        <SystemsGalaxy />
+        <div className="mt-6 sm:mt-10">
+          <SystemsGalaxy />
+        </div>
         <div className="space-y-24">
           <FeaturedSystems />
           <Domains />
