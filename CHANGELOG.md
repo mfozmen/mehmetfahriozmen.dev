@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.4.0...v0.5.0) (2026-03-21)
+
+### Features
+
+* add dynamic copyright notice to footer ([2e96db2](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2e96db2776c53cbd1107f04ddbfd9c7d9b13f283))
+* **mobile:** add double-tap on empty space to reset zoom and pan ([a1e91c9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a1e91c91a24d82e1384ba78694aabb723097476e))
+
+### Bug Fixes
+
+* eliminate canvas rectangular edge by clipping radial fills ([460ea5c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/460ea5c7dad27c78efa01720dcf0acc78341fa06))
+* eliminate dust band hard edge with full-height gradient ([1e9e7cb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1e9e7cbd362c38983a61e53855b99e34a345ebdb))
+
 ## [0.4.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.3.0...v0.4.0) (2026-03-19)
 
 ### Features
