@@ -45,9 +45,13 @@ export default function FeaturedSystems() {
               ))}
             </div>
             {system.highlights && system.highlights.length > 0 && (
-              <p className="mt-3 text-xs leading-relaxed text-neutral-600">
-                {system.highlights.join(" · ")}
-              </p>
+              <ul className="mt-3 space-y-1">
+                {system.highlights.map((h) => (
+                  <li key={h} className="text-xs leading-relaxed text-neutral-500">
+                    <span className="text-neutral-700">—</span> {h}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         ))}

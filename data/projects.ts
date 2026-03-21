@@ -49,7 +49,7 @@ export const projects: Project[] = [
     description: "Educational platform teaching kids to read through interactive Unity games and audio storytelling, powered by a custom backend",
     highlights: ["Audio storytelling engine for kids", "Unity game backend integration", "Child-safe content delivery"],
     importance: "primary",
-    domains: ["education"],
+    domains: ["education", "distributed"],
     technologyCategories: ["databases", "search", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "monitoring", "data_analysis", "methodologies"],
   },
   {
