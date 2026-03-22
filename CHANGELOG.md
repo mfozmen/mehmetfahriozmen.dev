@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.7.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.6.0...v0.7.0) (2026-03-22)
+
+### Features
+
+* add About page with editorial zigzag layout and photo sections ([743f83b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/743f83bf0e4d2413fdc7caafb3fef717ea28e8ef))
+* add Turkey to location and italic tagline to About intro ([cb8d0ad](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cb8d0ad7f015df63d6ee8f4b38cdb393582be926))
+* enlarge all About page photos to fill content width proportionally ([79fa149](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/79fa149158d0ad2efb8300a84bd74907c1c34b23))
+* enlarge photo sections to max-w-3xl, update captions and fishing text ([bd610e9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/bd610e9c3b178bc76819cb2ccd807335e9161a2b))
+* fix travel section layout with side-by-side text and landscape photo ([9ccbae4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9ccbae4c3df8fe07a41f526bb2f587b686a9c8a2))
+* restructure travel section with text+photo row and 3-portrait grid ([dd36d2f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/dd36d2f74794c8d70e75ea7947cacb243638e9bd))
+* revert travel layout to text-above-photo, add captions to all photos ([2c71add](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2c71add2241dacf695db18aa85d014a94fab1d3f))
+
+### Bug Fixes
+
+* equal-size portrait grid with flat grid-cols-3 and correct dimensions ([6a2a8ac](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6a2a8ac3b58ce27bea438ffa70567e4b1f919aba))
+* use absolute path for Systems nav link to work from all pages ([cd17ba0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cd17ba02af2b41008825b6c104a1cad8697c1771)), closes [#systems](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/systems) [#systems](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/systems)
+
 ## [0.6.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.5.1...v0.6.0) (2026-03-22)
 
 ### Features
