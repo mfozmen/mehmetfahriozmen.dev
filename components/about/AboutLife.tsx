@@ -26,34 +26,32 @@ export default function AboutLife() {
         />
       </div>
 
-      {/* Three portrait photos */}
-      <div className="mx-auto mb-12 max-w-xl">
-        <div className="grid grid-cols-3 gap-3">
-          <PhotoCaption
-            src="/about/family-adventure.webp"
-            alt="Family adventure"
-            width={200}
-            height={267}
-            caption="Family adventures"
-            imgClassName="w-full"
-          />
-          <PhotoCaption
-            src="/about/travel-alone.webp"
-            alt="Solo travel"
-            width={200}
-            height={267}
-            caption="Solo wandering"
-            imgClassName="w-full"
-          />
-          <PhotoCaption
-            src="/about/family-travel.webp"
-            alt="Family travel"
-            width={200}
-            height={267}
-            caption="On the road together"
-            imgClassName="w-full"
-          />
-        </div>
+      {/* Three portrait photos — all 600x800, equal grid columns */}
+      <div className="mx-auto mb-12 grid max-w-lg grid-cols-3 gap-3">
+        <PhotoCaption
+          src="/about/family-adventure.webp"
+          alt="Family adventure"
+          width={600}
+          height={800}
+          caption="Family adventures"
+          imgClassName="w-full"
+        />
+        <PhotoCaption
+          src="/about/travel-alone.webp"
+          alt="Solo travel"
+          width={600}
+          height={800}
+          caption="Solo wandering"
+          imgClassName="w-full"
+        />
+        <PhotoCaption
+          src="/about/family-travel.webp"
+          alt="Family travel"
+          width={600}
+          height={800}
+          caption="On the road together"
+          imgClassName="w-full"
+        />
       </div>
 
       {/* Fishing */}
