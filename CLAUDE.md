@@ -48,7 +48,17 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 ## Git Rules
 
 - **Conventional Commits** format: `type(scope): message`
-- Allowed types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `chore`
+- Allowed types: `feat`, `fix`, `refactor`, `perf`, `style`, `test`, `docs`, `build`, `ci`, `chore`
+- `feat` — add, adjust, or remove a feature (API or UI)
+- `fix` — fix a bug
+- `refactor` — rewrite/restructure code without changing behavior
+- `perf` — performance improvement (special refactor)
+- `style` — code formatting only (whitespace, semicolons) — NOT visual/UI changes
+- `test` — add or correct tests
+- `docs` — documentation only
+- `build` — build tools, dependencies, project version
+- `ci` — CI/CD pipelines, deployment scripts, infrastructure
+- `chore` — miscellaneous tasks (.gitignore, initial commit)
 - **Never commit automatically.** Always show proposed changes, commit message, and modified files — then ask the user for explicit approval before committing.
 - Never push commits automatically or run destructive git commands.
 - Never modify unrelated files.
