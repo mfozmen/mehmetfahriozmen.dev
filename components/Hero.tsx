@@ -9,12 +9,16 @@ export default function Hero() {
           Mehmet Fahri Özmen
         </h1>
         <p className="mt-3 text-base tracking-wide text-neutral-500">
-          Backend Systems Architect
+          Backend Systems Architect &middot; Engineering Leader
         </p>
-        <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-300">
+        <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-400">
           I build the things you don&apos;t see &mdash;
           <br className="hidden sm:inline" />
           distributed systems, search engines, payment flows.
+          <br />
+          <span className="text-neutral-200">
+            From hiring to shipping &mdash; I build the systems and the teams behind them.
+          </span>
           <br />
           <span className="text-neutral-500">
             The galaxy below? That&apos;s my universe.
