@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.5.1...v0.6.0) (2026-03-22)
+
+### Features
+
+* update hero subtitle and add engineering leader differentiator ([d57f4ef](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d57f4ef113e04321f00af6defdac0688ec593700))
+* update VillaSepeti highlight with set theory search description ([2cd8062](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2cd806272a60fe5a87819ff3ada813ec2104bbba))
+
 ## [0.5.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.5.0...v0.5.1) (2026-03-21)
 
 ### Bug Fixes
