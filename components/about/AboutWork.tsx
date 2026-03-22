@@ -57,7 +57,7 @@ export default function AboutWork() {
       </blockquote>
 
       {/* Team & speaking photos */}
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-3xl">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <PhotoCaption
             src="/about/brew-team.webp"

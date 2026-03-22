@@ -15,7 +15,7 @@ export default function AboutLife() {
       </p>
 
       {/* Landscape travel photo */}
-      <div className="mx-auto mb-6 max-w-2xl">
+      <div className="mx-auto mb-6 max-w-3xl">
         <PhotoCaption
           src="/about/travel-landscape.webp"
           alt="Travel"
@@ -27,13 +27,13 @@ export default function AboutLife() {
       </div>
 
       {/* Three portrait photos */}
-      <div className="mx-auto mb-12 grid max-w-2xl grid-cols-3 gap-3">
+      <div className="mx-auto mb-12 grid max-w-3xl grid-cols-3 gap-3">
         <PhotoCaption
           src="/about/family-adventure.webp"
           alt="Family adventure"
           width={600}
           height={800}
-          caption="Family adventures"
+          caption="Sümela Monastery — a mindblowing place"
           imgClassName="w-full"
         />
         <PhotoCaption
@@ -49,7 +49,7 @@ export default function AboutLife() {
           alt="Family travel"
           width={600}
           height={800}
-          caption="On the road together"
+          caption="On the road to ancient times"
           imgClassName="w-full"
         />
       </div>
@@ -65,11 +65,11 @@ export default function AboutLife() {
           className="w-[280px] shrink-0"
         />
         <p className="flex-1 text-neutral-400">
-          I also fish &mdash; not always successfully, to be honest. I
-          wouldn&apos;t call myself a great angler, but I do manage to catch
-          some. More importantly, there&apos;s nothing quite like it for
-          clearing your head. Just you, the water, and absolutely no pull
-          requests.
+          I also fish &mdash; it&apos;s one of the best ways I know to slow
+          down and recharge. There&apos;s something meditative about being out
+          on the water, waiting for a bite. No screens, no notifications, no
+          deployments. Just patience, fresh air, and the occasional lucky
+          catch.
         </p>
       </div>
 
