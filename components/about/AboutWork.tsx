@@ -8,14 +8,14 @@ export default function AboutWork() {
       </h2>
 
       {/* At work */}
-      <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">
         <PhotoCaption
           src="/about/at-work.webp"
           alt="At work"
-          width={240}
-          height={320}
+          width={280}
+          height={359}
           caption="Another day, another deploy"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
         <div className="flex-1 space-y-4 text-neutral-400">
           <p>
@@ -57,21 +57,21 @@ export default function AboutWork() {
       </blockquote>
 
       {/* Team & speaking photos */}
-      <div className="mx-auto max-w-lg">
+      <div className="mx-auto max-w-2xl">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <PhotoCaption
             src="/about/brew-team.webp"
             alt="Brew Interactive team"
-            width={328}
-            height={220}
+            width={400}
+            height={267}
             caption="Brew Interactive — one of my favorite places to work"
             imgClassName="w-full"
           />
           <PhotoCaption
             src="/about/devfest.webp"
             alt="Speaking at DevFest"
-            width={328}
-            height={220}
+            width={400}
+            height={267}
             caption="Speaking at Google DevFest 2022 — GDG İzmir"
             imgClassName="w-full"
           />

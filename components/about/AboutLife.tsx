@@ -15,19 +15,19 @@ export default function AboutLife() {
       </p>
 
       {/* Landscape travel photo */}
-      <div className="mx-auto mb-6 max-w-lg">
+      <div className="mx-auto mb-6 max-w-2xl">
         <PhotoCaption
           src="/about/travel-landscape.webp"
           alt="Travel"
-          width={540}
-          height={400}
+          width={800}
+          height={600}
           caption="Exploring new places with family"
           imgClassName="w-full"
         />
       </div>
 
-      {/* Three portrait photos — all 600x800, equal grid columns */}
-      <div className="mx-auto mb-12 grid max-w-lg grid-cols-3 gap-3">
+      {/* Three portrait photos */}
+      <div className="mx-auto mb-12 grid max-w-2xl grid-cols-3 gap-3">
         <PhotoCaption
           src="/about/family-adventure.webp"
           alt="Family adventure"
@@ -55,14 +55,14 @@ export default function AboutLife() {
       </div>
 
       {/* Fishing */}
-      <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">
         <PhotoCaption
           src="/about/fishing.webp"
           alt="Fishing"
-          width={240}
-          height={240}
+          width={280}
+          height={280}
           caption="Not always feeding them, but sometimes I catch the unlucky ones"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
         <p className="flex-1 text-neutral-400">
           I also fish &mdash; not always successfully, to be honest. I
@@ -74,7 +74,7 @@ export default function AboutLife() {
       </div>
 
       {/* Cat */}
-      <div className="flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center">
         <p className="flex-1 text-neutral-400">
           Every home office needs a good architect. Mine comes with fur, zero
           respect for personal space, and a habit of attending every video call
@@ -83,10 +83,10 @@ export default function AboutLife() {
         <PhotoCaption
           src="/about/cat.webp"
           alt="Home office supervisor"
-          width={200}
-          height={280}
+          width={280}
+          height={373}
           caption="Home office supervisor"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
       </div>
     </section>

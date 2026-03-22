@@ -8,7 +8,7 @@ export default function AboutOrigins() {
       </h2>
 
       {/* Childhood */}
-      <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">
         <div className="flex-1 space-y-4 text-neutral-400">
           <p>
             I was about four years old when my dad brought home a Commodore 64.
@@ -32,10 +32,10 @@ export default function AboutOrigins() {
         <PhotoCaption
           src="/about/childhood.webp"
           alt="Early school years"
-          width={200}
-          height={280}
+          width={280}
+          height={375}
           caption="Early school years — around the time it all began"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
       </div>
 
@@ -50,14 +50,14 @@ export default function AboutOrigins() {
       </p>
 
       {/* Graduation */}
-      <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">
         <PhotoCaption
           src="/about/graduation.webp"
           alt="Graduation day"
-          width={240}
-          height={320}
+          width={280}
+          height={210}
           caption="Graduation day with my little brother, Yaşar University — 2011"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
         <div className="flex-1 space-y-4 text-neutral-400">
           <p>
@@ -70,7 +70,7 @@ export default function AboutOrigins() {
       </div>
 
       {/* Early career */}
-      <div className="flex flex-col gap-8 md:flex-row md:items-center">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center">
         <div className="flex-1 space-y-4 text-neutral-400">
           <p>
             Those early days in the industry were something special. Walking
@@ -87,10 +87,10 @@ export default function AboutOrigins() {
         <PhotoCaption
           src="/about/early-career.webp"
           alt="One of my first offices"
-          width={240}
-          height={320}
+          width={280}
+          height={373}
           caption="One of my first offices — 2012"
-          className="shrink-0"
+          className="w-[280px] shrink-0"
         />
       </div>
     </section>
