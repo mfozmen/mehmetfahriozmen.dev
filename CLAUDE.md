@@ -73,7 +73,12 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
   5. Verify with Playwright — visual confirmation
   6. Then commit
 - After ANY change to galaxy positions, angles, offsets, or tech cluster data, always run `npm test` before committing. If tests fail, fix the overlaps before proceeding.
-- For visual QA and browser testing, use the Playwright MCP tool directly (launch browser, navigate, screenshot, hover via tool commands). Do NOT write standalone Playwright script files.
+- For visual QA and browser testing, use the Playwright MCP plugin directly (launch browser, navigate, screenshot, hover via tool commands). Do NOT install playwright as an npm package or write standalone Playwright script files.
+
+## Visual QA
+
+- Always use the Playwright MCP plugin for screenshots — do NOT install playwright as an npm package.
+- Use the plugin for all visual QA tasks: full-page screenshots, viewport testing, element screenshots.
 
 ## Development & Release Flow
 
