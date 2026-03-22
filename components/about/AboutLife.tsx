@@ -7,38 +7,46 @@ export default function AboutLife() {
         When I&apos;m not coding
       </h2>
 
-      <p className="mb-10 text-neutral-400">
-        I love spending time with my family, traveling to new places, and
-        discovering things together. There&apos;s a whole world out there full
-        of incredible places, and experiencing them with the people you love is
-        what it&apos;s really all about.
-      </p>
+      {/* Travel text + photo row */}
+      <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-center">
+        <p className="flex-1 text-neutral-400">
+          I love spending time with my family, traveling to new places, and
+          discovering things together. There&apos;s a whole world out there full
+          of incredible places, and experiencing them with the people you love
+          is what it&apos;s really all about.
+        </p>
+        <PhotoCaption
+          src="/about/family-travel.webp"
+          alt="Family travel"
+          width={240}
+          height={320}
+          className="shrink-0"
+        />
+      </div>
 
-      {/* Travel photos */}
-      <div className="mx-auto mb-12 max-w-lg space-y-3">
+      {/* Three portrait photos */}
+      <div className="mb-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <PhotoCaption
+          src="/about/family-adventure.webp"
+          alt="Family adventure"
+          width={280}
+          height={360}
+          imgClassName="w-full"
+        />
+        <PhotoCaption
+          src="/about/travel-alone.webp"
+          alt="Solo travel"
+          width={280}
+          height={360}
+          imgClassName="w-full"
+        />
         <PhotoCaption
           src="/about/travel-landscape.webp"
           alt="Travel landscape"
-          width={512}
-          height={290}
+          width={280}
+          height={360}
           imgClassName="w-full"
         />
-        <div className="grid grid-cols-2 gap-3">
-          <PhotoCaption
-            src="/about/family-travel.webp"
-            alt="Family travel"
-            width={250}
-            height={200}
-            imgClassName="w-full"
-          />
-          <PhotoCaption
-            src="/about/family-adventure.webp"
-            alt="Family adventure"
-            width={250}
-            height={200}
-            imgClassName="w-full"
-          />
-        </div>
       </div>
 
       {/* Fishing */}
