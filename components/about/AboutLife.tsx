@@ -7,7 +7,7 @@ export default function AboutLife() {
         When I&apos;m not coding
       </h2>
 
-      {/* Travel text + photo row */}
+      {/* Travel text + landscape photo row */}
       <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-center">
         <p className="flex-1 text-neutral-400">
           I love spending time with my family, traveling to new places, and
@@ -16,37 +16,39 @@ export default function AboutLife() {
           is what it&apos;s really all about.
         </p>
         <PhotoCaption
-          src="/about/family-travel.webp"
-          alt="Family travel"
-          width={240}
-          height={320}
+          src="/about/travel-landscape.webp"
+          alt="Travel"
+          width={320}
+          height={240}
           className="shrink-0"
         />
       </div>
 
       {/* Three portrait photos */}
-      <div className="mb-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <PhotoCaption
-          src="/about/family-adventure.webp"
-          alt="Family adventure"
-          width={280}
-          height={360}
-          imgClassName="w-full"
-        />
-        <PhotoCaption
-          src="/about/travel-alone.webp"
-          alt="Solo travel"
-          width={280}
-          height={360}
-          imgClassName="w-full"
-        />
-        <PhotoCaption
-          src="/about/travel-landscape.webp"
-          alt="Travel landscape"
-          width={280}
-          height={360}
-          imgClassName="w-full"
-        />
+      <div className="mx-auto mb-12 max-w-xl">
+        <div className="grid grid-cols-3 gap-3">
+          <PhotoCaption
+            src="/about/family-adventure.webp"
+            alt="Family adventure"
+            width={600}
+            height={800}
+            imgClassName="w-full"
+          />
+          <PhotoCaption
+            src="/about/travel-alone.webp"
+            alt="Solo travel"
+            width={600}
+            height={800}
+            imgClassName="w-full"
+          />
+          <PhotoCaption
+            src="/about/family-travel.webp"
+            alt="Family travel"
+            width={600}
+            height={800}
+            imgClassName="w-full"
+          />
+        </div>
       </div>
 
       {/* Fishing */}
@@ -54,8 +56,8 @@ export default function AboutLife() {
         <PhotoCaption
           src="/about/fishing.webp"
           alt="Fishing"
-          width={240}
-          height={320}
+          width={200}
+          height={200}
           caption="Not always feeding them, but sometimes I catch the unlucky ones"
           className="shrink-0"
         />
