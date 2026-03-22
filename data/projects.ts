@@ -69,7 +69,7 @@ export const projects: Project[] = [
       "Vacation rental marketplace where complex manual filtering rules were transformed into an automated, intelligent search system",
     highlights: [
       "5K+ properties with rule-based availability",
-      "Advanced multi-criteria search engine",
+      "Search engine powered by set theory — replacing human decision-making with algorithmic rule matching",
       "Automated filtering replacing manual processes",
     ],
     importance: "primary",
