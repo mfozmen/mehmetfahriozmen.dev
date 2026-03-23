@@ -81,7 +81,17 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               <span className="text-[13px] font-semibold text-[#e5e5e5]">{role.title}</span>
               {showRoleDate && <span className="font-mono text-[10px] text-[#666666]">{role.date}</span>}
             </div>
-            {role.description && (
+            {role.bullets && role.bullets.length > 0 && (
+              <ul className="mt-1.5 space-y-1">
+                {role.bullets.map((b) => (
+                  <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
+                    <span className="shrink-0 text-[#BA7517]/30">▸</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!role.bullets && role.description && (
               <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{role.description}</p>
             )}
           </div>

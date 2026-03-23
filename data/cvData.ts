@@ -8,6 +8,7 @@ export interface CvRole {
   title: string;
   date: string;
   description?: string;
+  bullets?: string[];
 }
 
 export interface CvSubEntry {
@@ -49,12 +50,42 @@ export const cvExperience: CvExperienceEntry[] = [
     company: "Mayadem",
     companyUrl: "https://www.mayadem.com",
     roles: [
-      { title: "Head of Software Technologies", date: "Nov 2025 — Dec 2025", description: "Led cross-functional engineering teams across backend, frontend, QA, and UI/UX. Drove end-to-end product development, aligning technical execution with business objectives. Established coding standards and engineering best practices across all teams." },
-      { title: "Head of Backend Engineering", date: "Dec 2024 — Nov 2025", description: "Built backend engineering teams from scratch for multiple products. Defined backend architecture, coding standards, and oversaw distributed system design. Improved CI/CD pipelines and promoted TDD practices for system robustness." },
+      {
+        title: "Head of Software Technologies",
+        date: "Nov 2025 — Dec 2025",
+        bullets: [
+          "Led cross-functional backend, frontend, QA, and UI/UX teams while actively contributing to backend architecture and production system design",
+          "Participated in technical solution design and peer code reviews to ensure scalability and maintainability of backend services",
+          "Drove complete product lifecycle from conception to deployment, ensuring alignment between technical execution and business objectives",
+          "Established engineering best practices, coding standards, and quality assurance processes across all disciplines",
+          "Managed hiring, onboarding, performance evaluations, and career development for engineering team members",
+        ],
+      },
+      {
+        title: "Head of Backend Engineering",
+        date: "Dec 2024 — Nov 2025",
+        bullets: [
+          "Built backend engineering teams from scratch for MagicPags and ÇokNet, personally conducting all hiring processes and recruiting top talent",
+          "Designed and led the implementation of microservices architecture using .NET, Kafka, PostgreSQL, Hasura, and PHP Laravel on AWS",
+          "Contributed to business analysis, project planning, and cross-team coordination, supporting both technical and non-technical departments",
+          "Managed engineers from several departments including UI/UX, QA, and frontend, ensuring smooth end-to-end delivery",
+          "Designed and led comprehensive CI/CD pipelines for frontend monorepos and backend microservices",
+          "Promoted test-driven development (TDD) practices and established observability standards for system robustness",
+        ],
+      },
     ],
     projects: [
-      { name: "MagicPags", description: "Educational audiobook, analytics, child-safe delivery", url: "https://www.magicpags.com/" },
-      { name: "Çoknet", description: "Exam prep, microservices architecture, multi-discipline team", url: "https://app.cok.net.tr/" },
+      {
+        name: "MagicPags",
+        description: "Educational audiobook, analytics, child-safe delivery",
+        url: "https://magicpags.com/",
+      },
+      {
+        name: "Çoknet",
+        description:
+          "Exam prep, microservices architecture, multi-discipline team",
+        url: "https://app.cok.net.tr/",
+      },
     ],
     chips: [".NET", "Kafka", "PostgreSQL", "Hasura", "AWS"],
   },
@@ -64,20 +95,40 @@ export const cvExperience: CvExperienceEntry[] = [
     company: "Brew Interactive",
     companyUrl: "https://brewww.com/",
     roles: [
-      { title: "Software Engineering Manager", date: "Dec 2022 — Sep 2024", description: "Led a backend and DevOps team of 4–6 engineers, designing event-driven microservices for domestic and international clients. Managed hiring, performance evaluations, and career development. Developed internal open-source solutions for reusability across projects." },
-      { title: "Senior Backend Developer", date: "Aug 2019 — Dec 2022", description: "Developed serverless functions and microservices powering backend operations for multiple client projects. Built CI/CD pipelines, containerized applications, and worked in Agile Scrum with TDD methodology." },
+      {
+        title: "Software Engineering Manager",
+        date: "Dec 2022 — Sep 2024",
+        description:
+          "Led a backend and DevOps team of 4–6 engineers, designing event-driven microservices for domestic and international clients. Managed hiring, performance evaluations, and career development. Developed internal open-source solutions for reusability across projects.",
+      },
+      {
+        title: "Senior Backend Developer",
+        date: "Aug 2019 — Dec 2022",
+        description:
+          "Developed serverless functions and microservices powering backend operations for multiple client projects. Built CI/CD pipelines, containerized applications, and worked in Agile Scrum with TDD methodology.",
+      },
     ],
     subEntry: {
       role: "Senior Backend Developer",
       date: "Jan 2021 — Dec 2022",
       company: "BeforeSunset AI",
-      companyUrl: "https://www.beforesunset.ai",
-      description: "Built the backend architecture from scratch for an AI productivity assistant. Designed database models, developed APIs with Hasura, and managed Kubernetes deployments.",
+      companyUrl: "https://beforesunset.ai",
+      description:
+        "Built the backend architecture from scratch for an AI productivity assistant. Designed database models, developed APIs with Hasura, and managed Kubernetes deployments.",
       chips: ["Node.js", "Hasura", "PostgreSQL", "Docker", "Kubernetes"],
     },
     projects: [
-      { name: "Decktopus AI", description: "Serverless, real-time GraphQL, containerized export", url: "https://www.decktopus.com" },
-      { name: "Shubuo", description: "Ad scheduling, contract-aware pacing, real-time optimization", url: "https://www.shubuo.net/" },
+      {
+        name: "Decktopus AI",
+        description: "Serverless, real-time GraphQL, containerized export",
+        url: "https://decktopus.com",
+      },
+      {
+        name: "Shubuo",
+        description:
+          "Ad scheduling, contract-aware pacing, real-time optimization",
+        url: "https://shubuo.net/",
+      },
     ],
     chips: ["Node.js", "TypeScript", "PostgreSQL", "Redis", "AWS"],
   },
@@ -85,9 +136,14 @@ export const cvExperience: CvExperienceEntry[] = [
     role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
     company: "Datagen Bilişim",
-    companyUrl: "https://www.datagen.com.tr/",
+    companyUrl: "https://datagen.com.tr/",
     roles: [
-      { title: "Senior Software Engineer", date: "May 2019 — Jul 2019", description: "Developed sales automation system for Peyman Kuruyemiş — Android application and backend services with MSSQL database programming." },
+      {
+        title: "Senior Software Engineer",
+        date: "May 2019 — Jul 2019",
+        description:
+          "Developed sales automation system for Peyman Kuruyemiş — Android application and backend services with MSSQL database programming.",
+      },
     ],
     chips: ["C#", "Xamarin", "MSSQL"],
   },
@@ -96,7 +152,12 @@ export const cvExperience: CvExperienceEntry[] = [
     date: "Jun 2018 — Apr 2019",
     company: "Ptt Trade",
     roles: [
-      { title: "Senior Software Engineer", date: "Jun 2018 — Apr 2019", description: "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search." },
+      {
+        title: "Senior Software Engineer",
+        date: "Jun 2018 — Apr 2019",
+        description:
+          "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search.",
+      },
     ],
     chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
@@ -106,8 +167,18 @@ export const cvExperience: CvExperienceEntry[] = [
     company: "Veriyaz Yazılım",
     companyUrl: "https://veriyaz.com/",
     roles: [
-      { title: "Senior Software Engineer", date: "Jan 2015 — Jun 2018", description: "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket." },
-      { title: "Software Engineer", date: "Jan 2013 — Jan 2015", description: "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services." },
+      {
+        title: "Senior Software Engineer",
+        date: "Jan 2015 — Jun 2018",
+        description:
+          "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket.",
+      },
+      {
+        title: "Software Engineer",
+        date: "Jan 2013 — Jan 2015",
+        description:
+          "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services.",
+      },
     ],
     chips: ["C# / .NET", "MSSQL", "AWS", "WebSocket"],
   },
@@ -121,21 +192,87 @@ export interface CvEarlierRole {
 }
 
 export const cvEarlierRoles: CvEarlierRole[] = [
-  { role: "Software Engineer", company: "Erik Bilişim", date: "Sep 2012 — Jan 2013", description: "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems." },
-  { role: "Intern", company: "TRT", date: "Sep 2010 — Oct 2010", description: "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate." },
-  { role: "Intern", company: "Izmir Metropolitan Municipality", date: "Jul 2009 — Aug 2009", description: "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality." },
+  {
+    role: "Software Engineer",
+    company: "Erik Bilişim",
+    date: "Sep 2012 — Jan 2013",
+    description:
+      "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems.",
+  },
+  {
+    role: "Intern",
+    company: "TRT",
+    date: "Sep 2010 — Oct 2010",
+    description:
+      "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate.",
+  },
+  {
+    role: "Intern",
+    company: "Izmir Metropolitan Municipality",
+    date: "Jul 2009 — Aug 2009",
+    description:
+      "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality.",
+  },
 ];
 
 export const cvSkills: CvSkillCategory[] = [
-  { label: "Backend", items: ["Node.js", "TypeScript", "PHP", "Laravel", ".NET / C#", "Golang", "GraphQL", "REST"] },
-  { label: "Infrastructure", items: ["AWS", "GCP", "Docker", "Kubernetes", "CI/CD", "Redis", "RabbitMQ", "Kafka"] },
-  { label: "Data", items: ["PostgreSQL", "MongoDB", "MySQL", "MSSQL", "Elasticsearch"] },
-  { label: "Leadership", items: ["Team building", "Hiring", "Mentoring", "Agile", "Code review culture"] },
+  {
+    label: "Backend",
+    items: [
+      "Node.js",
+      "TypeScript",
+      "PHP",
+      "Laravel",
+      ".NET / C#",
+      "Golang",
+      "GraphQL",
+      "REST",
+    ],
+  },
+  {
+    label: "Infrastructure",
+    items: [
+      "AWS",
+      "GCP",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Redis",
+      "RabbitMQ",
+      "Kafka",
+    ],
+  },
+  {
+    label: "Data",
+    items: ["PostgreSQL", "MongoDB", "MySQL", "MSSQL", "Elasticsearch"],
+  },
+  {
+    label: "Leadership",
+    items: [
+      "Team building",
+      "Hiring",
+      "Mentoring",
+      "Agile",
+      "Code review culture",
+    ],
+  },
 ];
 
 export const cvCoordinates: CvCoordinate[] = [
   { label: "Location", value: "İzmir, Turkey" },
-  { label: "Email", value: "mehmetfahriozmen@gmail.com", href: "mailto:mehmetfahriozmen@gmail.com" },
-  { label: "LinkedIn", value: "linkedin.com/in/mfozmen", href: "https://linkedin.com/in/mfozmen" },
-  { label: "GitHub", value: "github.com/mfozmen", href: "https://github.com/mfozmen" },
+  {
+    label: "Email",
+    value: "mehmetfahriozmen@gmail.com",
+    href: "mailto:mehmetfahriozmen@gmail.com",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/mfozmen",
+    href: "https://linkedin.com/in/mfozmen",
+  },
+  {
+    label: "GitHub",
+    value: "github.com/mfozmen",
+    href: "https://github.com/mfozmen",
+  },
 ];
