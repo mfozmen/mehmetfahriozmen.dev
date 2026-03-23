@@ -4,11 +4,12 @@ import { useState } from "react";
 import CvSection from "./CvSection";
 import { cvExperience, cvEarlierRoles, type CvExperienceEntry } from "@/data/cvData";
 
-function ExtLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
+const linkCls = "border-b border-dashed border-[#BA7517]/40 pb-px transition-all hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]";
+
+function CvLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`transition-opacity hover:opacity-80 ${className}`}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`${linkCls} ${className}`}>
       {children}
-      <span className="ml-0.5 text-[10px] opacity-40">↗</span>
     </a>
   );
 }
@@ -44,33 +45,38 @@ function TimelineDot({ index }: { index: number }) {
   );
 }
 
-function CompanyName({ name, url, primary }: { name: string; url?: string; primary?: boolean }) {
-  const cls = primary ? "text-[15px] font-semibold text-[#e5e5e5]" : "text-[13px] text-[#BA7517]";
-  if (url) return <ExtLink href={url} className={cls}>{name}</ExtLink>;
+function CompanyHeader({ name, url }: { name: string; url?: string }) {
+  const cls = "text-[15px] font-semibold text-[#e5e5e5]";
+  if (url) return <CvLink href={url} className={cls}>{name}</CvLink>;
   return <span className={cls}>{name}</span>;
 }
 
 function ProjectName({ name, url }: { name: string; url?: string }) {
-  if (url) return <ExtLink href={url} className="font-semibold text-[#d4d4d4]">{name}</ExtLink>;
+  if (url) return <CvLink href={url} className="font-semibold text-[#d4d4d4]">{name}</CvLink>;
   return <span className="font-semibold text-[#d4d4d4]">{name}</span>;
 }
 
-function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: number }) {
+function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }) {
+  const roles = entry.roles ?? [{ title: entry.role, date: entry.date, description: entry.description }];
+  const showRoleDate = roles.length > 1;
+
   return (
     <div className="relative pl-6">
       <TimelineDot index={index} />
 
+      {/* Company header */}
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-        <CompanyName name={entry.company} url={entry.companyUrl} primary />
+        <CompanyHeader name={entry.company} url={entry.companyUrl} />
         <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
       </div>
 
+      {/* Roles */}
       <div className="mt-2 space-y-3">
-        {entry.roles!.map((role) => (
+        {roles.map((role) => (
           <div key={role.title}>
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
               <span className="text-[13px] font-semibold text-[#d4d4d4]">{role.title}</span>
-              <span className="font-mono text-[10px] text-[#404040]">{role.date}</span>
+              {showRoleDate && <span className="font-mono text-[10px] text-[#525252]">{role.date}</span>}
             </div>
             {role.description && (
               <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{role.description}</p>
@@ -79,6 +85,7 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
         ))}
       </div>
 
+      {/* Nested projects */}
       {entry.projects && entry.projects.length > 0 && (
         <div className="mt-3 space-y-1.5 border-l border-[#BA7517]/10 pl-3">
           {entry.projects.map((proj) => (
@@ -93,6 +100,7 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
 
       {entry.chips && <Chips items={entry.chips} />}
 
+      {/* Sub-entry (e.g. BeforeSunset AI) */}
       {entry.subEntry && (
         <div className="ml-4 mt-4 border-l border-[#BA7517]/15 pl-3.5">
           <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
@@ -100,7 +108,11 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
             <span className="font-mono text-[11px] text-[#404040]">{entry.subEntry.date}</span>
           </div>
           <div className="text-[12px]">
-            <CompanyName name={entry.subEntry.company} url={entry.subEntry.companyUrl} />
+            {entry.subEntry.companyUrl ? (
+              <CvLink href={entry.subEntry.companyUrl} className="text-[#BA7517]">{entry.subEntry.company}</CvLink>
+            ) : (
+              <span className="text-[#BA7517]">{entry.subEntry.company}</span>
+            )}
             {" "}
             <span className="text-[11px] italic text-[#525252]" aria-label="concurrent role">(concurrent)</span>
           </div>
@@ -108,26 +120,6 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
           <Chips items={entry.subEntry.chips} />
         </div>
       )}
-    </div>
-  );
-}
-
-function SingleRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: number }) {
-  return (
-    <div className="relative pl-6">
-      <TimelineDot index={index} />
-
-      <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-        <span className="text-[15px] font-semibold text-[#e5e5e5]">{entry.role}</span>
-        <span className="font-mono text-[12px] text-[#404040]">{entry.date}</span>
-      </div>
-      <CompanyName name={entry.company} url={entry.companyUrl} />
-
-      {entry.description && (
-        <p className="mt-2 text-[13px] leading-relaxed text-[#8a8a8a]">{entry.description}</p>
-      )}
-
-      {entry.chips && <Chips items={entry.chips} />}
     </div>
   );
 }
@@ -140,13 +132,9 @@ export default function CvExperience() {
       <div className="relative space-y-10">
         <div className="absolute bottom-0 left-[3px] top-0 w-px bg-gradient-to-b from-[#BA7517]/30 via-[#BA7517]/15 to-transparent" />
 
-        {cvExperience.map((entry, i) =>
-          entry.roles ? (
-            <MultiRoleEntry key={`${entry.company}-${entry.date}`} entry={entry} index={i} />
-          ) : (
-            <SingleRoleEntry key={`${entry.company}-${entry.date}`} entry={entry} index={i} />
-          ),
-        )}
+        {cvExperience.map((entry, i) => (
+          <EntryCard key={`${entry.company}-${entry.date}`} entry={entry} index={i} />
+        ))}
 
         <div className="relative pl-6">
           <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-neutral-700" />
