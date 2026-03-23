@@ -54,7 +54,7 @@ export const cvExperience: CvExperienceEntry[] = [
     ],
     projects: [
       { name: "MagicPags", description: "Educational audiobook, analytics, child-safe delivery", url: "https://www.magicpags.com/" },
-      { name: "Çoknet", description: "Exam prep, microservices architecture, multi-discipline team" },
+      { name: "Çoknet", description: "Exam prep, microservices architecture, multi-discipline team", url: "https://app.cok.net.tr/" },
     ],
     chips: [".NET", "Kafka", "PostgreSQL", "Hasura", "AWS"],
   },
@@ -77,7 +77,7 @@ export const cvExperience: CvExperienceEntry[] = [
     },
     projects: [
       { name: "Decktopus AI", description: "Serverless, real-time GraphQL, containerized export", url: "https://www.decktopus.com" },
-      { name: "Shubuo", description: "Ad scheduling, contract-aware pacing, real-time optimization" },
+      { name: "Shubuo", description: "Ad scheduling, contract-aware pacing, real-time optimization", url: "https://www.shubuo.net/" },
     ],
     chips: ["Node.js", "TypeScript", "PostgreSQL", "Redis", "AWS"],
   },
@@ -85,6 +85,7 @@ export const cvExperience: CvExperienceEntry[] = [
     role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
     company: "Datagen Bilişim",
+    companyUrl: "https://www.datagen.com.tr/",
     description:
       "Developed sales automation system for Peyman Kuruyemiş — Android application and backend services with MSSQL database programming.",
     chips: ["C#", "Xamarin", "MSSQL"],
@@ -101,6 +102,7 @@ export const cvExperience: CvExperienceEntry[] = [
     role: "Senior Software Engineer",
     date: "Jan 2013 — Jun 2018",
     company: "Veriyaz Yazılım",
+    companyUrl: "https://veriyaz.com/",
     roles: [
       { title: "Senior Software Engineer", date: "Jan 2015 — Jun 2018", description: "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket." },
       { title: "Software Engineer", date: "Jan 2013 — Jan 2015", description: "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services." },
