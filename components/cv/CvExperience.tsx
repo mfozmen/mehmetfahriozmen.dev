@@ -174,9 +174,9 @@ export default function CvExperience() {
               cvEarlierRoles.map((entry) => (
                 <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
                   <span className="text-[12px]">
-                    <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
-                    <span className="text-[#BA7517]/40"> · </span>
                     <span className="text-[#BA7517]">{entry.company}</span>
+                    <span className="text-[#BA7517]/40"> · </span>
+                    <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
                   </span>
                   <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
                 </div>
