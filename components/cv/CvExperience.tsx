@@ -70,7 +70,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
       {/* Company header */}
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
         <CompanyHeader name={entry.company} url={entry.companyUrl} />
-        <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
       </div>
 
       {/* Roles */}
@@ -115,7 +115,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               )}
               <span className="ml-1.5 text-[11px] italic text-[#666666]" aria-label="concurrent role">· concurrent</span>
             </div>
-            <span className="font-mono text-[11px] text-[#404040]">{entry.subEntry.date}</span>
+            <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.subEntry.date}</span>
           </div>
           <div className="mt-1 text-[13px] font-semibold text-[#e5e5e5]">{entry.subEntry.role}</div>
           <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.subEntry.description}</p>
@@ -163,7 +163,7 @@ export default function CvExperience() {
                 <div key={`${entry.company}-${entry.date}`}>
                   <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
                     <span className="text-[13px] font-semibold text-[#BA7517]">{entry.company}</span>
-                    <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
+                    <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
                   </div>
                   <div className="mt-0.5 text-[12px] font-semibold text-[#e5e5e5]">{entry.role}</div>
                   <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.description}</p>
@@ -178,7 +178,7 @@ export default function CvExperience() {
                     <span className="text-[#BA7517]/40"> · </span>
                     <span className="text-[#BA7517]">{entry.company}</span>
                   </span>
-                  <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
+                  <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
                 </div>
               ))
             )}
