@@ -7,7 +7,7 @@ export default function CvEducation() {
         <span className="text-[13px] text-neutral-300">
           Computer Engineering — <span className="text-neutral-500">Yaşar University, İzmir</span>
         </span>
-        <span className="font-mono text-[12px] text-neutral-600">2006 — 2011</span>
+        <span className="font-mono text-[12px] text-neutral-600">Sep 2006 — Jun 2011</span>
       </div>
     </CvSection>
   );

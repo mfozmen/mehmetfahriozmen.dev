@@ -89,7 +89,8 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
           </div>
           <div className="text-[12px]">
             <span className="text-[#BA7517]">{entry.subEntry.company}</span>
-            <span className="ml-1.5 text-[11px] italic text-[#525252]">concurrent</span>
+            {" "}
+            <span className="text-[11px] italic text-[#525252]" aria-label="concurrent role">(concurrent)</span>
           </div>
           <p className="mt-1.5 text-[12px] leading-relaxed text-[#666]">{entry.subEntry.description}</p>
           <Chips items={entry.subEntry.chips} />
