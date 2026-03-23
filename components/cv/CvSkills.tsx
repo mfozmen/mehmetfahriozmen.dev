@@ -4,11 +4,11 @@ import { cvSkills } from "@/data/cvData";
 export default function CvSkills() {
   return (
     <CvSection title="The Arsenal">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {cvSkills.map((cat) => (
-          <div key={cat.label}>
-            <div className="mb-1.5 text-[12px] font-medium text-neutral-400">{cat.label}</div>
-            <div className="text-[12px] text-neutral-500">
+          <div key={cat.label} className="rounded-lg border border-[#BA7517]/[0.06] p-4">
+            <div className="mb-2 text-[12px] font-medium text-[#e5e5e5]">{cat.label}</div>
+            <div className="text-[12px] text-[#666666]">
               {cat.items.map((item, i) => (
                 <span key={item}>
                   {item}

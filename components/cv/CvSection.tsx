@@ -6,9 +6,10 @@ function StarIcon() {
   );
 }
 
-export default function CvSection({ title, children }: { title: string; children: React.ReactNode }) {
+export default function CvSection({ title, children, spacing = "md" }: { title: string; children: React.ReactNode; spacing?: "lg" | "md" }) {
+  const mb = spacing === "lg" ? "mb-16" : "mb-10";
   return (
-    <section className="mb-12">
+    <section className={mb}>
       <h2 className="mb-6 flex items-center gap-2.5">
         <StarIcon />
         <span className="shrink-0 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">

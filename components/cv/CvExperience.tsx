@@ -55,8 +55,8 @@ function CompanyHeader({ name, url }: { name: string; url?: string }) {
 }
 
 function ProjectName({ name, url }: { name: string; url?: string }) {
-  if (url) return <CvLink href={url} className="font-semibold text-[#d4d4d4]">{name}</CvLink>;
-  return <span className="font-semibold text-[#d4d4d4]">{name}</span>;
+  if (url) return <CvLink href={url} className="font-semibold text-[#e5e5e5]">{name}</CvLink>;
+  return <span className="font-semibold text-[#e5e5e5]">{name}</span>;
 }
 
 function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }) {
@@ -78,11 +78,11 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
         {roles.map((role) => (
           <div key={role.title}>
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-              <span className="text-[13px] font-semibold text-[#d4d4d4]">{role.title}</span>
-              {showRoleDate && <span className="font-mono text-[10px] text-[#525252]">{role.date}</span>}
+              <span className="text-[13px] font-semibold text-[#e5e5e5]">{role.title}</span>
+              {showRoleDate && <span className="font-mono text-[10px] text-[#666666]">{role.date}</span>}
             </div>
             {role.description && (
-              <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{role.description}</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{role.description}</p>
             )}
           </div>
         ))}
@@ -95,7 +95,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
             <div key={proj.name} className="relative text-[12px]">
               <span className="absolute -left-3.5 top-[7px] h-px w-1.5 bg-[#BA7517]/15" />
               <ProjectName name={proj.name} url={proj.url} />
-              <span className="text-[#666]"> — {proj.description}</span>
+              <span className="text-[#666666]"> — {proj.description}</span>
             </div>
           ))}
         </div>
@@ -113,12 +113,12 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               ) : (
                 <span className="font-semibold text-[#BA7517]">{entry.subEntry.company}</span>
               )}
-              <span className="ml-1.5 text-[11px] italic text-[#525252]" aria-label="concurrent role">· concurrent</span>
+              <span className="ml-1.5 text-[11px] italic text-[#666666]" aria-label="concurrent role">· concurrent</span>
             </div>
             <span className="font-mono text-[11px] text-[#404040]">{entry.subEntry.date}</span>
           </div>
-          <div className="mt-1 text-[13px] font-semibold text-[#d4d4d4]">{entry.subEntry.role}</div>
-          <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.subEntry.description}</p>
+          <div className="mt-1 text-[13px] font-semibold text-[#e5e5e5]">{entry.subEntry.role}</div>
+          <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.subEntry.description}</p>
           <Chips items={entry.subEntry.chips} />
         </div>
       )}
@@ -130,12 +130,14 @@ export default function CvExperience() {
   const [showEarlier, setShowEarlier] = useState(false);
 
   return (
-    <CvSection title="The Journey So Far">
-      <div className="relative space-y-10">
+    <CvSection title="The Journey So Far" spacing="lg">
+      <div className="relative divide-y divide-white/[0.02]">
         <div className="absolute bottom-0 left-[3px] top-0 w-px bg-gradient-to-b from-[#BA7517]/30 via-[#BA7517]/15 to-transparent" />
 
         {cvExperience.map((entry, i) => (
-          <EntryCard key={`${entry.company}-${entry.date}`} entry={entry} index={i} />
+          <div key={`${entry.company}-${entry.date}`} className="py-5 first:pt-0">
+            <EntryCard entry={entry} index={i} />
+          </div>
         ))}
 
         <div className="relative pl-6">
@@ -163,8 +165,8 @@ export default function CvExperience() {
                     <span className="text-[13px] font-semibold text-[#BA7517]">{entry.company}</span>
                     <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
                   </div>
-                  <div className="mt-0.5 text-[12px] font-semibold text-[#d4d4d4]">{entry.role}</div>
-                  <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.description}</p>
+                  <div className="mt-0.5 text-[12px] font-semibold text-[#e5e5e5]">{entry.role}</div>
+                  <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.description}</p>
                 </div>
               ))
             ) : (
@@ -173,7 +175,7 @@ export default function CvExperience() {
                 <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
                   <span className="text-[12px]">
                     <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
-                    <span className="text-neutral-600"> · </span>
+                    <span className="text-[#BA7517]/40"> · </span>
                     <span className="text-[#BA7517]">{entry.company}</span>
                   </span>
                   <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>

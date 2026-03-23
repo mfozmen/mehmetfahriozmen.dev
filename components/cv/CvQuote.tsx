@@ -1,10 +1,10 @@
 export default function CvQuote() {
   return (
     <blockquote
-      className="mb-12 rounded-r-lg border-l-2 border-[#BA7517]/35 py-4 pl-5 pr-4"
+      className="mb-16 rounded-r-lg border-l-2 border-[#BA7517]/35 py-4 pl-5 pr-4"
       style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.03) 0%, transparent 60%)" }}
     >
-      <p className="text-[14px] leading-relaxed text-neutral-400">
+      <p className="text-[14px] leading-relaxed text-[#a3a3a3]">
         Software engineer turned engineering leader with over a decade in
         the industry. I&apos;ve built systems end to end &mdash; from
         real-time tracking platforms to event-driven architectures serving

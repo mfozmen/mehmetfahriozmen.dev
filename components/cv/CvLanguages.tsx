@@ -5,14 +5,14 @@ export default function CvLanguages() {
     <CvSection title="Comm Protocols">
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
         <div className="text-[13px]">
-          <span className="text-neutral-300">Turkish</span>
+          <span className="text-[#e5e5e5]">Turkish</span>
           {" — "}
-          <span className="text-neutral-600">Native</span>
+          <span className="text-[#666666]">Native</span>
         </div>
         <div className="text-[13px]">
-          <span className="text-neutral-300">English</span>
+          <span className="text-[#e5e5e5]">English</span>
           {" — "}
-          <span className="text-neutral-600">Professional</span>
+          <span className="text-[#666666]">Professional</span>
         </div>
       </div>
     </CvSection>

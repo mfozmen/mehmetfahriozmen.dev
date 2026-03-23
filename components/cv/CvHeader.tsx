@@ -6,7 +6,7 @@ const cvDownloadUrl = fileIdMatch
 
 export default function CvHeader() {
   return (
-    <header className="mb-12 text-center">
+    <header className="mb-8 text-center">
       <div className="mb-6 flex items-center justify-center gap-3">
         <span className="h-px w-8 bg-gradient-to-r from-transparent via-[#BA7517]/40 to-transparent" />
         <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#BA7517]">
