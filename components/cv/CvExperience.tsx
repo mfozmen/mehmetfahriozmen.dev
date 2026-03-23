@@ -46,7 +46,7 @@ function TimelineDot({ index }: { index: number }) {
 }
 
 function CompanyHeader({ name, url }: { name: string; url?: string }) {
-  const cls = "text-[15px] font-semibold text-[#e5e5e5]";
+  const cls = "text-[15px] font-semibold text-[#BA7517]";
   if (url) return <CvLink href={url} className={cls}>{name}</CvLink>;
   return <span className={cls}>{name}</span>;
 }
@@ -100,23 +100,22 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
 
       {entry.chips && <Chips items={entry.chips} />}
 
-      {/* Sub-entry (e.g. BeforeSunset AI) */}
+      {/* Sub-entry (e.g. BeforeSunset AI) — company-first, indented */}
       {entry.subEntry && (
         <div className="ml-4 mt-4 border-l border-[#BA7517]/15 pl-3.5">
           <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-            <span className="text-[13px] font-semibold text-[#d4d4d4]">{entry.subEntry.role}</span>
+            <div className="text-[13px]">
+              {entry.subEntry.companyUrl ? (
+                <CvLink href={entry.subEntry.companyUrl} className="font-semibold text-[#BA7517]">{entry.subEntry.company}</CvLink>
+              ) : (
+                <span className="font-semibold text-[#BA7517]">{entry.subEntry.company}</span>
+              )}
+              <span className="ml-1.5 text-[11px] italic text-[#525252]" aria-label="concurrent role">· concurrent</span>
+            </div>
             <span className="font-mono text-[11px] text-[#404040]">{entry.subEntry.date}</span>
           </div>
-          <div className="text-[12px]">
-            {entry.subEntry.companyUrl ? (
-              <CvLink href={entry.subEntry.companyUrl} className="text-[#BA7517]">{entry.subEntry.company}</CvLink>
-            ) : (
-              <span className="text-[#BA7517]">{entry.subEntry.company}</span>
-            )}
-            {" "}
-            <span className="text-[11px] italic text-[#525252]" aria-label="concurrent role">(concurrent)</span>
-          </div>
-          <p className="mt-1.5 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.subEntry.description}</p>
+          <div className="mt-1 text-[13px] font-semibold text-[#d4d4d4]">{entry.subEntry.role}</div>
+          <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.subEntry.description}</p>
           <Chips items={entry.subEntry.chips} />
         </div>
       )}
