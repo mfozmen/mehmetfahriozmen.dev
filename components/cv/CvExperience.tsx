@@ -143,25 +143,40 @@ export default function CvExperience() {
           >
             <svg
               width="8" height="8" viewBox="0 0 8 8" fill="currentColor"
-              className={`transition-transform ${showEarlier ? "rotate-90" : ""}`}
+              className={`transition-transform duration-200 ${showEarlier ? "rotate-90" : ""}`}
             >
               <path d="M2 1l4 3-4 3z" />
             </svg>
             Earlier roles (2009–2013)
           </button>
 
-          {showEarlier && (
-            <div className="mt-3 space-y-3">
-              {cvEarlierRoles.map((role) => (
-                <div key={`${role.company}-${role.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-                  <span className="text-[13px] text-neutral-500">
-                    {role.role} · <span className="text-[#BA7517]/70">{role.company}</span>
-                  </span>
-                  <span className="font-mono text-[11px] text-[#404040]">{role.date}</span>
+          <div className="mt-3 space-y-3">
+            {showEarlier ? (
+              /* Expanded: full details */
+              cvEarlierRoles.map((entry) => (
+                <div key={`${entry.company}-${entry.date}`}>
+                  <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
+                    <span className="text-[13px] font-semibold text-[#BA7517]">{entry.company}</span>
+                    <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
+                  </div>
+                  <div className="mt-0.5 text-[12px] font-semibold text-[#d4d4d4]">{entry.role}</div>
+                  <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.description}</p>
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            ) : (
+              /* Collapsed: compact one-liners */
+              cvEarlierRoles.map((entry) => (
+                <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
+                  <span className="text-[12px]">
+                    <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
+                    <span className="text-neutral-600"> · </span>
+                    <span className="text-[#BA7517]">{entry.company}</span>
+                  </span>
+                  <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </CvSection>

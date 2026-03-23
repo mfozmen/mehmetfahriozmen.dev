@@ -113,10 +113,17 @@ export const cvExperience: CvExperienceEntry[] = [
   },
 ];
 
-export const cvEarlierRoles: { role: string; company: string; date: string }[] = [
-  { role: "Software Engineer", company: "Erik Bilişim", date: "Sep 2012 — Jan 2013" },
-  { role: "Intern", company: "TRT", date: "Sep 2010 — Oct 2010" },
-  { role: "Intern", company: "Izmir Metropolitan Municipality", date: "Jul 2009 — Aug 2009" },
+export interface CvEarlierRole {
+  role: string;
+  company: string;
+  date: string;
+  description: string;
+}
+
+export const cvEarlierRoles: CvEarlierRole[] = [
+  { role: "Software Engineer", company: "Erik Bilişim", date: "Sep 2012 — Jan 2013", description: "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems." },
+  { role: "Intern", company: "TRT", date: "Sep 2010 — Oct 2010", description: "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate." },
+  { role: "Intern", company: "Izmir Metropolitan Municipality", date: "Jul 2009 — Aug 2009", description: "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality." },
 ];
 
 export const cvSkills: CvSkillCategory[] = [
