@@ -3,7 +3,7 @@ import { cvSkills } from "@/data/cvData";
 
 export default function CvSkills() {
   return (
-    <CvSection title="Skills & Technologies">
+    <CvSection title="The Arsenal">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {cvSkills.map((cat) => (
           <div key={cat.label}>

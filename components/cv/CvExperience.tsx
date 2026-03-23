@@ -127,7 +127,7 @@ export default function CvExperience() {
   const [showEarlier, setShowEarlier] = useState(false);
 
   return (
-    <CvSection title="Experience">
+    <CvSection title="The Journey So Far">
       <div className="relative space-y-10">
         <div className="absolute bottom-0 left-[3px] top-0 w-px bg-gradient-to-b from-[#BA7517]/30 via-[#BA7517]/15 to-transparent" />
 
@@ -147,7 +147,7 @@ export default function CvExperience() {
             >
               <path d="M2 1l4 3-4 3z" />
             </svg>
-            Earlier roles (2009–2013)
+            Earlier Missions (2009–2013)
           </button>
 
           <div className="mt-3 space-y-3">

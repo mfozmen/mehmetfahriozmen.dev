@@ -138,5 +138,4 @@ export const cvCoordinates: CvCoordinate[] = [
   { label: "Email", value: "mehmetfahriozmen@gmail.com", href: "mailto:mehmetfahriozmen@gmail.com" },
   { label: "LinkedIn", value: "linkedin.com/in/mfozmen", href: "https://linkedin.com/in/mfozmen" },
   { label: "GitHub", value: "github.com/mfozmen", href: "https://github.com/mfozmen" },
-  { label: "Web", value: "mehmetfahriozmen.dev", href: "https://mehmetfahriozmen.dev" },
 ];

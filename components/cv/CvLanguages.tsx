@@ -2,7 +2,7 @@ import CvSection from "./CvSection";
 
 export default function CvLanguages() {
   return (
-    <CvSection title="Languages">
+    <CvSection title="Comm Protocols">
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
         <div className="text-[13px]">
           <span className="text-neutral-300">Turkish</span>

@@ -67,8 +67,8 @@ describe("CV Skills data", () => {
 });
 
 describe("CV Coordinates data", () => {
-  it("has 5 coordinate entries", () => {
-    expect(cvCoordinates.length).toBe(5);
+  it("has 4 coordinate entries", () => {
+    expect(cvCoordinates.length).toBe(4);
   });
 
   it("each entry has label and value", () => {

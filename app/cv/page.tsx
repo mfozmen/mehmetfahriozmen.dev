@@ -7,7 +7,6 @@ import CvQuote from "@/components/cv/CvQuote";
 import CvExperience from "@/components/cv/CvExperience";
 import CvSkills from "@/components/cv/CvSkills";
 import CvEducation from "@/components/cv/CvEducation";
-import CvSpeaking from "@/components/cv/CvSpeaking";
 import CvLanguages from "@/components/cv/CvLanguages";
 import CvCoordinates from "@/components/cv/CvCoordinates";
 
@@ -37,7 +36,6 @@ export default function CvPage() {
         <CvExperience />
         <CvSkills />
         <CvEducation />
-        <CvSpeaking />
         <CvLanguages />
         <CvCoordinates />
       </main>
