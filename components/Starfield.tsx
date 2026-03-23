@@ -48,6 +48,8 @@ export default function Starfield({ className = "" }: { className?: string }) {
     resize();
     window.addEventListener("resize", resize);
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const animate = (t: number) => {
       const ctx = canvas!.getContext("2d");
       if (!ctx) { animRef.current = requestAnimationFrame(animate); return; }
@@ -56,10 +58,10 @@ export default function Starfield({ className = "" }: { className?: string }) {
       ctx.clearRect(0, 0, canvas!.width / dpr, canvas!.height / dpr);
 
       const time = t / 1000;
-      const scrollY = window.scrollY * 0.03;
+      const scrollY = prefersReducedMotion ? 0 : window.scrollY * 0.03;
 
       for (const star of starsRef.current) {
-        const twinkle = star.alpha * (0.55 + 0.45 * Math.sin(time * 1.5 + star.phase));
+        const twinkle = prefersReducedMotion ? star.alpha : star.alpha * (0.55 + 0.45 * Math.sin(time * 1.5 + star.phase));
         const sy = star.y - scrollY;
         if (star.amber) {
           ctx.fillStyle = `rgba(186,117,23,${twinkle})`;

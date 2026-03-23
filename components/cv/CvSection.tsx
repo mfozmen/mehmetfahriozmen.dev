@@ -1,6 +1,6 @@
 function StarIcon() {
   return (
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="#BA7517" className="shrink-0">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="#BA7517" className="shrink-0" aria-hidden="true">
       <path d="M12 2l2.09 6.26L20.18 9l-5.09 3.74L16.18 19 12 15.77 7.82 19l1.09-6.26L3.82 9l6.09-.74z" />
     </svg>
   );

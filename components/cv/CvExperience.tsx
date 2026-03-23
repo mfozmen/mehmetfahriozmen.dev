@@ -40,6 +40,9 @@ function TimelineDot({ index }: { index: number }) {
           0%, 100% { transform: scale(1); opacity: 0.4; }
           50% { transform: scale(1.6); opacity: 0; }
         }
+        @media (prefers-reduced-motion: reduce) {
+          div { animation: none !important; }
+        }
       `}</style>
     </div>
   );
@@ -139,6 +142,7 @@ export default function CvExperience() {
           <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-neutral-700" />
           <button
             onClick={() => setShowEarlier(!showEarlier)}
+            aria-expanded={showEarlier}
             className="flex items-center gap-1.5 text-[12px] text-[#BA7517]/50 transition-colors hover:text-[#BA7517]"
           >
             <svg
