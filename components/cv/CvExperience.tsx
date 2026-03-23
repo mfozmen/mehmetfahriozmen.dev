@@ -4,14 +4,20 @@ import { useState } from "react";
 import CvSection from "./CvSection";
 import { cvExperience, cvEarlierRoles, type CvExperienceEntry } from "@/data/cvData";
 
+function ExtLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`transition-opacity hover:opacity-80 ${className}`}>
+      {children}
+      <span className="ml-0.5 text-[10px] opacity-40">↗</span>
+    </a>
+  );
+}
+
 function Chips({ items }: { items: string[] }) {
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
       {items.map((chip) => (
-        <span
-          key={chip}
-          className="rounded-full border border-[#BA7517]/[0.12] bg-[#BA7517]/[0.03] px-2 py-0.5 font-mono text-[10px] text-neutral-500"
-        >
+        <span key={chip} className="rounded-full border border-[#BA7517]/[0.12] bg-[#BA7517]/[0.03] px-2 py-0.5 font-mono text-[10px] text-neutral-500">
           {chip}
         </span>
       ))}
@@ -38,26 +44,33 @@ function TimelineDot({ index }: { index: number }) {
   );
 }
 
+function CompanyName({ name, url, primary }: { name: string; url?: string; primary?: boolean }) {
+  const cls = primary ? "text-[15px] font-semibold text-[#e5e5e5]" : "text-[13px] text-[#BA7517]";
+  if (url) return <ExtLink href={url} className={cls}>{name}</ExtLink>;
+  return <span className={cls}>{name}</span>;
+}
+
+function ProjectName({ name, url }: { name: string; url?: string }) {
+  if (url) return <ExtLink href={url} className="font-semibold text-[#d4d4d4]">{name}</ExtLink>;
+  return <span className="font-semibold text-[#d4d4d4]">{name}</span>;
+}
+
 function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: number }) {
   return (
     <div className="relative pl-6">
       <TimelineDot index={index} />
 
-      {/* Company as header */}
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-        <span className="text-[15px] font-medium text-neutral-200">{entry.company}</span>
-        <span className="font-mono text-[11px] text-neutral-700">{entry.date}</span>
+        <CompanyName name={entry.company} url={entry.companyUrl} primary />
+        <span className="font-mono text-[11px] text-[#404040]">{entry.date}</span>
       </div>
 
-      {/* Per-role blocks with descriptions */}
       <div className="mt-2 space-y-3">
-        {entry.roles!.map((role, i) => (
+        {entry.roles!.map((role) => (
           <div key={role.title}>
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-              <span className="text-[13px] font-semibold text-[#d4d4d4]">
-                {role.title}
-              </span>
-              <span className="font-mono text-[10px] text-[#525252]">{role.date}</span>
+              <span className="text-[13px] font-semibold text-[#d4d4d4]">{role.title}</span>
+              <span className="font-mono text-[10px] text-[#404040]">{role.date}</span>
             </div>
             {role.description && (
               <p className="mt-1 text-[12px] leading-relaxed text-[#8a8a8a]">{role.description}</p>
@@ -71,7 +84,7 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
           {entry.projects.map((proj) => (
             <div key={proj.name} className="relative text-[12px]">
               <span className="absolute -left-3.5 top-[7px] h-px w-1.5 bg-[#BA7517]/15" />
-              <span className="font-semibold text-[#d4d4d4]">{proj.name}</span>
+              <ProjectName name={proj.name} url={proj.url} />
               <span className="text-[#666]"> — {proj.description}</span>
             </div>
           ))}
@@ -80,19 +93,18 @@ function MultiRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: num
 
       {entry.chips && <Chips items={entry.chips} />}
 
-      {/* Sub-entry (e.g. BeforeSunset AI) — after chips */}
       {entry.subEntry && (
         <div className="ml-4 mt-4 border-l border-[#BA7517]/15 pl-3.5">
           <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-            <span className="text-[13px] font-medium text-neutral-300">{entry.subEntry.role}</span>
-            <span className="font-mono text-[11px] text-neutral-600">{entry.subEntry.date}</span>
+            <span className="text-[13px] font-semibold text-[#d4d4d4]">{entry.subEntry.role}</span>
+            <span className="font-mono text-[11px] text-[#404040]">{entry.subEntry.date}</span>
           </div>
           <div className="text-[12px]">
-            <span className="text-[#BA7517]">{entry.subEntry.company}</span>
+            <CompanyName name={entry.subEntry.company} url={entry.subEntry.companyUrl} />
             {" "}
             <span className="text-[11px] italic text-[#525252]" aria-label="concurrent role">(concurrent)</span>
           </div>
-          <p className="mt-1.5 text-[12px] leading-relaxed text-[#666]">{entry.subEntry.description}</p>
+          <p className="mt-1.5 text-[12px] leading-relaxed text-[#8a8a8a]">{entry.subEntry.description}</p>
           <Chips items={entry.subEntry.chips} />
         </div>
       )}
@@ -106,10 +118,10 @@ function SingleRoleEntry({ entry, index }: { entry: CvExperienceEntry; index: nu
       <TimelineDot index={index} />
 
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-        <span className="text-[15px] font-medium text-neutral-200">{entry.role}</span>
-        <span className="font-mono text-[12px] text-neutral-600">{entry.date}</span>
+        <span className="text-[15px] font-semibold text-[#e5e5e5]">{entry.role}</span>
+        <span className="font-mono text-[12px] text-[#404040]">{entry.date}</span>
       </div>
-      <div className="text-[13px] text-[#BA7517]">{entry.company}</div>
+      <CompanyName name={entry.company} url={entry.companyUrl} />
 
       {entry.description && (
         <p className="mt-2 text-[13px] leading-relaxed text-[#8a8a8a]">{entry.description}</p>
@@ -158,7 +170,7 @@ export default function CvExperience() {
                   <span className="text-[13px] text-neutral-500">
                     {role.role} · <span className="text-[#BA7517]/70">{role.company}</span>
                   </span>
-                  <span className="font-mono text-[11px] text-neutral-700">{role.date}</span>
+                  <span className="font-mono text-[11px] text-[#404040]">{role.date}</span>
                 </div>
               ))}
             </div>
