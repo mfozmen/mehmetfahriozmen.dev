@@ -15,13 +15,14 @@ function generateStars(w: number, h: number): Star[] {
   const count = Math.round((w * h) / 8000);
   const stars: Star[] = [];
   for (let i = 0; i < count; i++) {
+    const isBright = Math.random() < 0.05;
     stars.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      r: 0.2 + Math.random() * 1.2,
-      alpha: 0.1 + Math.random() * 0.4,
+      r: isBright ? 1.5 + Math.random() * 0.5 : 0.2 + Math.random() * 1.2,
+      alpha: isBright ? 0.5 + Math.random() * 0.3 : 0.15 + Math.random() * 0.45,
       phase: Math.random() * Math.PI * 2,
-      amber: Math.random() < 0.15,
+      amber: Math.random() < 0.2,
     });
   }
   return stars;
@@ -58,7 +59,7 @@ export default function Starfield({ className = "" }: { className?: string }) {
       const scrollY = window.scrollY * 0.03;
 
       for (const star of starsRef.current) {
-        const twinkle = star.alpha * (0.7 + 0.3 * Math.sin(time * 1.5 + star.phase));
+        const twinkle = star.alpha * (0.55 + 0.45 * Math.sin(time * 1.5 + star.phase));
         const sy = star.y - scrollY;
         if (star.amber) {
           ctx.fillStyle = `rgba(186,117,23,${twinkle})`;
