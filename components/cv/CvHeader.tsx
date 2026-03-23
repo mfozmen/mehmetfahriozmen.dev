@@ -41,7 +41,7 @@ export default function CvHeader() {
           download
           className="inline-block rounded-full border border-[#BA7517]/40 px-5 py-1.5 font-mono text-[11px] text-[#BA7517] transition-all hover:border-[#BA7517]/70 hover:shadow-[0_0_20px_rgba(186,117,23,0.15)]"
         >
-          Download PDF
+          The no-stars PDF version ↓
         </a>
       </div>
     </header>
