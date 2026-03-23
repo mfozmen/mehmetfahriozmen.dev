@@ -28,8 +28,6 @@ export default function CvHeader() {
       <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12px] text-neutral-500">
         <span>İzmir, Turkey</span>
         <span className="text-neutral-700">·</span>
-        <a href="https://mehmetfahriozmen.dev" className="transition-colors hover:text-neutral-300">mehmetfahriozmen.dev</a>
-        <span className="text-neutral-700">·</span>
         <a href="https://linkedin.com/in/mfozmen" className="transition-colors hover:text-neutral-300">LinkedIn</a>
         <span className="text-neutral-700">·</span>
         <a href="https://github.com/mfozmen" className="transition-colors hover:text-neutral-300">GitHub</a>

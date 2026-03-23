@@ -63,6 +63,24 @@ export default function Footer() {
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
           </svg>
         </a>
+        {/* X (Twitter) */}
+        <a
+          href="https://x.com/mfozmen"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="X"
+          className="text-neutral-500 transition-colors hover:text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </a>
       </div>
       <p className="mt-8 text-xs text-neutral-600">
         &copy; {new Date().getFullYear()} Mehmet Fahri Özmen. All rights reserved.
