@@ -77,19 +77,19 @@ export const cvExperience: CvExperienceEntry[] = [
   },
   {
     role: "Senior Software Engineer",
-    date: "Jun 2018 — Apr 2019",
-    company: "Ptt Trade",
-    description:
-      "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search.",
-    chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
-  },
-  {
-    role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
     company: "Datagen Bilişim",
     description:
       "Developed sales automation system for Peyman Kuruyemiş — Android application and backend services with MSSQL database programming.",
     chips: ["C#", "Xamarin", "MSSQL"],
+  },
+  {
+    role: "Senior Software Engineer",
+    date: "Jun 2018 — Apr 2019",
+    company: "Ptt Trade",
+    description:
+      "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search.",
+    chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
   {
     role: "Senior Software Engineer",
