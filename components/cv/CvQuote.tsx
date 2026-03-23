@@ -1,8 +1,8 @@
 export default function CvQuote() {
   return (
     <blockquote
-      className="mb-16 rounded-r-lg border-l-2 border-[#BA7517]/35 py-4 pl-5 pr-4"
-      style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.03) 0%, transparent 60%)" }}
+      className="mb-16 rounded-r-lg border-l-2 border-[#BA7517]/40 py-5 pl-6 pr-6"
+      style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.04) 0%, transparent 60%)" }}
     >
       <p className="text-[14px] leading-relaxed text-[#a3a3a3]">
         Software engineer turned engineering leader with over a decade in
