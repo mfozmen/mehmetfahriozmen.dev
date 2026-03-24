@@ -1,11 +1,11 @@
+import Link from "next/link";
+import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
 export default function AboutLife() {
   return (
     <section>
-      <h2 className="mb-10 text-2xl font-semibold text-neutral-200">
-        When I&apos;m not coding
-      </h2>
+      <SectionTitle title="When I'm not coding" />
 
       <p className="mb-8 text-neutral-400">
         I love spending time with my family, traveling to new places, and
@@ -21,13 +21,13 @@ export default function AboutLife() {
           alt="Travel"
           width={800}
           height={600}
-          caption="Exploring new places with family"
+          caption="New places, new perspectives"
           imgClassName="w-full"
         />
       </div>
 
       {/* Three portrait photos */}
-      <div className="mx-auto mb-12 grid max-w-3xl grid-cols-3 gap-3">
+      <div className="mx-auto mb-12 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
         <PhotoCaption
           src="/about/family-adventure.webp"
           alt="Family adventure"
@@ -41,7 +41,7 @@ export default function AboutLife() {
           alt="Solo travel"
           width={600}
           height={800}
-          caption="Solo wandering"
+          caption="Curiosity doesn't stop at code"
           imgClassName="w-full"
         />
         <PhotoCaption
@@ -62,7 +62,7 @@ export default function AboutLife() {
           width={280}
           height={280}
           caption="Not always feeding them, but sometimes I catch the unlucky ones"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
         />
         <p className="flex-1 text-neutral-400">
           I also fish &mdash; it&apos;s one of the best ways I know to slow
@@ -86,9 +86,20 @@ export default function AboutLife() {
           width={280}
           height={373}
           caption="Home office supervisor"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
         />
       </div>
+
+      {/* CTAs */}
+      <p className="mt-16 text-center text-[13px] text-neutral-500">
+        <Link href="/cv" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
+          Curious about my work? → See my CV
+        </Link>
+        <span className="mx-3">·</span>
+        <Link href="/contact" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
+          Want to get in touch? → Contact me
+        </Link>
+      </p>
     </section>
   );
 }
