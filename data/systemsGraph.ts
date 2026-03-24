@@ -54,50 +54,55 @@ export const orbits: OrbitConfig[] = [
 // --- Galaxy layout per project ---
 
 const projectLayout: Record<string, { angle: number; orbit: number }> = {
-  mobilet:      { angle: 0.5, orbit: 0 },
-  shubuo:       { angle: 1.55, orbit: 0 },
-  villasepeti:  { angle: 2.6, orbit: 0 },
-  magicpags:    { angle: 3.65, orbit: 0 },
+  mobilet: { angle: 0.5, orbit: 0 },
+  shubuo: { angle: 1.55, orbit: 0 },
+  villasepeti: { angle: 2.6, orbit: 0 },
+  magicpags: { angle: 3.65, orbit: 0 },
   beforesunset: { angle: 4.7, orbit: 0 },
-  decktopus:    { angle: 5.75, orbit: 0 },
-  ptttrade:     { angle: 0.8, orbit: 1 },
-  room3d:       { angle: 2.2, orbit: 1 },
-  ihtiyac:      { angle: 4.1, orbit: 1 },
-  coknet:       { angle: 5.4, orbit: 1 },
-  fsd:          { angle: 1.2, orbit: 2 },
-  megatons:     { angle: 5, orbit: 2 },
+  decktopus: { angle: 5.75, orbit: 0 },
+  ptttrade: { angle: 0.8, orbit: 1 },
+  holoh: { angle: 2.2, orbit: 1 },
+  ihtiyac: { angle: 4.1, orbit: 1 },
+  coknet: { angle: 5.4, orbit: 1 },
+  fsd: { angle: 1.2, orbit: 2 },
+  megatons: { angle: 5, orbit: 2 },
 };
 
 // --- Galaxy layout per domain ---
 
-const domainLayout: Record<string, { angle: number; orbit: number; offset: { x: number; y: number } }> = {
-  ecommerce:    { angle: 1, orbit: 0, offset: { x: -0.07, y: 0.08 } },
-  adtech:       { angle: 1.8, orbit: 0, offset: { x: 0.1, y: -0.1 } },
+const domainLayout: Record<
+  string,
+  { angle: number; orbit: number; offset: { x: number; y: number } }
+> = {
+  ecommerce: { angle: 1, orbit: 0, offset: { x: -0.07, y: 0.08 } },
+  adtech: { angle: 1.8, orbit: 0, offset: { x: 0.1, y: -0.1 } },
   productivity: { angle: 5.2, orbit: 0, offset: { x: 0.07, y: 0.06 } },
-  distributed:  { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.07 } },
-  education:    { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
-  nonprofit:    { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
-  realtime:     { angle: 2.2, orbit: 1, offset: { x: -0.1, y: 0.08 } },
+  distributed: { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.07 } },
+  education: { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
+  nonprofit: { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
+  realtime: { angle: 2.2, orbit: 1, offset: { x: -0.1, y: 0.08 } },
 };
 
 // --- Galaxy position per tech cluster ---
 
 const techClusterPositions: Record<string, { x: number; y: number }> = {
-  databases:     { x: 0.13, y: -0.02 },
-  search:        { x: 0.03, y: -0.17 },
-  cloud:         { x: -0.06, y: -0.12 },
-  devops:        { x: -0.14, y: 0.06 },
-  api:           { x: -0.02, y: 0.16 },
-  architecture:  { x: 0.06, y: 0.15 },
-  messaging:     { x: 0.12, y: -0.12 },
-  frameworks:    { x: -0.13, y: -0.14 },
-  monitoring:    { x: -0.14, y: -0.04 },
+  databases: { x: 0.13, y: -0.02 },
+  search: { x: 0.03, y: -0.17 },
+  cloud: { x: -0.06, y: -0.12 },
+  devops: { x: -0.14, y: 0.06 },
+  api: { x: -0.02, y: 0.16 },
+  architecture: { x: 0.06, y: 0.15 },
+  messaging: { x: 0.12, y: -0.12 },
+  frameworks: { x: -0.13, y: -0.14 },
+  monitoring: { x: -0.14, y: -0.04 },
   data_analysis: { x: 0.14, y: 0.08 },
   methodologies: { x: -0.1, y: 0.14 },
 };
 
 // Computed radial positions for mobile — equal angular spacing guarantees no overlaps
-function computeMobilePositions(ids: string[]): Record<string, { x: number; y: number }> {
+function computeMobilePositions(
+  ids: string[],
+): Record<string, { x: number; y: number }> {
   const radius = 0.22;
   const result: Record<string, { x: number; y: number }> = {};
   for (let i = 0; i < ids.length; i++) {
@@ -112,10 +117,21 @@ function computeMobilePositions(ids: string[]): Record<string, { x: number; y: n
 
 // Radial order: alternate long/short names so wide labels never neighbor each other
 const techClusterRadialOrder = [
-  "databases", "api", "methodologies", "search", "frameworks",
-  "cloud", "data_analysis", "devops", "architecture", "monitoring", "messaging",
+  "databases",
+  "api",
+  "methodologies",
+  "search",
+  "frameworks",
+  "cloud",
+  "data_analysis",
+  "devops",
+  "architecture",
+  "monitoring",
+  "messaging",
 ];
-export const techClusterMobilePositions = computeMobilePositions(techClusterRadialOrder);
+export const techClusterMobilePositions = computeMobilePositions(
+  techClusterRadialOrder,
+);
 
 // --- Build exported arrays by merging data + layout ---
 
@@ -144,9 +160,11 @@ export const domains: DomainNode[] = domainDefs.map((d) => {
   };
 });
 
-export const techClusters: TechClusterNode[] = technologyCategories.map((tc) => ({
-  id: tc.id,
-  name: tc.name,
-  technologies: tc.technologies,
-  position: techClusterPositions[tc.id],
-}));
+export const techClusters: TechClusterNode[] = technologyCategories.map(
+  (tc) => ({
+    id: tc.id,
+    name: tc.name,
+    technologies: tc.technologies,
+    position: techClusterPositions[tc.id],
+  }),
+);
