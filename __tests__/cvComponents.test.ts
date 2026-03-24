@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 
 // CV data-driven tests (no DOM required)
-import { cvExperience, cvSkills, cvCoordinates } from "@/data/cvData";
+import { cvExperience, cvEarlierRoles, cvSkills, cvCoordinates } from "@/data/cvData";
 
 describe("CV Experience data", () => {
   it("has main experience entries", () => {
-    expect(cvExperience.length).toBeGreaterThanOrEqual(5);
+    expect(cvExperience.length).toBeGreaterThanOrEqual(4);
   });
 
   it("each entry has role, company, and date", () => {
@@ -23,12 +23,15 @@ describe("CV Experience data", () => {
     expect(brew?.projects?.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("Mayadem, Brew, and Veriyaz have role progressions", () => {
+  it("Mayadem and Brew have role progressions", () => {
     const mayadem = cvExperience.find((e) => e.company === "Mayadem");
     const brew = cvExperience.find((e) => e.company === "Brew Interactive");
-    const veriyaz = cvExperience.find((e) => e.company === "Veriyaz Yazılım");
     expect(mayadem?.roles?.length).toBeGreaterThanOrEqual(2);
     expect(brew?.roles?.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("Veriyaz is in earlier roles with role progression", () => {
+    const veriyaz = cvEarlierRoles.find((e) => e.company === "Veriyaz Yazılım");
     expect(veriyaz?.roles?.length).toBeGreaterThanOrEqual(2);
   });
 

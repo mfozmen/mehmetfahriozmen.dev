@@ -217,12 +217,7 @@ export const cvExperience: CvExperienceEntry[] = [
     company: "Datagen Bilişim",
     companyUrl: "https://datagen.com.tr/",
     roles: [
-      {
-        title: "Senior Software Engineer",
-        date: "May 2019 — Jul 2019",
-        description:
-          "Developed sales automation system for Peyman Kuruyemiş — Android application and backend services with MSSQL database programming.",
-      },
+      { title: "Senior Software Engineer", date: "May 2019 — Jul 2019", description: "Developed sales automation system for Peyman Kuruyemiş, one of Turkey's leading snack food companies — Android application and backend services with MSSQL database programming." },
     ],
     chips: ["C#", "Xamarin", "MSSQL"],
   },
@@ -231,66 +226,47 @@ export const cvExperience: CvExperienceEntry[] = [
     date: "Jun 2018 — Apr 2019",
     company: "Ptt Trade",
     roles: [
-      {
-        title: "Senior Software Engineer",
-        date: "Jun 2018 — Apr 2019",
-        description:
-          "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search.",
-      },
+      { title: "Senior Software Engineer", date: "Jun 2018 — Apr 2019", description: "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search." },
     ],
     chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
+];
+
+export const cvEarlierRoles: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     date: "Jan 2013 — Jun 2018",
     company: "Veriyaz Yazılım",
     companyUrl: "https://veriyaz.com/",
     roles: [
-      {
-        title: "Senior Software Engineer",
-        date: "Jan 2015 — Jun 2018",
-        description:
-          "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket.",
-      },
-      {
-        title: "Software Engineer",
-        date: "Jan 2013 — Jan 2015",
-        description:
-          "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services.",
-      },
+      { title: "Senior Software Engineer", date: "Jan 2015 — Jun 2018", description: "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket." },
+      { title: "Software Engineer", date: "Jan 2013 — Jan 2015", description: "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services." },
     ],
     chips: ["C# / .NET", "MSSQL", "AWS", "WebSocket"],
   },
-];
-
-export interface CvEarlierRole {
-  role: string;
-  company: string;
-  date: string;
-  description: string;
-}
-
-export const cvEarlierRoles: CvEarlierRole[] = [
   {
     role: "Software Engineer",
-    company: "Erik Bilişim",
     date: "Sep 2012 — Jan 2013",
-    description:
-      "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems.",
+    company: "Erik Bilişim",
+    roles: [
+      { title: "Software Engineer", date: "Sep 2012 — Jan 2013", description: "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems." },
+    ],
   },
   {
     role: "Intern",
-    company: "TRT",
     date: "Sep 2010 — Oct 2010",
-    description:
-      "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate.",
+    company: "TRT",
+    roles: [
+      { title: "Intern", date: "Sep 2010 — Oct 2010", description: "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate." },
+    ],
   },
   {
     role: "Intern",
-    company: "Izmir Metropolitan Municipality",
     date: "Jul 2009 — Aug 2009",
-    description:
-      "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality.",
+    company: "Izmir Metropolitan Municipality",
+    roles: [
+      { title: "Intern", date: "Jul 2009 — Aug 2009", description: "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality." },
+    ],
   },
 ];
 

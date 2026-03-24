@@ -161,48 +161,45 @@ export default function CvExperience() {
           </div>
         ))}
 
-        <div className="relative pl-6">
-          <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-neutral-700" />
-          <button
-            onClick={() => setShowEarlier(!showEarlier)}
-            aria-expanded={showEarlier}
-            className="flex items-center gap-1.5 text-[12px] text-[#BA7517]/50 transition-colors hover:text-[#BA7517]"
-          >
-            <svg
-              width="8" height="8" viewBox="0 0 8 8" fill="currentColor"
-              className={`transition-transform duration-200 ${showEarlier ? "rotate-90" : ""}`}
+        <div className="py-5">
+          <div className="relative pl-6">
+            <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-neutral-700" />
+            <button
+              onClick={() => setShowEarlier(!showEarlier)}
+              aria-expanded={showEarlier}
+              className="flex items-center gap-1.5 text-[12px] text-[#BA7517]/50 transition-colors hover:text-[#BA7517]"
             >
-              <path d="M2 1l4 3-4 3z" />
-            </svg>
-            Earlier Missions (2009–2013)
-          </button>
+              <svg
+                width="8" height="8" viewBox="0 0 8 8" fill="currentColor"
+                className={`transition-transform duration-200 ${showEarlier ? "rotate-90" : ""}`}
+              >
+                <path d="M2 1l4 3-4 3z" />
+              </svg>
+              Earlier Missions (2009–2018)
+            </button>
 
-          <div className="mt-3 space-y-3">
-            {showEarlier ? (
-              /* Expanded: full details */
-              cvEarlierRoles.map((entry) => (
-                <div key={`${entry.company}-${entry.date}`}>
-                  <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-                    <span className="text-[13px] font-semibold text-[#BA7517]">{entry.company}</span>
+            <div className="mt-3 space-y-3">
+              {showEarlier ? (
+                /* Expanded: full entry cards */
+                <div className="space-y-6">
+                  {cvEarlierRoles.map((entry, i) => (
+                    <EntryCard key={`${entry.company}-${entry.date}`} entry={entry} index={cvExperience.length + i} />
+                  ))}
+                </div>
+              ) : (
+                /* Collapsed: compact one-liners */
+                cvEarlierRoles.map((entry) => (
+                  <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
+                    <span className="text-[12px]">
+                      <span className="text-[#BA7517]">{entry.company}</span>
+                      <span className="text-[#BA7517]/40"> · </span>
+                      <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
+                    </span>
                     <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
                   </div>
-                  <div className="mt-0.5 text-[12px] font-semibold text-[#e5e5e5]">{entry.role}</div>
-                  <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.description}</p>
-                </div>
-              ))
-            ) : (
-              /* Collapsed: compact one-liners */
-              cvEarlierRoles.map((entry) => (
-                <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-                  <span className="text-[12px]">
-                    <span className="text-[#BA7517]">{entry.company}</span>
-                    <span className="text-[#BA7517]/40"> · </span>
-                    <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
-                  </span>
-                  <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
