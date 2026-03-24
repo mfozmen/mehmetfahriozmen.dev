@@ -16,7 +16,8 @@ export interface CvSubEntry {
   date: string;
   company: string;
   companyUrl?: string;
-  description: string;
+  description?: string;
+  bullets?: string[];
   chips: string[];
 }
 
@@ -137,8 +138,10 @@ export const cvExperience: CvExperienceEntry[] = [
       date: "Jan 2021 — Dec 2022",
       company: "BeforeSunset AI",
       companyUrl: "https://beforesunset.ai",
-      description:
-        "Built the backend architecture from scratch for an AI productivity assistant. Designed database models, developed APIs with Hasura, and managed Kubernetes deployments.",
+      bullets: [
+        "Developed backend services using Node.js and created APIs with Hasura for efficient GraphQL data interactions",
+        "Designed PostgreSQL database schema and managed deployment within Docker containers on Kubernetes",
+      ],
       chips: [
         "Node.js",
         "GraphQL",
