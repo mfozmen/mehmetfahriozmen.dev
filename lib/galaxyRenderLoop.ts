@@ -130,9 +130,16 @@ export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestra
     const dist = Math.hypot(sdx, sdy);
     const falloff = Math.pow(1 - dist / maxDist, 1.8);
 
+    const edgeFadeZone = 80;
+    const edgeFade = Math.min(
+      sx / edgeFadeZone, (w - sx) / edgeFadeZone,
+      sy / edgeFadeZone, (h - sy) / edgeFadeZone,
+      1,
+    );
+
     const twinkleAmp = star.bright ? 0.3 : 0.15;
     const twinkle = 1 + Math.sin(time * 1.5 + star.phase) * twinkleAmp;
-    const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6) * drifted.fadeIn;
+    const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6) * drifted.fadeIn * Math.max(edgeFade, 0);
 
     const glowR = star.r * cfg.glowMul * (star.bright ? 2.25 : 1);
     const glowGradient = ctx.createRadialGradient(sx, sy, star.r * 0.3, sx, sy, glowR);
