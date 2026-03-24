@@ -62,8 +62,6 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - **Never commit automatically.** Always show proposed changes, commit message, and modified files — then ask the user for explicit approval before committing.
 - Never push commits automatically or run destructive git commands.
 - Never modify unrelated files.
-- Never push commits automatically or run destructive git commands.
-- Never modify unrelated files.
 
 ## Testing
 
