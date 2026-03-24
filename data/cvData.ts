@@ -49,7 +49,7 @@ export const cvExperience: CvExperienceEntry[] = [
     role: "Head of Software Technologies",
     date: "Dec 2024 — Dec 2025",
     company: "Mayadem",
-    companyUrl: "https://www.mayadem.com",
+    companyUrl: "https://mayadem.com",
     roles: [
       {
         title: "Head of Software Technologies",
