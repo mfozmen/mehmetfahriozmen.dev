@@ -11,3 +11,15 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
 }
+
+@keyframes pulse-signal {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[pulse-signal_4s_ease-in-out_infinite\] {
+    animation: none !important;
+    opacity: 0.3;
+  }
+}

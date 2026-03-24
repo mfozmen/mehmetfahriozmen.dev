@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { projects } from "@/data/projects";
 import { domains } from "@/data/domains";
 import SectionTitle from "@/components/SectionTitle";
@@ -57,6 +58,29 @@ export default function FeaturedSystems() {
           </div>
         ))}
       </div>
+      {/* Deep space — edge of the map */}
+      <div
+        className="mt-12 mb-8 h-px"
+        style={{ background: "linear-gradient(90deg, transparent 5%, rgba(186,117,23,0.35) 50%, transparent 95%)" }}
+      />
+      <p className="text-center font-mono text-[11px] tracking-[0.12em] text-[#525252]">
+        <span className="text-[#404040]">· · ·</span>
+        {" "}
+        <span className="animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040]">──</span>
+        {" "}there&apos;s more beyond the visible spectrum{" "}
+        <span className="animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040]">──</span>
+        {" "}
+        <span className="text-[#404040]">· · ·</span>
+      </p>
+      <p className="mt-3 text-center">
+        <Link
+          href="/about"
+          className="group relative inline-block font-mono text-[12px] tracking-[0.12em] text-[#BA7517]/35 transition-colors hover:text-[#BA7517]/70"
+        >
+          <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">follow the light →</span>
+        </Link>
+      </p>
     </section>
   );
 }
