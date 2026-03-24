@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
@@ -20,7 +21,7 @@ export default function AboutLife() {
           alt="Travel"
           width={800}
           height={600}
-          caption="Exploring new places with family"
+          caption="New places, new perspectives"
           imgClassName="w-full"
         />
       </div>
@@ -40,7 +41,7 @@ export default function AboutLife() {
           alt="Solo travel"
           width={600}
           height={800}
-          caption="Solo wandering"
+          caption="Curiosity doesn't stop at code"
           imgClassName="w-full"
         />
         <PhotoCaption
@@ -88,6 +89,17 @@ export default function AboutLife() {
           className="w-full md:w-[280px] shrink-0"
         />
       </div>
+
+      {/* CTAs */}
+      <p className="mt-16 text-[13px] text-neutral-500">
+        <Link href="/cv" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
+          Curious about my work? → See my CV
+        </Link>
+        <span className="mx-3">·</span>
+        <Link href="/contact" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
+          Want to get in touch? → Contact me
+        </Link>
+      </p>
     </section>
   );
 }

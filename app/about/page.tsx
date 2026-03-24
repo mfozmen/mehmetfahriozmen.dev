@@ -16,6 +16,9 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-neutral-900 focus:text-white focus:rounded">
+        Skip to content
+      </a>
       <Navigation />
       <Starfield />
 
@@ -27,7 +30,7 @@ export default function AboutPage() {
         <div className="absolute bottom-[35%] left-[5%] h-[200px] w-[200px] rounded-full bg-[rgba(186,117,23,0.025)] blur-[100px]" />
       </div>
 
-      <main className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <AboutIntro />
         <AboutOrigins />
         <AboutWork />

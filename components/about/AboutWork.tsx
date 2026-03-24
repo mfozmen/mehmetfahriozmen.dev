@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
@@ -84,6 +85,12 @@ export default function AboutWork() {
         caption="Brew Interactive — one of my favorite places to work"
         imgClassName="w-full max-h-[400px] object-cover"
       />
+
+      <p className="mt-6 text-[13px]">
+        <Link href="/cv" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
+          See my full journey →
+        </Link>
+      </p>
     </section>
   );
 }
