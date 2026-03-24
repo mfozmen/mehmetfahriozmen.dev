@@ -63,17 +63,18 @@ export default function Navigation() {
       </button>
 
       {/* Mobile drawer overlay */}
-      <div
+      <button
+        type="button"
         className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 sm:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
         onClick={() => setOpen(false)}
-        aria-hidden={!open}
+        aria-label="Close menu"
+        tabIndex={open ? 0 : -1}
       />
 
       {/* Mobile drawer panel */}
-      <div
-        className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
-        role="dialog"
-        aria-modal={open}
+      <dialog
+        className={`fixed top-0 right-0 z-50 m-0 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
+        open={open}
         aria-label="Navigation menu"
       >
         <div className="flex items-center justify-between px-6 py-5">
@@ -101,7 +102,7 @@ export default function Navigation() {
             </li>
           ))}
         </ul>
-      </div>
+      </dialog>
     </nav>
   );
 }
