@@ -12,9 +12,9 @@ export default function Hero() {
           Backend Systems Architect &middot; Engineering Leader
         </p>
         <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-400">
-          I build the things you don&apos;t see &mdash;
-          <br className="hidden sm:inline" />
-          distributed systems, search engines, payment flows.
+          I build the things you don&apos;t see &mdash; distributed
+          systems, search engines, payment flows, and whatever lies
+          beyond the horizon.
           <br />
           <span className="text-neutral-200">
             From hiring to shipping &mdash; I build the systems and the teams behind them.
