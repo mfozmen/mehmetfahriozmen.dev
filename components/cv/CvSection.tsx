@@ -6,7 +6,7 @@ function StarIcon() {
   );
 }
 
-export default function CvSection({ title, children, spacing = "md" }: { title: string; children: React.ReactNode; spacing?: "lg" | "md" }) {
+export default function CvSection({ title, children, spacing = "md" }: Readonly<{ title: string; children: React.ReactNode; spacing?: "lg" | "md" }>) {
   const mb = spacing === "lg" ? "mb-16" : "mb-10";
   return (
     <section className={mb}>

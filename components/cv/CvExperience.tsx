@@ -6,7 +6,7 @@ import { cvExperience, cvEarlierRoles, type CvExperienceEntry } from "@/data/cvD
 
 const linkCls = "border-b border-dashed border-[#BA7517]/40 pb-px transition-all hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]";
 
-function CvLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
+function CvLink({ href, children, className = "" }: Readonly<{ href: string; children: React.ReactNode; className?: string }>) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`${linkCls} ${className}`}>
       {children}
@@ -14,7 +14,20 @@ function CvLink({ href, children, className = "" }: { href: string; children: Re
   );
 }
 
-function Chips({ items }: { items: string[] }) {
+function BulletList({ items }: Readonly<{ items: string[] }>) {
+  return (
+    <ul className="mt-1.5 space-y-1">
+      {items.map((b) => (
+        <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
+          <span className="shrink-0 text-[#BA7517]/40">▸</span>
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Chips({ items }: Readonly<{ items: string[] }>) {
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
       {items.map((chip) => (
@@ -26,7 +39,7 @@ function Chips({ items }: { items: string[] }) {
   );
 }
 
-function TimelineDot({ index }: { index: number }) {
+function TimelineDot({ index }: Readonly<{ index: number }>) {
   const delay = `${index * 0.5}s`;
   return (
     <div className="absolute left-0 top-1.5 h-2 w-2">
@@ -48,20 +61,26 @@ function TimelineDot({ index }: { index: number }) {
   );
 }
 
-function CompanyHeader({ name, url }: { name: string; url?: string }) {
+function CompanyHeader({ name, url }: Readonly<{ name: string; url?: string }>) {
   const cls = "text-[15px] font-semibold text-[#BA7517]";
   if (url) return <CvLink href={url} className={cls}>{name}</CvLink>;
   return <span className={cls}>{name}</span>;
 }
 
-function ProjectName({ name, url }: { name: string; url?: string }) {
+function ProjectName({ name, url }: Readonly<{ name: string; url?: string }>) {
   if (url) return <CvLink href={url} className="font-semibold text-[#e5e5e5]">{name}</CvLink>;
   return <span className="font-semibold text-[#e5e5e5]">{name}</span>;
 }
 
+function RoleDescription({ bullets, description }: Readonly<{ bullets?: string[]; description?: string }>) {
+  if (bullets && bullets.length > 0) return <BulletList items={bullets} />;
+  if (description) return <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{description}</p>;
+  return null;
+}
+
 const MAX_VISIBLE_PROJECTS = 4;
 
-function ProjectList({ projects }: { projects: CvExperienceEntry["projects"] }) {
+function ProjectList({ projects }: Readonly<{ projects: CvExperienceEntry["projects"] }>) {
   const [showAll, setShowAll] = useState(false);
   if (!projects || projects.length === 0) return null;
 
@@ -89,7 +108,7 @@ function ProjectList({ projects }: { projects: CvExperienceEntry["projects"] }) 
   );
 }
 
-function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }) {
+function EntryCard({ entry, index }: Readonly<{ entry: CvExperienceEntry; index: number }>) {
   const roles = entry.roles ?? [{ title: entry.role, date: entry.date, description: entry.description }];
   const showRoleDate = roles.length > 1;
 
@@ -111,19 +130,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               <span className="text-[13px] font-semibold text-[#e5e5e5]">{role.title}</span>
               {showRoleDate && <span className="font-mono text-[10px] text-[#888888]">{role.date}</span>}
             </div>
-            {role.bullets && role.bullets.length > 0 && (
-              <ul className="mt-1.5 space-y-1">
-                {role.bullets.map((b) => (
-                  <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
-                    <span className="shrink-0 text-[#BA7517]/40">▸</span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {!role.bullets && role.description && (
-              <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{role.description}</p>
-            )}
+            <RoleDescription bullets={role.bullets} description={role.description} />
           </div>
         ))}
       </div>
@@ -150,18 +157,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
             <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.subEntry.date}</span>
           </div>
           <div className="mt-1 text-[13px] font-semibold text-[#e5e5e5]">{entry.subEntry.role}</div>
-          {entry.subEntry.bullets && entry.subEntry.bullets.length > 0 ? (
-            <ul className="mt-1.5 space-y-1">
-              {entry.subEntry.bullets.map((b) => (
-                <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
-                  <span className="shrink-0 text-[#BA7517]/40">▸</span>
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-          ) : entry.subEntry.description ? (
-            <p className="mt-1 text-[12px] leading-relaxed text-[#a3a3a3]">{entry.subEntry.description}</p>
-          ) : null}
+          <RoleDescription bullets={entry.subEntry.bullets} description={entry.subEntry.description} />
           <Chips items={entry.subEntry.chips} />
         </div>
       )}

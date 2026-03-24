@@ -11,24 +11,24 @@ interface Star {
   amber: boolean;
 }
 
-function generateStars(w: number, h: number): Star[] {
+function generateStars(w: number, h: number): Star[] { // NOSONAR: S2245 — Math.random is safe here, used for visual star placement only
   const count = Math.round((w * h) / 8000);
   const stars: Star[] = [];
   for (let i = 0; i < count; i++) {
-    const isBright = Math.random() < 0.05;
+    const isBright = Math.random() < 0.05; // NOSONAR
     stars.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: isBright ? 1.5 + Math.random() * 0.5 : 0.2 + Math.random() * 1.2,
-      alpha: isBright ? 0.5 + Math.random() * 0.3 : 0.15 + Math.random() * 0.45,
-      phase: Math.random() * Math.PI * 2,
-      amber: Math.random() < 0.2,
+      x: Math.random() * w, // NOSONAR
+      y: Math.random() * h, // NOSONAR
+      r: isBright ? 1.5 + Math.random() * 0.5 : 0.2 + Math.random() * 1.2, // NOSONAR
+      alpha: isBright ? 0.5 + Math.random() * 0.3 : 0.15 + Math.random() * 0.45, // NOSONAR
+      phase: Math.random() * Math.PI * 2, // NOSONAR
+      amber: Math.random() < 0.2, // NOSONAR
     });
   }
   return stars;
 }
 
-export default function Starfield({ className = "" }: { className?: string }) {
+export default function Starfield({ className = "" }: Readonly<{ className?: string }>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
   const animRef = useRef(0);
@@ -38,27 +38,31 @@ export default function Starfield({ className = "" }: { className?: string }) {
     if (!canvas) return;
 
     function resize() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas!.width = window.innerWidth * dpr;
-      canvas!.height = window.innerHeight * dpr;
-      canvas!.style.width = `${window.innerWidth}px`;
-      canvas!.style.height = `${window.innerHeight}px`;
-      starsRef.current = generateStars(window.innerWidth, window.innerHeight);
+      const dpr = globalThis.devicePixelRatio || 1;
+      const w = globalThis.innerWidth;
+      const h = globalThis.innerHeight;
+      canvas!.width = w * dpr;
+      canvas!.height = h * dpr;
+      canvas!.style.width = `${w}px`;
+      canvas!.style.height = `${h}px`;
+      starsRef.current = generateStars(w, h);
     }
     resize();
-    window.addEventListener("resize", resize);
+    globalThis.addEventListener("resize", resize);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const animate = (t: number) => {
-      const ctx = canvas!.getContext("2d");
+      const ctx = canvas.getContext("2d");
       if (!ctx) { animRef.current = requestAnimationFrame(animate); return; }
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = globalThis.devicePixelRatio || 1;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, canvas!.width / dpr, canvas!.height / dpr);
+      ctx.clearRect(0, 0, w, h);
 
       const time = t / 1000;
-      const scrollY = prefersReducedMotion ? 0 : window.scrollY * 0.03;
+      const scrollY = prefersReducedMotion ? 0 : globalThis.scrollY * 0.03;
 
       for (const star of starsRef.current) {
         const twinkle = prefersReducedMotion ? star.alpha : star.alpha * (0.55 + 0.45 * Math.sin(time * 1.5 + star.phase));
@@ -79,7 +83,7 @@ export default function Starfield({ className = "" }: { className?: string }) {
 
     return () => {
       cancelAnimationFrame(animRef.current);
-      window.removeEventListener("resize", resize);
+      globalThis.removeEventListener("resize", resize);
     };
   }, []);
 

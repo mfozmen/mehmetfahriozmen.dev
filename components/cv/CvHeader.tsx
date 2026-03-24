@@ -1,5 +1,5 @@
 const cvViewUrl = process.env.NEXT_PUBLIC_CV_PDF_URL || "#";
-const fileIdMatch = cvViewUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+const fileIdMatch = /\/d\/([a-zA-Z0-9_-]+)/.exec(cvViewUrl);
 const cvDownloadUrl = fileIdMatch
   ? `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`
   : cvViewUrl;
