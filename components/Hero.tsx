@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="relative shrink-0">
         <div className="absolute -inset-3 rounded-full bg-gradient-to-b from-neutral-800/40 to-neutral-900/60 blur-xl" />
         <Image
-          src="/fahri.jpg"
+          src="/mfo.webp"
           alt="Mehmet Fahri Özmen"
           width={240}
           height={240}
