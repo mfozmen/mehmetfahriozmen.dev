@@ -92,12 +92,14 @@ export default function AboutLife() {
 
       {/* CTAs */}
       <p className="mt-16 text-center text-[13px] text-neutral-500">
-        <Link href="/cv" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
-          Curious about my work? → See my CV
+        <Link href="/cv" className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+          <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">Curious about my work? →</span>
         </Link>
         <span className="mx-3">·</span>
-        <Link href="/contact" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
-          Want to get in touch? → Contact me
+        <Link href="/contact" className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+          <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">Want to get in touch? →</span>
         </Link>
       </p>
     </section>
