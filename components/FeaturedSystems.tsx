@@ -12,27 +12,19 @@ export default function FeaturedSystems() {
       <SectionTitle title="What I've built" />
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {primarySystems.map((system) => (
-          <div
+          <a
             key={system.id}
-            className="rounded-xl border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.02] p-5"
+            href={system.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
           >
-            <div className="flex items-baseline justify-between gap-3">
-              <h3 className="text-base font-medium text-white">
-                {system.name}
-              </h3>
-              {system.url && (
-                <a
-                  href={system.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 text-xs text-neutral-500 transition-colors hover:text-[#BA7517]"
-                >
-                  ↗
-                </a>
-              )}
-            </div>
+            <h3 className="text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
+              {system.name}
+              <span className="ml-2 text-xs font-normal text-neutral-600 transition-colors group-hover:text-[#BA7517]">↗</span>
+            </h3>
             {system.description && (
-              <p className="mt-1 text-sm text-neutral-500">
+              <p className="mt-1.5 text-[12px] leading-relaxed text-[#a3a3a3]">
                 {system.description}
               </p>
             )}
@@ -40,22 +32,23 @@ export default function FeaturedSystems() {
               {system.domains.map((domId) => (
                 <span
                   key={domId}
-                  className="rounded-full border border-[#BA7517]/[0.12] bg-[#BA7517]/[0.03] px-2.5 py-0.5 text-xs text-neutral-500"
+                  className="rounded-full border border-[#BA7517]/[0.12] bg-[#BA7517]/[0.03] px-2 py-0.5 font-mono text-[10px] text-neutral-500"
                 >
                   {domainNames.get(domId) ?? domId}
                 </span>
               ))}
             </div>
             {system.highlights && system.highlights.length > 0 && (
-              <ul className="mt-3 space-y-1">
+              <ul className="mt-3 space-y-1.5">
                 {system.highlights.map((h) => (
-                  <li key={h} className="text-xs leading-relaxed text-neutral-500">
-                    <span className="text-[#BA7517]/40">▸</span> {h}
+                  <li key={h} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
+                    <span className="shrink-0 text-[#BA7517]/40">▸</span>
+                    <span>{h}</span>
                   </li>
                 ))}
               </ul>
             )}
-          </div>
+          </a>
         ))}
       </div>
       {/* Deep space — edge of the map */}
