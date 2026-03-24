@@ -26,7 +26,7 @@ export default function AboutLife() {
       </div>
 
       {/* Three portrait photos */}
-      <div className="mx-auto mb-12 grid max-w-3xl grid-cols-3 gap-3">
+      <div className="mx-auto mb-12 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
         <PhotoCaption
           src="/about/family-adventure.webp"
           alt="Family adventure"
@@ -61,7 +61,7 @@ export default function AboutLife() {
           width={280}
           height={280}
           caption="Not always feeding them, but sometimes I catch the unlucky ones"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
         />
         <p className="flex-1 text-neutral-400">
           I also fish &mdash; it&apos;s one of the best ways I know to slow
@@ -85,7 +85,7 @@ export default function AboutLife() {
           width={280}
           height={373}
           caption="Home office supervisor"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
         />
       </div>
     </section>

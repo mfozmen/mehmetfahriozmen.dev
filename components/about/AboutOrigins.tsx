@@ -34,7 +34,8 @@ export default function AboutOrigins() {
           width={280}
           height={375}
           caption="Early school years — around the time it all began"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
+          priority
         />
       </div>
 
@@ -53,10 +54,10 @@ export default function AboutOrigins() {
         <PhotoCaption
           src="/about/graduation.webp"
           alt="Graduation day"
-          width={280}
-          height={210}
+          width={340}
+          height={255}
           caption="Graduation day with my little brother, Yaşar University — 2011"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[340px] shrink-0"
         />
         <div className="flex-1 space-y-4 text-neutral-400">
           <p>
@@ -89,7 +90,7 @@ export default function AboutOrigins() {
           width={280}
           height={373}
           caption="One of my first offices — 2012"
-          className="w-[280px] shrink-0"
+          className="w-full md:w-[280px] shrink-0"
         />
       </div>
     </section>

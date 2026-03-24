@@ -8,6 +8,7 @@ export default function PhotoCaption({
   caption,
   className = "",
   imgClassName = "",
+  priority = false,
 }: Readonly<{
   src: string;
   alt: string;
@@ -16,6 +17,7 @@ export default function PhotoCaption({
   caption?: string;
   className?: string;
   imgClassName?: string;
+  priority?: boolean;
 }>) {
   return (
     <figure className={className}>
@@ -24,10 +26,11 @@ export default function PhotoCaption({
         alt={alt}
         width={width}
         height={height}
+        priority={priority}
         className={`rounded-xl border border-neutral-800 ${imgClassName}`}
       />
       {caption && (
-        <figcaption className="mt-2 text-xs text-neutral-600">
+        <figcaption className="mt-2 text-xs text-neutral-500">
           {caption}
         </figcaption>
       )}
