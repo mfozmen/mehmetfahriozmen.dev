@@ -16,7 +16,7 @@ export const projects: Project[] = [
   {
     id: "mobilet",
     name: "Mobilet",
-    url: "https://www.mobilet.com",
+    url: "https://mobilet.com",
     description:
       "Event ticketing platform with campaign engine, QR gate entry, and multi-channel payment processing serving millions",
     highlights: [
@@ -42,6 +42,7 @@ export const projects: Project[] = [
   {
     id: "shubuo",
     name: "Shubuo",
+    url: "https://shubuo.net/",
     description:
       "Digital advertising platform with intelligent ad scheduling that optimizes delivery against contracts in real-time",
     highlights: [
@@ -64,7 +65,7 @@ export const projects: Project[] = [
   {
     id: "villasepeti",
     name: "VillaSepeti",
-    url: "https://www.villasepeti.com",
+    url: "https://villasepeti.com",
     description:
       "Vacation rental marketplace where complex manual filtering rules were transformed into an automated, intelligent search system",
     highlights: [
@@ -89,7 +90,7 @@ export const projects: Project[] = [
   {
     id: "magicpags",
     name: "MagicPags",
-    url: "https://www.magicpags.com/",
+    url: "https://magicpags.com/",
     description:
       "Educational platform teaching kids to read — with real-time analytics tracking dozens of in-app learning events across schools",
     highlights: [
@@ -116,7 +117,7 @@ export const projects: Project[] = [
   {
     id: "beforesunset",
     name: "BeforeSunset AI",
-    url: "https://www.beforesunset.ai",
+    url: "https://beforesunset.ai",
     description:
       "Productivity assistant built from the ground up — backend architecture designed and implemented from scratch",
     highlights: [
@@ -138,7 +139,7 @@ export const projects: Project[] = [
   {
     id: "decktopus",
     name: "Decktopus AI",
-    url: "https://www.decktopus.com",
+    url: "https://decktopus.com",
     description:
       "Presentation platform with serverless architecture, real-time subscriptions, and event-driven workflows",
     highlights: [
