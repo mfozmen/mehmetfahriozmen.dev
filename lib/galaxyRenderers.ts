@@ -265,8 +265,9 @@ export function drawVignette(ctx: CanvasRenderingContext2D, w: number, h: number
   const maxR = Math.hypot(cx, cy);
   const vig = ctx.createRadialGradient(cx, cy, maxR * 0.3, cx, cy, maxR);
   vig.addColorStop(0, "rgba(0, 0, 0, 0)");
-  vig.addColorStop(0.6, "rgba(0, 0, 0, 0.06)");
-  vig.addColorStop(1, "rgba(0, 0, 0, 0.15)");
+  vig.addColorStop(0.5, "rgba(0, 0, 0, 0.06)");
+  vig.addColorStop(0.8, "rgba(0, 0, 0, 0.1)");
+  vig.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = vig;
   ctx.fillRect(0, 0, w, h);
 }

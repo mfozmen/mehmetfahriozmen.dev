@@ -169,8 +169,8 @@ export default function MobileGalaxy() {
       className="relative mx-auto w-full max-w-5xl"
       style={{
         height: dimensions.height,
-        maskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 50%, transparent 100%)",
-        WebkitMaskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 50%, transparent 100%)",
+        maskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 40%, transparent 100%)",
+        WebkitMaskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 40%, transparent 100%)",
       }}
     >
       <canvas
