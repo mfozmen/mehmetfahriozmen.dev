@@ -70,7 +70,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
       {/* Company header */}
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
         <CompanyHeader name={entry.company} url={entry.companyUrl} />
-        <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.date}</span>
       </div>
 
       {/* Roles */}
@@ -79,7 +79,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
           <div key={role.title}>
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
               <span className="text-[13px] font-semibold text-[#e5e5e5]">{role.title}</span>
-              {showRoleDate && <span className="font-mono text-[10px] text-[#666666]">{role.date}</span>}
+              {showRoleDate && <span className="font-mono text-[10px] text-[#888888]">{role.date}</span>}
             </div>
             {role.bullets && role.bullets.length > 0 && (
               <ul className="mt-1.5 space-y-1">
@@ -125,7 +125,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               )}
               <span className="ml-1.5 text-[11px] italic text-[#666666]" aria-label="concurrent role">· concurrent</span>
             </div>
-            <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.subEntry.date}</span>
+            <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.subEntry.date}</span>
           </div>
           <div className="mt-1 text-[13px] font-semibold text-[#e5e5e5]">{entry.subEntry.role}</div>
           {entry.subEntry.bullets && entry.subEntry.bullets.length > 0 ? (
@@ -196,11 +196,15 @@ export default function CvExperience() {
                 cvEarlierRoles.map((entry) => (
                   <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
                     <span className="text-[12px]">
-                      <span className="text-[#BA7517]">{entry.company}</span>
+                      {entry.companyUrl ? (
+                        <CvLink href={entry.companyUrl} className="text-[#BA7517]">{entry.company}</CvLink>
+                      ) : (
+                        <span className="text-[#BA7517]">{entry.company}</span>
+                      )}
                       <span className="text-[#BA7517]/40"> · </span>
                       <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
                     </span>
-                    <span className="font-mono text-[11px] text-[#BA7517]/50">{entry.date}</span>
+                    <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.date}</span>
                   </div>
                 ))
               )}

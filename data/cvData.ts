@@ -262,6 +262,7 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
     role: "Intern",
     date: "Sep 2010 — Oct 2010",
     company: "TRT",
+    companyUrl: "https://trt.net.tr/",
     roles: [
       { title: "Intern", date: "Sep 2010 — Oct 2010", description: "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate." },
     ],
@@ -270,6 +271,7 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
     role: "Intern",
     date: "Jul 2009 — Aug 2009",
     company: "Izmir Metropolitan Municipality",
+    companyUrl: "https://izmir.bel.tr/",
     roles: [
       { title: "Intern", date: "Jul 2009 — Aug 2009", description: "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality." },
     ],
