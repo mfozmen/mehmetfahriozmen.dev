@@ -217,7 +217,10 @@ export const cvExperience: CvExperienceEntry[] = [
     company: "Datagen Bilişim",
     companyUrl: "https://datagen.com.tr/",
     roles: [
-      { title: "Senior Software Engineer", date: "May 2019 — Jul 2019", description: "Developed sales automation system for Peyman Kuruyemiş, one of Turkey's leading snack food companies — Android application and backend services with MSSQL database programming." },
+      { title: "Senior Software Engineer", date: "May 2019 — Jul 2019", bullets: [
+        "Developed sales automation system for Peyman Kuruyemiş, one of Turkey's leading snack food companies — Android application and backend services with MSSQL database programming",
+        "Implemented database programming on MSSQL Server using T-SQL for enterprise mobile application",
+      ] },
     ],
     chips: ["C#", "Xamarin", "MSSQL"],
   },
@@ -226,7 +229,10 @@ export const cvExperience: CvExperienceEntry[] = [
     date: "Jun 2018 — Apr 2019",
     company: "Ptt Trade",
     roles: [
-      { title: "Senior Software Engineer", date: "Jun 2018 — Apr 2019", description: "Built backend services and search engine for the foreign trade portal in partnership with PTT. Worked across Node.js, .NET Core, and Golang with Elasticsearch powering search." },
+      { title: "Senior Software Engineer", date: "Jun 2018 — Apr 2019", bullets: [
+        "Built backend services for ptttrade.com foreign trade portal using Node.js, .NET Core, and Golang",
+        "Developed search engine using Elasticsearch and maintained multiple mobile and web applications",
+      ] },
     ],
     chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
