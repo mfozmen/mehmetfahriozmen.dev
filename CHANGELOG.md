@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.8.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.7.0...v0.8.0) (2026-03-24)
+
+### Features
+
+* add Brew bullet descriptions, expand client projects, rename Room3D to Holoh ([c224680](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c2246807144ad145369f1cfe522082700c6b902b))
+* add bullet-point descriptions for Mayadem roles ([3884d7b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3884d7bd6223b58203408df62dc6a0013f4060a7))
+* add company and project URLs for Datagen, Veriyaz, ÇokNet, Shubuo ([b091091](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/b091091f73b3f027dd5248f5b4867be6030a947a))
+* add CV page with starfield background and timeline layout ([cf98750](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cf98750e0f5bee226b2aebebecd6adf21d74b942))
+* add Erik Bilişim chips, Veriyaz bullets, rename Veriyaz/Datagen ([8029883](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8029883abc647cda9d087f5ba6984f9f81832fcd))
+* add links to Earlier Missions companies, increase date brightness ([7cfa63b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/7cfa63bcc61c745696f2fb819be2bd034128de97)), closes [#888888](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/888888)
+* amber company headers, restructure BeforeSunset sub-entry to company-first ([3b224a7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3b224a73fa8c99467bd41bed12a4bd7e0e680bed)), closes [#BA7517](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/BA7517) [#d4d4d4](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/d4d4d4)
+* apply 7 visual improvements from design audit ([5ffef58](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5ffef581e0aeb5dd9b4a7694ac8973bfbac356da)), closes [666666/#404040](https://github.com/666666/mehmetfahriozmen.dev/issues/404040)
+* change entry date ranges to amber 50% opacity for visual cohesion ([1d258f9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1d258f98cf7de3fc7df1d761e39c3bf5e594e533)), closes [#BA7517](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/BA7517)
+* collapsible Brew projects, bottom spacing, bullet/border polish ([05e905e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/05e905ea007570939b91dffb25eeab33a8a1c1c5))
+* complete CV page with role progressions, per-role descriptions, and polish ([09eecf4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/09eecf470e0c4af5ec9e59df4ff3f4291eb0f098))
+* consistent entry styling, clickable company/project links, color hierarchy ([207f5c3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/207f5c3acf2c3225fb71ace037d0fde9e28a7c12)), closes [#e5e5e5](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/e5e5e5) [#404040](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/404040)
+* convert BeforeSunset AI sub-entry to bullet point description ([b887727](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/b88772778728b814431ae745c8d10480d460ff38))
+* convert Datagen and Ptt Trade descriptions to bullet points ([fa4b7f7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/fa4b7f7c987a6c06947e87d3e6c94f47a3aa9139))
+* fix Arsenal text wrapping, swap Launch Pad order, add Veriyaz bullets and Erik chips ([4b6cf76](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/4b6cf765723ab49d12138b5a5322223388880d4d))
+* move Datagen and Ptt Trade back to main timeline, restructure Earlier Missions ([5a2def4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5a2def44e71271a15ccad680b761b33085be0445))
+* redesign CV section titles with uppercase mono amber style ([8c1053f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8c1053f729ff996e89d9873f5896af769b5f3082))
+* remove Coordinates section, add email to CV header ([2bde26c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2bde26c506380e6e74c4afdbd380f09b7e3f98ad))
+* rename CV sections, remove Speaking section and Web coordinate ([27b388b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/27b388bf6b57e97d00546d4b2d14106257888639))
+* restyle Earlier Missions toggle to match section title headers ([5dfb88c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5dfb88c5f6b7569830dceb5e4c7a60bb8600203c))
+* strengthen quote block border and background visibility ([8e4ab08](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8e4ab08117315b698b1f1dd197562fb94e6a084e))
+* swap Earlier Missions to company-first order in collapsed view ([0d783c8](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0d783c855eebecb79fa944e6a6c7d83b4d16e439))
+* two-level expand/collapse for earlier roles with full descriptions ([5997024](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5997024610f6da3c5ed4c5ecfe53e805cce5bbfa))
+* unify all entries to company-first pattern, replace link icons with dashed underline ([7980b6d](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/7980b6d887841e0cda5dea859ecd5d532d325492))
+* update chips across CV — simplify Mayadem, fix Brew, deduplicate Arsenal ([a1a44b3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a1a44b39fa4eafa69b400b379627b7d49b5b91bd))
+* update CV download button text to playful copy ([5ccea95](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5ccea954f405aa3c163ead973a71ce2f8d2487a1))
+* update CV header/quote, add X (Twitter) to footer ([7e94c2a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/7e94c2a776943d7977a62deced611572e155401a))
+* update footer tagline to first person ([8904ea6](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8904ea646b3bf76b0c666bf0d0f8e8025663d6c4))
+
+### Bug Fixes
+
+* accessibility improvements from UI/UX audit ([fb6ca51](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/fb6ca51ad6adcc879815298c4d46de12bd450fa4))
+* BeforeSunset concurrent spacing, education month dates, a11y label ([2a0da38](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2a0da38367593024eeb01f098406ddac9f739e93))
+* correct chronological order of Datagen and Ptt Trade entries ([e80b0d3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/e80b0d3352a7665e6034db9c3efa21cfa4e058bb))
+* prevent text overflow in Arsenal skill cards ([1e4e8ae](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1e4e8ae028e2cc52f2176b785119d36a314301ac))
+* resolve all 15 SonarCloud issues, 9 security hotspots, reduce duplication ([9c87e5c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9c87e5caa27293e0b646ecd69de8c0074f2797cb))
+* resolve Arsenal text overflow with flex-wrap layout ([4c93845](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/4c93845696cca887f01639be8e368d37b32f8067))
+* update Mayadem URL to mayadem.com ([43d2d65](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/43d2d65f3b25846e408d805443664ebb347a285a))
+
 ## [0.7.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.6.0...v0.7.0) (2026-03-22)
 
 ### Features
