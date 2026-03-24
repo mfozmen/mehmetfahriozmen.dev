@@ -11,19 +11,27 @@ export default function Hero() {
         <p className="mt-3 text-base tracking-wide text-neutral-500">
           Backend Systems Architect &middot; Engineering Leader
         </p>
-        <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-400">
-          I build the things you don&apos;t see &mdash; distributed
-          systems, search engines, payment flows, and whatever lies
-          beyond the horizon.
-          <br />
-          <span className="text-neutral-200">
-            From hiring to shipping &mdash; I build the systems and the teams behind them.
-          </span>
-          <br />
-          <span className="text-neutral-500">
+        <div className="mt-8 max-w-md md:max-w-lg space-y-5">
+          <p className="text-xl leading-snug tracking-tight text-neutral-300">
+            I build the things you don&apos;t see &mdash;
+          </p>
+          <p className="text-base leading-relaxed italic text-neutral-500">
+            distributed systems, search engines, payment flows, and
+            whatever lies{" "}
+            <span className="not-italic text-[#BA7517]/60">
+              beyond the horizon.
+            </span>
+          </p>
+          <p className="text-lg font-semibold leading-snug text-white">
+            From hiring to shipping &mdash; I build the systems
+            and{" "}
+            <span className="text-[#BA7517]/70">the teams</span>
+            {" "}behind them.
+          </p>
+          <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
             The galaxy below? That&apos;s my universe.
-          </span>
-        </p>
+          </p>
+        </div>
         <div className="mt-8 flex items-center gap-4">
           <a
             href="#systems"
