@@ -91,7 +91,7 @@ export default function AboutLife() {
       </div>
 
       {/* CTAs */}
-      <p className="mt-16 text-[13px] text-neutral-500">
+      <p className="mt-16 text-center text-[13px] text-neutral-500">
         <Link href="/cv" className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517]">
           Curious about my work? → See my CV
         </Link>
