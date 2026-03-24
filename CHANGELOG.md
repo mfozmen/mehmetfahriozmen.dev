@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.8.0...v0.9.0) (2026-03-24)
+
+### Features
+
+* **about:** align About page design language with CV page ([e8e40a1](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/e8e40a1069c511030fee2c6664c732e810f6500a))
+* **about:** improve photo layout, mobile responsiveness, and accessibility ([a9941ed](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a9941ed41553bb8de79b0b5d41576831762478a4))
+* **about:** refine copy, add CTAs, skip-to-content, and mobile photo-first ([c9a917c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c9a917c700c98966cb59c0741eedf3b87d314996))
+* **about:** revise "What I do" copy, enlarge DevFest photo, center CTA ([2504650](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2504650a0cbd9cad1687f0f617a26706549ca58c))
+
+### Bug Fixes
+
+* add Readonly to PhotoCaption props (SonarCloud S6759) ([2b96693](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2b96693d3ab31351946ed52f9aa120b239dcee5a))
+
 ## [0.8.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.7.0...v0.8.0) (2026-03-24)
 
 ### Features
