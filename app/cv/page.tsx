@@ -8,7 +8,6 @@ import CvExperience from "@/components/cv/CvExperience";
 import CvSkills from "@/components/cv/CvSkills";
 import CvEducation from "@/components/cv/CvEducation";
 import CvLanguages from "@/components/cv/CvLanguages";
-import CvCoordinates from "@/components/cv/CvCoordinates";
 
 export const metadata: Metadata = {
   title: "CV — Mehmet Fahri Özmen",
@@ -37,7 +36,6 @@ export default function CvPage() {
         <CvSkills />
         <CvEducation />
         <CvLanguages />
-        <CvCoordinates />
       </main>
 
       <Footer />
