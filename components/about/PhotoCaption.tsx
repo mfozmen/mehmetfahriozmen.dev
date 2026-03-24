@@ -8,7 +8,7 @@ export default function PhotoCaption({
   caption,
   className = "",
   imgClassName = "",
-}: {
+}: Readonly<{
   src: string;
   alt: string;
   width: number;
@@ -16,7 +16,7 @@ export default function PhotoCaption({
   caption?: string;
   className?: string;
   imgClassName?: string;
-}) {
+}>) {
   return (
     <figure className={className}>
       <Image
