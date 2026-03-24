@@ -31,7 +31,7 @@ describe("CV Experience data", () => {
   });
 
   it("Veriyaz is in earlier roles with role progression", () => {
-    const veriyaz = cvEarlierRoles.find((e) => e.company === "Veriyaz Yazılım");
+    const veriyaz = cvEarlierRoles.find((e) => e.company === "Veriyaz");
     expect(veriyaz?.roles?.length).toBeGreaterThanOrEqual(2);
   });
 

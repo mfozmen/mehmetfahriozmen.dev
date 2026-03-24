@@ -214,13 +214,17 @@ export const cvExperience: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
-    company: "Datagen Bilişim",
+    company: "Datagen",
     companyUrl: "https://datagen.com.tr/",
     roles: [
-      { title: "Senior Software Engineer", date: "May 2019 — Jul 2019", bullets: [
-        "Developed sales automation system for Peyman Kuruyemiş, one of Turkey's leading snack food companies — Android application and backend services with MSSQL database programming",
-        "Implemented database programming on MSSQL Server using T-SQL for enterprise mobile application",
-      ] },
+      {
+        title: "Senior Software Engineer",
+        date: "May 2019 — Jul 2019",
+        bullets: [
+          "Developed sales automation system for Peyman Kuruyemiş, one of Turkey's leading snack food companies — Android application and backend services with MSSQL database programming",
+          "Implemented database programming on MSSQL Server using T-SQL for enterprise mobile application",
+        ],
+      },
     ],
     chips: ["C#", "Xamarin", "MSSQL"],
   },
@@ -229,10 +233,14 @@ export const cvExperience: CvExperienceEntry[] = [
     date: "Jun 2018 — Apr 2019",
     company: "Ptt Trade",
     roles: [
-      { title: "Senior Software Engineer", date: "Jun 2018 — Apr 2019", bullets: [
-        "Built backend services for ptttrade.com foreign trade portal using Node.js, .NET Core, and Golang",
-        "Developed search engine using Elasticsearch and maintained multiple mobile and web applications",
-      ] },
+      {
+        title: "Senior Software Engineer",
+        date: "Jun 2018 — Apr 2019",
+        bullets: [
+          "Built backend services for ptttrade.com foreign trade portal using Node.js, .NET Core, and Golang",
+          "Developed search engine using Elasticsearch and maintained multiple mobile and web applications",
+        ],
+      },
     ],
     chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
@@ -242,11 +250,23 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     date: "Jan 2013 — Jun 2018",
-    company: "Veriyaz Yazılım",
+    company: "Veriyaz",
     companyUrl: "https://veriyaz.com/",
     roles: [
-      { title: "Senior Software Engineer", date: "Jan 2015 — Jun 2018", description: "Led backend and frontend development of a CRM platform for SMEs. Built vehicle tracking, computer monitoring, document management, and bulk mail systems using .NET, with real-time tracking via TCP/IP and WebSocket." },
-      { title: "Software Engineer", date: "Jan 2013 — Jan 2015", description: "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services." },
+      {
+        title: "Senior Software Engineer",
+        date: "Jan 2015 — Jun 2018",
+        bullets: [
+          "Led development of comprehensive CRM software with integrated systems including Vehicle Tracking, Document Management, and Computer Monitoring",
+          "Implemented real-time tracking systems using TCP/IP connections and WebSocket technology",
+        ],
+      },
+      {
+        title: "Software Engineer",
+        date: "Jan 2013 — Jan 2015",
+        description:
+          "Contributed to the development of the CRM platform, implementing core features and integrating with AWS and Azure services.",
+      },
     ],
     chips: ["C# / .NET", "MSSQL", "AWS", "WebSocket"],
   },
@@ -255,8 +275,14 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
     date: "Sep 2012 — Jan 2013",
     company: "Erik Bilişim",
     roles: [
-      { title: "Software Engineer", date: "Sep 2012 — Jan 2013", description: "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems." },
+      {
+        title: "Software Engineer",
+        date: "Sep 2012 — Jan 2013",
+        description:
+          "Contributed to the development of a web application for the logistics sector. Developed backend web services for mobile applications and SMS systems.",
+      },
     ],
+    chips: ["ASP.NET", "MSSQL"],
   },
   {
     role: "Intern",
@@ -264,7 +290,12 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
     company: "TRT",
     companyUrl: "https://trt.net.tr/",
     roles: [
-      { title: "Intern", date: "Sep 2010 — Oct 2010", description: "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate." },
+      {
+        title: "Intern",
+        date: "Sep 2010 — Oct 2010",
+        description:
+          "Maintained and repaired personnel computers and servers at the TRT İzmir Directorate.",
+      },
     ],
   },
   {
@@ -273,7 +304,12 @@ export const cvEarlierRoles: CvExperienceEntry[] = [
     company: "Izmir Metropolitan Municipality",
     companyUrl: "https://izmir.bel.tr/",
     roles: [
-      { title: "Intern", date: "Jul 2009 — Aug 2009", description: "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality." },
+      {
+        title: "Intern",
+        date: "Jul 2009 — Aug 2009",
+        description:
+          "Maintained technical equipment and network infrastructure at Izmir Metropolitan Municipality.",
+      },
     ],
   },
 ];
@@ -283,10 +319,9 @@ export const cvSkills: CvSkillCategory[] = [
     label: "Backend",
     items: [
       "Node.js",
-      "TypeScript",
-      "PHP",
+      ".NET",
+      "SpringBoot",
       "Laravel",
-      ".NET / C#",
       "Golang",
       "GraphQL",
       "REST",
@@ -296,7 +331,8 @@ export const cvSkills: CvSkillCategory[] = [
     label: "Infrastructure",
     items: [
       "AWS",
-      "GCP",
+      "Azure",
+      "DigitalOcean",
       "Docker",
       "Kubernetes",
       "CI/CD",
@@ -307,7 +343,14 @@ export const cvSkills: CvSkillCategory[] = [
   },
   {
     label: "Data",
-    items: ["PostgreSQL", "MongoDB", "MySQL", "MSSQL", "Elasticsearch"],
+    items: [
+      "PostgreSQL",
+      "MySQL",
+      "MSSQL",
+      "Elasticsearch",
+      "Redis",
+      "Clickhouse",
+    ],
   },
   {
     label: "Leadership",
