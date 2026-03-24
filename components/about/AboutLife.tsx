@@ -1,11 +1,10 @@
+import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
 export default function AboutLife() {
   return (
     <section>
-      <h2 className="mb-10 text-2xl font-semibold text-neutral-200">
-        When I&apos;m not coding
-      </h2>
+      <SectionTitle title="When I'm not coding" />
 
       <p className="mb-8 text-neutral-400">
         I love spending time with my family, traveling to new places, and

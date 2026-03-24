@@ -1,11 +1,10 @@
+import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
 export default function AboutOrigins() {
   return (
     <section className="mb-20">
-      <h2 className="mb-10 text-2xl font-semibold text-neutral-200">
-        Where it started
-      </h2>
+      <SectionTitle title="Where it started" />
 
       {/* Childhood */}
       <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">

@@ -1,11 +1,10 @@
+import SectionTitle from "@/components/SectionTitle";
 import PhotoCaption from "./PhotoCaption";
 
 export default function AboutWork() {
   return (
     <section className="mb-20">
-      <h2 className="mb-10 text-2xl font-semibold text-neutral-200">
-        What I do
-      </h2>
+      <SectionTitle title="What I do" />
 
       {/* At work */}
       <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center">
@@ -38,7 +37,7 @@ export default function AboutWork() {
       </div>
 
       {/* Quote */}
-      <blockquote className="mb-12 space-y-4 border-l-2 border-neutral-700 pl-6">
+      <blockquote className="mb-12 space-y-4 rounded-r-lg border-l-2 border-[#BA7517]/40 pl-6 pr-6 py-5" style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.04) 0%, transparent 60%)" }}>
         <p className="text-neutral-300">
           I&apos;ve always believed the best way to grow is to share what you
           know. Whether it&apos;s mentoring someone on the team, leading a code
