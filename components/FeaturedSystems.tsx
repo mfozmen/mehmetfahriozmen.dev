@@ -8,7 +8,7 @@ const primarySystems = projects.filter((p) => p.importance === "primary");
 
 export default function FeaturedSystems() {
   return (
-    <section id="systems" className="mt-16">
+    <section id="systems" className="mt-10">
       <SectionTitle title="What I've built" />
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {primarySystems.map((system) => (
@@ -25,7 +25,7 @@ export default function FeaturedSystems() {
                   href={system.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 text-xs text-neutral-600 transition-colors hover:text-neutral-400"
+                  className="shrink-0 text-xs text-neutral-500 transition-colors hover:text-[#BA7517]"
                 >
                   ↗
                 </a>

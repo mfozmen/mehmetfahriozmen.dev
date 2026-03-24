@@ -12,6 +12,12 @@ body {
   color: var(--color-foreground);
 }
 
+:focus-visible {
+  outline: 2px solid rgba(186, 117, 23, 0.6);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 @keyframes pulse-signal {
   0%, 100% { opacity: 0.15; }
   50% { opacity: 0.4; }

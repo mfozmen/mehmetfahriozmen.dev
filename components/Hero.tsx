@@ -8,7 +8,7 @@ export default function Hero() {
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
           Mehmet Fahri Özmen
         </h1>
-        <p className="mt-3 text-base tracking-wide text-neutral-500">
+        <p className="mt-3 text-base tracking-wide text-neutral-400">
           Backend Systems Architect &middot; Engineering Leader
         </p>
         <div className="mt-8 max-w-md md:max-w-lg space-y-5">
