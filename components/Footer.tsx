@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="border-t border-neutral-800 px-6 py-12 text-center">
       <span className="text-2xl font-bold tracking-tight text-white">MFÖ</span>
       <p className="mt-3 text-sm text-neutral-500">
-        No, not the band. But sometimes we ship hits too.
+        No, not the band. But sometimes I ship hits too.
       </p>
       <div className="mt-6 flex items-center justify-center gap-6">
         {/* GitHub */}
