@@ -17,11 +17,10 @@ export default function FeaturedSystems() {
             href={system.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
+            className="group relative rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
           >
             <h3 className="text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
               {system.name}
-              <span className="ml-2 text-xs font-normal text-neutral-600 transition-colors group-hover:text-[#BA7517]">↗</span>
             </h3>
             {system.description && (
               <p className="mt-1.5 text-[12px] leading-relaxed text-[#a3a3a3]">
