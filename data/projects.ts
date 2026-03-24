@@ -175,9 +175,9 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "room3d",
-    name: "Room3D",
-    url: "https://room3d.net/",
+    id: "holoh",
+    name: "Holoh",
+    url: "https://holoh.com/",
     importance: "secondary",
     domains: ["realtime"],
     technologyCategories: [

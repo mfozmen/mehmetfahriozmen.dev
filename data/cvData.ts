@@ -87,7 +87,18 @@ export const cvExperience: CvExperienceEntry[] = [
         url: "https://app.cok.net.tr/",
       },
     ],
-    chips: [".NET", "Kafka", "PostgreSQL", "Hasura", "AWS"],
+    chips: [
+      ".NET",
+      "Kafka",
+      "PostgreSQL",
+      "Hasura",
+      "AWS",
+      "Laravel",
+      "Grafana",
+      "Prometheus",
+      "Clickhouse",
+      "CI/CD",
+    ],
   },
   {
     role: "Software Engineering Manager",
@@ -98,14 +109,27 @@ export const cvExperience: CvExperienceEntry[] = [
       {
         title: "Software Engineering Manager",
         date: "Dec 2022 — Sep 2024",
-        description:
-          "Led a backend and DevOps team of 4–6 engineers, designing event-driven microservices for domestic and international clients. Managed hiring, performance evaluations, and career development. Developed internal open-source solutions for reusability across projects.",
+        bullets: [
+          "Designed and delivered event-driven microservices for high-traffic transactional systems for major clients in Turkey and globally",
+          "Led the migration of legacy backend systems from monolithic architecture to microservices in live production environments",
+          "Contributed to system architecture design and backend data modeling",
+          "Implemented CI/CD pipelines and containerized services using Docker and Kubernetes",
+          "Led Agile sprint planning, system architecture design, and data modeling while maintaining TDD principles",
+          "Fully responsible for professional development, hiring, performance evaluations, and career progression for team members",
+          "Developed internal open-source solutions for reusability across multiple client projects, enhancing operational efficiency",
+          "Performed peer code reviews to ensure maintainability and delivery quality",
+          "Supported hiring, professional development and mentoring of backend and DevOps team of 4-6 engineers",
+        ],
       },
       {
         title: "Senior Backend Developer",
         date: "Aug 2019 — Dec 2022",
-        description:
-          "Developed serverless functions and microservices powering backend operations for multiple client projects. Built CI/CD pipelines, containerized applications, and worked in Agile Scrum with TDD methodology.",
+        bullets: [
+          "Developed serverless functions and microservices for major international clients including decktopus.com and foodservicedirect.com",
+          "Implemented CI/CD pipelines and containerized applications using Docker, Kubernetes, and various orchestration tools",
+          "Built custom Magento modules for major e-commerce project, enhancing platform capabilities and user experience",
+          "Collaborated in Agile Scrum environment, consistently delivering high-quality code following TDD methodology",
+        ],
       },
     ],
     subEntry: {
@@ -115,22 +139,74 @@ export const cvExperience: CvExperienceEntry[] = [
       companyUrl: "https://beforesunset.ai",
       description:
         "Built the backend architecture from scratch for an AI productivity assistant. Designed database models, developed APIs with Hasura, and managed Kubernetes deployments.",
-      chips: ["Node.js", "Hasura", "PostgreSQL", "Docker", "Kubernetes"],
+      chips: [
+        "Node.js",
+        "GraphQL",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+        "DigitalOcean",
+      ],
     },
     projects: [
       {
-        name: "Decktopus AI",
-        description: "Serverless, real-time GraphQL, containerized export",
-        url: "https://decktopus.com",
+        name: "Mobilet",
+        description:
+          "Event ticketing platform with campaign engine, QR gate entry, and multi-channel payment processing serving millions",
+        url: "https://mobilet.com",
+      },
+      {
+        name: "VillaSepeti",
+        description:
+          "Vacation rental marketplace with automated search engine powered by set theory, replacing manual filtering",
+        url: "https://villasepeti.com",
       },
       {
         name: "Shubuo",
         description:
-          "Ad scheduling, contract-aware pacing, real-time optimization",
+          "Digital advertising platform with intelligent ad scheduling optimizing delivery against contracts in real-time",
         url: "https://shubuo.net/",
       },
+      {
+        name: "Decktopus AI",
+        description:
+          "Presentation platform with serverless architecture, real-time subscriptions, and event-driven workflows",
+        url: "https://decktopus.ai",
+      },
+      {
+        name: "FoodServiceDirect",
+        description: "Large-scale food commerce platform",
+        url: "https://foodservicedirect.com/",
+      },
+      {
+        name: "İhtiyaç Haritası - Sosyal Pazaryeri",
+        description: "Social impact platform",
+        url: "https://sosyalpazaryeri.ihtiyacharitasi.org/",
+      },
+      {
+        name: "Room3D (now Holoh)",
+        description:
+          "Spatial meeting platform placing participants in lifelike 3D environments, used for remote courtrooms and government services",
+        url: "https://holoh.com/",
+      },
+      {
+        name: "20 Megatons",
+        description:
+          "Carrefour's climate action platform tracking greenhouse gas reduction commitments across 90+ global supplier partners",
+        url: "https://20megatons.com/",
+      },
     ],
-    chips: ["Node.js", "TypeScript", "PostgreSQL", "Redis", "AWS"],
+    chips: [
+      "Node.js",
+      ".NET",
+      "Java",
+      "SQL/NoSQL",
+      "Rest/GraphQL",
+      "Docker",
+      "Kubernetes",
+      "Cloud",
+      "CI/CD",
+    ],
   },
   {
     role: "Senior Software Engineer",
