@@ -83,6 +83,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 ## Development & Release Flow
 
 - All development happens on `dev` branch — never commit directly to `main`
+- **Pull requests always target `dev`** — never create PRs targeting `main`
 - To release: `npm run release` on dev → bumps version, creates tag, pushes to main
 - CI: tag push triggers GitHub Release creation (auto-generated notes)
 - Vercel: main push = production deploy, dev push = preview deploy
