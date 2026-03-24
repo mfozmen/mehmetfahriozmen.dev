@@ -27,13 +27,13 @@ export default function Hero() {
         <div className="mt-8 flex items-center gap-4">
           <a
             href="#systems"
-            className="rounded-full border border-neutral-700 px-5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >
             Explore ↓
           </a>
           <Link
             href="/contact"
-            className="rounded-full border border-neutral-700 px-5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >
             Get in touch →
           </Link>
