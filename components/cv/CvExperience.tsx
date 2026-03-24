@@ -59,6 +59,36 @@ function ProjectName({ name, url }: { name: string; url?: string }) {
   return <span className="font-semibold text-[#e5e5e5]">{name}</span>;
 }
 
+const MAX_VISIBLE_PROJECTS = 4;
+
+function ProjectList({ projects }: { projects: CvExperienceEntry["projects"] }) {
+  const [showAll, setShowAll] = useState(false);
+  if (!projects || projects.length === 0) return null;
+
+  const visible = showAll ? projects : projects.slice(0, MAX_VISIBLE_PROJECTS);
+  const hiddenCount = projects.length - MAX_VISIBLE_PROJECTS;
+
+  return (
+    <div className="mt-3 space-y-1.5 border-l border-[#BA7517]/10 pl-3">
+      {visible.map((proj) => (
+        <div key={proj.name} className="relative text-[12px]">
+          <span className="absolute -left-3.5 top-[7px] h-px w-1.5 bg-[#BA7517]/15" />
+          <ProjectName name={proj.name} url={proj.url} />
+          {proj.description && <span className="text-[#666666]"> — {proj.description}</span>}
+        </div>
+      ))}
+      {hiddenCount > 0 && !showAll && (
+        <button
+          onClick={() => setShowAll(true)}
+          className="ml-1 text-[11px] text-[#BA7517]/60 transition-colors hover:text-[#BA7517]"
+        >
+          and {hiddenCount} more projects
+        </button>
+      )}
+    </div>
+  );
+}
+
 function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }) {
   const roles = entry.roles ?? [{ title: entry.role, date: entry.date, description: entry.description }];
   const showRoleDate = roles.length > 1;
@@ -85,7 +115,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
               <ul className="mt-1.5 space-y-1">
                 {role.bullets.map((b) => (
                   <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
-                    <span className="shrink-0 text-[#BA7517]/30">▸</span>
+                    <span className="shrink-0 text-[#BA7517]/40">▸</span>
                     <span>{b}</span>
                   </li>
                 ))}
@@ -100,15 +130,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
 
       {/* Nested projects */}
       {entry.projects && entry.projects.length > 0 && (
-        <div className="mt-3 space-y-1.5 border-l border-[#BA7517]/10 pl-3">
-          {entry.projects.map((proj) => (
-            <div key={proj.name} className="relative text-[12px]">
-              <span className="absolute -left-3.5 top-[7px] h-px w-1.5 bg-[#BA7517]/15" />
-              <ProjectName name={proj.name} url={proj.url} />
-              <span className="text-[#666666]"> — {proj.description}</span>
-            </div>
-          ))}
-        </div>
+        <ProjectList projects={entry.projects} />
       )}
 
       {entry.chips && <Chips items={entry.chips} />}
@@ -132,7 +154,7 @@ function EntryCard({ entry, index }: { entry: CvExperienceEntry; index: number }
             <ul className="mt-1.5 space-y-1">
               {entry.subEntry.bullets.map((b) => (
                 <li key={b} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
-                  <span className="shrink-0 text-[#BA7517]/30">▸</span>
+                  <span className="shrink-0 text-[#BA7517]/40">▸</span>
                   <span>{b}</span>
                 </li>
               ))}
@@ -172,7 +194,7 @@ export default function CvExperience() {
                 <path d="M12 2l2.09 6.26L20.18 9l-5.09 3.74L16.18 19 12 15.77 7.82 19l1.09-6.26L3.82 9l6.09-.74z" />
               </svg>
               <svg
-                width="8" height="8" viewBox="0 0 8 8" fill="#BA7517"
+                width="8" height="8" viewBox="0 0 8 8" fill="#BA7517" aria-hidden="true"
                 className={`shrink-0 transition-transform duration-200 ${showEarlier ? "rotate-90" : ""}`}
               >
                 <path d="M2 1l4 3-4 3z" />

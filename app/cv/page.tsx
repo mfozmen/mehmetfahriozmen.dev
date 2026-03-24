@@ -29,7 +29,7 @@ export default function CvPage() {
         <div className="absolute bottom-[35%] left-[5%] h-[200px] w-[200px] rounded-full bg-[rgba(186,117,23,0.025)] blur-[100px]" />
       </div>
 
-      <main className="relative z-10 mx-auto max-w-[780px] px-6 pt-16 pb-16 sm:pt-24 sm:pb-24">
+      <main className="relative z-10 mx-auto max-w-[780px] px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <CvHeader />
         <CvQuote />
         <CvExperience />

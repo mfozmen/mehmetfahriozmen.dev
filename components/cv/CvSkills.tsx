@@ -6,7 +6,7 @@ export default function CvSkills() {
     <CvSection title="The Arsenal">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {cvSkills.map((cat) => (
-          <div key={cat.label} className="min-w-0 rounded-lg border border-[#BA7517]/[0.06] p-3">
+          <div key={cat.label} className="min-w-0 rounded-lg border border-[#BA7517]/[0.10] p-3">
             <div className="mb-1.5 text-[11px] font-medium text-[#e5e5e5]">{cat.label}</div>
             <div className="flex flex-wrap items-baseline gap-x-0.5 gap-y-0.5 text-[11px] leading-snug text-[#666666]">
               {cat.items.map((item, i) => (
