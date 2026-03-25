@@ -5,7 +5,20 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=mfozmen_mehmetfahriozmen.dev&metric=bugs)](https://sonarcloud.io/summary/new_code?id=mfozmen_mehmetfahriozmen.dev)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=mfozmen_mehmetfahriozmen.dev&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=mfozmen_mehmetfahriozmen.dev)
 
-Personal portfolio site for Mehmet Fahri Özmen. Features an interactive galaxy visualization built with Canvas API where systems, domains, and tech clusters orbit as stars with hover interactions, satellite animations, and parallax effects.
+Personal website for Mehmet Fahri Özmen — backend systems architect and engineering leader.
+
+## Pages
+
+- **Homepage** — Hero section, interactive galaxy visualization, and featured systems grid
+- **About** — Story, career journey, photos, and personal interests
+- **CV** — Full timeline with role progressions, collapsible sections, PDF download, and skills
+
+## Features
+
+- Interactive galaxy visualization (Canvas API) with hover interactions, satellite animations, and parallax effects
+- Mobile navigation drawer with keyboard accessibility and touch support
+- Responsive design with dark theme and amber accent palette
+- Skip-to-content links, focus rings, and reduced-motion support
 
 ## Tech Stack
 
@@ -14,6 +27,7 @@ Personal portfolio site for Mehmet Fahri Özmen. Features an interactive galaxy 
 - **Tailwind CSS v4**
 - **Canvas API** for galaxy visualization
 - **Vitest** with v8 coverage
+- **SonarCloud** for code quality
 
 ## Scripts
 
@@ -29,7 +43,7 @@ npm run release        # Bump version, tag, push to main
 
 ## Development & Release
 
-- **Development:** work on `dev` branch
+- **Development:** work on `dev` branch, PRs target `dev`
 - **Preview:** push to `dev` → Vercel preview deploy
 - **Release:** `npm run release` (on dev) → bumps version, tags, pushes to main → Vercel production deploy
 - **GitHub Release:** auto-created by CI on tag push
