@@ -18,11 +18,11 @@ export default function ShareRow({ title, slug }: Readonly<{ title: string; slug
   }
 
   return (
-    <div className="mt-6 flex items-center justify-center gap-4">
+    <>
       <button onClick={handleCopy} className={linkClass}>
         {copied ? "Copied!" : "Copy link"}
       </button>
-      <span className="text-neutral-700">·</span>
+      <span className="text-neutral-700">&middot;</span>
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
         target="_blank"
@@ -31,7 +31,7 @@ export default function ShareRow({ title, slug }: Readonly<{ title: string; slug
       >
         LinkedIn
       </a>
-      <span className="text-neutral-700">·</span>
+      <span className="text-neutral-700">&middot;</span>
       <a
         href={`https://x.com/intent/tweet?url=${encoded}&text=${encodedTitle}`}
         target="_blank"
@@ -40,6 +40,6 @@ export default function ShareRow({ title, slug }: Readonly<{ title: string; slug
       >
         X
       </a>
-    </div>
+    </>
   );
 }

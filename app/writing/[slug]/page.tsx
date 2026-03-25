@@ -11,6 +11,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 
+/* Fix #2: Keep star + amber mono but shorten gradient line for article h2s */
 function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <h2 className="mt-12 mb-6 flex items-center gap-2.5">
@@ -20,20 +21,21 @@ function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
       <span className="shrink-0 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
         {children}
       </span>
-      <span className="h-px flex-1 bg-gradient-to-r from-[#BA7517]/30 to-transparent" />
+      <span className="h-px w-10 bg-gradient-to-r from-[#BA7517]/30 to-transparent" />
     </h2>
   );
 }
 
+/* Fix #3: MDX images break out to full container width */
 function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   if (!src) return null;
   return (
-    <figure className="my-10">
+    <figure className="-mx-0 my-10 sm:-mx-8 lg:-mx-16">
       <div className="relative aspect-[2/1] w-full overflow-hidden rounded-lg">
         <Image src={src} alt={alt ?? ""} fill className="object-cover" />
       </div>
       {alt && alt !== "" && (
-        <figcaption className="mt-2 text-xs text-neutral-500">{alt}</figcaption>
+        <figcaption className="mt-2 px-0 text-xs text-neutral-500 sm:px-8 lg:px-16">{alt}</figcaption>
       )}
     </figure>
   );
@@ -78,10 +80,11 @@ function BackLink() {
   );
 }
 
+/* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */
 function PostHeader({ post }: Readonly<{ post: { date: string; title: string; excerpt: string; coverImage: string; content: string } }>) {
   return (
     <>
-      <header className="mb-8 max-w-3xl">
+      <header className="mb-8">
         <span className="font-mono text-[11px] text-[#BA7517]/65">
           {formatDate(post.date)} · {getReadingTime(post.content)} min read
         </span>
@@ -92,24 +95,29 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
           {post.excerpt}
         </p>
       </header>
-      <div className="relative mb-10 aspect-[2/1] w-full overflow-hidden rounded-lg">
+      <div className="relative -mx-0 mb-10 aspect-[2/1] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
         <Image src={post.coverImage} alt={post.title} fill className="object-cover" priority />
       </div>
     </>
   );
 }
 
+/* Fix #4: Merge about prompt into share row, add space before contact CTA */
+/* Fix #6: Add end-of-article divider */
 function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) {
   return (
-    <div className="mt-16 max-w-3xl border-t border-[#BA7517]/10 pt-8">
-      <p className="text-center text-[13px] text-neutral-500">
-        Curious who&apos;s behind this?{" "}
-        <Link href="/about" className="text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
-          Learn more about me &rarr;
+    <div className="mt-16">
+      <div className="flex items-center justify-center gap-2 text-neutral-700">
+        <span>*</span><span>*</span><span>*</span>
+      </div>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <Link href="/about" className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]">
+          About the author
         </Link>
-      </p>
-      <ShareRow title={title} slug={slug} />
-      <div className="mt-8 text-center">
+        <span className="text-neutral-700">&middot;</span>
+        <ShareRow title={title} slug={slug} />
+      </div>
+      <div className="mt-12 border-t border-[#BA7517]/10 pt-8 text-center">
         <Link
           href="/contact"
           className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80"
@@ -138,12 +146,13 @@ export default async function PostPage(
       <Starfield />
       <NebulaGlows />
 
-      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      {/* Fix #1 & #5: Single max-w-3xl, no per-paragraph max-w */}
+      <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink />
 
         <article className="mt-8">
           <PostHeader post={post} />
-          <div className="max-w-3xl space-y-6 text-[15px] leading-[1.8] text-neutral-300 [&_p]:max-w-[65ch]">
+          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
