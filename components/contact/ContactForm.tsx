@@ -126,7 +126,7 @@ export default function ContactForm() {
     </form>
   );
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) { // NOSONAR — React.FormEvent is the standard React form handler type
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const errs = validate(form);
