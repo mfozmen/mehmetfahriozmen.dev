@@ -18,7 +18,7 @@ export default function Hero() {
           <p className="text-base leading-relaxed italic text-neutral-500">
             distributed systems, search engines, payment flows, and
             whatever lies{" "}
-            <span className="not-italic text-[#BA7517]/60">
+            <span className="not-italic text-[#BA7517]/70">
               beyond the horizon.
             </span>
           </p>

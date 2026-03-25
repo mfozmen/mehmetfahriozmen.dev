@@ -8,7 +8,7 @@ export default function CvSkills() {
         {cvSkills.map((cat) => (
           <div key={cat.label} className="min-w-0 rounded-lg border border-[#BA7517]/[0.10] p-3">
             <div className="mb-1.5 text-[11px] font-medium text-[#e5e5e5]">{cat.label}</div>
-            <div className="flex flex-wrap items-baseline gap-x-0.5 gap-y-0.5 text-[11px] leading-snug text-[#666666]">
+            <div className="flex flex-wrap items-baseline gap-x-0.5 gap-y-0.5 text-[11px] leading-snug text-[#888888]">
               {cat.items.map((item, i) => (
                 <span key={item} className="whitespace-nowrap">
                   {item}

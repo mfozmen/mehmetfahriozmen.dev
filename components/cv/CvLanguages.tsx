@@ -7,12 +7,12 @@ export default function CvLanguages() {
         <div className="text-[13px]">
           <span className="text-[#e5e5e5]">Turkish</span>
           {" — "}
-          <span className="text-[#666666]">Native</span>
+          <span className="text-[#888888]">Native</span>
         </div>
         <div className="text-[13px]">
           <span className="text-[#e5e5e5]">English</span>
           {" — "}
-          <span className="text-[#666666]">Professional</span>
+          <span className="text-[#888888]">Professional</span>
         </div>
       </div>
     </CvSection>

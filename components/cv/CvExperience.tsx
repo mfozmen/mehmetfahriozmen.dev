@@ -93,7 +93,7 @@ function ProjectList({ projects }: Readonly<{ projects: CvExperienceEntry["proje
         <div key={proj.name} className="relative text-[12px]">
           <span className="absolute -left-3.5 top-[7px] h-px w-1.5 bg-[#BA7517]/15" />
           <ProjectName name={proj.name} url={proj.url} />
-          {proj.description && <span className="text-[#666666]"> — {proj.description}</span>}
+          {proj.description && <span className="text-[#888888]"> — {proj.description}</span>}
         </div>
       ))}
       {hiddenCount > 0 && !showAll && (
@@ -119,7 +119,7 @@ function EntryCard({ entry, index }: Readonly<{ entry: CvExperienceEntry; index:
       {/* Company header */}
       <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
         <CompanyHeader name={entry.company} url={entry.companyUrl} />
-        <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.date}</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/80">{entry.date}</span>
       </div>
 
       {/* Roles */}
@@ -152,9 +152,9 @@ function EntryCard({ entry, index }: Readonly<{ entry: CvExperienceEntry; index:
               ) : (
                 <span className="font-semibold text-[#BA7517]">{entry.subEntry.company}</span>
               )}
-              <span className="ml-1.5 text-[11px] italic text-[#666666]" aria-label="concurrent role">· concurrent</span>
+              <span className="ml-1.5 text-[11px] italic text-[#888888]" aria-label="concurrent role">· concurrent</span>
             </div>
-            <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.subEntry.date}</span>
+            <span className="font-mono text-[11px] text-[#BA7517]/80">{entry.subEntry.date}</span>
           </div>
           <div className="mt-1 text-[13px] font-semibold text-[#e5e5e5]">{entry.subEntry.role}</div>
           <RoleDescription bullets={entry.subEntry.bullets} description={entry.subEntry.description} />
@@ -222,7 +222,7 @@ export default function CvExperience() {
                       <span className="text-[#BA7517]/40"> · </span>
                       <span className="font-medium text-[#b0b0b0]">{entry.role}</span>
                     </span>
-                    <span className="font-mono text-[11px] text-[#BA7517]/65">{entry.date}</span>
+                    <span className="font-mono text-[11px] text-[#BA7517]/80">{entry.date}</span>
                   </div>
                 ))
               )}
