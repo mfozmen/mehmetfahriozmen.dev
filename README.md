@@ -12,12 +12,17 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - **Homepage** — Hero section, interactive galaxy visualization, and featured systems grid
 - **About** — Story, career journey, photos, and personal interests
 - **CV** — Full timeline with role progressions, collapsible sections, PDF download, and skills
+- **Writing** — MDX blog with cover illustrations, reading time, and share functionality
+- **Contact** — Contact form via Formspree with client-side validation and direct channel links
 
 ## Features
 
 - Interactive galaxy visualization (Canvas API) with hover interactions, satellite animations, and parallax effects
+- MDX blog with next-mdx-remote, cover images, reading time, and social sharing
+- Contact form with Formspree integration, client-side validation, and focus management
 - Mobile navigation drawer with keyboard accessibility and touch support
 - Responsive design with dark theme and amber accent palette
+- WCAG AA contrast compliance across all pages
 - Skip-to-content links, focus rings, and reduced-motion support
 
 ## Tech Stack
@@ -26,6 +31,8 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - **React 19** and **TypeScript**
 - **Tailwind CSS v4**
 - **Canvas API** for galaxy visualization
+- **next-mdx-remote** + **gray-matter** for blog
+- **Formspree** for contact form
 - **Vitest** with v8 coverage
 - **SonarCloud** for code quality
 
