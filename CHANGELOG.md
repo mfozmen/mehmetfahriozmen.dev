@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.10.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.9.0...v0.10.0) (2026-03-25)
+
+### Features
+
+* add mobile nav drawer, fix contrast and focus rings ([ad657c5](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ad657c54c542e949435983959dab5523f926cfeb))
+* **home:** add deep space transmission section below featured cards ([e4a20fd](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/e4a20fdc5d8a3d166d52cfc7a447bc056fd98ee6))
+* **home:** apply CV/About design language to homepage ([deef55b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/deef55baf2d8af82f6df7364e3d0ad1ab5c2df1a))
+* **home:** update hero text with "beyond the horizon" closing ([0813eb8](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0813eb8983e7be9855bc797f1b6912f63444f2eb))
+
+### Bug Fixes
+
+* **a11y:** prevent keyboard focus leak into closed mobile drawer ([49a42b3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/49a42b35bf325726fe4b6c09cc202e97f709aa27))
+* **a11y:** show skip-to-content only on keyboard focus, fix logo overlap ([aa953f1](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/aa953f19245ec95b71747ba88b872e24f8bd6a22))
+* add missing URL for Shubuo project ([3c7d7d0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3c7d7d07b3323ce49b424e60010319f0b02a4e00))
+* **galaxy:** feather canvas edges and fade stars at boundaries ([ea50cec](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ea50cece9aafa2c93840d5789acf61bd84b6684e))
+* **galaxy:** tune mask fade and vignette to eliminate dark halo ([02276fb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/02276fb3c85481159fc0134631f2ee73c37d62ab))
+* **home:** remove invisible hover-only arrow from featured cards ([e0c4b89](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/e0c4b890f12398bd1829012f264a48c89cae5725))
+* **nav:** slide mobile drawer from right to match hamburger position ([bf69725](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/bf69725d8b7fe7b1ed91d7454ba003ebe9ab368e))
+* resolve SonarCloud accessibility issues in mobile nav drawer ([328e7db](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/328e7db3d8465e554a85f5a0d390ffb5dbb3320e))
+
 ## [0.9.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.8.0...v0.9.0) (2026-03-24)
 
 ### Features
