@@ -1,75 +1,45 @@
-# Navigation Audit Report — Recruiter Journey
+# Navigation Audit Report — Recruiter Journey (v2)
 
-> Generated on 2026-03-25 — to be addressed when Contact and Writing pages are built.
+> Updated 2026-03-26 — reflects current state after all navigation fixes.
 
-Comprehensive navigation-focused UI/UX audit from a recruiter's perspective, evaluating all CTAs, page flows, and navigation paths across the site. Assessed against UI/UX Pro Max navigation pattern rules (`nav-state-active`, `deep-linking`, `escape-routes`, `persistent-nav`, `navigation-consistency`, `back-stack-integrity`, `empty-nav-state`, `skip-links`).
+Comprehensive navigation audit from a recruiter's perspective, evaluating all CTAs, page flows, and navigation paths. Assessed against UI/UX Pro Max navigation pattern rules.
 
 ---
 
 ## The Recruiter's Journey (Simulated Flow)
 
 ```
-Homepage -> Hero CTAs -> "Explore down" scrolls to #systems
-                      -> "Get in touch" leads to /contact -> 404 !!
-         -> Systems cards -> external links (all open new tabs, fine)
-         -> "follow the light" -> /about (works)
+Homepage -> Hero CTAs -> "Explore" scrolls to #systems (OK)
+                      -> "Get in touch" -> /contact (OK)
+         -> Systems cards -> external links (OK)
+         -> "follow the light" -> /about (OK)
 
 /about -> story, photos, work philosophy
-       -> Bottom CTAs: "Curious about my work?" -> /cv (works)
-                       "Want to get in touch?" -> /contact -> 404 !!
+       -> Bottom CTAs: "Curious about my work?" -> /cv (OK)
+                       "Want to get in touch?" -> /contact (OK)
 
 /cv -> Full CV with PDF download, experience timeline
-    -> PDF download button (external Google Drive link)
-    -> NO bottom CTAs — dead end after scrolling
+    -> Bottom CTAs: "Want to work together?" -> /contact (OK)
+                    "Read my thoughts?" -> /writing (OK)
 
-Nav bar -> Systems (works), Writing (404), About (works), CV (works), Contact (404)
-Footer -> GitHub, LinkedIn, X, Email (all work)
+/writing -> Post listing with cards
+         -> Post card -> /writing/hardest-refactor (OK)
+
+/writing/hardest-refactor -> Full article
+         -> "Back to Writing" -> /writing (OK)
+         -> Share row: Copy link, LinkedIn, X (OK)
+         -> "Curious who wrote this?" -> /about (OK)
+         -> "Want to talk about this?" -> /contact (OK)
+
+/contact -> Contact form with Formspree
+         -> Direct channels: email, LinkedIn, X (OK)
+         -> Success: "Send another" + "Back to home" (OK)
+
+Nav bar -> Systems (OK), Writing (OK), About (OK), CV (OK), Contact (OK)
+         -> Active state highlights current page in amber (OK)
+Footer -> Internal: About, CV, Writing, Contact (OK)
+       -> Social: GitHub, LinkedIn, X, Email (OK)
 ```
-
----
-
-## Issues Found
-
-### CRITICAL — Broken Links (2 pages return 404)
-
-| Link | Referenced From | Result |
-|------|----------------|--------|
-| `/contact` | Hero CTA, About bottom CTA, Nav bar | **404** |
-| `/writing` | Nav bar | **404** |
-
-These are the two most damaging issues. A recruiter clicking "Get in touch" from the hero — the primary conversion CTA — lands on a 404. This breaks the entire conversion funnel.
-
-**Violated rules**: `deep-linking` (all key screens must be reachable), `back-stack-integrity` (never land on an unexpected page), `empty-nav-state` (when unavailable, explain why instead of silently hiding)
-
-### HIGH — CV Page is a Dead End
-
-The CV page has **no bottom CTAs**. After reading the full CV, the recruiter has no guided next step. Every other page (home, about) ends with clear CTAs that push the recruiter forward. The CV — the page most likely to trigger action — just stops.
-
-**Missing**: A CTA like "Want to work together?" linking to contact, or "Learn more about me" linking to about.
-
-**Violated rule**: `escape-routes` — always provide a clear next action
-
-### HIGH — No Active Nav State
-
-All nav links render with identical `text-neutral-400` styling. There is **no visual indicator** showing which page the user is currently on. On `/about`, the "About" link looks identical to every other nav link.
-
-**Violated rule**: `nav-state-active` — current location must be visually highlighted (color, weight, indicator)
-
-### MEDIUM — No Skip-to-Content on CV Page
-
-The homepage and about page both have a "Skip to content" link for accessibility. The CV page does **not** — it goes straight from navigation to main content with no skip link.
-
-**Violated rules**: `skip-links`, `navigation-consistency`
-
-### MEDIUM — Footer is Not a Navigation Aid
-
-The footer contains only social/external links. For a recruiter-focused site, the footer is a missed opportunity — it could reinforce internal navigation (About, CV, Contact) to catch recruiters who scroll past the bottom CTAs.
-
-**Violated rule**: `persistent-nav` — core navigation must remain reachable from deep pages
-
-### LOW — "Systems" Nav Link Behavior
-
-The "Systems" nav link points to `/#systems` (anchor on homepage). When clicked from `/about` or `/cv`, it navigates back to the homepage and scrolls — this works, but the behavior differs from other nav links (which are full page navigations). Not a bug, but slightly inconsistent.
 
 ---
 
@@ -81,7 +51,7 @@ The "Systems" nav link points to `/#systems` (anchor on homepage). When clicked 
                     |                |
                     | Hero CTAs:     |
                     |  Explore       |---- scrolls to #systems (OK)
-                    |  Get in touch  |---- /contact (404!!)
+                    |  Get in touch  |---- /contact (OK)
                     |                |
                     | Systems grid   |---- external links (OK)
                     |                |
@@ -97,7 +67,7 @@ The "Systems" nav link points to `/#systems` (anchor on homepage). When clicked 
                     |                |
                     | Bottom CTAs:   |
                     |  My work?      |--+
-                    |  Touch?        |--+-- /contact (404!!)
+                    |  Get in touch? |--+-- /contact (OK)
                     +----------------+  |
                                         |
                     +----------------+  |
@@ -107,47 +77,108 @@ The "Systems" nav link points to `/#systems` (anchor on homepage). When clicked 
                     | Experience     |
                     | Skills         |
                     |                |
-                    | (NO CTAs)      |---- DEAD END
+                    | Bottom CTAs:   |
+                    |  Work together?|---- /contact (OK)
+                    |  My thoughts?  |---- /writing (OK)
                     +----------------+
 
                     +----------------+
-                    |   WRITING      |---- 404!!
+                    |   WRITING      |---- listing page (OK)
+                    |                |
+                    | Post card      |---- /writing/slug (OK)
+                    +----------------+
+                            |
+                    +----------------+
+                    |   POST         |
+                    |                |
+                    | Back to Writing|---- /writing (OK)
+                    | Share row      |---- copy/LinkedIn/X (OK)
+                    | Who wrote this?|---- /about (OK)
+                    | Talk about it? |---- /contact (OK)
                     +----------------+
 
                     +----------------+
-                    |   CONTACT      |---- 404!!
+                    |   CONTACT      |---- form + direct channels (OK)
+                    |                |
+                    | Success:       |
+                    |  Send another  |---- resets form (OK)
+                    |  Back to home  |---- / (OK)
                     +----------------+
 ```
 
 ---
 
-## Summary by Severity
+## Resolved Issues (from v1 audit)
 
-| Severity | Issue | UX Rule |
-|----------|-------|---------|
-| CRITICAL | `/contact` is 404 — breaks primary conversion CTA | `deep-linking` |
-| CRITICAL | `/writing` is 404 — nav link to nonexistent page | `deep-linking`, `empty-nav-state` |
-| HIGH | CV page has no bottom CTAs — dead end | `escape-routes` |
-| HIGH | No active state on nav links | `nav-state-active` |
-| MEDIUM | CV page missing skip-to-content link | `skip-links`, `navigation-consistency` |
-| MEDIUM | Footer lacks internal navigation links | `persistent-nav` |
-| LOW | "Systems" anchor-link behavior differs from page links | `navigation-consistency` |
+| Original Issue | Status | How Resolved |
+|----------------|--------|-------------|
+| /contact is 404 | FIXED | app/contact/page.tsx created with Formspree form |
+| /writing is 404 | FIXED | app/writing/page.tsx created with MDX blog |
+| CV page is dead end | FIXED | Bottom CTAs added: contact + writing links |
+| No active nav state | FIXED | usePathname() with amber highlight + aria-current |
+| CV missing skip-to-content | FIXED | Skip link + id="main" added |
+| Footer lacks internal links | FIXED | About, CV, Writing, Contact links added |
 
 ---
 
-## Recommended Recruiter Funnel
+## Current Assessment by Rule
+
+| Rule | Status | Details |
+|------|--------|---------|
+| `nav-state-active` | PASS | Active link in amber with font-medium (desktop) and amber bg (mobile). aria-current="page" set. |
+| `deep-linking` | PASS | All 5 pages reachable via direct URL. Blog posts have individual slugs. |
+| `escape-routes` | PASS | Every page has onward CTAs. Contact success has "Send another" + "Back to home". Blog posts have "Back to Writing". |
+| `persistent-nav` | PASS | Navigation bar present on all pages. Footer with internal links on all pages. |
+| `navigation-consistency` | PASS | Same nav component on every page. Same footer on every page. Link order consistent. |
+| `back-stack-integrity` | PASS | No silent resets. Back button works predictably on all pages. |
+| `empty-nav-state` | PASS | All nav destinations have corresponding pages. No 404s in navigation. |
+| `skip-links` | PASS | Skip-to-content present on all 5 pages (homepage, about, cv, writing, contact) + post pages. |
+
+---
+
+## Footer Evaluation
+
+**Internal links consistency with main nav:**
+- Nav: Systems, Writing, About, CV, Contact
+- Footer: About, CV, Writing, Contact
+- "Systems" is correctly omitted from footer — it's an anchor link to a homepage section, not a standalone page. Footer links are page-level navigation only.
+
+**Visual hierarchy:**
+- Internal links: `text-xs text-neutral-500 hover:text-neutral-300` — subtle, secondary
+- Social icons: `text-neutral-500 hover:text-white` — slightly more prominent due to icon size
+- Hierarchy is correct: internal links are navigation aids (you're already on the site), social links are outbound actions (leave the site). Social icons being slightly more prominent is appropriate.
+
+**Active state in footer:**
+- The footer does NOT have an active state for the current page.
+- This is correct. Footer links are utility navigation, not primary wayfinding. Adding active state to the footer would create visual noise and contradict the footer's role as a secondary/fallback navigation element. The main nav already handles orientation.
+
+---
+
+## Remaining Issues
+
+| Severity | Issue | UX Rule | Action |
+|----------|-------|---------|--------|
+| LOW | "Systems" nav link behavior differs from page links | `navigation-consistency` | Anchor link (/#systems) navigates to homepage then scrolls — works but is slightly inconsistent with other nav links that are full page navigations. Not a bug, architectural choice. |
+| LOW | Homepage has no skip-to-content for the galaxy canvas section | `skip-links` | Homepage skip link jumps to #main which is the content area. The galaxy canvas is decorative and correctly skipped. No action needed. |
+
+---
+
+## Recruiter Funnel Status
 
 The ideal recruiter journey is:
 
 **Homepage -> About -> CV -> Contact**
 
-Each page should end with a CTA that pushes the recruiter to the next step in this funnel. Currently the chain breaks at the final step because `/contact` doesn't exist, and the CV (the decision-making page) offers no next step.
+Every step in this chain now works:
+- Homepage "follow the light" -> About (OK)
+- About "Curious about my work?" -> CV (OK)
+- CV "Want to work together?" -> Contact (OK)
 
-### Action Items
+Alternative paths also work:
+- Any page -> nav bar -> any other page (OK)
+- Any page -> footer links -> any other page (OK)
+- Blog post -> "Want to talk about this?" -> Contact (OK)
+- Blog post -> "Curious who wrote this?" -> About (OK)
+- Contact success -> "Back to home" -> Homepage (OK)
 
-1. **Create `/contact` page** — This is the highest priority. The primary hero CTA and about page CTA both point here.
-2. **Create `/writing` page** — Or remove from nav until ready (per `empty-nav-state`: explain unavailability rather than showing 404).
-3. **Add bottom CTAs to CV page** — e.g., "Want to work together?" linking to contact.
-4. **Add active state to nav links** — Highlight current page in navigation bar.
-5. **Add skip-to-content link on CV page** — Match homepage and about page accessibility pattern.
-6. **Add internal links to footer** — Reinforce About, CV, Contact navigation.
+**No dead ends. No broken links. All navigation paths are complete.**
