@@ -48,3 +48,8 @@ export function getReadingTime(content: string): number {
   const words = content.trim().split(/\s+/).length;
   return Math.ceil(words / 200);
 }
+
+export function formatDate(iso: string): string {
+  const date = new Date(iso + "T00:00:00");
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}

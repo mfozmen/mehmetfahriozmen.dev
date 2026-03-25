@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import SectionTitle from "@/components/SectionTitle";
-import { getAllPosts, type PostMeta } from "@/lib/posts";
+import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Writing — Mehmet Fahri Özmen",
@@ -29,7 +29,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
         />
       </div>
       <div className="p-5">
-        <span className="font-mono text-[11px] text-[#BA7517]/65">{post.date}</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/65">{formatDate(post.date)}</span>
         <h3 className="mt-1.5 text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
           {post.title}
         </h3>
@@ -63,7 +63,7 @@ export default function WritingPage() {
           </p>
         </section>
         <SectionTitle title="Latest" />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className={`grid gap-6 ${posts.length < 3 ? "mx-auto max-w-lg grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
           {posts.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}

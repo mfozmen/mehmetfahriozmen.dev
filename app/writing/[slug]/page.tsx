@@ -6,9 +6,10 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import { getAllPosts, getPostBySlug, getReadingTime } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
+import ShareRow from "@/components/writing/ShareRow";
 
 function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   return (
@@ -38,7 +39,16 @@ function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   );
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage };
+function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
+  const childArray = Array.isArray(children) ? children : [children];
+  const hasImage = childArray.some(
+    (child) => typeof child === "object" && child !== null && "type" in child && (child as { type: unknown }).type === MdxImage
+  );
+  if (hasImage) return <>{children}</>;
+  return <p>{children}</p>;
+}
+
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -73,7 +83,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
     <>
       <header className="mb-8 max-w-3xl">
         <span className="font-mono text-[11px] text-[#BA7517]/65">
-          {post.date} · {getReadingTime(post.content)} min read
+          {formatDate(post.date)} · {getReadingTime(post.content)} min read
         </span>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
           {post.title}
@@ -89,16 +99,25 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
   );
 }
 
-function PostFooterCta() {
+function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) {
   return (
-    <div className="mt-16 border-t border-[#BA7517]/10 pt-8 text-center">
-      <Link
-        href="/contact"
-        className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80"
-      >
-        <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
-        <span className="relative">Want to talk about this? &rarr;</span>
-      </Link>
+    <div className="mt-16 max-w-3xl border-t border-[#BA7517]/10 pt-8">
+      <p className="text-center text-[13px] text-neutral-500">
+        Curious who&apos;s behind this?{" "}
+        <Link href="/about" className="text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+          Learn more about me &rarr;
+        </Link>
+      </p>
+      <ShareRow title={title} slug={slug} />
+      <div className="mt-8 text-center">
+        <Link
+          href="/contact"
+          className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80"
+        >
+          <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">Want to talk about this? &rarr;</span>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -129,7 +148,7 @@ export default async function PostPage(
           </div>
         </article>
 
-        <PostFooterCta />
+        <PostEnding title={post.title} slug={post.slug} />
       </main>
       <Footer />
     </>
