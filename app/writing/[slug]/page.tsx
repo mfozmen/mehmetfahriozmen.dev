@@ -93,7 +93,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
   return (
     <>
       <header className="mb-8">
-        <span className="font-mono text-[11px] text-[#BA7517]/65">
+        <span className="font-mono text-[11px] text-[#BA7517]/80">
           {formatDate(post.date)} · {getReadingTime(post.content)} min read
         </span>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">

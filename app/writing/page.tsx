@@ -30,7 +30,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
         />
       </div>
       <div className="p-5">
-        <span className="font-mono text-[11px] text-[#BA7517]/65">{formatDate(post.date)} · {post.readingTime} min read</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/80">{formatDate(post.date)} · {post.readingTime} min read</span>
         <h3 className="mt-1.5 text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
           {post.title}
         </h3>

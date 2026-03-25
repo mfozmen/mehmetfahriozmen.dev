@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const linkClass = "font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]";
+const linkClass = "cursor-pointer font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]";
 
 export default function ShareRow({ title, slug }: Readonly<{ title: string; slug: string }>) {
   const [copied, setCopied] = useState(false);
