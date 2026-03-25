@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.12.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.11.0...v0.12.0) (2026-03-25)
+
+### Features
+
+* improve follow-the-light CTA visibility, update writing subtitle ([f3266d5](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f3266d56b388cd72ce1bd6fc8aab4e1ba4706f4b))
+* **writing:** add MDX blog with galaxy theme and cover images ([0c8e906](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0c8e9061f62a3da614a38012254ea2605a4406b1))
+* **writing:** add writing page with first blog post ([6d8f43a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6d8f43a95f3fa86d6ea5fbd3dc790e7c6376099f))
+* **writing:** expand blog post with new sections and reading time ([d2a658a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d2a658ac6e8946f4c741490b45c6def2c504b3c3))
+* **writing:** opening hook, reading time on cards, image sizes ([ae321b2](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ae321b2175977ddba54fbc79eae1f74186098690))
+* **writing:** pair CTAs at post ending, update image caption ([9cadcfb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9cadcfb96063cfd16ac1d1c6ca39be67d6c93526))
+* **writing:** phase 3 — date format, post ending, share, layout ([8c33637](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8c33637c5c1b4289bcef9f47b50a1f73ffb7c27a))
+
+### Bug Fixes
+
+* **a11y:** improve date contrast and share button cursor ([0c29728](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0c29728260f8a239e9492dfa0e953c1d575575ab))
+* **a11y:** improve text contrast on CV and homepage for WCAG AA ([bb88aa9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/bb88aa975fd0695ade2e43743de3aeadfd4d02fb)), closes [#666666](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/666666) [#888888](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/888888)
+* await clipboard write and correct sort comparator for equal dates ([036d1d1](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/036d1d13a6ce8fa7878ad749fc1f6a8d03476987))
+* resolve SonarCloud issues — node: imports and Readonly props ([c6e3903](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c6e3903094c2a0e8c7897bb75b083c30fbe7f118))
+* **writing:** match site design language for listing and post pages ([0d77e48](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0d77e485572a04846f86d41d2df95529725261ef))
+* **writing:** phase 2 design consistency — images, captions, layout ([1df9e9b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1df9e9b4ebe31b223a345e929eeb608a7ab24ee2)), closes [12px/#a3a3a3](https://github.com/12px/mehmetfahriozmen.dev/issues/a3a3a3)
+* **writing:** simplify post layout — single width, lighter h2s, cleaner ending ([acb71e0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/acb71e059703177ed0ab2105f6efdb11178ea035))
+
 ## [0.11.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.9.0...v0.11.0) (2026-03-25)
 
 ### Features
