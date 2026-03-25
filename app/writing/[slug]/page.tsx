@@ -8,6 +8,23 @@ import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import { getAllPosts, getPostBySlug, getReadingTime } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import type { ReactNode } from "react";
+
+function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
+  return (
+    <h2 className="mt-12 mb-6 flex items-center gap-2.5">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="#BA7517" className="shrink-0" aria-hidden="true">
+        <path d="M12 2l2.09 6.26L20.18 9l-5.09 3.74L16.18 19 12 15.77 7.82 19l1.09-6.26L3.82 9l6.09-.74z" />
+      </svg>
+      <span className="shrink-0 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
+        {children}
+      </span>
+      <span className="h-px flex-1 bg-gradient-to-r from-[#BA7517]/30 to-transparent" />
+    </h2>
+  );
+}
+
+const mdxComponents = { h2: MdxH2 };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -75,7 +92,7 @@ export default async function PostPage(
             <span className="font-mono text-[11px] text-[#BA7517]/65">
               {post.date} · {getReadingTime(post.content)} min read
             </span>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
               {post.title}
             </h1>
           </header>
@@ -90,8 +107,8 @@ export default async function PostPage(
             />
           </div>
 
-          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300 [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_p]:max-w-[65ch] [&_img]:my-10 [&_img]:w-full [&_img]:rounded-lg">
-            <MDXRemote source={post.content} />
+          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300 [&_p]:max-w-[65ch] [&_img]:my-10 [&_img]:w-full [&_img]:rounded-lg">
+            <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
 

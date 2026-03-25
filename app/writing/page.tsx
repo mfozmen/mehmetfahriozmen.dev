@@ -54,10 +54,15 @@ export default function WritingPage() {
       <NebulaGlows />
 
       <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
-        <SectionTitle title="Writing" />
-        <p className="mb-10 text-[14px] leading-relaxed text-neutral-500 italic">
-          Transmissions from the field — on engineering, leadership, and building things that last.
-        </p>
+        <section className="mb-16">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Writing
+          </h1>
+          <p className="mt-4 text-lg italic text-neutral-500">
+            On engineering, leadership, and building things that last.
+          </p>
+        </section>
+        <SectionTitle title="Latest" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {posts.map((post) => (
             <PostCard key={post.slug} post={post} />
