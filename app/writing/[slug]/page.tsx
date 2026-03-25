@@ -111,21 +111,19 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
         <span>*</span><span>*</span><span>*</span>
       </div>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <Link href="/about" className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]">
-          About the author
-        </Link>
-        <span className="text-neutral-700">&middot;</span>
         <ShareRow title={title} slug={slug} />
       </div>
-      <div className="mt-12 border-t border-[#BA7517]/10 pt-8 text-center">
-        <Link
-          href="/contact"
-          className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80"
-        >
+      <p className="mt-12 border-t border-[#BA7517]/10 pt-8 text-center text-[13px] text-neutral-500">
+        <Link href="/about" className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+          <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">Curious who wrote this? &rarr;</span>
+        </Link>
+        <span className="mx-3">&middot;</span>
+        <Link href="/contact" className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
           <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
           <span className="relative">Want to talk about this? &rarr;</span>
         </Link>
-      </div>
+      </p>
     </div>
   );
 }
