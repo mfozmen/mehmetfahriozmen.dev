@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getAllPosts, getPostBySlug, getReadingTime } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate } from "@/lib/posts";
 
 describe("getAllPosts", () => {
   it("returns an array of posts", () => {
@@ -23,6 +23,8 @@ describe("getAllPosts", () => {
       expect(post.slug).toBeDefined();
       expect(post.coverImage).toBeDefined();
       expect(post.excerpt).toBeDefined();
+      expect(post.readingTime).toBeDefined();
+      expect(post.readingTime).toBeGreaterThan(0);
     }
   });
 });
@@ -63,5 +65,16 @@ describe("getReadingTime", () => {
     const time = getReadingTime(post!.content);
     expect(time).toBeGreaterThanOrEqual(3);
     expect(time).toBeLessThanOrEqual(10);
+  });
+});
+
+describe("formatDate", () => {
+  it("formats ISO date to human-readable", () => {
+    expect(formatDate("2026-03-25")).toBe("March 25, 2026");
+  });
+
+  it("formats different months correctly", () => {
+    expect(formatDate("2025-01-01")).toBe("January 1, 2025");
+    expect(formatDate("2024-12-31")).toBe("December 31, 2024");
   });
 });
