@@ -74,7 +74,7 @@ export default function Navigation() {
       {/* Mobile drawer panel */}
       <div
         className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
-        role="dialog"
+        role="dialog" // NOSONAR — native <dialog> UA styles override Tailwind positioning
         aria-modal={open}
         aria-label="Navigation menu"
       >
