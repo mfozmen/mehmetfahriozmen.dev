@@ -41,9 +41,10 @@ export default function CvHeader() {
           target="_blank"
           rel="noopener noreferrer"
           download
-          className="inline-block rounded-full border border-[#BA7517]/40 px-5 py-1.5 font-mono text-[11px] text-[#BA7517] transition-all hover:border-[#BA7517]/70 hover:shadow-[0_0_20px_rgba(186,117,23,0.15)]"
+          className="group relative inline-block rounded-full border border-[#BA7517]/40 px-5 py-1.5 font-mono text-[11px] text-[#BA7517] transition-all hover:border-[#BA7517]/70 hover:shadow-[0_0_20px_rgba(186,117,23,0.15)]"
         >
-          The no-stars PDF version ↓
+          <span className="absolute inset-0 -m-2 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+          <span className="relative">The no-stars PDF version ↓</span>
         </a>
       </div>
     </header>

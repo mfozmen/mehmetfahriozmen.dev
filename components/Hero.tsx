@@ -8,32 +8,40 @@ export default function Hero() {
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
           Mehmet Fahri Özmen
         </h1>
-        <p className="mt-3 text-base tracking-wide text-neutral-500">
+        <p className="mt-3 text-base tracking-wide text-neutral-400">
           Backend Systems Architect &middot; Engineering Leader
         </p>
-        <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-400">
-          I build the things you don&apos;t see &mdash;
-          <br className="hidden sm:inline" />
-          distributed systems, search engines, payment flows.
-          <br />
-          <span className="text-neutral-200">
-            From hiring to shipping &mdash; I build the systems and the teams behind them.
-          </span>
-          <br />
-          <span className="text-neutral-500">
+        <div className="mt-8 max-w-md md:max-w-lg space-y-5">
+          <p className="text-xl leading-snug tracking-tight text-neutral-300">
+            I build the things you don&apos;t see &mdash;
+          </p>
+          <p className="text-base leading-relaxed italic text-neutral-500">
+            distributed systems, search engines, payment flows, and
+            whatever lies{" "}
+            <span className="not-italic text-[#BA7517]/60">
+              beyond the horizon.
+            </span>
+          </p>
+          <p className="text-lg font-semibold leading-snug text-white">
+            From hiring to shipping &mdash; I build the systems
+            and{" "}
+            <span className="text-[#BA7517]/70">the teams</span>
+            {" "}behind them.
+          </p>
+          <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
             The galaxy below? That&apos;s my universe.
-          </span>
-        </p>
+          </p>
+        </div>
         <div className="mt-8 flex items-center gap-4">
           <a
             href="#systems"
-            className="rounded-full border border-neutral-700 px-5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >
             Explore ↓
           </a>
           <Link
             href="/contact"
-            className="rounded-full border border-neutral-700 px-5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >
             Get in touch →
           </Link>
@@ -43,7 +51,7 @@ export default function Hero() {
       <div className="relative shrink-0">
         <div className="absolute -inset-3 rounded-full bg-gradient-to-b from-neutral-800/40 to-neutral-900/60 blur-xl" />
         <Image
-          src="/fahri.jpg"
+          src="/mfo.webp"
           alt="Mehmet Fahri Özmen"
           width={240}
           height={240}

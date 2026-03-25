@@ -167,7 +167,11 @@ export default function MobileGalaxy() {
     <div
       ref={containerRef}
       className="relative mx-auto w-full max-w-5xl"
-      style={{ height: dimensions.height }}
+      style={{
+        height: dimensions.height,
+        maskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 40%, transparent 100%)",
+        WebkitMaskImage: "radial-gradient(ellipse 90% 85% at 50% 50%, black 40%, transparent 100%)",
+      }}
     >
       <canvas
         ref={canvasRef}
