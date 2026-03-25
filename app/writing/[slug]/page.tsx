@@ -65,7 +65,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: Readonly<{ params: Promise<{ slug: string }> }>
 ): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -137,7 +137,7 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
 }
 
 export default async function PostPage(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: Readonly<{ params: Promise<{ slug: string }> }>
 ) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
