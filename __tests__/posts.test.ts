@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getAllPosts, getPostBySlug, getReadingTime, formatDate } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate, sortByDateDesc } from "@/lib/posts";
 
 describe("getAllPosts", () => {
   it("returns an array of posts", () => {
@@ -65,6 +65,20 @@ describe("getReadingTime", () => {
     const time = getReadingTime(post!.content);
     expect(time).toBeGreaterThanOrEqual(3);
     expect(time).toBeLessThanOrEqual(10);
+  });
+});
+
+describe("sortByDateDesc", () => {
+  it("returns -1 when first date is newer", () => {
+    expect(sortByDateDesc({ date: "2026-03-25" }, { date: "2026-01-01" })).toBe(-1);
+  });
+
+  it("returns 1 when first date is older", () => {
+    expect(sortByDateDesc({ date: "2025-01-01" }, { date: "2026-03-25" })).toBe(1);
+  });
+
+  it("returns 1 when dates are equal", () => {
+    expect(sortByDateDesc({ date: "2026-03-25" }, { date: "2026-03-25" })).toBe(1);
   });
 });
 

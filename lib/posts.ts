@@ -17,6 +17,10 @@ export type Post = PostMeta & {
   content: string;
 };
 
+export function sortByDateDesc(a: { date: string }, b: { date: string }): number {
+  return a.date > b.date ? -1 : 1;
+}
+
 export function getAllPosts(): PostMeta[] {
   const files = fs.readdirSync(postsDirectory).filter((f) => f.endsWith(".mdx"));
 
@@ -27,7 +31,7 @@ export function getAllPosts(): PostMeta[] {
     return { ...(data as Omit<PostMeta, "readingTime">), readingTime: getReadingTime(content) };
   });
 
-  return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
+  return posts.sort(sortByDateDesc);
 }
 
 export function getPostBySlug(slug: string): Post | undefined {
