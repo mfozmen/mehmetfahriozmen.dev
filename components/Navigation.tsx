@@ -75,8 +75,10 @@ export default function Navigation() {
       <div
         className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
         role="dialog"
-        aria-modal={open}
+        aria-modal={open || undefined}
+        aria-hidden={!open}
         aria-label="Navigation menu"
+        inert={!open || undefined}
       >
         <div className="flex items-center justify-between px-6 py-5">
           <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
