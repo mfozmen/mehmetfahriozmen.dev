@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 
-const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ?? "";
+const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
 const inputClass =
   "mt-1.5 w-full rounded-lg border border-[#BA7517]/[0.15] bg-[#BA7517]/[0.02] px-4 py-3 text-[15px] text-neutral-200 placeholder:text-neutral-600 transition-colors focus:border-[#BA7517]/40 focus:outline-none focus:ring-1 focus:ring-[#BA7517]/30";
@@ -79,10 +79,52 @@ function validate(form: FormData): Record<string, string> {
 
 const FIELD_ORDER = ["name", "email", "message"];
 
+function SubmitSection({ status }: Readonly<{ status: string }>) {
+  return (
+    <>
+      {status === "error" && (
+        <p className="text-[13px] text-red-400" role="alert">
+          Something went wrong. Please try again or email directly.
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="cursor-pointer rounded-lg border border-[#BA7517]/40 bg-[#BA7517]/[0.06] px-6 py-3 font-mono text-[12px] uppercase tracking-[0.15em] text-[#BA7517] transition-colors hover:border-[#BA7517]/60 hover:bg-[#BA7517]/[0.12] disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {status === "sending" ? "Sending..." : "Transmit"}
+      </button>
+    </>
+  );
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const formRef = useRef<HTMLFormElement>(null);
+  const [formKey, setFormKey] = useState(0);
+
+  const handleReset = useCallback(() => {
+    setStatus("idle");
+    setErrors({});
+    setFormKey((k) => k + 1);
+  }, []);
+
+  if (!FORMSPREE_URL) {
+    return (
+      <p className="text-[13px] text-neutral-500">
+        Contact form is currently unavailable. Please reach out directly via the channels below.
+      </p>
+    );
+  }
+
+  if (status === "success") return <SuccessMessage onReset={handleReset} />;
+
+  return (
+    <form key={formKey} onSubmit={handleSubmit} noValidate className="space-y-6">
+      <FormFields errors={errors} />
+      <SubmitSection status={status} />
+    </form>
+  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -97,32 +139,10 @@ export default function ContactForm() {
 
     setStatus("sending");
     try {
-      const res = await fetch(FORMSPREE_URL, { method: "POST", body: form, headers: { Accept: "application/json" } });
+      const res = await fetch(FORMSPREE_URL!, { method: "POST", body: form, headers: { Accept: "application/json" } });
       setStatus(res.ok ? "success" : "error");
     } catch {
       setStatus("error");
     }
   }
-
-  if (status === "success") {
-    return <SuccessMessage onReset={() => { setStatus("idle"); setErrors({}); }} />;
-  }
-
-  return (
-    <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6">
-      <FormFields errors={errors} />
-      {status === "error" && (
-        <p className="text-[13px] text-red-400" role="alert">
-          Something went wrong. Please try again or email directly.
-        </p>
-      )}
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="cursor-pointer rounded-lg border border-[#BA7517]/40 bg-[#BA7517]/[0.06] px-6 py-3 font-mono text-[12px] uppercase tracking-[0.15em] text-[#BA7517] transition-colors hover:border-[#BA7517]/60 hover:bg-[#BA7517]/[0.12] disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {status === "sending" ? "Sending..." : "Transmit"}
-      </button>
-    </form>
-  );
 }
