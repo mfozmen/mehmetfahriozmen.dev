@@ -77,8 +77,8 @@ describe("sortByDateDesc", () => {
     expect(sortByDateDesc({ date: "2025-01-01" }, { date: "2026-03-25" })).toBe(1);
   });
 
-  it("returns 1 when dates are equal", () => {
-    expect(sortByDateDesc({ date: "2026-03-25" }, { date: "2026-03-25" })).toBe(1);
+  it("returns 0 when dates are equal", () => {
+    expect(sortByDateDesc({ date: "2026-03-25" }, { date: "2026-03-25" })).toBe(0);
   });
 });
 

@@ -11,10 +11,12 @@ export default function ShareRow({ title, slug }: Readonly<{ title: string; slug
   const encoded = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 
-  function handleCopy() {
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* clipboard unavailable — no false feedback */ }
   }
 
   return (

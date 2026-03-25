@@ -18,6 +18,7 @@ export type Post = PostMeta & {
 };
 
 export function sortByDateDesc(a: { date: string }, b: { date: string }): number {
+  if (a.date === b.date) return 0;
   return a.date > b.date ? -1 : 1;
 }
 
