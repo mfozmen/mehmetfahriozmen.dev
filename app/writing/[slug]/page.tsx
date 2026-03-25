@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 export function generateStaticParams() {
@@ -72,7 +72,9 @@ export default async function PostPage(
 
         <article className="mt-8">
           <header className="mb-8">
-            <span className="font-mono text-[11px] text-[#BA7517]/65">{post.date}</span>
+            <span className="font-mono text-[11px] text-[#BA7517]/65">
+              {post.date} · {getReadingTime(post.content)} min read
+            </span>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               {post.title}
             </h1>
