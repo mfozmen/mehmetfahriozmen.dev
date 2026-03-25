@@ -57,10 +57,10 @@ export default function WritingPage() {
       <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <section className="mb-16">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Writing
+            Field Notes
           </h1>
           <p className="mt-4 text-lg italic text-neutral-500">
-            On engineering, leadership, and building things that last.
+            Explore first. Document later. Share everything.
           </p>
         </section>
         <SectionTitle title="Latest" />
