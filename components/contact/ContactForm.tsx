@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, type FormEvent } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 
 const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ?? "";
@@ -63,6 +63,8 @@ function FormFields({ errors }: Readonly<{ errors: Record<string, string> }>) {
   );
 }
 
+export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 function validate(form: FormData): Record<string, string> {
   const errs: Record<string, string> = {};
   const name = (form.get("name") as string).trim();
@@ -70,7 +72,7 @@ function validate(form: FormData): Record<string, string> {
   const message = (form.get("message") as string).trim();
   if (!name) errs.name = "Name is required.";
   if (!email) errs.email = "Email is required.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Enter a valid email address.";
+  else if (!EMAIL_REGEX.test(email)) errs.email = "Enter a valid email address.";
   if (!message) errs.message = "Message is required.";
   return errs;
 }
@@ -82,7 +84,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const errs = validate(form);
