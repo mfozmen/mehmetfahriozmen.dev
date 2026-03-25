@@ -33,7 +33,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
         <h3 className="mt-1.5 text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
           {post.title}
         </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-neutral-400">
+        <p className="mt-2 text-[12px] leading-relaxed text-[#a3a3a3]">
           {post.excerpt}
         </p>
       </div>

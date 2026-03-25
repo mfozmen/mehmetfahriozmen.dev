@@ -24,7 +24,21 @@ function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   );
 }
 
-const mdxComponents = { h2: MdxH2 };
+function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
+  if (!src) return null;
+  return (
+    <figure className="my-10">
+      <div className="relative aspect-[2/1] w-full overflow-hidden rounded-lg">
+        <Image src={src} alt={alt ?? ""} fill className="object-cover" />
+      </div>
+      {alt && alt !== "" && (
+        <figcaption className="mt-2 text-xs text-neutral-500">{alt}</figcaption>
+      )}
+    </figure>
+  );
+}
+
+const mdxComponents = { h2: MdxH2, img: MdxImage };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -51,6 +65,27 @@ function BackLink() {
       <span className="transition-transform group-hover:-translate-x-0.5">&larr;</span>
       <span>Back to Writing</span>
     </Link>
+  );
+}
+
+function PostHeader({ post }: Readonly<{ post: { date: string; title: string; excerpt: string; coverImage: string; content: string } }>) {
+  return (
+    <>
+      <header className="mb-8 max-w-3xl">
+        <span className="font-mono text-[11px] text-[#BA7517]/65">
+          {post.date} · {getReadingTime(post.content)} min read
+        </span>
+        <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          {post.title}
+        </h1>
+        <p className="mt-3 text-lg italic text-neutral-500">
+          {post.excerpt}
+        </p>
+      </header>
+      <div className="relative mb-10 aspect-[2/1] w-full overflow-hidden rounded-lg">
+        <Image src={post.coverImage} alt={post.title} fill className="object-cover" priority />
+      </div>
+    </>
   );
 }
 
@@ -84,30 +119,12 @@ export default async function PostPage(
       <Starfield />
       <NebulaGlows />
 
-      <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink />
 
         <article className="mt-8">
-          <header className="mb-8">
-            <span className="font-mono text-[11px] text-[#BA7517]/65">
-              {post.date} · {getReadingTime(post.content)} min read
-            </span>
-            <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              {post.title}
-            </h1>
-          </header>
-
-          <div className="relative mb-10 aspect-[2/1] w-full overflow-hidden rounded-lg">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-
-          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300 [&_p]:max-w-[65ch] [&_img]:my-10 [&_img]:w-full [&_img]:rounded-lg">
+          <PostHeader post={post} />
+          <div className="max-w-3xl space-y-6 text-[15px] leading-[1.8] text-neutral-300 [&_p]:max-w-[65ch]">
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
