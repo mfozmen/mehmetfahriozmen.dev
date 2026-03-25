@@ -25,11 +25,12 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
           src={post.coverImage}
           alt={post.title}
           fill
+          sizes="(max-width: 640px) 100vw, 480px"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />
       </div>
       <div className="p-5">
-        <span className="font-mono text-[11px] text-[#BA7517]/65">{formatDate(post.date)}</span>
+        <span className="font-mono text-[11px] text-[#BA7517]/65">{formatDate(post.date)} · {post.readingTime} min read</span>
         <h3 className="mt-1.5 text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
           {post.title}
         </h3>

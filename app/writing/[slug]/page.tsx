@@ -32,7 +32,7 @@ function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   return (
     <figure className="-mx-0 my-10 sm:-mx-8 lg:-mx-16">
       <div className="relative aspect-[2/1] w-full overflow-hidden rounded-lg">
-        <Image src={src} alt={alt ?? ""} fill className="object-cover" />
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" />
       </div>
       {alt && alt !== "" && (
         <figcaption className="mt-2 px-0 text-xs text-neutral-500 sm:px-8 lg:px-16">{alt}</figcaption>
@@ -50,7 +50,15 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph };
+function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
+  return (
+    <blockquote className="my-10 space-y-4 rounded-r-lg border-l-2 border-[#BA7517]/40 py-5 pl-6 pr-6 text-xl leading-[1.6] italic text-neutral-200 sm:text-2xl" style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.04) 0%, transparent 60%)" }}>
+      {children}
+    </blockquote>
+  );
+}
+
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -96,7 +104,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
         </p>
       </header>
       <div className="relative -mx-0 mb-10 aspect-[2/1] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
-        <Image src={post.coverImage} alt={post.title} fill className="object-cover" priority />
+        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" priority />
       </div>
     </>
   );

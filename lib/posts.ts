@@ -10,6 +10,7 @@ export type PostMeta = {
   slug: string;
   coverImage: string;
   excerpt: string;
+  readingTime: number;
 };
 
 export type Post = PostMeta & {
@@ -22,8 +23,8 @@ export function getAllPosts(): PostMeta[] {
   const posts = files.map((filename) => {
     const filePath = path.join(postsDirectory, filename);
     const raw = fs.readFileSync(filePath, "utf-8");
-    const { data } = matter(raw);
-    return data as PostMeta;
+    const { data, content } = matter(raw);
+    return { ...(data as Omit<PostMeta, "readingTime">), readingTime: getReadingTime(content) };
   });
 
   return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
