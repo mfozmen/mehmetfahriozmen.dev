@@ -72,9 +72,10 @@ export default function Navigation() {
       />
 
       {/* Mobile drawer panel */}
-      <dialog
-        className={`fixed top-0 right-0 z-50 m-0 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
-        open={open}
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
+        role="dialog"
+        aria-modal={open}
         aria-label="Navigation menu"
       >
         <div className="flex items-center justify-between px-6 py-5">
@@ -102,7 +103,7 @@ export default function Navigation() {
             </li>
           ))}
         </ul>
-      </dialog>
+      </div>
     </nav>
   );
 }
