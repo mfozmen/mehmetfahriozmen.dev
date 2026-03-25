@@ -30,6 +30,57 @@ function CloseIcon() {
   );
 }
 
+function MobileDrawer({ open, onClose }: Readonly<{ open: boolean; onClose: () => void }>) {
+  return (
+    <>
+      {/* Overlay */}
+      <button
+        type="button"
+        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 sm:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        onClick={onClose}
+        aria-label="Close menu"
+        tabIndex={open ? 0 : -1}
+      />
+
+      {/* Panel — div+role="dialog" instead of native <dialog>: UA styles override Tailwind positioning */}
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
+        role="dialog" // NOSONAR
+        aria-modal={open || undefined}
+        aria-hidden={!open}
+        aria-label="Navigation menu"
+        inert={!open || undefined}
+      >
+        <div className="flex items-center justify-between px-6 py-5">
+          <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
+            Menu
+          </span>
+          <button
+            onClick={onClose}
+            className="text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
+            aria-label="Close menu"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+        <ul className="mt-4 flex flex-col gap-1 px-4">
+          {links.map((link) => (
+            <li key={link.label}>
+              <Link
+                href={link.href}
+                onClick={onClose}
+                className="block rounded-lg px-3 py-3 text-sm text-neutral-300 transition-colors hover:bg-[#BA7517]/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+}
+
 export default function Navigation() {
   const [open, setOpen] = useState(false);
 
@@ -62,50 +113,7 @@ export default function Navigation() {
         <HamburgerIcon />
       </button>
 
-      {/* Mobile drawer overlay */}
-      <button
-        type="button"
-        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 sm:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
-        onClick={() => setOpen(false)}
-        aria-label="Close menu"
-        tabIndex={open ? 0 : -1}
-      />
-
-      {/* Mobile drawer panel — div+role="dialog" instead of native <dialog>: UA styles override Tailwind positioning */}
-      <div
-        className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
-        role="dialog"
-        aria-modal={open || undefined}
-        aria-hidden={!open}
-        aria-label="Navigation menu"
-        inert={!open || undefined}
-      >
-        <div className="flex items-center justify-between px-6 py-5">
-          <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
-            Menu
-          </span>
-          <button
-            onClick={() => setOpen(false)}
-            className="text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
-            aria-label="Close menu"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-        <ul className="mt-4 flex flex-col gap-1 px-4">
-          {links.map((link) => (
-            <li key={link.label}>
-              <Link
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-3 text-sm text-neutral-300 transition-colors hover:bg-[#BA7517]/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <MobileDrawer open={open} onClose={() => setOpen(false)} />
     </nav>
   );
 }
