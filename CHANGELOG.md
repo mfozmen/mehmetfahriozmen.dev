@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.12.0...v0.13.0) (2026-03-25)
+
+### Features
+
+* **contact:** add contact page with Formspree form ([3682870](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/368287052598d991f108db1370e532b9b4ce0db8))
+
+### Bug Fixes
+
+* **contact:** add required indicators, focus management, success actions ([73070a9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/73070a98869ce8ceebdb52e4ede223e958aeff4d))
+* **contact:** guard empty Formspree URL, fix form reset, remove dead code ([593762e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/593762e6b484e89a21e5a6831c6b9845f37b9671))
+* **contact:** resolve SonarCloud issues — regex security, deprecated API ([29b445f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/29b445f3c0365aec5e19c3a4391871e5457ee649))
+
 ## [0.12.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.11.0...v0.12.0) (2026-03-25)
 
 ### Features
