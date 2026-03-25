@@ -65,7 +65,7 @@ function DeepSpaceFooter() {
       <p className="mt-3 text-center">
         <Link
           href="/about"
-          className="group relative inline-block font-mono text-[12px] tracking-[0.12em] text-[#BA7517]/35 transition-colors hover:text-[#BA7517]/70"
+          className="group relative inline-block font-mono text-[12px] tracking-[0.12em] text-[#BA7517]/50 transition-colors hover:text-[#BA7517]/80"
         >
           <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
           <span className="relative">follow the light →</span>
