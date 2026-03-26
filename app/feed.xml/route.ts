@@ -7,8 +7,8 @@ export function GET() {
 
   const items = posts.map((post) => `    <item>
       <title>${escapeXml(post.title)}</title>
-      <link>${SITE_URL}/writing/${post.slug}</link>
-      <guid isPermaLink="true">${SITE_URL}/writing/${post.slug}</guid>
+      <link>${SITE_URL}/writing/${escapeXml(post.slug)}</link>
+      <guid isPermaLink="true">${SITE_URL}/writing/${escapeXml(post.slug)}</guid>
       <description>${escapeXml(post.excerpt)}</description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     </item>`).join("\n");
@@ -34,5 +34,5 @@ ${items}
 }
 
 function escapeXml(str: string): string {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  return str.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
