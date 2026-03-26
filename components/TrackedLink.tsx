@@ -37,8 +37,8 @@ export function TrackedNextLink({
   return (
     <Link
       href={href}
-      onClick={() => trackEvent(eventName, eventData)}
       {...props}
+      onClick={() => trackEvent(eventName, eventData)}
     >
       {children}
     </Link>
