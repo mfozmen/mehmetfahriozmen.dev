@@ -8,9 +8,9 @@ import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch — send a message or connect directly.",
+  description: "Get in touch with Mehmet Fahri Özmen — send a message via the contact form or connect directly on LinkedIn, GitHub, or X.",
   alternates: { canonical: "/contact" },
-  openGraph: { title: "Contact — Mehmet Fahri Özmen", description: "Get in touch — send a message or connect directly." },
+  openGraph: { type: "website", title: "Contact — Mehmet Fahri Özmen", description: "Get in touch with Mehmet Fahri Özmen — send a message via the contact form or connect directly on LinkedIn, GitHub, or X.", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 function DirectChannels() {

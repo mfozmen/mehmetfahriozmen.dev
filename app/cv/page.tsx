@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "CV",
   description: "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems across e-commerce, ad-tech, edtech, and productivity.",
   alternates: { canonical: "/cv" },
-  openGraph: { title: "CV — Mehmet Fahri Özmen", description: "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems." },
+  openGraph: { type: "website", title: "CV — Mehmet Fahri Özmen", description: "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems across e-commerce, ad-tech, edtech, and productivity.", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 function CvBottomCtas() {

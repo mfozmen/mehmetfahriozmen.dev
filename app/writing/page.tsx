@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Writing",
   description: "Thoughts on engineering leadership, architecture, and the human side of building software.",
   alternates: { canonical: "/writing" },
-  openGraph: { title: "Writing — Mehmet Fahri Özmen", description: "Thoughts on engineering leadership, architecture, and the human side of building software." },
+  openGraph: { type: "website", title: "Writing — Mehmet Fahri Özmen", description: "Thoughts on engineering leadership, architecture, and the human side of building software.", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 function PostCard({ post }: Readonly<{ post: PostMeta }>) {

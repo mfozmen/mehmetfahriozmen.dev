@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "About",
   description: "The story behind the systems — from a Commodore 64 to backend architecture at scale.",
   alternates: { canonical: "/about" },
-  openGraph: { title: "About — Mehmet Fahri Özmen", description: "The story behind the systems — from a Commodore 64 to backend architecture at scale." },
+  openGraph: { type: "website", title: "About — Mehmet Fahri Özmen", description: "The story behind the systems — from a Commodore 64 to backend architecture at scale.", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 export default function AboutPage() {

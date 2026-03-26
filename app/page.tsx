@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: { absolute: "Mehmet Fahri Özmen — Backend Systems Architect" },
   description: "I build the things you don't see — distributed systems, search engines, payment flows, and the teams behind them.",
   alternates: { canonical: "/" },
+  openGraph: { description: "I build the things you don't see — distributed systems, search engines, payment flows, and the teams behind them." },
 };
 
 export default function Home() {
