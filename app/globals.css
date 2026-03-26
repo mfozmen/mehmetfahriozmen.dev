@@ -18,6 +18,12 @@ body {
   border-radius: 2px;
 }
 
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+}
+
 @keyframes pulse-signal {
   0%, 100% { opacity: 0.15; }
   50% { opacity: 0.4; }
