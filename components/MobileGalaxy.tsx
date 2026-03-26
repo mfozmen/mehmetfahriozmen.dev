@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { useGalaxySetup } from "./useGalaxySetup";
 import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
+import { trackEvent } from "@/lib/analytics";
 import { hitTest } from "@/lib/galaxyInteraction";
 import { prepareFrame } from "@/lib/galaxyAnimationSetup";
 import { clampZoom, clampPan, computePinchZoom, isDoubleTap } from "@/lib/galaxyTouch";
@@ -125,6 +126,7 @@ export default function MobileGalaxy() {
     const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current, techClusterPositionOverrides: techClusterMobilePositions });
     if (hit) {
       if (hit.id === hoveredIdRef.current && hit.type === "system" && hit.item.url) {
+        trackEvent("galaxy-system-click", { system: hit.item.name });
         window.open(hit.item.url, "_blank");
       } else {
         setHoveredId(hit.id);
