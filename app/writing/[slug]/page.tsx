@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import { getAllPosts, getPostBySlug, getReadingTime, formatDate } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type Post } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
@@ -72,8 +72,17 @@ export async function generateMetadata(
   const post = getPostBySlug(slug);
   if (!post) return {};
   return {
-    title: `${post.title} — Mehmet Fahri Özmen`,
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/writing/${slug}` },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      url: `/writing/${slug}`,
+      publishedTime: post.date,
+      authors: ["Mehmet Fahri Özmen"],
+    },
   };
 }
 
@@ -137,6 +146,29 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
   );
 }
 
+function buildArticleSchema(post: Post, slug: string) {
+  return {
+    "@context": "https://schema.org", "@type": "Article",
+    headline: post.title, description: post.excerpt,
+    image: `https://mehmetfahriozmen.dev${post.coverImage}`,
+    datePublished: post.date,
+    author: { "@type": "Person", name: "Mehmet Fahri Özmen", url: "https://mehmetfahriozmen.dev" },
+    publisher: { "@type": "Person", name: "Mehmet Fahri Özmen" },
+    url: `https://mehmetfahriozmen.dev/writing/${slug}`,
+  };
+}
+
+function buildBreadcrumbSchema(title: string) {
+  return {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://mehmetfahriozmen.dev" },
+      { "@type": "ListItem", position: 2, name: "Writing", item: "https://mehmetfahriozmen.dev/writing" },
+      { "@type": "ListItem", position: 3, name: title },
+    ],
+  };
+}
+
 export default async function PostPage(
   { params }: Readonly<{ params: Promise<{ slug: string }> }>
 ) {
@@ -146,6 +178,8 @@ export default async function PostPage(
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post, slug)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema(post.title)) }} />
       <ReadingProgress />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content

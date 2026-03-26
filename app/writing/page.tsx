@@ -9,9 +9,10 @@ import SectionTitle from "@/components/SectionTitle";
 import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
-  title: "Writing — Mehmet Fahri Özmen",
-  description:
-    "Thoughts on engineering leadership, architecture, and the human side of building software.",
+  title: "Writing",
+  description: "Thoughts on engineering leadership, architecture, and the human side of building software.",
+  alternates: { canonical: "/writing" },
+  openGraph: { title: "Writing — Mehmet Fahri Özmen", description: "Thoughts on engineering leadership, architecture, and the human side of building software." },
 };
 
 function PostCard({ post }: Readonly<{ post: PostMeta }>) {
@@ -42,11 +43,32 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
   );
 }
 
+function CollectionJsonLd({ posts }: Readonly<{ posts: PostMeta[] }>) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Writing — Mehmet Fahri Özmen",
+    description: "Thoughts on engineering leadership, architecture, and the human side of building software.",
+    url: "https://mehmetfahriozmen.dev/writing",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: posts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://mehmetfahriozmen.dev/writing/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
 export default function WritingPage() {
   const posts = getAllPosts();
 
   return (
     <>
+      <CollectionJsonLd posts={posts} />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
       </a>

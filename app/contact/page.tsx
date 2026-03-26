@@ -7,8 +7,10 @@ import SectionTitle from "@/components/SectionTitle";
 import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Mehmet Fahri Özmen",
+  title: "Contact",
   description: "Get in touch — send a message or connect directly.",
+  alternates: { canonical: "/contact" },
+  openGraph: { title: "Contact — Mehmet Fahri Özmen", description: "Get in touch — send a message or connect directly." },
 };
 
 function DirectChannels() {

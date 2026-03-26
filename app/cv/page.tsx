@@ -12,9 +12,10 @@ import CvEducation from "@/components/cv/CvEducation";
 import CvLanguages from "@/components/cv/CvLanguages";
 
 export const metadata: Metadata = {
-  title: "CV — Mehmet Fahri Özmen",
-  description:
-    "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems across e-commerce, ad-tech, edtech, and productivity.",
+  title: "CV",
+  description: "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems across e-commerce, ad-tech, edtech, and productivity.",
+  alternates: { canonical: "/cv" },
+  openGraph: { title: "CV — Mehmet Fahri Özmen", description: "Backend Systems Architect & Engineering Leader. 12+ years building scalable systems." },
 };
 
 function CvBottomCtas() {
@@ -33,9 +34,26 @@ function CvBottomCtas() {
   );
 }
 
+const profileSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Mehmet Fahri Özmen",
+    jobTitle: "Backend Systems Architect & Engineering Leader",
+    url: "https://mehmetfahriozmen.dev",
+    sameAs: [
+      "https://github.com/mfozmen",
+      "https://linkedin.com/in/mfozmen",
+      "https://x.com/mfozmen",
+    ],
+  },
+};
+
 export default function CvPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }} />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
       </a>

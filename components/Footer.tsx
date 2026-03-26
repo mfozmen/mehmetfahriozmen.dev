@@ -30,7 +30,7 @@ export default function Footer() {
         <a
           href="https://github.com/mfozmen"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer me"
           aria-label="GitHub"
           className="text-neutral-500 transition-colors hover:text-white"
         >
@@ -48,7 +48,7 @@ export default function Footer() {
         <a
           href="https://linkedin.com/in/mfozmen"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer me"
           aria-label="LinkedIn"
           className="text-neutral-500 transition-colors hover:text-white"
         >
@@ -66,7 +66,7 @@ export default function Footer() {
         <a
           href="https://x.com/mfozmen"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer me"
           aria-label="X"
           className="text-neutral-500 transition-colors hover:text-white"
         >

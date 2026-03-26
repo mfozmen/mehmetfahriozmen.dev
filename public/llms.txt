@@ -1,0 +1,40 @@
+# mehmetfahriozmen.dev
+
+## About
+Personal website of Mehmet Fahri Özmen — Backend Systems Architect & Engineering Leader based in İzmir, Turkey. 12+ years building scalable distributed systems across e-commerce, ad-tech, edtech, and productivity.
+
+## Author
+- Name: Mehmet Fahri Özmen
+- Role: Backend Systems Architect & Engineering Leader
+- Location: İzmir, Turkey
+- Education: Computer Engineering, Yaşar University (2006-2011)
+- LinkedIn: https://linkedin.com/in/mfozmen
+- GitHub: https://github.com/mfozmen
+- X/Twitter: https://x.com/mfozmen
+- Email: contact@mehmetfahriozmen.dev
+
+## Key Expertise
+- Backend architecture (Node.js, .NET, Golang, Java)
+- Distributed systems (Kafka, RabbitMQ, microservices)
+- Cloud infrastructure (AWS, Azure, Docker, Kubernetes)
+- Databases (PostgreSQL, Elasticsearch, Redis, MSSQL)
+- Engineering leadership (team building, hiring, mentoring)
+- E-commerce, ad-tech, edtech, productivity domains
+
+## Pages
+- Homepage: https://mehmetfahriozmen.dev — Overview, galaxy visualization of systems, featured projects
+- About: https://mehmetfahriozmen.dev/about — Career story, philosophy, personal interests
+- CV: https://mehmetfahriozmen.dev/cv — Full professional timeline, skills, education
+- Writing: https://mehmetfahriozmen.dev/writing — Blog on engineering leadership
+- Contact: https://mehmetfahriozmen.dev/contact — Contact form and direct channels
+
+## Notable Projects
+- Mobilet: Event ticketing platform, 80K tickets/hour peak capacity
+- VillaSepeti: Vacation rental marketplace with set-theory-based search engine
+- Shubuo: Digital advertising platform with contract-aware ad scheduling
+- MagicPags: Educational platform with real-time learning analytics
+- BeforeSunset AI: Productivity assistant, backend built from scratch
+- Decktopus AI: Presentation platform with serverless architecture
+
+## Writing
+- "The Hardest Refactor: From Engineer to Manager" — On the transition from engineer to engineering leader, covering perfectionism traps, team building with personality diversity (explorer/finisher framework), and the distinction between management and leadership.

@@ -9,9 +9,10 @@ import AboutWork from "@/components/about/AboutWork";
 import AboutLife from "@/components/about/AboutLife";
 
 export const metadata: Metadata = {
-  title: "About — Mehmet Fahri Özmen",
-  description:
-    "The story behind the systems — from a Commodore 64 to backend architecture at scale.",
+  title: "About",
+  description: "The story behind the systems — from a Commodore 64 to backend architecture at scale.",
+  alternates: { canonical: "/about" },
+  openGraph: { title: "About — Mehmet Fahri Özmen", description: "The story behind the systems — from a Commodore 64 to backend architecture at scale." },
 };
 
 export default function AboutPage() {
