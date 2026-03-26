@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.15.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.14.0...v0.15.0) (2026-03-26)
+
+### Features
+
+* **seo:** add BreadcrumbList, RSS feed, rel=me, dynamic OG, CollectionPage ([14e3871](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/14e38714fcdacbf42a6f5c54bb7dfabf2b54bfe3))
+* **seo:** add OG tags, JSON-LD, sitemap, robots, and llms.txt ([75f19ad](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/75f19ad619bd70e8d49e126221a514b9fe2c06c3))
+
+### Bug Fixes
+
+* **seo:** resolve code review issues — title template, dead OG, function length ([2be13d6](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2be13d6c4ffe8556f93c9fba0358e94f92e4a196))
+* **seo:** resolve SonarCloud issues in feed and sitemap ([9d89977](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9d8997723718030a98ab31e1f1d60055ea061a6c))
+
 ## [0.14.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.13.1...v0.14.0) (2026-03-26)
 
 ### Features
