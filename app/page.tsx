@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import SystemsGalaxy from "@/components/SystemsGalaxy";
@@ -5,6 +6,12 @@ import FeaturedSystems from "@/components/FeaturedSystems";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
+
+export const metadata: Metadata = {
+  title: "Mehmet Fahri Özmen — Backend Systems Architect",
+  description: "I build the things you don't see — distributed systems, search engines, payment flows, and the teams behind them.",
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (

@@ -72,8 +72,24 @@ export async function generateMetadata(
   const post = getPostBySlug(slug);
   if (!post) return {};
   return {
-    title: `${post.title} — Mehmet Fahri Özmen`,
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/writing/${slug}` },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      url: `/writing/${slug}`,
+      images: [{ url: post.coverImage, width: 1200, height: 800, alt: post.title }],
+      publishedTime: post.date,
+      authors: ["Mehmet Fahri Özmen"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [post.coverImage],
+    },
   };
 }
 
@@ -144,8 +160,21 @@ export default async function PostPage(
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: `https://mehmetfahriozmen.dev${post.coverImage}`,
+    datePublished: post.date,
+    author: { "@type": "Person", name: "Mehmet Fahri Özmen", url: "https://mehmetfahriozmen.dev" },
+    publisher: { "@type": "Person", name: "Mehmet Fahri Özmen" },
+    url: `https://mehmetfahriozmen.dev/writing/${slug}`,
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <ReadingProgress />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content

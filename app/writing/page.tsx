@@ -9,9 +9,10 @@ import SectionTitle from "@/components/SectionTitle";
 import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
-  title: "Writing — Mehmet Fahri Özmen",
-  description:
-    "Thoughts on engineering leadership, architecture, and the human side of building software.",
+  title: "Writing",
+  description: "Thoughts on engineering leadership, architecture, and the human side of building software.",
+  alternates: { canonical: "/writing" },
+  openGraph: { title: "Writing — Mehmet Fahri Özmen", description: "Thoughts on engineering leadership, architecture, and the human side of building software." },
 };
 
 function PostCard({ post }: Readonly<{ post: PostMeta }>) {
