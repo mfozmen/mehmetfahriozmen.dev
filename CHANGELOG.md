@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.0...v0.15.1) (2026-03-26)
+
+### Bug Fixes
+
+* **seo:** enlarge OG image text for WhatsApp readability ([340fc6c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/340fc6cc74908ab1787d14c8979943daef72b11b))
+
 ## [0.15.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.14.0...v0.15.0) (2026-03-26)
 
 ### Features
