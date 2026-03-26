@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.4](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.3...v0.15.4) (2026-03-26)
+
+### Bug Fixes
+
+* hide Deep Space CTA decorative elements on mobile to prevent text wrap ([3c2bf1f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3c2bf1f7e4b72c965c983e0268a072c5e843a8ab))
+
 ## [0.15.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.2...v0.15.3) (2026-03-26)
 
 ### Bug Fixes
