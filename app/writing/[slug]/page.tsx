@@ -10,6 +10,7 @@ import { getAllPosts, getPostBySlug, getReadingTime, formatDate } from "@/lib/po
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
+import ReadingProgress from "@/components/writing/ReadingProgress";
 
 /* Fix #2: Keep star + amber mono but shorten gradient line for article h2s */
 function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
@@ -145,6 +146,7 @@ export default async function PostPage(
 
   return (
     <>
+      <ReadingProgress />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
       </a>

@@ -18,7 +18,8 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 ## Features
 
 - Interactive galaxy visualization (Canvas API) with hover interactions, satellite animations, and parallax effects
-- MDX blog with next-mdx-remote, cover images, reading time, and social sharing
+- MDX blog with next-mdx-remote, cover images, reading time, progress bar, and social sharing
+- Smooth scroll navigation with reduced-motion support
 - Contact form with Formspree integration, client-side validation, and focus management
 - Mobile navigation drawer with keyboard accessibility and touch support
 - Responsive design with dark theme and amber accent palette
