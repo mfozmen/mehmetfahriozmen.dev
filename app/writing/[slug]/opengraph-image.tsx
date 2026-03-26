@@ -9,7 +9,6 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const { slug } = await params;
   const post = getPostBySlug(slug);
   const title = post?.title ?? "Writing";
-  const excerpt = post?.excerpt ?? "";
 
   return new ImageResponse(
     (
@@ -19,8 +18,8 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "80px",
+          justifyContent: "center",
+          padding: "60px 80px",
           background: "#0a0a0a",
           fontFamily: "sans-serif",
         }}
@@ -31,59 +30,30 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
             top: 0,
             left: 0,
             right: 0,
-            height: "4px",
-            background: "linear-gradient(90deg, transparent, #BA7517, transparent)",
+            height: "6px",
+            background: "linear-gradient(90deg, transparent 10%, #BA7517 50%, transparent 90%)",
           }}
         />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: "#BA7517",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase" as const,
-              marginBottom: 24,
-            }}
-          >
-            mehmetfahriozmen.dev/writing
-          </div>
-          <div
-            style={{
-              fontSize: 48,
-              fontWeight: 700,
-              color: "#ffffff",
-              lineHeight: 1.15,
-              maxWidth: 900,
-            }}
-          >
-            {title}
-          </div>
-          {excerpt && (
-            <div
-              style={{
-                fontSize: 22,
-                color: "#737373",
-                marginTop: 20,
-                fontStyle: "italic",
-              }}
-            >
-              {excerpt}
-            </div>
-          )}
+        <div
+          style={{
+            fontSize: 72,
+            fontWeight: 800,
+            color: "#ffffff",
+            lineHeight: 1.1,
+            marginBottom: 28,
+            maxWidth: 1000,
+          }}
+        >
+          {title}
         </div>
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
-            fontSize: 18,
-            color: "#a3a3a3",
+            fontSize: 32,
+            fontWeight: 500,
+            color: "#BA7517",
           }}
         >
-          <span style={{ fontWeight: 600, color: "#ffffff" }}>Mehmet Fahri Özmen</span>
-          <span style={{ color: "#BA7517" }}>·</span>
-          <span>Backend Systems Architect</span>
+          Mehmet Fahri Özmen
         </div>
       </div>
     ),
