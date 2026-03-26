@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.13.0...v0.13.1) (2026-03-26)
+
+### Bug Fixes
+
+* **footer:** make brand text a link to homepage ([ec73dc0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ec73dc0973c887adbd048d6ac4a3a8b6664f9ddd))
+* **nav:** resolve 4 remaining issues from navigation audit ([82d92c5](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/82d92c5d700ea5d8fcc8002d0665365a834548df))
+
 ## [0.13.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.12.0...v0.13.0) (2026-03-25)
 
 ### Features
