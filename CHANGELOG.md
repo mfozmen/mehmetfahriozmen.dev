@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.13.1...v0.14.0) (2026-03-26)
+
+### Features
+
+* add smooth scroll and reading progress bar ([3df39ca](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3df39cad9089d033c6d4a889c538b8296530e3cf))
+* add smooth scroll with reduced-motion support ([0be9129](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0be9129647716cf3943e36b21bdbc432ce7e148c))
+
 ## [0.13.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.13.0...v0.13.1) (2026-03-26)
 
 ### Bug Fixes
