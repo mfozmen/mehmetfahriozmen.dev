@@ -3,12 +3,13 @@
 import { useState } from "react";
 import CvSection from "./CvSection";
 import { cvExperience, cvEarlierRoles, type CvExperienceEntry } from "@/data/cvData";
+import { trackEvent } from "@/lib/analytics";
 
 const linkCls = "border-b border-dashed border-[#BA7517]/40 pb-px transition-all hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]";
 
-function CvLink({ href, children, className = "" }: Readonly<{ href: string; children: React.ReactNode; className?: string }>) {
+function CvLink({ href, children, className = "", onClick }: Readonly<{ href: string; children: React.ReactNode; className?: string; onClick?: () => void }>) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`${linkCls} ${className}`}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`${linkCls} ${className}`} onClick={onClick}>
       {children}
     </a>
   );
@@ -63,7 +64,7 @@ function TimelineDot({ index }: Readonly<{ index: number }>) {
 
 function CompanyHeader({ name, url }: Readonly<{ name: string; url?: string }>) {
   const cls = "text-[15px] font-semibold text-[#BA7517]";
-  if (url) return <CvLink href={url} className={cls}>{name}</CvLink>;
+  if (url) return <CvLink href={url} className={cls} onClick={() => trackEvent("cv-company-click", { company: name })}>{name}</CvLink>;
   return <span className={cls}>{name}</span>;
 }
 
@@ -98,7 +99,7 @@ function ProjectList({ projects }: Readonly<{ projects: CvExperienceEntry["proje
       ))}
       {hiddenCount > 0 && !showAll && (
         <button
-          onClick={() => setShowAll(true)}
+          onClick={() => { setShowAll(true); trackEvent("cv-more-projects-toggle"); }}
           className="ml-1 text-[11px] text-[#BA7517]/60 transition-colors hover:text-[#BA7517]"
         >
           and {hiddenCount} more projects
