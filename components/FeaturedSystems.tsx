@@ -53,14 +53,14 @@ function DeepSpaceFooter() {
         className="mt-12 mb-8 h-px"
         style={{ background: "linear-gradient(90deg, transparent 5%, rgba(186,117,23,0.35) 50%, transparent 95%)" }}
       />
-      <p className="text-center font-mono text-[11px] tracking-[0.12em] text-[#525252]">
-        <span className="text-[#404040]">· · ·</span>
+      <p className="text-center font-mono text-[11px] tracking-normal text-[#525252] sm:tracking-[0.12em]">
+        <span className="hidden text-[#404040] sm:inline">· · ·</span>
         {" "}
-        <span className="animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040]">──</span>
+        <span className="hidden animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040] sm:inline">──</span>
         {" "}there&apos;s more beyond the visible spectrum{" "}
-        <span className="animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040]">──</span>
+        <span className="hidden animate-[pulse-signal_4s_ease-in-out_infinite] text-[#404040] sm:inline">──</span>
         {" "}
-        <span className="text-[#404040]">· · ·</span>
+        <span className="hidden text-[#404040] sm:inline">· · ·</span>
       </p>
       <p className="mt-3 text-center">
         <Link
