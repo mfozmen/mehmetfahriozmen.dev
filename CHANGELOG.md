@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.1...v0.15.2) (2026-03-26)
+
+### Bug Fixes
+
+* **seo:** expand blog post excerpt for LinkedIn meta description ([ae780ae](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ae780ae5ea9defd9b4e912e939f2b900b9bc5ee7))
+
 ## [0.15.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.0...v0.15.1) (2026-03-26)
 
 ### Bug Fixes
