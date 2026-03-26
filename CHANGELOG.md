@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.17.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.16.0...v0.17.0) (2026-03-26)
+
+### Features
+
+* add Umami custom event tracking across the site ([2ad0c16](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/2ad0c16353ab2ee35b32af17aaf43f50d19c2e46))
+
+### Bug Fixes
+
+* add analytics tests, fix TrackedAnchor onClick bug, extract Footer SocialLinks ([95a439d](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/95a439d8beb4526efee7f97ac73ca0f63fa37dad))
+* TrackedNextLink onClick ordering and blog post CTA page path ([5dbd27e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5dbd27ef4722e9be82b16c875543754fcf2b481c))
+* use globalThis.window instead of window (sonar S7764) ([65da61e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/65da61ec35d8d39bb7c48e916a57df135e141da7))
+* use optional chaining in trackEvent (sonar S6582, S7741) ([c25439e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c25439ef5092d2a85fff368eecd51808a8153dd2))
+
 ## [0.16.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.4...v0.16.0) (2026-03-26)
 
 ### Features
