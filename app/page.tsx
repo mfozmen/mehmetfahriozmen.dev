@@ -8,7 +8,7 @@ import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 
 export const metadata: Metadata = {
-  title: "Mehmet Fahri Özmen — Backend Systems Architect",
+  title: { absolute: "Mehmet Fahri Özmen — Backend Systems Architect" },
   description: "I build the things you don't see — distributed systems, search engines, payment flows, and the teams behind them.",
   alternates: { canonical: "/" },
 };
