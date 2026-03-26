@@ -1,17 +1,19 @@
-import Link from "next/link";
 import { projects, type Project } from "@/data/projects";
 import { domains } from "@/data/domains";
 import SectionTitle from "@/components/SectionTitle";
+import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 const domainNames = new Map(domains.map((d) => [d.id, d.name]));
 const primarySystems = projects.filter((p) => p.importance === "primary");
 
 function SystemCard({ system }: Readonly<{ system: Project }>) {
   return (
-    <a
-      href={system.url}
+    <TrackedAnchor
+      href={system.url ?? "#"}
       target="_blank"
       rel="noopener noreferrer"
+      eventName="featured-system-click"
+      eventData={{ system: system.name }}
       className="group relative rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
     >
       <h3 className="text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
@@ -42,7 +44,7 @@ function SystemCard({ system }: Readonly<{ system: Project }>) {
           ))}
         </ul>
       )}
-    </a>
+    </TrackedAnchor>
   );
 }
 
@@ -63,13 +65,15 @@ function DeepSpaceFooter() {
         <span className="hidden text-[#404040] sm:inline">· · ·</span>
       </p>
       <p className="mt-3 text-center">
-        <Link
+        <TrackedNextLink
           href="/about"
+          eventName="cta-click"
+          eventData={{ cta: "follow the light", page: "/" }}
           className="group relative inline-block font-mono text-[12px] tracking-[0.12em] text-[#BA7517]/50 transition-colors hover:text-[#BA7517]/80"
         >
           <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
           <span className="relative">follow the light →</span>
-        </Link>
+        </TrackedNextLink>
       </p>
     </>
   );

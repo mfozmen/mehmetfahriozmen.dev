@@ -23,6 +23,7 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - Contact form with Formspree integration, client-side validation, and focus management
 - Mobile navigation drawer with keyboard accessibility and touch support
 - Responsive design with dark theme and amber accent palette
+- Umami analytics with custom event tracking (CTA clicks, system cards, social links, CV interactions)
 - WCAG AA contrast compliance across all pages
 - Skip-to-content links, focus rings, and reduced-motion support
 
@@ -35,6 +36,7 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - **next-mdx-remote** + **gray-matter** for blog
 - **Formspree** for contact form
 - **Vitest** with v8 coverage
+- **Umami** for privacy-friendly analytics
 - **SonarCloud** for code quality
 
 ## Scripts
