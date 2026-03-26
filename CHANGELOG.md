@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.2...v0.15.3) (2026-03-26)
+
+### Bug Fixes
+
+* **seo:** add og:image and og:type to all pages, expand descriptions ([d91049e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d91049e1de1cdacd80dc40a5b2060969ce0eb4f8))
+
 ## [0.15.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.1...v0.15.2) (2026-03-26)
 
 ### Bug Fixes
