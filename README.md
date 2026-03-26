@@ -56,3 +56,12 @@ npm run release        # Bump version, tag, push to main
 - **Release:** `npm run release` (on dev) → bumps version, tags, pushes to main → Vercel production deploy
 - **GitHub Release:** auto-created by CI on tag push
 - **Rollback:** Vercel dashboard → Deployments → Promote old deployment
+
+## Blog Post SEO Checklist
+
+When creating or editing MDX files in `content/writing/`, verify frontmatter before committing:
+
+- `title` — under 60 characters
+- `description` — at least 100 characters
+- `coverImage` — must be set
+- `date` — ISO format (`YYYY-MM-DD`)
