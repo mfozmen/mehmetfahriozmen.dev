@@ -9,7 +9,7 @@ const internalLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neutral-800 px-6 py-12 text-center">
+    <footer className="border-t border-[#BA7517]/10 px-6 py-12 text-center">
       <span className="text-2xl font-bold tracking-tight text-white">MFÖ</span>
       <p className="mt-3 text-sm text-neutral-500">
         No, not the band. But sometimes I ship hits too.
@@ -19,13 +19,13 @@ export default function Footer() {
           <Link
             key={link.label}
             href={link.href}
-            className="text-xs text-neutral-500 transition-colors hover:text-neutral-300"
+            className="text-sm text-neutral-500 transition-colors hover:text-[#BA7517]"
           >
             {link.label}
           </Link>
         ))}
       </div>
-      <div className="mt-4 flex items-center justify-center gap-6">
+      <div className="mt-6 flex items-center justify-center gap-6">
         {/* GitHub */}
         <a
           href="https://github.com/mfozmen"
