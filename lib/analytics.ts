@@ -7,7 +7,5 @@ declare global {
 }
 
 export function trackEvent(eventName: string, eventData?: Record<string, string>) {
-  if (typeof globalThis.window !== "undefined" && globalThis.window.umami) {
-    globalThis.window.umami.track(eventName, eventData);
-  }
+  globalThis.window?.umami?.track(eventName, eventData);
 }
