@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.16.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.4...v0.16.0) (2026-03-26)
+
+### Features
+
+* add Umami analytics tracking script ([6f79c2e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6f79c2ea60a9705d77905024c21a7b1e60d80bbe))
+
 ## [0.15.4](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.15.3...v0.15.4) (2026-03-26)
 
 ### Bug Fixes
