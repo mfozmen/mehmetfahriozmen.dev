@@ -15,12 +15,12 @@ export function TrackedAnchor({
   eventData,
   children,
   ...props
-}: TrackedProps & React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) {
+}: TrackedProps & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick"> & { href: string }) {
   return (
     <a
       href={href}
-      onClick={() => trackEvent(eventName, eventData)}
       {...props}
+      onClick={() => trackEvent(eventName, eventData)}
     >
       {children}
     </a>
