@@ -90,6 +90,17 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Rollback: Vercel dashboard → Deployments → Promote old deployment
 - On release, main and dev are synced to the same commit
 
+## Blog Post SEO Checklist
+
+When creating or editing blog posts (MDX files in `content/writing/`), verify ALL of the following before committing:
+
+1. **`description`** — at least 100 characters
+2. **`coverImage`** — must be set (non-empty)
+3. **`date`** — must be in ISO format (`YYYY-MM-DD`)
+4. **`title`** — must be under 60 characters
+
+If any check fails, fix it before committing.
+
 ## Graph Data Architecture
 
 The systems visualization uses a 3-layer orbital layout with data defined in `data/systemsGraph.ts`.
