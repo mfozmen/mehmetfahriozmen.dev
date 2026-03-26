@@ -1,10 +1,30 @@
+import Link from "next/link";
+
+const internalLinks = [
+  { label: "About", href: "/about" },
+  { label: "CV", href: "/cv" },
+  { label: "Writing", href: "/writing" },
+  { label: "Contact", href: "/contact" },
+];
+
 export default function Footer() {
   return (
-    <footer className="border-t border-neutral-800 px-6 py-12 text-center">
-      <span className="text-2xl font-bold tracking-tight text-white">MFÖ</span>
+    <footer className="border-t border-[#BA7517]/10 px-6 py-12 text-center">
+      <Link href="/" className="text-2xl font-bold tracking-tight text-white transition-colors hover:text-[#BA7517]">MFÖ</Link>
       <p className="mt-3 text-sm text-neutral-500">
         No, not the band. But sometimes I ship hits too.
       </p>
+      <div className="mt-6 flex items-center justify-center gap-6">
+        {internalLinks.map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className="text-sm text-neutral-500 transition-colors hover:text-[#BA7517]"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
       <div className="mt-6 flex items-center justify-center gap-6">
         {/* GitHub */}
         <a

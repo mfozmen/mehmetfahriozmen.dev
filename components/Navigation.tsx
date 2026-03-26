@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
   { label: "Systems", href: "/#systems" },
@@ -30,10 +31,29 @@ function CloseIcon() {
   );
 }
 
-function MobileDrawer({ open, onClose }: Readonly<{ open: boolean; onClose: () => void }>) {
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/#systems") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
+
+function DrawerHeader({ onClose }: Readonly<{ onClose: () => void }>) {
+  return (
+    <div className="flex items-center justify-between px-6 py-5">
+      <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">Menu</span>
+      <button
+        onClick={onClose}
+        className="text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
+        aria-label="Close menu"
+      >
+        <CloseIcon />
+      </button>
+    </div>
+  );
+}
+
+function MobileDrawer({ open, onClose, pathname }: Readonly<{ open: boolean; onClose: () => void; pathname: string }>) {
   return (
     <>
-      {/* Overlay */}
       <button
         type="button"
         className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 sm:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
@@ -41,8 +61,6 @@ function MobileDrawer({ open, onClose }: Readonly<{ open: boolean; onClose: () =
         aria-label="Close menu"
         tabIndex={open ? 0 : -1}
       />
-
-      {/* Panel — div+role="dialog" instead of native <dialog>: UA styles override Tailwind positioning */}
       <div
         className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#0a0a0a] border-l border-[#BA7517]/10 transition-transform duration-300 ease-out sm:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
         role="dialog" // NOSONAR
@@ -51,30 +69,23 @@ function MobileDrawer({ open, onClose }: Readonly<{ open: boolean; onClose: () =
         aria-label="Navigation menu"
         inert={!open || undefined}
       >
-        <div className="flex items-center justify-between px-6 py-5">
-          <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">
-            Menu
-          </span>
-          <button
-            onClick={onClose}
-            className="text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
-            aria-label="Close menu"
-          >
-            <CloseIcon />
-          </button>
-        </div>
+        <DrawerHeader onClose={onClose} />
         <ul className="mt-4 flex flex-col gap-1 px-4">
-          {links.map((link) => (
-            <li key={link.label}>
-              <Link
-                href={link.href}
-                onClick={onClose}
-                className="block rounded-lg px-3 py-3 text-sm text-neutral-300 transition-colors hover:bg-[#BA7517]/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {links.map((link) => {
+            const active = isActive(pathname, link.href);
+            return (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  onClick={onClose}
+                  className={`block rounded-lg px-3 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 ${active ? "text-[#BA7517] bg-[#BA7517]/[0.06]" : "text-neutral-300 hover:bg-[#BA7517]/[0.06] hover:text-white"}`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </>
@@ -83,6 +94,7 @@ function MobileDrawer({ open, onClose }: Readonly<{ open: boolean; onClose: () =
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="relative z-50 flex items-center justify-between px-6 py-5 sm:px-10">
@@ -92,16 +104,20 @@ export default function Navigation() {
 
       {/* Desktop links */}
       <ul className="hidden items-center gap-8 sm:flex">
-        {links.map((link) => (
-          <li key={link.label}>
-            <Link
-              href={link.href}
-              className="text-sm text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] rounded-sm"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        {links.map((link) => {
+          const active = isActive(pathname, link.href);
+          return (
+            <li key={link.label}>
+              <Link
+                href={link.href}
+                className={`text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] rounded-sm ${active ? "text-[#BA7517] font-medium" : "text-neutral-400 hover:text-white"}`}
+                aria-current={active ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
 
       {/* Mobile hamburger */}
@@ -113,7 +129,7 @@ export default function Navigation() {
         <HamburgerIcon />
       </button>
 
-      <MobileDrawer open={open} onClose={() => setOpen(false)} />
+      <MobileDrawer open={open} onClose={() => setOpen(false)} pathname={pathname} />
     </nav>
   );
 }
