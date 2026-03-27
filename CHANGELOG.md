@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.18.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.17.1...v0.18.0) (2026-03-27)
+
+### Features
+
+* **analytics:** track CV PDF download clicks ([43557eb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/43557eb7218ca44fc9ee0224885eca5953b5c0fc))
+
 ## [0.17.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.17.0...v0.17.1) (2026-03-27)
 
 ### Bug Fixes
