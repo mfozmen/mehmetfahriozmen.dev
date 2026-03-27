@@ -213,7 +213,7 @@ export const cvExperience: CvExperienceEntry[] = [
     role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
     company: "Datagen",
-    companyUrl: "https://datagen.com.tr/",
+    companyUrl: "https://www.datagen.com.tr/",
     roles: [
       {
         title: "Senior Software Engineer",

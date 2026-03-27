@@ -69,7 +69,7 @@ function CompanyHeader({ name, url }: Readonly<{ name: string; url?: string }>) 
 }
 
 function ProjectName({ name, url }: Readonly<{ name: string; url?: string }>) {
-  if (url) return <CvLink href={url} className="font-semibold text-[#e5e5e5]">{name}</CvLink>;
+  if (url) return <CvLink href={url} className="font-semibold text-[#e5e5e5]" onClick={() => trackEvent("cv-project-click", { project: name })}>{name}</CvLink>;
   return <span className="font-semibold text-[#e5e5e5]">{name}</span>;
 }
 
@@ -149,7 +149,7 @@ function EntryCard({ entry, index }: Readonly<{ entry: CvExperienceEntry; index:
           <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
             <div className="text-[13px]">
               {entry.subEntry.companyUrl ? (
-                <CvLink href={entry.subEntry.companyUrl} className="font-semibold text-[#BA7517]">{entry.subEntry.company}</CvLink>
+                <CvLink href={entry.subEntry.companyUrl} className="font-semibold text-[#BA7517]" onClick={() => trackEvent("cv-company-click", { company: entry.subEntry?.company ?? entry.company })}>{entry.subEntry.company}</CvLink>
               ) : (
                 <span className="font-semibold text-[#BA7517]">{entry.subEntry.company}</span>
               )}
@@ -216,7 +216,7 @@ export default function CvExperience() {
                   <div key={`${entry.company}-${entry.date}`} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
                     <span className="text-[12px]">
                       {entry.companyUrl ? (
-                        <CvLink href={entry.companyUrl} className="text-[#BA7517]">{entry.company}</CvLink>
+                        <CvLink href={entry.companyUrl} className="text-[#BA7517]" onClick={() => trackEvent("cv-company-click", { company: entry.company })}>{entry.company}</CvLink>
                       ) : (
                         <span className="text-[#BA7517]">{entry.company}</span>
                       )}

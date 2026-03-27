@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { useGalaxySetup } from "./useGalaxySetup";
 import { renderGalaxyFrame } from "@/lib/galaxyRenderLoop";
+import { trackEvent } from "@/lib/analytics";
 import { hitTest } from "@/lib/galaxyInteraction";
 import { prepareFrame } from "@/lib/galaxyAnimationSetup";
 
@@ -93,6 +94,7 @@ export default function DesktopGalaxy() {
     const { width: w, height: h } = dimensions;
     const hit = hitTest({ mx, my, time: timeRef.current, w, h, cx: w / 2, cy: h / 2, sf: sfRef.current });
     if (hit?.type === "system" && hit.item.url) {
+      trackEvent("galaxy-system-click", { system: hit.item.name });
       window.open(hit.item.url, "_blank");
     }
   }
