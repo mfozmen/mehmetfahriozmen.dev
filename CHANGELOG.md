@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.20.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.19.0...v0.20.0) (2026-03-27)
+
+### Features
+
+* **blog:** add "Everyone's an Accidental Engineering Manager Now" post ([635f0d3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/635f0d3e810cff2881ccdb0709377498b7a463e6))
+
+### Bug Fixes
+
+* **blog:** add opening blockquote hook and update matching tagline ([1a7aad0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1a7aad01651e3b9c4fbf05841dca7163ea2359ca))
+* **blog:** replace section dividers with headings, update image captions ([f0584ae](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f0584ae62bd57c9aee0aa9776316d6ca13bbba7b))
+
 ## [0.19.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.18.0...v0.19.0) (2026-03-27)
 
 ### Features
