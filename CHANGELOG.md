@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.17.0...v0.17.1) (2026-03-27)
+
+### Bug Fixes
+
+* **analytics:** add tracking to CV project links and sub-entry company ([8b126ee](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8b126ee1661676f4c95c963a0329e2df7c090d02))
+* **analytics:** add tracking to galaxy canvas project clicks ([4b15fb2](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/4b15fb294d1036745abcb42f898a1f31581138d5))
+* **analytics:** remove non-null assertion, track earlier missions companies ([b1f2d21](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/b1f2d2109e5e4eadabcc8ffad592b5c21ceb8dec))
+* update Datagen URL to www subdomain ([67a3fa5](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/67a3fa5fab26cfed94d112923b6bbf85138a71ae))
+
 ## [0.17.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.16.0...v0.17.0) (2026-03-26)
 
 ### Features
