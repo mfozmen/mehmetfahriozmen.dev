@@ -1,3 +1,5 @@
+import { TrackedAnchor } from "@/components/TrackedLink";
+
 const cvViewUrl = process.env.NEXT_PUBLIC_CV_PDF_URL || "#";
 const fileIdMatch = /\/d\/([a-zA-Z0-9_-]+)/.exec(cvViewUrl);
 const cvDownloadUrl = fileIdMatch
@@ -36,16 +38,18 @@ export default function CvHeader() {
       </div>
 
       <div className="mt-6">
-        <a
+        <TrackedAnchor
           href={cvDownloadUrl}
           target="_blank"
           rel="noopener noreferrer"
           download
+          eventName="cv-pdf-download"
+          eventData={{ source: "cv-page" }}
           className="group relative inline-block rounded-full border border-[#BA7517]/40 px-5 py-1.5 font-mono text-[11px] text-[#BA7517] transition-all hover:border-[#BA7517]/70 hover:shadow-[0_0_20px_rgba(186,117,23,0.15)]"
         >
           <span className="absolute inset-0 -m-2 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
           <span className="relative">The no-stars PDF version ↓</span>
-        </a>
+        </TrackedAnchor>
       </div>
     </header>
   );
