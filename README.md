@@ -37,6 +37,7 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - **Formspree** for contact form
 - **Vitest** with v8 coverage
 - **Umami** for privacy-friendly analytics
+- **Microsoft Clarity** for session recording and heatmaps
 - **SonarCloud** for code quality
 
 ## Scripts
