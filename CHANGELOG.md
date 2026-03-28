@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.21.0...v1.0.0) (2026-03-28)
+
+### Bug Fixes
+
+* **deps:** update next and eslint-config-next to 16.2.1 ([9b33583](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9b33583b038214650f66a89e79747c2a62abe917))
+
 ## [0.21.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.20.0...v0.21.0) (2026-03-28)
 
 ### Features
