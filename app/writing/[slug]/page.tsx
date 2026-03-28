@@ -7,11 +7,12 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type Post } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type Post, type PostMeta } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 import ReadingProgress from "@/components/writing/ReadingProgress";
+import PostNavigation from "@/components/writing/PostNavigation";
 
 /* Fix #2: Keep star + amber mono but shorten gradient line for article h2s */
 function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
@@ -131,7 +132,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
 
 /* Fix #4: Merge about prompt into share row, add space before contact CTA */
 /* Fix #6: Add end-of-article divider */
-function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) {
+function PostEnding({ title, slug, previous, next }: Readonly<{ title: string; slug: string; previous?: PostMeta; next?: PostMeta }>) {
   return (
     <div className="mt-16">
       <div className="flex items-center justify-center gap-2 text-neutral-700">
@@ -140,6 +141,7 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
         <ShareRow title={title} slug={slug} />
       </div>
+      <PostNavigation previous={previous} next={next} />
       <p className="mt-12 border-t border-[#BA7517]/10 pt-8 text-center text-[13px] text-neutral-500">
         <TrackedNextLink href="/about" eventName="cta-click" eventData={{ cta: "curious who wrote this", page: `/writing/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
           <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
@@ -185,6 +187,11 @@ export default async function PostPage(
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const allPosts = getAllPosts();
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  const previous = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : undefined;
+  const next = currentIndex > 0 ? allPosts[currentIndex - 1] : undefined;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post, slug)) }} />
@@ -208,7 +215,7 @@ export default async function PostPage(
           </div>
         </article>
 
-        <PostEnding title={post.title} slug={post.slug} />
+        <PostEnding title={post.title} slug={post.slug} previous={previous} next={next} />
       </main>
       <Footer />
     </>
