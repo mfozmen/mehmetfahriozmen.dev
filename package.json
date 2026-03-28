@@ -1,11 +1,18 @@
 {
   "name": "mehmetfahriozmen.dev",
   "version": "0.21.0",
+  "description": "Personal website for Mehmet Fahri Özmen — backend systems architect and engineering leader",
   "private": true,
+  "author": {
+    "name": "Mehmet Fahri Özmen",
+    "email": "mehmetfahriozmen@gmail.com",
+    "url": "https://mehmetfahriozmen.dev"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mfozmen/mehmetfahriozmen.dev.git"
   },
+  "homepage": "https://mehmetfahriozmen.dev",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
