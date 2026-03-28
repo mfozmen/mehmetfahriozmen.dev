@@ -1,12 +1,14 @@
-import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
+import { TrackedNextLink } from "@/components/TrackedLink";
 import { formatDate, type PostMeta } from "@/lib/posts";
 
 function NavCard({ post, direction }: Readonly<{ post: PostMeta; direction: "previous" | "next" }>) {
   const isPrev = direction === "previous";
   return (
-    <Link
+    <TrackedNextLink
       href={`/writing/${post.slug}`}
+      eventName="post-nav-click"
+      eventData={{ direction, post: post.slug }}
       className="group block rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
     >
       <span className={`block font-mono text-[10px] uppercase tracking-[0.15em] text-[#BA7517]/60 ${isPrev ? "text-left" : "text-right"}`}>
@@ -18,7 +20,7 @@ function NavCard({ post, direction }: Readonly<{ post: PostMeta; direction: "pre
       <span className={`mt-1 block font-mono text-[11px] text-[#BA7517]/80 ${isPrev ? "text-left" : "text-right"}`}>
         {formatDate(post.date)} · {post.readingTime} min read
       </span>
-    </Link>
+    </TrackedNextLink>
   );
 }
 
