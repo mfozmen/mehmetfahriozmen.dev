@@ -27,7 +27,7 @@ export default function PostNavigation({ previous, next }: Readonly<{ previous?:
 
   return (
     <div className="mt-12">
-      <SectionTitle title="More Field Notes" />
+      <SectionTitle title="Also in the Log" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {previous ? <NavCard post={previous} direction="previous" /> : <div />}
         {next ? <NavCard post={next} direction="next" /> : <div />}
