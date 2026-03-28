@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.21.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.20.0...v0.21.0) (2026-03-28)
+
+### Features
+
+* **seo:** use cover images as OG images for blog posts ([d3cb636](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d3cb6366526fe1f651afe250ed4df698ee2abf9f))
+
 ## [0.20.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.19.0...v0.20.0) (2026-03-27)
 
 ### Features
