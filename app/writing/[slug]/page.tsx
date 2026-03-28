@@ -72,6 +72,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+  const ogImage = `https://mehmetfahriozmen.dev${post.coverImage}`;
   return {
     title: post.title,
     description: post.excerpt,
@@ -83,6 +84,13 @@ export async function generateMetadata(
       url: `/writing/${slug}`,
       publishedTime: post.date,
       authors: ["Mehmet Fahri Özmen"],
+      images: [{ url: ogImage, width: 1200, height: 800, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
     },
   };
 }
