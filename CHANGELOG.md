@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.0.0...v1.1.0) (2026-03-29)
+
+### Features
+
+* **analytics:** add tracking to post navigation cards ([8ba97a4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8ba97a48144a9f8e77ea4fe2f4d650c43c8bc532))
+* **blog:** add next/previous post navigation ([f52e6b0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f52e6b0961d4e7c71c50b869267b1079e274d412))
+
+### Bug Fixes
+
+* **blog:** update post navigation title to "Also in the Log" ([6665d5c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6665d5cc34d4b277f9e1df90b825e4d992054345))
+* use progress element and globalThis in ReadingProgress (sonar S6819, S7764) ([51b601f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/51b601f3932cfb77351ec1d8ac8f8a970cb7027a))
+
 ## [1.0.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v0.21.0...v1.0.0) (2026-03-28)
 
 ### Bug Fixes
