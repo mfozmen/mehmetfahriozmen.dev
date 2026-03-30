@@ -61,7 +61,20 @@ function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
   );
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote };
+function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
+  return (
+    <a
+      href={href}
+      target={href?.startsWith("http") ? "_blank" : undefined}
+      rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+      className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]/80"
+    >
+      {children}
+    </a>
+  );
+}
+
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
