@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.1.0...v1.2.0) (2026-03-31)
+
+### Features
+
+* **blog:** add "When Everyone Has a Superpower" post and MdxLink component ([0b7d4e3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0b7d4e33f40327725f911c23aeaed218075a7e04))
+
 ## [1.1.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.0.0...v1.1.0) (2026-03-29)
 
 ### Features
