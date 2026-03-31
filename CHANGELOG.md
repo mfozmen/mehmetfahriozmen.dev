@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.2.0...v1.2.1) (2026-03-31)
+
+### Bug Fixes
+
+* **blog:** correct date for "When Everyone Has a Superpower" to April 1 ([8c28c66](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8c28c66336e9ae514dfcc7cefb96b1853e9ac3a5))
+
 ## [1.2.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.1.0...v1.2.0) (2026-03-31)
 
 ### Features
