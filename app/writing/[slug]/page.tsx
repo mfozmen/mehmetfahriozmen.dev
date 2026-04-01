@@ -34,8 +34,8 @@ function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   if (!src) return null;
   return (
     <figure className="-mx-0 my-10 sm:-mx-8 lg:-mx-16">
-      <div className="relative aspect-[2/1] w-full overflow-hidden rounded-lg">
-        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" />
+      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-contain" />
       </div>
       {alt && alt !== "" && (
         <figcaption className="mt-2 px-0 text-xs text-neutral-500 sm:px-8 lg:px-16">{alt}</figcaption>
@@ -136,7 +136,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
           {post.excerpt}
         </p>
       </header>
-      <div className="relative -mx-0 mb-10 aspect-[2/1] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
+      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
         <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" priority />
       </div>
     </>

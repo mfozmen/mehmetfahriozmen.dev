@@ -21,7 +21,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
       href={`/writing/${post.slug}`}
       className="group block overflow-hidden rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
     >
-      <div className="relative aspect-[2/1] w-full overflow-hidden">
+      <div className="relative aspect-[3/2] w-full overflow-hidden">
         <Image
           src={post.coverImage}
           alt={post.title}
