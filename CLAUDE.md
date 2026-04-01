@@ -85,6 +85,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - All development happens on `dev` branch — never commit directly to `main`
 - **Pull requests always target `dev`** — never create PRs targeting `main`
 - To release: `npm run release` on dev → bumps version, creates tag, pushes to main
+- **Release checklist:** (1) merge PR first (`gh pr merge`), (2) `git pull origin dev`, (3) verify new commits in pull output, (4) only then `npx release-it --ci`. Never run release-it before the PR merge is confirmed.
 - CI: tag push triggers GitHub Release creation (auto-generated notes)
 - Vercel: main push = production deploy, dev push = preview deploy
 - Rollback: Vercel dashboard → Deployments → Promote old deployment
