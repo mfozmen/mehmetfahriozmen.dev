@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.3...v1.4.0) (2026-04-01)
+
+### Features
+
+* add galaxy-themed 404 and 500 error pages ([#21](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/21)) ([f585768](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f585768818ba18d0457ba093e814e879c775b1f1))
+
 ## [1.3.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.2...v1.3.3) (2026-04-01)
 
 ### Bug Fixes

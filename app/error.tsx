@@ -1,0 +1,50 @@
+"use client";
+
+import Image from "next/image";
+import Starfield from "@/components/Starfield";
+import NebulaGlows from "@/components/NebulaGlows";
+
+export default function ErrorPage({ reset }: { reset: () => void }) {
+  return (
+    <>
+      <Starfield />
+      <NebulaGlows />
+      <main className="relative z-10 flex min-h-dvh flex-col items-center justify-center px-6 py-24 text-center">
+        <span
+          className="font-mono text-[80px] font-bold leading-none text-[#BA7517] sm:text-[120px]"
+          style={{ textShadow: "0 0 40px rgba(186,117,23,0.15)" }}
+        >
+          500
+        </span>
+        <h1 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
+          Something Exploded
+        </h1>
+        <p className="mt-3 max-w-md text-base text-neutral-500">
+          On our end, not yours. Probably fine.
+        </p>
+        <Image
+          src="/images/500-astronaut.png"
+          alt=""
+          width={220}
+          height={220}
+          className="mt-8 opacity-90"
+          aria-hidden="true"
+        />
+        <div className="mt-8 flex items-center gap-4">
+          <button
+            onClick={() => reset()}
+            className="cursor-pointer rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
+          >
+            Try again →
+          </button>
+          <a
+            href="/"
+            className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
+          >
+            Return to base →
+          </a>
+        </div>
+      </main>
+    </>
+  );
+}
