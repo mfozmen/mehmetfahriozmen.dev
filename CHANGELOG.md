@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.2.1...v1.3.0) (2026-04-01)
+
+### Features
+
+* update contact email to contact@mehmetfahriozmen.dev ([5088144](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/5088144d5b3cb35aa8b966d297dd7fd3804f4a0e))
+
 ## [1.2.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.2.0...v1.2.1) (2026-03-31)
 
 ### Bug Fixes
