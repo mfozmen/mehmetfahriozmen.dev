@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.2...v1.3.3) (2026-04-01)
+
+### Bug Fixes
+
+* correct image aspect ratio from 2:1 to 3:2 to prevent cropping ([#19](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/19)) ([09c556e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/09c556e9d1a4a5e01f11a681e31d2ea802ba92a0))
+
 ## [1.3.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.1...v1.3.2) (2026-04-01)
 
 ### Bug Fixes
