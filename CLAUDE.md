@@ -101,6 +101,10 @@ When creating or editing blog posts (MDX files in `content/writing/`), verify AL
 
 If any check fails, fix it before committing.
 
+## Blog Writing Guide
+
+Before creating or editing any blog post, consult `docs/blog-writing-guide.md` for voice, tone, illustration rules, structure principles, and workflow. This is the authoritative reference for all writing on the site.
+
 ## Graph Data Architecture
 
 The systems visualization uses a 3-layer orbital layout with data defined in `data/systemsGraph.ts`.
