@@ -27,14 +27,17 @@ export default function CvHeader() {
         Backend Systems Architect &amp; Engineering Leader
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12px] text-neutral-500">
-        <span>İzmir, Turkey</span>
-        <span className="text-neutral-700">·</span>
-        <a href="mailto:mehmetfahriozmen@gmail.com" className="transition-colors hover:text-neutral-300">mehmetfahriozmen@gmail.com</a>
-        <span className="text-neutral-700">·</span>
-        <a href="https://linkedin.com/in/mfozmen" className="transition-colors hover:text-neutral-300">LinkedIn</a>
-        <span className="text-neutral-700">·</span>
-        <a href="https://github.com/mfozmen" className="transition-colors hover:text-neutral-300">GitHub</a>
+      <div className="mt-4 text-center text-[12px] text-neutral-500">
+        <div className="sm:hidden">İzmir, Turkey</div>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-3 sm:mt-0">
+          <span className="hidden sm:inline">İzmir, Turkey</span>
+          <span className="hidden text-neutral-700 sm:inline">·</span>
+          <a href="mailto:contact@mehmetfahriozmen.dev" className="transition-colors hover:text-neutral-300">contact@mehmetfahriozmen.dev</a>
+          <span className="text-neutral-700">·</span>
+          <a href="https://linkedin.com/in/mfozmen" className="transition-colors hover:text-neutral-300">LinkedIn</a>
+          <span className="text-neutral-700">·</span>
+          <a href="https://github.com/mfozmen" className="transition-colors hover:text-neutral-300">GitHub</a>
+        </div>
       </div>
 
       <div className="mt-6">

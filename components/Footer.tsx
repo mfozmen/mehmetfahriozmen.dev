@@ -45,7 +45,7 @@ const socialLinks = [
   { platform: "github", href: "https://github.com/mfozmen", label: "GitHub", icon: GithubIcon, external: true },
   { platform: "linkedin", href: "https://linkedin.com/in/mfozmen", label: "LinkedIn", icon: LinkedInIcon, external: true },
   { platform: "x", href: "https://x.com/mfozmen", label: "X", icon: XIcon, external: true },
-  { platform: "email", href: "mailto:mehmetfahriozmen@gmail.com", label: "Email", icon: EmailIcon, external: false },
+  { platform: "email", href: "mailto:contact@mehmetfahriozmen.dev", label: "Email", icon: EmailIcon, external: false },
 ] as const;
 
 function SocialLinks() {
