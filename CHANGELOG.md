@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.1...v1.3.2) (2026-04-01)
+
+### Bug Fixes
+
+* allow blog section headings to wrap on mobile ([#18](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/18)) ([12cada1](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/12cada106fe06aafbc4c4362a873aabeb12045d2))
+
 ## [1.3.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.0...v1.3.1) (2026-04-01)
 
 ## [1.3.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.2.1...v1.3.0) (2026-04-01)
