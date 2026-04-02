@@ -36,8 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-# claude code
-.claude/
+# claude code — ignore all except skills and shared settings
+.claude/*
+!.claude/skills/
+!.claude/settings.json
 
 # playwright
 .playwright-mcp/
