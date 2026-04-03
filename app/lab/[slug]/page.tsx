@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";
@@ -132,24 +133,29 @@ function TagPill({ tag }: Readonly<{ tag: string }>) {
 
 function PostHeader({ post }: Readonly<{ post: LabPost }>) {
   return (
-    <header className="mb-10">
-      <span className="font-mono text-[11px] text-[#BA7517]/80">
-        {formatDate(post.date)} · {getReadingTime(post.content)} min read
-      </span>
-      <h1 className="mt-2 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
-        {post.title}
-      </h1>
-      <p className="mt-3 text-lg text-neutral-500">
-        {post.description}
-      </p>
-      {post.tags.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {post.tags.map((tag) => (
-            <TagPill key={tag} tag={tag} />
-          ))}
-        </div>
-      )}
-    </header>
+    <>
+      <header className="mb-8">
+        <span className="font-mono text-[11px] text-[#BA7517]/80">
+          {formatDate(post.date)} · {getReadingTime(post.content)} min read
+        </span>
+        <h1 className="mt-2 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          {post.title}
+        </h1>
+        <p className="mt-3 text-lg text-neutral-500">
+          {post.description}
+        </p>
+        {post.tags.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <TagPill key={tag} tag={tag} />
+            ))}
+          </div>
+        )}
+      </header>
+      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
+        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" priority />
+      </div>
+    </>
   );
 }
 

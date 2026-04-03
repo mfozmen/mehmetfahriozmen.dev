@@ -1,0 +1,349 @@
+---
+title: "Lab Day: Teach Your AI How You Work"
+description: "A practical guide to writing skills — persistent instruction files that teach AI coding agents your project's conventions, workflows, and standards so you stop repeating yourself."
+date: "2026-04-04"
+slug: "how-to-write-custom-skills-for-ai-coding-agents"
+coverImage: "/lab/lab-day-cover.webp"
+tags: ["ai", "developer-tools", "claude-code", "skills", "automation"]
+---
+
+## The Repetition Problem
+
+You've told your AI agent to use conventional commits three times this week. Yesterday it wrote `feat: Added user authentication`. Today it's `Feature: add auth module`. Tomorrow it'll be something else entirely.
+
+The agent isn't stupid. You're just starting from zero every single time.
+
+A skill is a markdown file that teaches your agent how to handle a specific type of task — every time, without you repeating yourself. Not a one-off prompt. Not a chat message you hope it remembers. A persistent set of instructions that lives in your project.
+
+A prompt is a conversation. A skill is a contract.
+
+But before we get into how to write one, it helps to understand why agents need them in the first place.
+
+## How AI Coding Agents Actually Work
+
+AI coding agents — Claude Code, GitHub Copilot, Cursor, Windsurf, whatever you're using — are built on large language models. That sounds obvious, but the implications are worth spelling out because they explain almost every frustrating thing you've experienced with them.
+
+An LLM doesn't "know" your project. It doesn't remember what you told it yesterday. Every time you start a new conversation, the model sees exactly what's in its context window — your current message, any files it's been given access to, and its training data. That's it. That brilliant commit format you explained last Tuesday? Gone. The naming convention you spent ten minutes describing? Never happened.
+
+This is the fundamental gap. The model was trained on the entire internet — millions of blog posts, Stack Overflow answers, GitHub repos, documentation pages. When you say "write a commit message," it's not pulling from your project's conventions. It's generating the most probable output based on everything it's ever seen. And "everything it's ever seen" includes a lot of contradictory advice.
+
+That's why the same agent writes `feat: Added login` in one session and `feature(auth): add login module` in the next. It's not being inconsistent on purpose. It literally doesn't know what it said last time. Each response is a fresh statistical prediction based on whatever's in the current context.
+
+So how do you get consistent behavior from something that has no persistent memory?
+
+You have two options. One: repeat yourself at the start of every conversation. Paste your rules, re-explain your conventions, hope you don't forget anything. This works, technically. It's also tedious, error-prone, and doesn't scale past one person.
+
+Two: write it down once, in a file that loads automatically. But this has layers, and it's worth understanding them.
+
+Most AI coding agents already support some form of project-level configuration. Claude Code has `CLAUDE.md`. Cursor has `.cursorrules`. Windsurf has `.windsurfrules`. These are files that sit in your project root and get loaded into every conversation automatically. You write your project's general rules once — "use TypeScript strict mode," "write tests for everything," "prefer composition over inheritance" — and the agent follows them without being told each time.
+
+Think of these as your project's constitution. Broad principles, universal rules, the stuff that applies to everything the agent does in this codebase. They solve the "repeating yourself every session" problem for general guidance.
+
+But a constitution isn't an operating manual. "Use conventional commits" is a fine rule for `CLAUDE.md`. But the full specification — type list, scope format, imperative mood, character limit, breaking change footer, Jira issue numbers — that's too much detail for a general config file. It clutters the context for every task when it's only relevant to one.
+
+That's where skills come in. A skill is a focused instruction set for a specific type of task. It doesn't load for every conversation — it activates when the agent encounters a matching task. Commit messages, endpoint scaffolding, code review, database migrations — each one gets its own file with its own rules, examples, and constraints.
+
+The hierarchy looks like this: `CLAUDE.md` says "follow conventional commits." The commit message skill says exactly how — which types, which scope format, which tense, which exceptions, with five concrete examples. The general file points the direction. The skill provides the map.
+
+A skill lives in your project. When the agent encounters a task that matches the skill's description, it loads the file into its context window — your rules, your constraints, your examples. The model doesn't need memory when the instructions are always right there.
+
+Now let's see what this looks like in practice.
+
+## The Problem: Conventional Commits Without a Skill
+
+Conventional commits follow a simple format: `type(scope): description`. Everyone knows this. The problem is that "everyone" agrees on the format and disagrees on everything else.
+
+Tell your agent "use conventional commits" and watch what happens. It'll pull from whatever source it trained on — or whatever it finds most probable. One commit says `feat(auth): Add login endpoint`. The next one says `feature: added the login endpoint`. Then you get `FEAT: Login endpoint added.` All technically defensible. None of them yours.
+
+Is the scope required or optional? Does the description start with a capital letter? Is it `feat` or `feature`? Does the body need a blank line separator? What counts as a breaking change?
+
+The internet has twelve correct answers for each of these questions. Your project has one.
+
+**This is the core insight: a skill doesn't define what's universally correct. It defines what's correct here, in this project, for this team.** The agent's not confused because it's bad at commits. It's confused because there are too many "right" answers out there and you haven't told it which one is yours.
+
+## Anatomy of a Skill File
+
+Before we write anything, let's look at what goes inside a `SKILL.md` file. Every piece is there for a reason.
+
+**Description** — Tells the agent when to activate this skill. This is the trigger. A bad description: "For commits." A good description: "Use this skill when creating git commit messages for any staged changes in this repository." Be specific. If the trigger is vague, the agent guesses.
+
+**Rules / Procedure** — Step-by-step instructions. What to do, in what order. The agent follows these literally, so sequence matters.
+
+**Constraints** — The "never do this" rules. These are just as important as the positive rules — maybe more. Without explicit constraints, agents get creative. You don't want creative commit messages.
+
+**Examples** — Input/output pairs. This is where the real teaching happens. Ten lines of explanation lose to one concrete example every time. Agents learn patterns from examples, not paragraphs.
+
+Here's your starting skeleton:
+
+```markdown
+# Skill Name
+
+## Description
+When to use this skill. Be specific about the trigger.
+
+## Rules
+1. First step
+2. Second step
+3. ...
+
+## Constraints
+- Never do X
+- Never do Y
+- If Z happens, do W instead
+
+## Examples
+
+**Input:** [what the agent sees]
+**Output:** [what the agent should produce]
+
+**Input:** [another scenario]
+**Output:** [correct output for that scenario]
+```
+
+That's it. No special syntax, no config files, no build step. A markdown file with clear sections. Let's fill one in.
+
+## Writing Your First Skill: Commit Messages
+
+Here's the scenario. Your company uses Jira. You want every commit tied to an issue number. Your format is `type(ISS-123): description` — not the generic `type(scope)` you see in blog posts. The scope _is_ the Jira issue.
+
+```markdown
+# Conventional Commits
+
+## Description
+Use this skill when creating git commit messages for any staged
+changes. Every commit in this repository must follow these rules
+exactly.
+
+## Format
+type(ISS-XXX): description
+
+- type: one of feat, fix, refactor, docs, test, chore, ci
+- scope: always a Jira issue number in the format ISS-XXX
+  (e.g., ISS-142, ISS-891). Never use a module name,
+  folder name, or feature name as scope.
+- description: what changed, in imperative mood
+
+## Type Reference
+- feat: new feature or user-facing behavior
+- fix: bug fix
+- refactor: code restructure with no behavior change
+- docs: documentation only
+- test: adding or updating tests
+- chore: maintenance, dependencies, config
+- ci: CI/CD pipeline changes
+
+## Rules
+1. Description starts with lowercase
+2. Description uses imperative mood ("add" not "added" or "adds")
+3. No period at the end
+4. Maximum 72 characters for the entire first line
+5. If the commit needs more context, add a body after a blank line
+6. Breaking changes must include a BREAKING CHANGE footer
+
+## Constraints
+- Never use a scope other than a Jira issue number
+- Never capitalize the first letter of the description
+- Never use past tense ("added", "fixed", "updated")
+- Never end the description with a period
+- If there's no Jira issue for the work, use chore(no-issue): only
+  for trivial maintenance tasks. Everything else needs an issue.
+
+## Examples
+
+Staged: new login API endpoint for ISS-142
+Output: feat(ISS-142): add login api endpoint
+
+Staged: fix null pointer in payment processing for ISS-891
+Output: fix(ISS-891): handle null reference in payment service
+
+Staged: moved validation logic to separate module for ISS-203
+Output: refactor(ISS-203): extract validation logic to shared module
+
+Staged: added unit tests for user service, related to ISS-142
+Output: test(ISS-142): add unit tests for user service
+
+Staged: updated README with new setup instructions
+Output: docs(no-issue): update readme with setup instructions
+
+Staged: breaking change to API response format for ISS-445
+Output:
+feat(ISS-445): restructure api response envelope
+
+BREAKING CHANGE: response wrapper changed from { data, error }
+to { result, errors[] }. All clients must update parsing logic.
+```
+
+Now look at what this skill does that "use conventional commits" doesn't:
+
+- The scope is always a Jira issue, not a vague module name. No ambiguity.
+- There's a `no-issue` escape hatch, but only for chores. Everything else needs a ticket.
+- The type list is closed — seven options, no freestyle.
+- Imperative mood is explicitly required with counter-examples.
+- The breaking change format is defined, not assumed.
+
+**Before the skill**, your agent might produce:
+
+```
+Feature(authentication): Added the login endpoint for users
+```
+
+**After the skill:**
+
+```
+feat(ISS-142): add login api endpoint
+```
+
+Same intent. Completely different output. And it'll be this consistent on commit #1 and commit #500.
+
+## Leveling Up: API Endpoint Scaffold
+
+Commit messages are a formatting skill. Let's write one that encodes an entire workflow.
+
+When someone on your team creates a new REST endpoint, there are probably six things that need to happen every time: file naming, route registration, request validation, error handling, response format, and a test file. You know this. Your agent doesn't — unless you tell it.
+
+```markdown
+# API Endpoint Scaffold
+
+## Description
+Use this skill when creating a new REST API endpoint.
+Follow every step in order. Do not skip any step.
+
+## File Structure
+- Route handler: src/routes/{resource}/{action}.ts
+- Validation: src/routes/{resource}/{action}.validation.ts
+- Test: src/routes/{resource}/__tests__/{action}.test.ts
+- Resource name is always plural (users, payments, orders)
+
+## Procedure
+1. Create the route handler file with the correct path
+2. Create the validation schema in a separate file
+3. Register the route in src/routes/index.ts
+4. Create the test file with minimum required test cases
+
+## Request Validation
+- Every endpoint validates input before processing
+- Validation lives in a separate .validation.ts file
+- Use zod for schema definitions
+- Validate params, query, and body separately
+
+## Error Response Format
+All errors must return this exact structure:
+{
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Human-readable description",
+    "details": {}
+  }
+}
+- code: UPPER_SNAKE_CASE, descriptive
+- message: for developers, not end users
+- details: optional, extra context for debugging
+
+## Success Response Format
+{
+  "data": { ... },
+  "meta": {
+    "requestId": "uuid",
+    "timestamp": "iso8601"
+  }
+}
+
+## Minimum Test Cases
+Every endpoint must have tests for:
+1. Happy path (valid input, expected output)
+2. Validation failure (missing required field)
+3. Not found (resource doesn't exist)
+4. Unauthorized (no or invalid auth token)
+
+## Constraints
+- Never put validation logic inside the route handler
+- Never return a raw error object to the client
+- Never skip the test file, even for "simple" endpoints
+- Never use generic names like handler.ts or route.ts
+```
+
+This isn't a formatting rule anymore. This is a whole process — file structure, validation pattern, error format, test coverage — encoded in one file. The agent follows it step by step and produces a consistent scaffold every time. New team member joins? They don't need to ask "where do test files go?" The skill already knows.
+
+## The Power Move: Code Review Skill
+
+Here's where it gets interesting. You can teach your agent to review code the way you would.
+
+```markdown
+# Code Review
+
+## Description
+Use this skill when reviewing pull requests or code changes.
+Evaluate the code against every section below. Be thorough
+but constructive.
+
+## Review Checklist
+Check every item. Flag anything that fails.
+
+### Security
+- No hardcoded secrets, tokens, or API keys
+- User input is validated before use
+- SQL queries are parameterized
+- Authentication is checked on protected routes
+
+### Performance
+- No N+1 query patterns
+- Database queries use appropriate indexes
+- Large collections are paginated
+- No synchronous operations that should be async
+
+### Readability
+- Functions are under 30 lines
+- Variable names describe their purpose
+- No commented-out code left in
+- Complex logic has a brief comment explaining why
+
+### Testing
+- New code has corresponding test coverage
+- Edge cases are covered
+- Tests are independent and don't rely on order
+- Commit messages follow our convention
+
+## Severity Levels
+- CRITICAL: blocks merge. Security issues, data loss risk,
+  broken functionality
+- WARNING: should fix before merge. Performance problems,
+  missing tests, unclear naming
+- SUGGESTION: nice to have. Style improvements, minor
+  refactors, documentation additions
+
+## Comment Rules
+- Every comment must explain WHY something is a problem
+- Include a suggested fix or alternative
+- Never say "this is wrong" without a reason
+- Never use "just" ("just do X" minimizes the effort)
+- Be specific: "this function does 3 things" not "this is complex"
+
+## Constraints
+- Never approve a PR with CRITICAL issues
+- Never approve without checking all sections
+- If unsure about something, flag it as a question, not a demand
+```
+
+Notice something? The testing section says "commit messages follow our convention." That points back to the first skill we wrote. Skills reference each other. They build an ecosystem. Your commit message skill feeds into your code review skill. Your API scaffold skill defines what the review skill checks for.
+
+One skill is useful. A set of skills that talk to each other is a system.
+
+## What I Learned Writing Skills
+
+**Be specific. Painfully specific.** "Write good commit messages" is not a skill. "Imperative mood, lowercase, no period, max 72 characters, scope is always a Jira issue number" is a skill. The more precise you are, the less the agent improvises. You don't want improvisation in your commit history.
+
+**One example beats ten rules.** You can write three paragraphs explaining imperative mood, or you can show `"added" → wrong, "add" → right`. The agent learns patterns from examples faster than from explanations. When in doubt, add another example instead of another rule.
+
+**Negative rules are half the skill.** "Never capitalize the description. Never use past tense. Never end with a period." Without these, the agent falls back to its defaults — and its defaults come from every coding blog on the internet, not from your project's standards. Explicit "don't" rules close the gaps that positive rules leave open.
+
+**Skills are living documents.** Your first version will miss things. The agent will produce something unexpected, and you'll realize you never specified that case. Good. Update the skill. Version two is better. Version five is solid. "When the agent gets it wrong, the skill wasn't clear enough" is a more useful mindset than "the agent is broken."
+
+**Start with what annoys you.** The task you've explained three times this week? That's your first skill. The format you keep correcting? Second skill. The review comment you keep copy-pasting? Third. Annoyance is the best signal for where a skill will save the most time.
+
+## Start Here
+
+Your first skill will take 15 minutes. It'll be a bit rough. The agent will follow it and still do something slightly off, and you'll add a constraint you didn't think of. That's the process.
+
+Your tenth skill will take 5 minutes. You'll know exactly what to specify and what to leave out.
+
+The thing you're tired of repeating — write that one first.

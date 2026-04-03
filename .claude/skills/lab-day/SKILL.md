@@ -24,7 +24,7 @@ Trigger: any task involving /lab route, Lab Day content, technical blog posts, c
 ---
 title: "Lab Day: [Descriptive Title]"
 description: "[100+ chars, SEO-friendly description of what the reader will learn]"
-date: "YYYY-MM-DDTHH:mm:ssZ"
+date: "YYYY-MM-DD"
 coverImage: "/lab/lab-day-cover.webp"
 tags: ["tag1", "tag2"]
 ---
@@ -34,7 +34,7 @@ Rules:
 - Title MUST start with "Lab Day: " prefix
 - Title (after prefix) under 60 characters
 - description minimum 100 characters
-- date in ISO format
+- date in YYYY-MM-DD format
 - coverImage is always exactly `"/lab/lab-day-cover.webp"` — this is a fixed value, never changes between posts
 - tags: relevant technical keywords, lowercase
 
@@ -94,6 +94,12 @@ Visual direction for the cover (generated via ChatGPT, not by Claude Code):
 - Lab Day (/lab): technical guides, tutorials, walkthroughs — "here's how to do it"
 - Cross-linking is encouraged when natural: an essay can link to a Lab Day post for technical depth, a Lab Day post can reference an essay for broader context
 - They share the same site design language but are separate sections with separate navigation
+
+## Title Display Rules
+- Frontmatter `title` always includes the "Lab Day: " prefix (e.g., `"Lab Day: Teach Your AI How You Work"`)
+- **Post detail page** (`/lab/[slug]`): show full title with prefix — helps with SEO and context for direct landings from Google/social
+- **Lab list page** (`/lab`): strip the "Lab Day: " prefix from card titles — it's redundant since the reader is already on the Lab page
+- **Meta tags** (OG, Twitter): always use the full title with prefix
 
 ## Constraints
 - Never publish a Lab Day post without code examples — if there's no code, it's an essay, not a Lab Day post

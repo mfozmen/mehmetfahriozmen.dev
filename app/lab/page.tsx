@@ -38,7 +38,7 @@ function LabPostCard({ post }: Readonly<{ post: LabPostMeta }>) {
         {formatDate(post.date)} · {post.readingTime} min read
       </span>
       <h3 className="mt-1.5 font-mono text-[15px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
-        {post.title}
+        {post.title.replace(/^Lab Day:\s*/i, "")}
       </h3>
       <p className="mt-2 text-[13px] leading-relaxed text-[#a3a3a3]">
         {post.description}
