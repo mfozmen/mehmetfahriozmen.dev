@@ -36,8 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-# claude code
-.claude/settings.local.json
+# claude code — ignore all except skills and shared settings
+.claude/*
+!.claude/skills/
+!.claude/settings.json
 
 # playwright
 .playwright-mcp/
@@ -48,3 +50,4 @@ screenshots/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+__pycache__/
