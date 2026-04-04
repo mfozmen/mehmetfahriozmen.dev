@@ -88,22 +88,6 @@ function TransmissionCard({ item }: Readonly<{ item: TransmissionItem }>) {
   );
 }
 
-function TransmissionsFooter() {
-  return (
-    <p className="mt-8 text-center text-[13px] text-neutral-500">
-      <TrackedNextLink href="/writing" eventName="cta-click" eventData={{ cta: "read all field notes", page: "/" }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
-        <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
-        <span className="relative">Read all Field Notes &rarr;</span>
-      </TrackedNextLink>
-      <span className="mx-3">&middot;</span>
-      <TrackedNextLink href="/lab" eventName="cta-click" eventData={{ cta: "explore the lab", page: "/" }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
-        <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
-        <span className="relative">Explore the Lab &rarr;</span>
-      </TrackedNextLink>
-    </p>
-  );
-}
-
 export default function LatestTransmissions() {
   const items = getLatestTransmissions();
   if (items.length === 0) return null;
@@ -116,7 +100,6 @@ export default function LatestTransmissions() {
           <TransmissionCard key={item.href} item={item} />
         ))}
       </div>
-      <TransmissionsFooter />
     </section>
   );
 }
