@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";

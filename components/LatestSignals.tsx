@@ -1,7 +1,7 @@
 import { TrackedNextLink } from "@/components/TrackedLink";
 import SectionTitle from "@/components/SectionTitle";
-import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
-import { getAllLabPosts, type LabPostMeta } from "@/lib/lab";
+import { getAllPosts, formatDate, sortByDateDesc } from "@/lib/posts";
+import { getAllLabPosts } from "@/lib/lab";
 
 type SignalItem = {
   kind: "field-notes" | "lab-day";
@@ -51,7 +51,7 @@ export function getLatestSignals(): SignalItem[] {
   }));
 
   return [...writing, ...lab]
-    .sort((a, b) => (a.date === b.date ? 0 : a.date > b.date ? -1 : 1))
+    .sort(sortByDateDesc)
     .slice(0, 3);
 }
 

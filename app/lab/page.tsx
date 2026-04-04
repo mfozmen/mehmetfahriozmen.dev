@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
