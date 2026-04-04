@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.4.0...v1.5.0) (2026-04-03)
+
+### Features
+
+* add blog post — The Revolution Has No Manual ([#22](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/22)) ([f362ac9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f362ac97837d530961b0ae783bb32e2998d6841b))
+* add Lab Day technical writing skill ([650ed0c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/650ed0c6f9f64f210104e58bc9fb5e9fc4f19912))
+
 ## [1.4.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.3.3...v1.4.0) (2026-04-01)
 
 ### Features
