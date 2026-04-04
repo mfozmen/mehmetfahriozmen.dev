@@ -2,10 +2,10 @@ import Link from "next/link";
 import { TrackedAnchor } from "@/components/TrackedLink";
 
 const internalLinks = [
-  { label: "About", href: "/about" },
-  { label: "CV", href: "/cv" },
   { label: "Writing", href: "/writing" },
   { label: "Lab", href: "/lab" },
+  { label: "About", href: "/about" },
+  { label: "CV", href: "/cv" },
   { label: "Contact", href: "/contact" },
 ];
 
