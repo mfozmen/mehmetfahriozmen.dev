@@ -29,7 +29,7 @@ function TerminalIcon() {
   );
 }
 
-function getLatestTransmissions(): TransmissionItem[] {
+export function getLatestTransmissions(): TransmissionItem[] {
   const writing: TransmissionItem[] = getAllPosts().map((p) => ({
     kind: "field-notes",
     title: p.title,

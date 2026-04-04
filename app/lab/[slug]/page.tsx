@@ -7,12 +7,12 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import LabShareRow from "@/components/lab/LabShareRow";
+import ShareRow from "@/components/writing/ShareRow";
 import TagPill from "@/components/lab/TagPill";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
-import { getReadingTime } from "@/lib/posts";
-import { formatDate } from "@/lib/posts";
+import { getReadingTime, formatDate } from "@/lib/posts";
+import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 
@@ -49,36 +49,12 @@ function LabMdxCode({ children, className }: Readonly<{ children?: ReactNode; cl
   );
 }
 
-function LabMdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
-  return (
-    <blockquote
-      className="my-10 space-y-4 rounded-r-lg border-l-2 border-[#BA7517]/40 py-5 pl-6 pr-6 text-xl leading-[1.6] italic text-neutral-200 sm:text-2xl"
-      style={{ background: "linear-gradient(135deg, rgba(186,117,23,0.04) 0%, transparent 60%)" }}
-    >
-      {children}
-    </blockquote>
-  );
-}
-
-function LabMdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
-  return (
-    <a
-      href={href}
-      target={href?.startsWith("http") ? "_blank" : undefined}
-      rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]/80"
-    >
-      {children}
-    </a>
-  );
-}
-
 const mdxComponents = {
   h2: LabMdxH2,
   pre: LabMdxPre,
   code: LabMdxCode,
-  blockquote: LabMdxBlockquote,
-  a: LabMdxLink,
+  blockquote: MdxBlockquote,
+  a: MdxLink,
 };
 
 export function generateStaticParams() {
@@ -160,7 +136,7 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
         <span>*</span><span>*</span><span>*</span>
       </div>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <LabShareRow title={title} slug={slug} />
+        <ShareRow title={title} slug={slug} basePath="lab" />
       </div>
       <p className="mt-12 border-t border-[#BA7517]/10 pt-8 text-center text-[13px] text-neutral-500">
         <TrackedNextLink href="/lab" eventName="cta-click" eventData={{ cta: "back to lab", page: `/lab/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">

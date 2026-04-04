@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import LabSectionTitle from "@/components/lab/LabSectionTitle";
+import SectionTitle from "@/components/SectionTitle";
 import TagPill from "@/components/lab/TagPill";
 import { getAllLabPosts, type LabPostMeta } from "@/lib/lab";
 import { formatDate } from "@/lib/posts";
@@ -105,7 +105,7 @@ export default function LabPage() {
             Tried it. It worked. Here's how.
           </p>
         </section>
-        <LabSectionTitle title="Experiments" />
+        <SectionTitle title="Experiments" icon={<span className="shrink-0 font-mono text-[13px] text-[#BA7517]" aria-hidden="true">&gt;_</span>} />
         {posts.length > 0 ? (
           <div className="flex flex-col gap-4">
             {posts.map((post) => (

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { getReadingTime } from "@/lib/posts";
+import { getReadingTime, sortByDateDesc } from "@/lib/posts";
 
 const labDirectory = path.join(process.cwd(), "content/lab");
 
@@ -18,11 +18,6 @@ export type LabPostMeta = {
 export type LabPost = LabPostMeta & {
   content: string;
 };
-
-function sortByDateDesc(a: { date: string }, b: { date: string }): number {
-  if (a.date === b.date) return 0;
-  return a.date > b.date ? -1 : 1;
-}
 
 export function getAllLabPosts(): LabPostMeta[] {
   if (!fs.existsSync(labDirectory)) return [];
