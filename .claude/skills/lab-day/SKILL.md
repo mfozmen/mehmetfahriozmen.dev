@@ -33,6 +33,7 @@ tags: ["tag1", "tag2"]
 Rules:
 - Title MUST start with "Lab Day: " prefix
 - Title (after prefix) under 60 characters
+- **Title must be SEO-friendly** — use searchable keywords that developers would actually type into Google. The title is not a tagline or essay headline. It should clearly describe what the post teaches. Good: "Writing Custom Skills for AI Coding Agents". Bad: "Teach Your AI How You Work".
 - description minimum 100 characters
 - date in YYYY-MM-DD format
 - coverImage is always exactly `"/lab/lab-day-cover.webp"` — this is a fixed value, never changes between posts
