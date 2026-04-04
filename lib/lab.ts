@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { getReadingTime } from "@/lib/posts";
 
 const labDirectory = path.join(process.cwd(), "content/lab");
 
@@ -56,7 +57,3 @@ export function getLabPostBySlug(slug: string): LabPost | undefined {
   return undefined;
 }
 
-export function getReadingTime(content: string): number {
-  const words = content.trim().split(/\s+/).length;
-  return Math.ceil(words / 200);
-}
