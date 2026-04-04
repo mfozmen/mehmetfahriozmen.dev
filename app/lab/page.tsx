@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import LabSectionTitle from "@/components/lab/LabSectionTitle";
+import TagPill from "@/components/lab/TagPill";
 import { getAllLabPosts, type LabPostMeta } from "@/lib/lab";
 import { formatDate } from "@/lib/posts";
 
@@ -19,14 +20,6 @@ export const metadata: Metadata = {
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
 };
-
-function TagPill({ tag }: Readonly<{ tag: string }>) {
-  return (
-    <span className="rounded-full border border-[#BA7517]/15 bg-[#BA7517]/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-[#BA7517]/70">
-      {tag}
-    </span>
-  );
-}
 
 function LabPostCard({ post }: Readonly<{ post: LabPostMeta }>) {
   return (

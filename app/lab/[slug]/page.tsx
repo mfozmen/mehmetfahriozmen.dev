@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import LabShareRow from "@/components/lab/LabShareRow";
+import TagPill from "@/components/lab/TagPill";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import { getAllLabPosts, getLabPostBySlug, getReadingTime, type LabPost } from "@/lib/lab";
 import { formatDate } from "@/lib/posts";
@@ -120,14 +121,6 @@ function BackLink() {
       <span className="transition-transform group-hover:-translate-x-0.5">&larr;</span>
       <span>Back to Lab</span>
     </Link>
-  );
-}
-
-function TagPill({ tag }: Readonly<{ tag: string }>) {
-  return (
-    <span className="rounded-full border border-[#BA7517]/15 bg-[#BA7517]/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-[#BA7517]/70">
-      {tag}
-    </span>
   );
 }
 
