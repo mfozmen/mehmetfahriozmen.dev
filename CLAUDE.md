@@ -34,6 +34,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - TypeScript, functional React components, TailwindCSS.
 - Prefer small reusable components.
 - Avoid unnecessary dependencies.
+- **Every clickable link must be tracked.** Use `TrackedNextLink` (internal) or `TrackedAnchor` (external) from `@/components/TrackedLink` — never plain `Link` or `<a>` for user-facing links. Every link needs an `eventName` and `eventData` for analytics.
 
 ## Code Quality Rules
 

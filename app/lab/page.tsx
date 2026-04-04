@@ -24,8 +24,10 @@ export const metadata: Metadata = {
 
 function LabPostCard({ post }: Readonly<{ post: LabPostMeta }>) {
   return (
-    <Link
+    <TrackedNextLink
       href={`/lab/${post.slug}`}
+      eventName="post-card-click"
+      eventData={{ title: post.title, section: "lab" }}
       className="group block rounded-lg border-l-2 border-[#BA7517]/20 bg-[#BA7517]/[0.01] py-5 pr-5 pl-5 transition-colors hover:border-[#BA7517]/60 hover:bg-[#BA7517]/[0.03]"
     >
       <span className="font-mono text-[11px] text-[#BA7517]/60">
@@ -44,7 +46,7 @@ function LabPostCard({ post }: Readonly<{ post: LabPostMeta }>) {
           ))}
         </div>
       )}
-    </Link>
+    </TrackedNextLink>
   );
 }
 

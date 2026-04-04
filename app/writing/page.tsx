@@ -18,8 +18,10 @@ export const metadata: Metadata = {
 
 function PostCard({ post }: Readonly<{ post: PostMeta }>) {
   return (
-    <Link
+    <TrackedNextLink
       href={`/writing/${post.slug}`}
+      eventName="post-card-click"
+      eventData={{ title: post.title, section: "writing" }}
       className="group block overflow-hidden rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
     >
       <div className="relative aspect-[3/2] w-full overflow-hidden">
@@ -40,7 +42,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
           {post.excerpt}
         </p>
       </div>
-    </Link>
+    </TrackedNextLink>
   );
 }
 
