@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import SystemsGalaxy from "@/components/SystemsGalaxy";
 import FeaturedSystems from "@/components/FeaturedSystems";
 import { DeepSpaceFooter } from "@/components/FeaturedSystems";
-import LatestTransmissions from "@/components/LatestTransmissions";
+import LatestSignals from "@/components/LatestSignals";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
@@ -31,7 +31,7 @@ export default function Home() {
           <SystemsGalaxy />
         </div>
         <FeaturedSystems />
-        <LatestTransmissions />
+        <LatestSignals />
         <DeepSpaceFooter />
       </main>
       <Footer />

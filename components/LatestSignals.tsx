@@ -3,7 +3,7 @@ import SectionTitle from "@/components/SectionTitle";
 import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
 import { getAllLabPosts, type LabPostMeta } from "@/lib/lab";
 
-type TransmissionItem = {
+type SignalItem = {
   kind: "field-notes" | "lab-day";
   title: string;
   date: string;
@@ -29,8 +29,8 @@ function TerminalIcon() {
   );
 }
 
-export function getLatestTransmissions(): TransmissionItem[] {
-  const writing: TransmissionItem[] = getAllPosts().map((p) => ({
+export function getLatestSignals(): SignalItem[] {
+  const writing: SignalItem[] = getAllPosts().map((p) => ({
     kind: "field-notes",
     title: p.title,
     date: p.date,
@@ -40,7 +40,7 @@ export function getLatestTransmissions(): TransmissionItem[] {
     href: `/writing/${p.slug}`,
   }));
 
-  const lab: TransmissionItem[] = getAllLabPosts().map((p) => ({
+  const lab: SignalItem[] = getAllLabPosts().map((p) => ({
     kind: "lab-day",
     title: p.title.replace(/^Lab Day:\s*/i, ""),
     date: p.date,
@@ -55,12 +55,12 @@ export function getLatestTransmissions(): TransmissionItem[] {
     .slice(0, 3);
 }
 
-function TransmissionCard({ item }: Readonly<{ item: TransmissionItem }>) {
+function SignalCard({ item }: Readonly<{ item: SignalItem }>) {
   const isLab = item.kind === "lab-day";
   return (
     <TrackedNextLink
       href={item.href}
-      eventName="latest-transmission-click"
+      eventName="latest-signal-click"
       eventData={{ title: item.title, kind: item.kind }}
       className="group relative rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
     >
@@ -88,16 +88,16 @@ function TransmissionCard({ item }: Readonly<{ item: TransmissionItem }>) {
   );
 }
 
-export default function LatestTransmissions() {
-  const items = getLatestTransmissions();
+export default function LatestSignals() {
+  const items = getLatestSignals();
   if (items.length === 0) return null;
 
   return (
     <section className="mt-16">
-      <SectionTitle title="Latest transmissions" />
+      <SectionTitle title="Latest signals" />
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <TransmissionCard key={item.href} item={item} />
+          <SignalCard key={item.href} item={item} />
         ))}
       </div>
     </section>
