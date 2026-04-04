@@ -170,6 +170,10 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
         <TrackedNextLink href="/contact" eventName="cta-click" eventData={{ cta: "want to talk about this", page: `/lab/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
           <span className="relative">Want to talk about this? &rarr;</span>
         </TrackedNextLink>
+        <span className="mx-3">&middot;</span>
+        <TrackedNextLink href="/writing" eventName="cta-click" eventData={{ cta: "prefer essays", page: `/lab/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+          <span className="relative">Prefer essays? Read Field Notes &rarr;</span>
+        </TrackedNextLink>
       </p>
     </div>
   );

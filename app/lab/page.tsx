@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
@@ -112,6 +113,12 @@ export default function LabPage() {
         ) : (
           <EmptyState />
         )}
+        <p className="mt-16 border-t border-[#BA7517]/10 pt-8 text-center text-[13px] text-neutral-500">
+          <TrackedNextLink href="/writing" eventName="cta-click" eventData={{ cta: "read field notes", page: "/lab" }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+            <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
+            <span className="relative">Want essays instead? Read Field Notes &rarr;</span>
+          </TrackedNextLink>
+        </p>
       </main>
       <Footer />
     </>
