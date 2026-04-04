@@ -80,6 +80,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 
 - Always use the Playwright MCP plugin for screenshots — do NOT install playwright as an npm package.
 - Use the plugin for all visual QA tasks: full-page screenshots, viewport testing, element screenshots.
+- **Save all screenshots to `screenshots/`** — this folder is gitignored. Use descriptive filenames (e.g. `homepage-desktop-1440.png`, `lab-list-mobile-390.png`). Never save screenshots to the project root or `public/`.
 
 ## Development & Release Flow
 
