@@ -33,9 +33,9 @@ describe("getAllLabPosts", () => {
 
 describe("getLabPostBySlug", () => {
   it("returns a post for a valid slug", () => {
-    const post = getLabPostBySlug("writing-custom-skills-for-ai-coding-agents");
+    const post = getLabPostBySlug("building-skills-for-ai-coding-agents");
     expect(post).toBeDefined();
-    expect(post!.title).toBe("Lab Day: Writing Custom Skills for AI Coding Agents");
+    expect(post!.title).toBe("Lab Day: Building Skills for AI Coding Agents");
     expect(post!.content).toBeDefined();
     expect(post!.content.length).toBeGreaterThan(0);
   });

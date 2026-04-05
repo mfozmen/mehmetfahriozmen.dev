@@ -5,7 +5,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/lab/how-to-write-custom-skills-for-ai-coding-agents",
-        destination: "/lab/writing-custom-skills-for-ai-coding-agents",
+        destination: "/lab/building-skills-for-ai-coding-agents",
+        permanent: true,
+      },
+      {
+        source: "/lab/writing-custom-skills-for-ai-coding-agents",
+        destination: "/lab/building-skills-for-ai-coding-agents",
         permanent: true,
       },
     ];
