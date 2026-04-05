@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import deepSpaceTheme from "@/lib/shikiTheme";
+import deepSpaceTheme, { PALETTE } from "@/lib/shikiTheme";
 
 describe("deepSpaceTheme", () => {
   it("has required theme fields", () => {
@@ -23,7 +23,7 @@ describe("deepSpaceTheme", () => {
       (t) => Array.isArray(t.scope) && t.scope.includes("keyword")
     );
     expect(keyword).toBeDefined();
-    expect(keyword!.settings.foreground).toBe("#A06614");
+    expect(keyword!.settings.foreground).toBe(PALETTE.keyword);
   });
 
   it("includes comment scope with muted gray", () => {
@@ -31,6 +31,11 @@ describe("deepSpaceTheme", () => {
       (t) => Array.isArray(t.scope) && t.scope.includes("comment")
     );
     expect(comment).toBeDefined();
-    expect(comment!.settings.foreground).toBe("#525252");
+    expect(comment!.settings.foreground).toBe(PALETTE.comment);
+  });
+
+  it("palette uses dimmed amber for keywords, not full #BA7517", () => {
+    expect(PALETTE.keyword).toBe("#A06614");
+    expect(PALETTE.keyword).not.toBe("#BA7517");
   });
 });
