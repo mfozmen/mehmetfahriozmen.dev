@@ -55,8 +55,14 @@ Rules:
 - Never: "In this article, we will explore..." / "Let's dive in!" / "Without further ado"
 - Never use "journey" or "game-changer" or "dive deep"
 
+### Section Headings
+- Use `##` (h2) for section titles — they render as mono uppercase with terminal prompt icon
+- **Keep headings under 30 characters when possible.** Mono uppercase headings wrap awkwardly on mobile (390px) when they're long. Short and punchy is better. Good: "Your First Skill". Bad: "Writing Your First Skill: Commit Messages".
+- Heading hierarchy: h1 (auto-generated title) → h2 (sections) → h3 (rare)
+
 ### Code Blocks
-- Use fenced code blocks with language identifiers — syntax highlighting is automatic via Shiki
+- **Short examples must be inline.** When a code example is a single line or short phrase (a commit message, a URL, a single command), use inline code with backticks within prose. Fenced code blocks are for multi-line code where the visual separation adds value. Wrong: putting `feat: add login` inside a three-backtick code fence. Right: "The agent might produce `feat: add login`" inline in the sentence.
+- **Every fenced code block must have a language identifier.** Use `text` for non-code content (plain output, ASCII, generic formatting). Never leave a fence unlabeled — it creates visual inconsistency with labeled blocks.
 - Code examples must be complete enough to understand — no "..." handwaving in critical parts
 - If a code block is long, break it into pieces with explanation between each piece
 - Comment sparingly inside code — explain in prose above or below
