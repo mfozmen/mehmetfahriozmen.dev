@@ -19,33 +19,27 @@ A prompt is a conversation. A skill is a contract.
 
 But before we get into how to write one, it helps to understand why agents need them in the first place.
 
-## How AI Coding Agents Actually Work
+## Why Skills Exist
 
 AI coding agents — Claude Code, GitHub Copilot, Cursor, Windsurf, whatever you're using — are built on large language models. That sounds obvious, but the implications are worth spelling out because they explain almost every frustrating thing you've experienced with them.
 
-An LLM doesn't "know" your project. It doesn't remember what you told it yesterday. Every time you start a new conversation, the model sees exactly what's in its context window — your current message, any files it's been given access to, and its training data. That's it. That brilliant commit format you explained last Tuesday? Gone. The naming convention you spent ten minutes describing? Never happened.
+An LLM doesn't "know" your project. Every new conversation, the model sees only what's in its context window — your current message, the files it's been given access to, and its training data. Nothing else. The naming convention you spent ten minutes describing last week? It never happened. The model was trained on the entire internet — millions of blog posts, Stack Overflow answers, GitHub repos — and when you ask it to do something, it generates the most probable output based on all of that. Not based on your project. And "all of that" includes a lot of contradictory advice.
 
-This is the fundamental gap. The model was trained on the entire internet — millions of blog posts, Stack Overflow answers, GitHub repos, documentation pages. When you say "write a commit message," it's not pulling from your project's conventions. It's generating the most probable output based on everything it's ever seen. And "everything it's ever seen" includes a lot of contradictory advice.
+Say you're trying to keep SEO consistent across your website. Every new page needs the right meta tags, OG images, JSON-LD schema, a sitemap update. You tell the agent once and it does a decent job. Next page, it skips the schema. The one after that, it forgets the OG image. It's not being inconsistent on purpose — it literally doesn't know what it did last time. Each response is a fresh statistical prediction, and the prediction drifts.
 
-That's why the same agent writes `feat: Added login` in one session and `feature(auth): add login module` in the next. It's not being inconsistent on purpose. It literally doesn't know what it said last time. Each response is a fresh statistical prediction based on whatever's in the current context.
+And it's not just generic checklists. The real pain is the project-specific stuff you figured out the hard way — things that don't live on the internet because they're yours. Say you're building a game and you've tuned your in-game economy for weeks: drop rates, crafting costs, progression curves. None of that is on Stack Overflow. Without something to hold those rules, the agent will confidently suggest values that break your progression every time you add new content.
 
-So how do you get consistent behavior from something that has no persistent memory?
+And here's the part that changes how you think about this. Skills don't just help you build the right thing — they help you check what's already there. Point the agent at existing content and ask it to audit against your rules, and suddenly you have a second pair of eyes that knows exactly what "correct" looks like in your project. New game items that break balance? Flagged. Pages missing schema markup? Flagged. The same file that teaches the agent how to create the right thing also teaches it how to spot the wrong thing. Skills aren't just instructions for writing — they're specifications for reviewing.
 
-You have two options. One: repeat yourself at the start of every conversation. Paste your rules, re-explain your conventions, hope you don't forget anything. This works, technically. It's also tedious, error-prone, and doesn't scale past one person.
+So how do you get consistent behavior from something with no persistent memory? You have two options. One: repeat yourself at the start of every conversation. Paste your rules, re-explain your conventions, hope you don't forget anything. Tedious, error-prone, doesn't scale past one person. Two: write it down once, in a file that loads automatically.
 
-Two: write it down once, in a file that loads automatically. But this has layers, and it's worth understanding them.
+Most AI coding agents already support some form of project-level configuration. Claude Code has `CLAUDE.md`. Cursor has `.cursorrules`. Windsurf has `.windsurfrules`. These files sit in your project root and get loaded into every conversation automatically. Think of them as your project's constitution — broad principles, universal rules. "Use TypeScript strict mode." "Write tests for everything." The stuff that applies to everything the agent does in this codebase.
 
-Most AI coding agents already support some form of project-level configuration. Claude Code has `CLAUDE.md`. Cursor has `.cursorrules`. Windsurf has `.windsurfrules`. These are files that sit in your project root and get loaded into every conversation automatically. You write your project's general rules once — "use TypeScript strict mode," "write tests for everything," "prefer composition over inheritance" — and the agent follows them without being told each time.
+But a constitution isn't an operating manual. "Follow our SEO rules" is fine for `CLAUDE.md`. The full specification — which meta fields, which schema types, which OG image dimensions, which filename conventions, with examples — is too much detail for a general config file. It clutters the context for every task when it's only relevant to one.
 
-Think of these as your project's constitution. Broad principles, universal rules, the stuff that applies to everything the agent does in this codebase. They solve the "repeating yourself every session" problem for general guidance.
+That's where skills come in. A skill is a focused instruction set for a specific type of task. It doesn't load for every conversation — it activates when the agent encounters a matching task. SEO, game balance, commit messages, endpoint scaffolding, code review, database migrations — each gets its own file with its own rules, examples, and constraints. `CLAUDE.md` points the direction. The skill provides the map.
 
-But a constitution isn't an operating manual. "Use conventional commits" is a fine rule for `CLAUDE.md`. But the full specification — type list, scope format, imperative mood, character limit, breaking change footer, Jira issue numbers — that's too much detail for a general config file. It clutters the context for every task when it's only relevant to one.
-
-That's where skills come in. A skill is a focused instruction set for a specific type of task. It doesn't load for every conversation — it activates when the agent encounters a matching task. Commit messages, endpoint scaffolding, code review, database migrations — each one gets its own file with its own rules, examples, and constraints.
-
-The hierarchy looks like this: `CLAUDE.md` says "follow conventional commits." The commit message skill says exactly how — which types, which scope format, which tense, which exceptions, with five concrete examples. The general file points the direction. The skill provides the map.
-
-A skill lives in your project. When the agent encounters a task that matches the skill's description, it loads the file into its context window — your rules, your constraints, your examples. The model doesn't need memory when the instructions are always right there.
+And you don't always have to write them from scratch. There's a growing ecosystem of skills shared by other developers — people who already figured out how to enforce SEO best practices, or run a thorough code review, or scaffold a clean API endpoint. You can grab one, drop it into your project, and customize it to fit your rules. Skills are still early, but the pattern is spreading fast, and the best ones are getting better every month. It's one of those rare moments where you can feel the ground shifting under your feet in a good way.
 
 Now let's see what this looks like in practice.
 
