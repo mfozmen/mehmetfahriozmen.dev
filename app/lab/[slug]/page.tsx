@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import Starfield from "@/components/Starfield";
-import NebulaGlows from "@/components/NebulaGlows";
+import PageShell from "@/components/PageShell";
 import ShareRow from "@/components/writing/ShareRow";
 import BackLink from "@/components/writing/BackLink";
 import TagPill from "@/components/lab/TagPill";
@@ -144,13 +141,7 @@ export default async function LabPostPage(
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.description, coverImage: post.coverImage, date: post.date }, "lab", slug)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Lab", "lab", post.title)) }} />
       <ReadingProgress />
-      <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
-        Skip to content
-      </a>
-      <Navigation />
-      <Starfield />
-      <NebulaGlows />
-
+      <PageShell>
       <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink href="/lab" label="Back to Lab" />
 
@@ -163,7 +154,7 @@ export default async function LabPostPage(
 
         <PostEnding title={post.title} slug={post.slug} />
       </main>
-      <Footer />
-    </>
+      </PageShell>
+</>
   );
 }

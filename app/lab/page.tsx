@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import CollectionJsonLd from "@/components/CollectionJsonLd";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import Starfield from "@/components/Starfield";
-import NebulaGlows from "@/components/NebulaGlows";
+import PageShell from "@/components/PageShell";
 import SectionTitle from "@/components/SectionTitle";
 import TagPill from "@/components/lab/TagPill";
 import { getAllLabPosts, type LabPostMeta } from "@/lib/lab";
@@ -69,13 +66,7 @@ export default function LabPage() {
   return (
     <>
       <CollectionJsonLd name="Lab Day — Mehmet Fahri Özmen" description="Practical technical guides — step-by-step walkthroughs, code-heavy tutorials, and hands-on experiments." basePath="lab" posts={posts} />
-      <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
-        Skip to content
-      </a>
-      <Navigation />
-      <Starfield />
-      <NebulaGlows />
-
+      <PageShell>
       <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <section className="mb-16">
           <h1 className="font-mono text-4xl font-bold tracking-tight text-white sm:text-5xl">
@@ -102,7 +93,7 @@ export default function LabPage() {
           </TrackedNextLink>
         </p>
       </main>
-      <Footer />
+      </PageShell>
     </>
   );
 }
