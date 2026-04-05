@@ -14,6 +14,7 @@ import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
 import { getReadingTime, formatDate } from "@/lib/posts";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
+import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -40,6 +41,7 @@ const mdxComponents = {
   code: InlineCode,
   blockquote: MdxBlockquote,
   a: MdxLink,
+  MarkdownDemo: MarkdownDemoServer,
 };
 
 export function generateStaticParams() {

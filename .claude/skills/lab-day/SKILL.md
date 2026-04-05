@@ -55,10 +55,28 @@ Rules:
 - Never use "journey" or "game-changer" or "dive deep"
 
 ### Code Blocks
-- Use fenced code blocks with language identifiers
+- Use fenced code blocks with language identifiers — syntax highlighting is automatic via Shiki
 - Code examples must be complete enough to understand — no "..." handwaving in critical parts
 - If a code block is long, break it into pieces with explanation between each piece
 - Comment sparingly inside code — explain in prose above or below
+
+**Code block features available:**
+- **Language label + copy button** — automatic for all fenced code blocks
+- **Filename header** — ` ```ts title="src/lib/auth.ts" ` adds a filename bar above the block
+- **Line highlighting** — ` ```ts {4-6} ` highlights specific lines with amber tint
+- **Line numbers** — ` ```ts showLineNumbers ` enables line numbers
+- **Diff highlighting** — prefix lines with `+` or `-` for before/after examples
+- **Collapse for long blocks** — blocks > 400px auto-collapse with "Show more" button. Override with `expandable={false}` or `maxHeight={600}` in the fence meta
+- **Markdown source/rendered toggle** — wrap markdown code blocks with `<MarkdownDemo>` to give readers a Source/Rendered toggle. Use for skill file examples, config files, or any markdown the reader benefits from seeing both raw and formatted:
+  ```
+  <MarkdownDemo>
+  ` ` `markdown
+  # Example Skill
+  ## Description
+  ...
+  ` ` `
+  </MarkdownDemo>
+  ```
 
 ### Visual Content
 - No illustrations or cartoons inside Lab Day posts

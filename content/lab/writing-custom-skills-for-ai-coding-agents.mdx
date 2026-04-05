@@ -75,6 +75,7 @@ Before we write anything, let's look at what goes inside a `SKILL.md` file. Ever
 
 Here's your starting skeleton:
 
+<MarkdownDemo>
 ```markdown
 # Skill Name
 
@@ -99,6 +100,7 @@ When to use this skill. Be specific about the trigger.
 **Input:** [another scenario]
 **Output:** [correct output for that scenario]
 ```
+</MarkdownDemo>
 
 That's it. No special syntax, no config files, no build step. A markdown file with clear sections. Let's fill one in.
 
@@ -106,6 +108,7 @@ That's it. No special syntax, no config files, no build step. A markdown file wi
 
 Here's the scenario. Your company uses Jira. You want every commit tied to an issue number. Your format is `type(ISS-123): description` — not the generic `type(scope)` you see in blog posts. The scope _is_ the Jira issue.
 
+<MarkdownDemo>
 ```markdown
 # Conventional Commits
 
@@ -172,6 +175,7 @@ feat(ISS-445): restructure api response envelope
 BREAKING CHANGE: response wrapper changed from { data, error }
 to { result, errors[] }. All clients must update parsing logic.
 ```
+</MarkdownDemo>
 
 Now look at what this skill does that "use conventional commits" doesn't:
 
@@ -201,6 +205,7 @@ Commit messages are a formatting skill. Let's write one that encodes an entire w
 
 When someone on your team creates a new REST endpoint, there are probably six things that need to happen every time: file naming, route registration, request validation, error handling, response format, and a test file. You know this. Your agent doesn't — unless you tell it.
 
+<MarkdownDemo>
 ```markdown
 # API Endpoint Scaffold
 
@@ -261,6 +266,7 @@ Every endpoint must have tests for:
 - Never skip the test file, even for "simple" endpoints
 - Never use generic names like handler.ts or route.ts
 ```
+</MarkdownDemo>
 
 This isn't a formatting rule anymore. This is a whole process — file structure, validation pattern, error format, test coverage — encoded in one file. The agent follows it step by step and produces a consistent scaffold every time. New team member joins? They don't need to ask "where do test files go?" The skill already knows.
 
@@ -268,6 +274,7 @@ This isn't a formatting rule anymore. This is a whole process — file structure
 
 Here's where it gets interesting. You can teach your agent to review code the way you would.
 
+<MarkdownDemo>
 ```markdown
 # Code Review
 
@@ -323,6 +330,7 @@ Check every item. Flag anything that fails.
 - Never approve without checking all sections
 - If unsure about something, flag it as a question, not a demand
 ```
+</MarkdownDemo>
 
 Notice something? The testing section says "commit messages follow our convention." That points back to the first skill we wrote. Skills reference each other. They build an ecosystem. Your commit message skill feeds into your code review skill. Your API scaffold skill defines what the review skill checks for.
 

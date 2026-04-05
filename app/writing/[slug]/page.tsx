@@ -13,6 +13,7 @@ import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
+import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import ReadingProgress from "@/components/writing/ReadingProgress";
@@ -57,7 +58,7 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, figure: CodeBlockFigure, pre: CodePre, code: InlineCode };
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
