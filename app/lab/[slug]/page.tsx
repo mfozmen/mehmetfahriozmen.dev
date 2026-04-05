@@ -13,6 +13,9 @@ import ReadingProgress from "@/components/writing/ReadingProgress";
 import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
 import { getReadingTime, formatDate } from "@/lib/posts";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
+import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 
@@ -30,29 +33,11 @@ function LabMdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   );
 }
 
-function LabMdxPre({ children }: Readonly<{ children?: ReactNode }>) {
-  return (
-    <pre className="my-8 overflow-x-auto rounded-lg border border-[#BA7517]/10 bg-[#0d0d0d] p-5 text-[13px] leading-relaxed">
-      {children}
-    </pre>
-  );
-}
-
-function LabMdxCode({ children, className }: Readonly<{ children?: ReactNode; className?: string }>) {
-  if (className) {
-    return <code className={`${className} text-[13px]`}>{children}</code>;
-  }
-  return (
-    <code className="rounded border border-[#BA7517]/10 bg-[#BA7517]/[0.04] px-1.5 py-0.5 font-mono text-[13px] text-[#BA7517]/80">
-      {children}
-    </code>
-  );
-}
-
 const mdxComponents = {
   h2: LabMdxH2,
-  pre: LabMdxPre,
-  code: LabMdxCode,
+  figure: CodeBlockFigure,
+  pre: CodePre,
+  code: InlineCode,
   blockquote: MdxBlockquote,
   a: MdxLink,
 };
@@ -206,7 +191,7 @@ export default async function LabPostPage(
         <article className="mt-8">
           <PostHeader post={post} />
           <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
           </div>
         </article>
 

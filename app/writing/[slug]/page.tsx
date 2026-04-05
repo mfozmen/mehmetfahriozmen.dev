@@ -12,6 +12,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
+import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import PostNavigation from "@/components/writing/PostNavigation";
 
@@ -54,7 +57,7 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink };
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, figure: CodeBlockFigure, pre: CodePre, code: InlineCode };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -209,7 +212,7 @@ export default async function PostPage(
         <article className="mt-8">
           <PostHeader post={post} />
           <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
           </div>
         </article>
 

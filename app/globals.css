@@ -35,3 +35,74 @@ body {
     opacity: 0.3;
   }
 }
+
+/* rehype-pretty-code — code block styles */
+
+[data-rehype-pretty-code-figure] pre {
+  background-color: #0d0d0d !important;
+}
+
+[data-rehype-pretty-code-figure] code {
+  font-family: var(--font-mono);
+  display: grid;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1rem;
+  border-left: 2px solid transparent;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background-color: rgba(186, 117, 23, 0.06);
+  border-left-color: rgba(186, 117, 23, 0.4);
+}
+
+[data-rehype-pretty-code-title] {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #a3a3a3;
+  background-color: #0d0d0d;
+  border: 1px solid rgba(186, 117, 23, 0.1);
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+[data-rehype-pretty-code-title] + pre {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Line numbers */
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.5rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: #404040;
+  font-size: 12px;
+}
+
+/* Diff lines */
+[data-line].diff.add {
+  background-color: rgba(186, 117, 23, 0.08);
+  border-left-color: rgba(186, 117, 23, 0.5);
+}
+
+[data-line].diff.remove {
+  background-color: rgba(220, 38, 38, 0.08);
+  border-left-color: rgba(220, 38, 38, 0.4);
+}
+
+/* Highlighted chars (word highlight) */
+[data-highlighted-chars] {
+  background-color: rgba(186, 117, 23, 0.15);
+  border-radius: 3px;
+  padding: 1px 3px;
+}
