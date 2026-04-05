@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
-import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type Post, type PostMeta } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type PostMeta } from "@/lib/posts";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
