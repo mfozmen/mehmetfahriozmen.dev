@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, type ReactNode } from "react";
+import { extractTextContent } from "@/lib/mdxUtils";
 
 const DEFAULT_MAX_HEIGHT = 400;
 
@@ -33,17 +34,6 @@ function LanguageBadge({ lang }: Readonly<{ lang: string }>) {
       {lang}
     </span>
   );
-}
-
-function extractTextContent(node: ReactNode): string {
-  if (typeof node === "string") return node;
-  if (typeof node === "number") return String(node);
-  if (!node) return "";
-  if (Array.isArray(node)) return node.map(extractTextContent).join("");
-  if (typeof node === "object" && "props" in node) {
-    return extractTextContent((node as { props: { children?: ReactNode } }).props.children);
-  }
-  return "";
 }
 
 export function CodePre({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {

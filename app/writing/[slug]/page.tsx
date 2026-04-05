@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type Post, type PostMeta } from "@/lib/posts";
+import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
+import BackLink from "@/components/writing/BackLink";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
 import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
@@ -93,18 +94,6 @@ export async function generateMetadata(
   };
 }
 
-function BackLink() {
-  return (
-    <Link
-      href="/writing"
-      className="group relative inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:text-[#BA7517]"
-    >
-      <span className="transition-transform group-hover:-translate-x-0.5">&larr;</span>
-      <span>Back to Writing</span>
-    </Link>
-  );
-}
-
 /* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */
 function PostHeader({ post }: Readonly<{ post: { date: string; title: string; excerpt: string; coverImage: string; content: string } }>) {
   return (
@@ -159,29 +148,6 @@ function PostEnding({ title, slug, previous, next }: Readonly<{ title: string; s
   );
 }
 
-function buildArticleSchema(post: Post, slug: string) {
-  return {
-    "@context": "https://schema.org", "@type": "Article",
-    headline: post.title, description: post.excerpt,
-    image: `https://mehmetfahriozmen.dev${post.coverImage}`,
-    datePublished: post.date,
-    author: { "@type": "Person", name: "Mehmet Fahri Özmen", url: "https://mehmetfahriozmen.dev" },
-    publisher: { "@type": "Person", name: "Mehmet Fahri Özmen" },
-    url: `https://mehmetfahriozmen.dev/writing/${slug}`,
-  };
-}
-
-function buildBreadcrumbSchema(title: string) {
-  return {
-    "@context": "https://schema.org", "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://mehmetfahriozmen.dev" },
-      { "@type": "ListItem", position: 2, name: "Writing", item: "https://mehmetfahriozmen.dev/writing" },
-      { "@type": "ListItem", position: 3, name: title },
-    ],
-  };
-}
-
 export default async function PostPage(
   { params }: Readonly<{ params: Promise<{ slug: string }> }>
 ) {
@@ -196,8 +162,8 @@ export default async function PostPage(
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post, slug)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema(post.title)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.excerpt, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Writing", "writing", post.title)) }} />
       <ReadingProgress />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
@@ -208,7 +174,7 @@ export default async function PostPage(
 
       {/* Fix #1 & #5: Single max-w-3xl, no per-paragraph max-w */}
       <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
-        <BackLink />
+        <BackLink href="/writing" label="Back to Writing" />
 
         <article className="mt-8">
           <PostHeader post={post} />

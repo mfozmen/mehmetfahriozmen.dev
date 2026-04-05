@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import ShareRow from "@/components/writing/ShareRow";
+import BackLink from "@/components/writing/BackLink";
 import TagPill from "@/components/lab/TagPill";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
+import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { getReadingTime, formatDate } from "@/lib/posts";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
@@ -76,17 +77,6 @@ export async function generateMetadata(
   };
 }
 
-function BackLink() {
-  return (
-    <Link
-      href="/lab"
-      className="group relative inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:text-[#BA7517]"
-    >
-      <span className="transition-transform group-hover:-translate-x-0.5">&larr;</span>
-      <span>Back to Lab</span>
-    </Link>
-  );
-}
 
 function PostHeader({ post }: Readonly<{ post: LabPost }>) {
   return (
@@ -142,32 +132,6 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
   );
 }
 
-function buildArticleSchema(post: LabPost, slug: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.description,
-    image: `https://mehmetfahriozmen.dev${post.coverImage}`,
-    datePublished: post.date,
-    author: { "@type": "Person", name: "Mehmet Fahri Özmen", url: "https://mehmetfahriozmen.dev" },
-    publisher: { "@type": "Person", name: "Mehmet Fahri Özmen" },
-    url: `https://mehmetfahriozmen.dev/lab/${slug}`,
-  };
-}
-
-function buildBreadcrumbSchema(title: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://mehmetfahriozmen.dev" },
-      { "@type": "ListItem", position: 2, name: "Lab", item: "https://mehmetfahriozmen.dev/lab" },
-      { "@type": "ListItem", position: 3, name: title },
-    ],
-  };
-}
-
 export default async function LabPostPage(
   { params }: Readonly<{ params: Promise<{ slug: string }> }>
 ) {
@@ -177,8 +141,8 @@ export default async function LabPostPage(
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post, slug)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema(post.title)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.description, coverImage: post.coverImage, date: post.date }, "lab", slug)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Lab", "lab", post.title)) }} />
       <ReadingProgress />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
@@ -188,7 +152,7 @@ export default async function LabPostPage(
       <NebulaGlows />
 
       <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
-        <BackLink />
+        <BackLink href="/lab" label="Back to Lab" />
 
         <article className="mt-8">
           <PostHeader post={post} />
