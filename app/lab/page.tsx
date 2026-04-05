@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TrackedNextLink } from "@/components/TrackedLink";
+import CollectionJsonLd from "@/components/CollectionJsonLd";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Starfield from "@/components/Starfield";
@@ -49,26 +50,6 @@ function LabPostCard({ post }: Readonly<{ post: LabPostMeta }>) {
   );
 }
 
-function CollectionJsonLd({ posts }: Readonly<{ posts: LabPostMeta[] }>) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Lab Day — Mehmet Fahri Özmen",
-    description: "Practical technical guides — step-by-step walkthroughs, code-heavy tutorials, and hands-on experiments.",
-    url: "https://mehmetfahriozmen.dev/lab",
-    mainEntity: {
-      "@type": "ItemList",
-      itemListElement: posts.map((post, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: `https://mehmetfahriozmen.dev/lab/${post.slug}`,
-        name: post.title,
-      })),
-    },
-  };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
-}
-
 function EmptyState() {
   return (
     <div className="rounded-lg border border-dashed border-[#BA7517]/15 px-8 py-16 text-center">
@@ -87,7 +68,7 @@ export default function LabPage() {
 
   return (
     <>
-      <CollectionJsonLd posts={posts} />
+      <CollectionJsonLd name="Lab Day — Mehmet Fahri Özmen" description="Practical technical guides — step-by-step walkthroughs, code-heavy tutorials, and hands-on experiments." basePath="lab" posts={posts} />
       <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
         Skip to content
       </a>
