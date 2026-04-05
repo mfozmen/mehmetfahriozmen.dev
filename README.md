@@ -9,16 +9,19 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 
 ## Pages
 
-- **Homepage** — Hero section, interactive galaxy visualization, and featured systems grid
+- **Homepage** — Hero section, interactive galaxy visualization, featured systems grid, and Latest Signals (mixed Writing + Lab feed)
 - **About** — Story, career journey, photos, and personal interests
 - **CV** — Full timeline with role progressions, collapsible sections, PDF download, and skills
-- **Writing** — MDX blog with cover illustrations, reading time, and share functionality
+- **Writing (Field Notes)** — Essays on engineering leadership, architecture, and the human side of building software
+- **Lab (Lab Day)** — Practical technical guides with code-heavy tutorials and step-by-step walkthroughs
 - **Contact** — Contact form via Formspree with client-side validation and direct channel links
 
 ## Features
 
 - Interactive galaxy visualization (Canvas API) with hover interactions, satellite animations, and parallax effects
 - MDX blog with next-mdx-remote, cover images, reading time, progress bar, and social sharing
+- Code blocks with Shiki syntax highlighting, copy button, language labels, line highlighting, diff support, collapsible long blocks, and MarkdownDemo source/rendered toggle
+- Two content sections (Field Notes essays + Lab Day technical guides) with cross-links and mixed homepage feed
 - Smooth scroll navigation with reduced-motion support
 - Contact form with Formspree integration, client-side validation, and focus management
 - Mobile navigation drawer with keyboard accessibility and touch support
@@ -34,6 +37,7 @@ Personal website for Mehmet Fahri Özmen — backend systems architect and engin
 - **Tailwind CSS v4**
 - **Canvas API** for galaxy visualization
 - **next-mdx-remote** + **gray-matter** for blog
+- **Shiki** + **rehype-pretty-code** for syntax highlighting
 - **Formspree** for contact form
 - **Vitest** with v8 coverage
 - **Umami** for privacy-friendly analytics
@@ -60,11 +64,12 @@ npm run release        # Bump version, tag, push to main
 - **GitHub Release:** auto-created by CI on tag push
 - **Rollback:** Vercel dashboard → Deployments → Promote old deployment
 
-## Blog Post SEO Checklist
+## Content SEO Checklist
 
-When creating or editing MDX files in `content/writing/`, verify frontmatter before committing:
+When creating or editing MDX files in `content/writing/` or `content/lab/`, verify frontmatter before committing:
 
-- `title` — under 60 characters
+- `title` — under 60 characters (Lab Day posts must start with "Lab Day: " prefix)
 - `description` — at least 100 characters
-- `coverImage` — must be set
+- `coverImage` — must be set (Lab Day posts always use `/lab/lab-day-cover.webp`)
 - `date` — ISO format (`YYYY-MM-DD`)
+- `slug` — kebab-case, descriptive, no stop words (Lab Day only)
