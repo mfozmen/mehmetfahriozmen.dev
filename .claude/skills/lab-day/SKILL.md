@@ -25,6 +25,7 @@ Trigger: any task involving /lab route, Lab Day content, technical blog posts, c
 title: "Lab Day: [Descriptive Title]"
 description: "[100+ chars, SEO-friendly description of what the reader will learn]"
 date: "YYYY-MM-DD"
+slug: "[kebab-case-descriptive-no-stop-words]"
 coverImage: "/lab/lab-day-cover.webp"
 tags: ["tag1", "tag2"]
 ---

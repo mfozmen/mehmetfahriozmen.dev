@@ -104,6 +104,36 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Rollback: Vercel dashboard → Deployments → Promote old deployment
 - On release, main and dev are synced to the same commit
 
+## Content Architecture
+
+Two content sections with separate routes:
+- **Field Notes** (`/writing`) — essays in `content/posts/*.mdx`
+- **Lab Day** (`/lab`) — technical guides in `content/lab/*.mdx`
+
+Shared components:
+- `PageShell` — skip-to-content, Navigation, Starfield, NebulaGlows, Footer wrapper
+- `SectionTitle` — star icon + mono title + gradient line (accepts optional `icon` prop)
+- `CollectionJsonLd` — parameterized schema.org CollectionPage
+- `BackLink` — "Back to [section]" with href/label props
+- `ShareRow` — copy link + LinkedIn + X sharing with `basePath` prop
+- `MdxComponents` — shared MdxBlockquote and MdxLink
+- `CodeBlock` — CodeBlockFigure (collapse), CodePre (language label + copy), InlineCode
+- `MarkdownDemo` / `MarkdownDemoServer` — source/rendered toggle for markdown code blocks
+- Schema builders in `lib/schema.ts` — `buildArticleSchema` and `buildBreadcrumbSchema`
+- Text extraction in `lib/mdxUtils.ts` — `extractTextContent` for React node trees
+- Content loaders: `lib/posts.ts` and `lib/lab.ts`
+
+Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 posts) → DeepSpaceFooter → Footer
+
+## Code Blocks
+
+- **Shiki** + **rehype-pretty-code** for server-side syntax highlighting (zero client JS flash)
+- Custom "Deep Space" theme in `lib/shikiTheme.ts` — dimmed amber palette, not full #BA7517
+- rehype-pretty-code config in `lib/rehypePrettyCode.ts`
+- CSS for code blocks in `app/globals.css` (data attributes: `[data-line]`, `[data-highlighted-line]`, etc.)
+- Features: language label, copy button, line highlighting (`{4-6}`), line numbers (`showLineNumbers`), diff (`+`/`-` lines), collapsible long blocks (400px default), `<MarkdownDemo>` source/rendered toggle
+- Inline code: amber-tinted `border border-[#BA7517]/10 bg-[#BA7517]/[0.04]`
+
 ## Blog Post SEO Checklist
 
 When creating or editing blog posts (MDX files in `content/writing/`), verify ALL of the following before committing:
@@ -118,6 +148,8 @@ If any check fails, fix it before committing.
 ## Blog Writing Guide
 
 Before creating or editing any blog post, consult `docs/blog-writing-guide.md` for voice, tone, illustration rules, structure principles, and workflow. This is the authoritative reference for all writing on the site.
+
+For Lab Day posts specifically, the Lab Day skill (`.claude/skills/lab-day/SKILL.md`) defines structure, tone, code block features, and constraints.
 
 ## Graph Data Architecture
 

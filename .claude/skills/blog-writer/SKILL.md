@@ -83,6 +83,26 @@ Every post opens with a blockquote. Rules:
 - Never repeat a sentence from the body text
 - Place far from inline images (both are "pause" moments)
 
+### Code Blocks
+
+Writing posts support the full code block system (same as Lab Day):
+- Syntax highlighting via Shiki (server-side, no flash)
+- Language label + copy button (automatic)
+- Line highlighting: ` ```ts {4-6} `
+- Line numbers: ` ```ts showLineNumbers `
+- Diff highlighting: prefix lines with `+` or `-`
+- Collapsible long blocks (>400px auto-collapse)
+- Markdown source/rendered toggle: wrap with `<MarkdownDemo>`
+
+Code blocks are rare in Field Notes essays but work when needed.
+
+### Relationship with Lab Day
+
+- Field Notes (/writing): essays, observations, reflections — "here's what I think"
+- Lab Day (/lab): technical guides, tutorials, walkthroughs — "here's how to do it"
+- Cross-linking is encouraged when natural
+- If a post has heavy code and a tutorial structure, it probably belongs in Lab Day, not here
+
 ### What Infrastructure Handles Automatically
 
 Do NOT manually create: sitemap entry, Article JSON-LD, OG/Twitter meta tags, OG image, RSS feed entry, BreadcrumbList JSON-LD, reading time, post navigation.
