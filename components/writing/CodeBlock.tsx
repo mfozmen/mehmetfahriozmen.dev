@@ -38,10 +38,11 @@ function LanguageBadge({ lang }: Readonly<{ lang: string }>) {
 
 export function CodePre({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {
   const lang = (props["data-language"] as string) ?? "";
+  const hasLabel = lang !== "" && lang !== "text";
   const code = extractTextContent(children);
 
   return (
-    <pre {...props} className="group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 pt-10 text-[13px] leading-relaxed">
+    <pre {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel ? "pt-10" : ""}`}>
       <LanguageBadge lang={lang} />
       <CopyButton code={code} />
       {children}
