@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import CollectionJsonLd from "@/components/CollectionJsonLd";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import Starfield from "@/components/Starfield";
-import NebulaGlows from "@/components/NebulaGlows";
+import PageShell from "@/components/PageShell";
 import SectionTitle from "@/components/SectionTitle";
 import { getAllPosts, formatDate, type PostMeta } from "@/lib/posts";
 
@@ -53,13 +50,7 @@ export default function WritingPage() {
   return (
     <>
       <CollectionJsonLd name="Writing — Mehmet Fahri Özmen" description="Thoughts on engineering leadership, architecture, and the human side of building software." basePath="writing" posts={posts} />
-      <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
-        Skip to content
-      </a>
-      <Navigation />
-      <Starfield />
-      <NebulaGlows />
-
+      <PageShell>
       <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <section className="mb-16">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
@@ -82,7 +73,7 @@ export default function WritingPage() {
           </TrackedNextLink>
         </p>
       </main>
-      <Footer />
-    </>
+      </PageShell>
+</>
   );
 }

@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import Starfield from "@/components/Starfield";
-import NebulaGlows from "@/components/NebulaGlows";
+import PageShell from "@/components/PageShell";
 import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type PostMeta } from "@/lib/posts";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -165,14 +162,7 @@ export default async function PostPage(
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.excerpt, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Writing", "writing", post.title)) }} />
       <ReadingProgress />
-      <a href="#main" className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-1/2 focus-visible:-translate-x-1/2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-neutral-900 focus-visible:text-white focus-visible:rounded focus-visible:text-sm">
-        Skip to content
-      </a>
-      <Navigation />
-      <Starfield />
-      <NebulaGlows />
-
-      {/* Fix #1 & #5: Single max-w-3xl, no per-paragraph max-w */}
+      <PageShell>
       <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink href="/writing" label="Back to Writing" />
 
@@ -185,7 +175,7 @@ export default async function PostPage(
 
         <PostEnding title={post.title} slug={post.slug} previous={previous} next={next} />
       </main>
-      <Footer />
-    </>
+      </PageShell>
+</>
   );
 }
