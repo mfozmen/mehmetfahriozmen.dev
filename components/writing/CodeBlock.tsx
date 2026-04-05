@@ -98,10 +98,11 @@ export function CodeBlockFigure({ children, ...props }: Readonly<Record<string, 
 export function InlineCode({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {
   const hasTheme = "data-theme" in props;
   if (hasTheme) {
-    return <code {...props} className="rounded border border-[#BA7517]/10 bg-[#BA7517]/[0.04] px-1.5 py-0.5 text-[13px]">{children}</code>;
+    const rest = Object.fromEntries(Object.entries(props).filter(([k]) => k !== "style"));
+    return <code {...rest} className="inline-code rounded border border-[#BA7517]/10 bg-[#BA7517]/[0.04] px-1.5 py-0.5 font-mono text-[13px] text-[#BA7517]/80">{children}</code>;
   }
   return (
-    <code className="rounded border border-[#BA7517]/10 bg-[#BA7517]/[0.04] px-1.5 py-0.5 font-mono text-[13px] text-[#BA7517]/80">
+    <code className="inline-code rounded border border-[#BA7517]/10 bg-[#BA7517]/[0.04] px-1.5 py-0.5 font-mono text-[13px] text-[#BA7517]/80">
       {children}
     </code>
   );

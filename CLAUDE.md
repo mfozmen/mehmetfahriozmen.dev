@@ -133,6 +133,7 @@ Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 p
 - CSS for code blocks in `app/globals.css` (data attributes: `[data-line]`, `[data-highlighted-line]`, etc.)
 - Features: language label, copy button, line highlighting (`{4-6}`), line numbers (`showLineNumbers`), diff (`+`/`-` lines), collapsible long blocks (400px default), `<MarkdownDemo>` source/rendered toggle
 - Inline code: amber-tinted `border border-[#BA7517]/10 bg-[#BA7517]/[0.04]`
+- **Inline code gotcha:** rehype-pretty-code wraps inline backtick code in `<span data-rehype-pretty-code-figure>` — the same attribute used for fenced blocks. The fenced-block CSS rule `[data-rehype-pretty-code-figure] code { display: grid }` also matches inline code, turning it into a full-width block. The `.inline-code` class on `InlineCode` component + CSS overrides in `globals.css` fix this. After upgrading Shiki or rehype-pretty-code, always verify inline code still renders inline (not as block bars).
 
 ## Blog Post SEO Checklist
 

@@ -36,6 +36,35 @@ body {
   }
 }
 
+/*
+ * Inline code — override Shiki/rehype-pretty-code grid display.
+ *
+ * BUG CONTEXT: rehype-pretty-code wraps ALL backtick code (inline and fenced)
+ * in <span data-rehype-pretty-code-figure> with <code> containing
+ * <span data-line> children. The fenced-block rule below sets `display: grid`
+ * on `[data-rehype-pretty-code-figure] code`, which also matches inline code
+ * because inline code sits inside a <span data-rehype-pretty-code-figure> too
+ * (not a <figure>). This turns every inline `code` into a full-width block bar.
+ *
+ * The fix: `.inline-code` class on the InlineCode component forces
+ * `display: inline` and strips the data-line padding/border. The InlineCode
+ * component also strips Shiki's inline style (background-color/color) via
+ * destructuring `style: _style` so our Tailwind classes win.
+ *
+ * WATCH OUT if upgrading Shiki or rehype-pretty-code: any change to how
+ * inline code is wrapped (new attributes, different elements) could break
+ * these selectors. Test inline code rendering after upgrades.
+ */
+[data-rehype-pretty-code-figure] code.inline-code {
+  display: inline !important;
+}
+
+[data-rehype-pretty-code-figure] code.inline-code [data-line] {
+  display: inline !important;
+  padding: 0 !important;
+  border-left: none !important;
+}
+
 /* rehype-pretty-code — code block styles */
 
 [data-rehype-pretty-code-figure] pre {
