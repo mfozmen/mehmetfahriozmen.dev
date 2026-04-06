@@ -19,7 +19,7 @@ function CopyButton({ code }: Readonly<{ code: string }>) {
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-3 right-3 z-10 rounded border border-[#BA7517]/20 bg-[#0d0d0d]/80 px-2 py-1 font-mono text-[10px] text-[#BA7517] opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+      className="absolute top-1.5 right-1.5 z-10 flex min-h-[44px] min-w-[44px] items-center justify-center rounded border border-[#BA7517]/20 bg-[#0d0d0d]/80 px-2 py-1 font-mono text-[10px] text-[#BA7517] opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 sm:top-3 sm:right-3 sm:min-h-0 sm:min-w-0"
       aria-label="Copy code"
     >
       {copied ? "Copied!" : "Copy"}

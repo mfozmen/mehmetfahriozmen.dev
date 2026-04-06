@@ -2,11 +2,21 @@
 
 import { useState, type ReactNode } from "react";
 
+function demoteHeadings(html: string): string {
+  return html
+    .replace(/<h1>/g, '<div role="presentation" class="demo-h1">')
+    .replace(/<\/h1>/g, "</div>")
+    .replace(/<h2>/g, '<div role="presentation" class="demo-h2">')
+    .replace(/<\/h2>/g, "</div>")
+    .replace(/<h3>/g, '<div role="presentation" class="demo-h3">')
+    .replace(/<\/h3>/g, "</div>");
+}
+
 function RenderedMarkdown({ html }: Readonly<{ html: string }>) {
   return (
     <div
-      className="rounded-lg border border-[#BA7517]/10 bg-[#0d0d0d] p-5 text-[13px] leading-relaxed text-neutral-300 [&_h1]:mb-4 [&_h1]:text-lg [&_h1]:font-bold [&_h1]:text-white [&_h2]:mb-3 [&_h2]:mt-6 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-white [&_li]:ml-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_p]:mb-3 [&_strong]:font-semibold [&_strong]:text-white [&_ul]:list-disc [&_ul]:pl-4"
-      dangerouslySetInnerHTML={{ __html: html }} // NOSONAR — pre-rendered markdown, no user input
+      className="rounded-lg border border-[#BA7517]/10 bg-[#0d0d0d] p-5 text-[13px] leading-relaxed text-neutral-300 [&_.demo-h1]:mb-4 [&_.demo-h1]:text-lg [&_.demo-h1]:font-bold [&_.demo-h1]:text-white [&_.demo-h2]:mb-3 [&_.demo-h2]:mt-6 [&_.demo-h2]:text-base [&_.demo-h2]:font-semibold [&_.demo-h2]:text-white [&_.demo-h3]:mb-2 [&_.demo-h3]:mt-4 [&_.demo-h3]:text-sm [&_.demo-h3]:font-semibold [&_.demo-h3]:text-white [&_li]:ml-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_p]:mb-3 [&_strong]:font-semibold [&_strong]:text-white [&_ul]:list-disc [&_ul]:pl-4"
+      dangerouslySetInnerHTML={{ __html: demoteHeadings(html) }} // NOSONAR — pre-rendered markdown, no user input
     />
   );
 }
