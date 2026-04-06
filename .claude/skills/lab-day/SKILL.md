@@ -60,6 +60,11 @@ Rules:
 - **Keep headings under 30 characters when possible.** Mono uppercase headings wrap awkwardly on mobile (390px) when they're long. Short and punchy is better. Good: "Your First Skill". Bad: "Writing Your First Skill: Commit Messages".
 - Heading hierarchy: h1 (auto-generated title) → h2 (sections) → h3 (rare)
 
+### Examples and Context
+- **Assume the reader has zero context.** Examples must be clear, complete, and self-explanatory — they should show enough surrounding context that a reader encountering the topic for the first time can understand what the example demonstrates.
+- **Avoid abstract or floating examples.** A two-line snippet without surrounding structure leaves the reader guessing where it lives, what file it belongs to, or what it's part of. When showing how something looks inside a file (a config, a skill, a markdown document), show the realistic file structure around it — headings, sections, the parent context — so the reader sees the example in its natural habitat.
+- **Prefer fuller examples over minimal ones when the minimal version requires the reader to already know the answer.** Brevity is valuable, but clarity wins when they conflict. Write examples for a developer encountering this topic for the first time, not for someone who already shares your mental model.
+
 ### Code Blocks
 - **Short examples must be inline.** When a code example is a single line or short phrase (a commit message, a URL, a single command), use inline code with backticks within prose. Fenced code blocks are for multi-line code where the visual separation adds value. Wrong: putting `feat: add login` inside a three-backtick code fence. Right: "The agent might produce `feat: add login`" inline in the sentence.
 - **Every fenced code block must have a language identifier.** Use `text` for non-code content (plain output, ASCII, generic formatting). Never leave a fence unlabeled — it creates visual inconsistency with labeled blocks.
