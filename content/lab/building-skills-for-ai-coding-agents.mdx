@@ -188,7 +188,12 @@ Now look at what this skill does that "use conventional commits" doesn't:
 - Imperative mood is explicitly required with counter-examples.
 - The breaking change format is defined, not assumed.
 
-**Before the skill**, your agent might produce `Feature(authentication): Added the login endpoint for users`. **After the skill:** `feat(ISS-142): add login api endpoint`. Same intent. Completely different output. And it'll be this consistent on commit #1 and commit #500.
+Same intent. Completely different output. And it'll be this consistent on commit #1 and commit #500.
+
+```diff
+- Feature(authentication): Added the login endpoint for users
++ feat(ISS-142): add login api endpoint
+```
 
 ## Leveling Up: API Endpoint Scaffold
 
