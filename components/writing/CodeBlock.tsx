@@ -40,6 +40,8 @@ export function CodePre({ children, ...props }: Readonly<Record<string, unknown>
   const lang = (props["data-language"] as string) ?? "";
   const hasLabel = lang !== "" && lang !== "text";
   const isDiff = lang === "diff";
+  const isBash = lang === "bash";
+  const hideCopy = isDiff || isBash;
   const code = extractTextContent(children);
   const preRef = useRef<HTMLPreElement>(null);
 
@@ -54,9 +56,9 @@ export function CodePre({ children, ...props }: Readonly<Record<string, unknown>
   }, [isDiff]);
 
   return (
-    <pre ref={preRef} {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel && !isDiff ? "pt-10" : ""}`}>
-      {!isDiff && <LanguageBadge lang={lang} />}
-      {!isDiff && <CopyButton code={code} />}
+    <pre ref={preRef} {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel && !hideCopy ? "pt-10" : ""}`}>
+      {!hideCopy && <LanguageBadge lang={lang} />}
+      {!hideCopy && <CopyButton code={code} />}
       {children}
     </pre>
   );

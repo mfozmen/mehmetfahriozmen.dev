@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
   return (
@@ -11,15 +12,21 @@ export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) 
   );
 }
 
+const linkClass = "border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]/80";
+
 export function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
+  if (!href) return <span className={linkClass}>{children}</span>;
+  const text = typeof children === "string" ? children : "link";
+  if (href.startsWith("http")) {
+    return (
+      <TrackedAnchor href={href} eventName="outbound-link" eventData={{ href, text }} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        {children}
+      </TrackedAnchor>
+    );
+  }
   return (
-    <a
-      href={href}
-      target={href?.startsWith("http") ? "_blank" : undefined}
-      rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]/80"
-    >
+    <TrackedNextLink href={href} eventName="internal-link" eventData={{ href, text }} className={linkClass}>
       {children}
-    </a>
+    </TrackedNextLink>
   );
 }

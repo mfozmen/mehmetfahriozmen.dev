@@ -69,11 +69,6 @@ Now let's look at what goes inside. Every piece is there for a reason.
 
 **Description** — Tells the agent when to activate this skill. This is the trigger. Be specific — if the trigger is vague, the agent guesses.
 
-```diff
-- For commits.
-+ Use this skill when creating git commit messages for any staged changes in this repository.
-```
-
 **Rules / Procedure** — Step-by-step instructions. What to do, in what order. The agent follows these literally, so sequence matters.
 
 **Constraints** — The "never do this" rules. These are just as important as the positive rules — maybe more. Without explicit constraints, agents get creative. You don't want creative commit messages.
@@ -199,142 +194,71 @@ Same intent. Completely different output. And it'll be this consistent on commit
 + feat(ISS-142): add login api endpoint
 ```
 
-## Leveling Up: API Scaffold
+## Skills in Action: An API Endpoint
 
-Commit messages are a formatting skill. Let's write one that encodes an entire workflow.
+Writing a skill is half the story. The other half is watching the agent use it — and using it yourself to check existing work.
 
-When someone on your team creates a new REST endpoint, there are probably six things that need to happen every time: file naming, route registration, request validation, error handling, response format, and a test file. You know this. Your agent doesn't — unless you tell it.
+Let's say you've written a skill for API endpoint scaffolding. It defines a file structure (`src/routes/{resource}/{action}.ts` with separate validation and test files), requires zod for request validation, enforces a consistent error response format, and mandates four minimum test cases per endpoint. The kind of rules your team figured out over months that no one ever wrote down.
 
-<MarkdownDemo>
-```markdown
-# API Endpoint Scaffold
+Here's what happens when the agent has that skill and you ask it to build something:
 
-## Description
-Use this skill when creating a new REST API endpoint.
-Follow every step in order. Do not skip any step.
+```bash
+You:  Add a POST endpoint for user registration.
 
-## File Structure
-- Route handler: src/routes/{resource}/{action}.ts
-- Validation: src/routes/{resource}/{action}.validation.ts
-- Test: src/routes/{resource}/__tests__/{action}.test.ts
-- Resource name is always plural (users, payments, orders)
+Agent: Created 3 files following the api-endpoint skill:
 
-## Procedure
-1. Create the route handler file with the correct path
-2. Create the validation schema in a separate file
-3. Register the route in src/routes/index.ts
-4. Create the test file with minimum required test cases
+  src/routes/users/create.ts            — route handler, validates
+                                          request body before processing
+  src/routes/users/create.validation.ts — zod schema for email,
+                                          password, name fields
+  src/routes/users/__tests__/create.test.ts — 4 test cases:
+                                          happy path, missing email,
+                                          duplicate user, no auth token
 
-## Request Validation
-- Every endpoint validates input before processing
-- Validation lives in a separate .validation.ts file
-- Use zod for schema definitions
-- Validate params, query, and body separately
+  Error responses use the standard envelope:
+  { error: { code, message, details } }
 
-## Error Response Format
-All errors must return this exact structure:
-{
-  "error": {
-    "code": "RESOURCE_NOT_FOUND",
-    "message": "Human-readable description",
-    "details": {}
-  }
-}
-- code: UPPER_SNAKE_CASE, descriptive
-- message: for developers, not end users
-- details: optional, extra context for debugging
-
-## Success Response Format
-{
-  "data": { ... },
-  "meta": {
-    "requestId": "uuid",
-    "timestamp": "iso8601"
-  }
-}
-
-## Minimum Test Cases
-Every endpoint must have tests for:
-1. Happy path (valid input, expected output)
-2. Validation failure (missing required field)
-3. Not found (resource doesn't exist)
-4. Unauthorized (no or invalid auth token)
-
-## Constraints
-- Never put validation logic inside the route handler
-- Never return a raw error object to the client
-- Never skip the test file, even for "simple" endpoints
-- Never use generic names like handler.ts or route.ts
+  Route registered in src/routes/index.ts.
 ```
-</MarkdownDemo>
 
-This isn't a formatting rule anymore. This is a whole process — file structure, validation pattern, error format, test coverage — encoded in one file. The agent follows it step by step and produces a consistent scaffold every time. New team member joins? They don't need to ask "where do test files go?" The skill already knows.
+No guessing about file names. No forgetting the test file. No inventing a new error format. The skill made every decision before you asked the question.
 
-## The Power Move: Code Review
+You can trigger a skill by describing the task in natural language, or invoke it directly with a slash command. Both work. Here's the same skill used as an audit tool:
 
-Here's where it gets interesting. You can teach your agent to review code the way you would.
+```bash
+You:  /api-endpoint audit src/routes/auth/
 
-<MarkdownDemo>
-```markdown
-# Code Review
+Agent: Checked src/routes/auth/ against api-endpoint skill.
 
-## Description
-Use this skill when reviewing pull requests or code changes.
-Evaluate the code against every section below. Be thorough
-but constructive.
+  ✓ login.ts — correct structure, validation separate, 4 tests
+  ✗ register.ts — validation logic is inside the handler,
+    not in a separate .validation.ts file
+  ✗ forgot-password.ts — only 2 test cases (missing: not found,
+    unauthorized). Error response uses raw Error object
+    instead of standard envelope.
 
-## Review Checklist
-Check every item. Flag anything that fails.
-
-### Security
-- No hardcoded secrets, tokens, or API keys
-- User input is validated before use
-- SQL queries are parameterized
-- Authentication is checked on protected routes
-
-### Performance
-- No N+1 query patterns
-- Database queries use appropriate indexes
-- Large collections are paginated
-- No synchronous operations that should be async
-
-### Readability
-- Functions are under 30 lines
-- Variable names describe their purpose
-- No commented-out code left in
-- Complex logic has a brief comment explaining why
-
-### Testing
-- New code has corresponding test coverage
-- Edge cases are covered
-- Tests are independent and don't rely on order
-- Commit messages follow our convention
-
-## Severity Levels
-- CRITICAL: blocks merge. Security issues, data loss risk,
-  broken functionality
-- WARNING: should fix before merge. Performance problems,
-  missing tests, unclear naming
-- SUGGESTION: nice to have. Style improvements, minor
-  refactors, documentation additions
-
-## Comment Rules
-- Every comment must explain WHY something is a problem
-- Include a suggested fix or alternative
-- Never say "this is wrong" without a reason
-- Never use "just" ("just do X" minimizes the effort)
-- Be specific: "this function does 3 things" not "this is complex"
-
-## Constraints
-- Never approve a PR with CRITICAL issues
-- Never approve without checking all sections
-- If unsure about something, flag it as a question, not a demand
+  2 of 3 endpoints have issues.
 ```
-</MarkdownDemo>
 
-Notice something? The testing section says "commit messages follow our convention." That points back to the first skill we wrote. Skills reference each other. They build an ecosystem. Your commit message skill feeds into your code review skill. Your API scaffold skill defines what the review skill checks for.
+The skill that taught the agent how to build the right thing also taught it how to spot the wrong thing. You wrote the rules once. Now they work in both directions.
 
-One skill is useful. A set of skills that talk to each other is a system.
+## The Skill Universe
+
+The pattern scales. Once you've written one or two skills, you start seeing them everywhere — every task you keep re-explaining, every standard you keep re-enforcing. Here are some directions worth exploring.
+
+**Code review** — what to check (security, performance, naming, test coverage), severity levels that mean something, comment rules that prevent "just do X" drive-bys. Teach the agent to review the way your team actually reviews.
+
+**Migration writing** — naming conventions, reversibility requirements, separating schema changes from data changes. The kind of rules that prevent a 3 AM rollback.
+
+**Test scaffolding** — where test files live, how they're named, minimum cases per function, which patterns to use for mocking. Stop arguing about test structure in code review.
+
+**Component creation** — design system tokens, naming conventions, prop patterns, accessibility requirements baked in from the start. Every new component follows the system instead of inventing its own.
+
+**SEO checks** — required meta tags, OG image dimensions, JSON-LD schema types, sitemap registration. Point the agent at any page and ask "does this meet our SEO spec?"
+
+**Accessibility audits** — aria attributes, focus management, keyboard navigation, color contrast. A skill that checks what automated tools miss because it knows your component patterns.
+
+The pattern is always the same: rules, constraints, examples. The content changes per domain. One skill is useful. A set of skills that talk to each other is a system. Pick the thing you're tired of repeating.
 
 ## What I Learned Writing Skills
 
