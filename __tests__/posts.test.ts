@@ -38,6 +38,13 @@ describe("getPostBySlug", () => {
     expect(post!.content.length).toBeGreaterThan(0);
   });
 
+  it("returns a numeric readingTime", () => {
+    const post = getPostBySlug("hardest-refactor");
+    expect(post).toBeDefined();
+    expect(typeof post!.readingTime).toBe("number");
+    expect(post!.readingTime).toBeGreaterThan(0);
+  });
+
   it("returns undefined for an invalid slug", () => {
     const post = getPostBySlug("nonexistent-post");
     expect(post).toBeUndefined();

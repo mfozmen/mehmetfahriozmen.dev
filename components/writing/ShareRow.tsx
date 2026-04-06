@@ -4,10 +4,10 @@ import { useState } from "react";
 
 const linkClass = "cursor-pointer font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]";
 
-export default function ShareRow({ title, slug }: Readonly<{ title: string; slug: string }>) {
+export default function ShareRow({ title, slug, basePath = "writing" }: Readonly<{ title: string; slug: string; basePath?: string }>) {
   const [copied, setCopied] = useState(false);
 
-  const url = `https://mehmetfahriozmen.dev/writing/${slug}`;
+  const url = `https://mehmetfahriozmen.dev/${basePath}/${slug}`;
   const encoded = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 

@@ -1,7 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/lab/how-to-write-custom-skills-for-ai-coding-agents",
+        destination: "/lab/building-skills-for-ai-coding-agents",
+        permanent: true,
+      },
+      {
+        source: "/lab/writing-custom-skills-for-ai-coding-agents",
+        destination: "/lab/building-skills-for-ai-coding-agents",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

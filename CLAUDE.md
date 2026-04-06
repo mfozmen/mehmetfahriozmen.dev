@@ -34,6 +34,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - TypeScript, functional React components, TailwindCSS.
 - Prefer small reusable components.
 - Avoid unnecessary dependencies.
+- **Every clickable link must be tracked.** Use `TrackedNextLink` (internal) or `TrackedAnchor` (external) from `@/components/TrackedLink` — never plain `Link` or `<a>` for user-facing links. Every link needs an `eventName` and `eventData` for analytics.
 
 ## Code Quality Rules
 
@@ -79,6 +80,18 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 
 - Always use the Playwright MCP plugin for screenshots — do NOT install playwright as an npm package.
 - Use the plugin for all visual QA tasks: full-page screenshots, viewport testing, element screenshots.
+- **Save all screenshots to `screenshots/`** — this folder is gitignored. Use descriptive filenames (e.g. `homepage-desktop-1440.png`, `lab-list-mobile-390.png`). Never save screenshots to the project root or `public/`.
+
+## SonarCloud
+
+- **Quality gates:** Coverage >= 80% on new code, Duplication <= 3% on new code.
+- **Check issues after push:** Fetch the SonarCloud API directly — it's public, no auth needed:
+  ```
+  WebFetch https://sonarcloud.io/api/issues/search?componentKeys=mfozmen_mehmetfahriozmen.dev&pullRequest=<PR_NUMBER>&statuses=OPEN,CONFIRMED&sinceLeakPeriod=true&ps=50
+  ```
+- **Check quality gate status:** Use `gh pr checks <PR_NUMBER>` and look for `SonarCloud Code Analysis`.
+- **Get the summary comment:** Use `gh api repos/mfozmen/mehmetfahriozmen.dev/issues/<PR_NUMBER>/comments --jq '.[] | select(.user.login | contains("sonar")) | .body'`
+- **Common issue types:** unused imports (S1128), duplicate imports (S3863), nested ternaries (S3358), cognitive complexity (S3776). Fix all issues before merging — don't leave open issues.
 
 ## Development & Release Flow
 
@@ -90,6 +103,39 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Vercel: main push = production deploy, dev push = preview deploy
 - Rollback: Vercel dashboard → Deployments → Promote old deployment
 - On release, main and dev are synced to the same commit
+
+## Content Architecture
+
+Two content sections with separate routes:
+- **Field Notes** (`/writing`) — essays in `content/posts/*.mdx`
+- **Lab Day** (`/lab`) — technical guides in `content/lab/*.mdx`
+
+Shared components:
+- `PageShell` — skip-to-content, Navigation, Starfield, NebulaGlows, Footer wrapper
+- `SectionTitle` — star icon + mono title + gradient line (accepts optional `icon` prop)
+- `CollectionJsonLd` — parameterized schema.org CollectionPage
+- `BackLink` — "Back to [section]" with href/label props
+- `ShareRow` — copy link + LinkedIn + X sharing with `basePath` prop
+- `MdxComponents` — shared MdxBlockquote and MdxLink
+- `CodeBlock` — CodeBlockFigure (collapse), CodePre (language label + copy), InlineCode
+- `MarkdownDemo` / `MarkdownDemoServer` — source/rendered toggle for markdown code blocks
+- Schema builders in `lib/schema.ts` — `buildArticleSchema` and `buildBreadcrumbSchema`
+- Text extraction in `lib/mdxUtils.ts` — `extractTextContent` for React node trees
+- Content loaders: `lib/posts.ts` and `lib/lab.ts`
+
+Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 posts) → DeepSpaceFooter → Footer
+
+## Code Blocks
+
+- **Shiki** + **rehype-pretty-code** for server-side syntax highlighting (zero client JS flash)
+- Custom "Deep Space" theme in `lib/shikiTheme.ts` — dimmed amber palette, not full #BA7517
+- rehype-pretty-code config in `lib/rehypePrettyCode.ts`
+- CSS for code blocks in `app/globals.css` (data attributes: `[data-line]`, `[data-highlighted-line]`, etc.)
+- Features: language label, copy button, line highlighting (`{4-6}`), line numbers (`showLineNumbers`), diff (`+`/`-` lines), collapsible long blocks (400px default), `<MarkdownDemo>` source/rendered toggle
+- **Diff and bash blocks have no copy button.** Diff blocks are for visual comparison (copying includes `+`/`-` markers). Bash blocks are used for mock conversations (`You:` / `Agent:` format) that aren't executable. `CodePre` hides `CopyButton` and `LanguageBadge` when `hideCopy` is true (`lang === "diff" || lang === "bash"`).
+- Inline code: amber-tinted `border border-[#BA7517]/10 bg-[#BA7517]/[0.04]`
+- **Inline code gotcha:** rehype-pretty-code wraps inline backtick code in `<span data-rehype-pretty-code-figure>` — the same attribute used for fenced blocks. The fenced-block CSS rule `[data-rehype-pretty-code-figure] code { display: grid }` also matches inline code, turning it into a full-width block. The `.inline-code` class on `InlineCode` component + CSS overrides in `globals.css` fix this. CSS also sets `white-space: nowrap` to prevent inline code from splitting across two lines (creating two separate visual boxes), with `overflow-wrap: break-word` as a safety net for code wider than the viewport. After upgrading Shiki or rehype-pretty-code, always verify inline code still renders inline (not as block bars) and doesn't split mid-token at line breaks.
+- **Fenced `text` blocks gotcha:** `defaultLang: "text"` means both inline backticks and fenced ` ```text ` blocks get `data-language="text"`. `InlineCode` distinguishes them by counting `[data-line]` children — fenced blocks have multiple lines, inline has one. If this breaks, check the child counting logic in `InlineCode`.
 
 ## Blog Post SEO Checklist
 
@@ -105,6 +151,8 @@ If any check fails, fix it before committing.
 ## Blog Writing Guide
 
 Before creating or editing any blog post, consult `docs/blog-writing-guide.md` for voice, tone, illustration rules, structure principles, and workflow. This is the authoritative reference for all writing on the site.
+
+For Lab Day posts specifically, the Lab Day skill (`.claude/skills/lab-day/SKILL.md`) defines structure, tone, code block features, and constraints.
 
 ## Graph Data Architecture
 

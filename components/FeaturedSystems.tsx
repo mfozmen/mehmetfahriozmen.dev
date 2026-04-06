@@ -48,11 +48,11 @@ function SystemCard({ system }: Readonly<{ system: Project }>) {
   );
 }
 
-function DeepSpaceFooter() {
+export function DeepSpaceFooter() {
   return (
-    <>
+    <div className="mt-12">
       <div
-        className="mt-12 mb-8 h-px"
+        className="mb-8 h-px"
         style={{ background: "linear-gradient(90deg, transparent 5%, rgba(186,117,23,0.35) 50%, transparent 95%)" }}
       />
       <p className="text-center font-mono text-[11px] tracking-normal text-[#525252] sm:tracking-[0.12em]">
@@ -75,7 +75,7 @@ function DeepSpaceFooter() {
           <span className="relative">follow the light →</span>
         </TrackedNextLink>
       </p>
-    </>
+    </div>
   );
 }
 
@@ -88,7 +88,6 @@ export default function FeaturedSystems() {
           <SystemCard key={system.id} system={system} />
         ))}
       </div>
-      <DeepSpaceFooter />
     </section>
   );
 }

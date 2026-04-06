@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 function StarIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 24 24" fill="#BA7517" className="shrink-0" aria-hidden="true">
@@ -6,10 +8,10 @@ function StarIcon() {
   );
 }
 
-export default function SectionTitle({ title }: Readonly<{ title: string }>) {
+export default function SectionTitle({ title, icon }: Readonly<{ title: string; icon?: ReactNode }>) {
   return (
     <h2 className="mb-6 flex items-center gap-2.5">
-      <StarIcon />
+      {icon ?? <StarIcon />}
       <span className="shrink-0 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
         {title}
       </span>
