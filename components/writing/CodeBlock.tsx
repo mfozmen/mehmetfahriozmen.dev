@@ -109,7 +109,11 @@ export function CodeBlockFigure({ children, ...props }: Readonly<Record<string, 
 
 export function InlineCode({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {
   const lang = props["data-language"] as string | undefined;
-  const isFencedBlock = lang !== undefined && lang !== "text";
+  const childArray = Array.isArray(children) ? children : [children];
+  const lineCount = childArray.filter(
+    (c) => typeof c === "object" && c !== null && "props" in c && (c as { props: Record<string, unknown> }).props["data-line"] !== undefined
+  ).length;
+  const isFencedBlock = lang !== undefined && (lang !== "text" || lineCount > 1);
   if (isFencedBlock) {
     return <code {...props}>{children}</code>;
   }

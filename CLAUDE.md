@@ -135,6 +135,7 @@ Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 p
 - **Diff blocks have no copy button.** Diff blocks are for visual comparison, not copying — copying would include `+`/`-` markers and both old/new lines, which is useless. `CodePre` hides `CopyButton` when `lang === "diff"`.
 - Inline code: amber-tinted `border border-[#BA7517]/10 bg-[#BA7517]/[0.04]`
 - **Inline code gotcha:** rehype-pretty-code wraps inline backtick code in `<span data-rehype-pretty-code-figure>` — the same attribute used for fenced blocks. The fenced-block CSS rule `[data-rehype-pretty-code-figure] code { display: grid }` also matches inline code, turning it into a full-width block. The `.inline-code` class on `InlineCode` component + CSS overrides in `globals.css` fix this. CSS also sets `white-space: nowrap` to prevent inline code from splitting across two lines (creating two separate visual boxes), with `overflow-wrap: break-word` as a safety net for code wider than the viewport. After upgrading Shiki or rehype-pretty-code, always verify inline code still renders inline (not as block bars) and doesn't split mid-token at line breaks.
+- **Fenced `text` blocks gotcha:** `defaultLang: "text"` means both inline backticks and fenced ` ```text ` blocks get `data-language="text"`. `InlineCode` distinguishes them by counting `[data-line]` children — fenced blocks have multiple lines, inline has one. If this breaks, check the child counting logic in `InlineCode`.
 
 ## Blog Post SEO Checklist
 

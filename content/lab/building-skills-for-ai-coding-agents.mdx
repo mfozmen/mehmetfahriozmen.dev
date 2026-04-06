@@ -334,11 +334,39 @@ One skill is useful. A set of skills that talk to each other is a system.
 
 ## What I Learned Writing Skills
 
-**Be specific. Painfully specific.** "Write good commit messages" is not a skill. "Imperative mood, lowercase, no period, max 72 characters, scope is always a Jira issue number" is a skill. The more precise you are, the less the agent improvises. You don't want improvisation in your commit history.
+**Be specific. Painfully specific.**
 
-**One example beats ten rules.** You can write three paragraphs explaining imperative mood, or you can show `"added" → wrong, "add" → right`. The agent learns patterns from examples faster than from explanations. When in doubt, add another example instead of another rule.
+```diff
+- Write good commit messages
++ Imperative mood, lowercase, no period, max 72 characters, scope is always a Jira issue number
+```
 
-**Negative rules are half the skill.** "Never capitalize the description. Never use past tense. Never end with a period." Without these, the agent falls back to its defaults — and its defaults come from every coding blog on the internet, not from your project's standards. Explicit "don't" rules close the gaps that positive rules leave open.
+The more precise you are, the less the agent improvises. You don't want improvisation in your commit history.
+
+**One example beats ten rules.** You can write three paragraphs explaining imperative mood, or you can show:
+
+```markdown
+## Rules
+Use imperative mood in the description.
+
+## Examples
+- "added" → wrong
+- "add" → right
+- "fixed" → wrong
+- "fix" → right
+```
+
+The agent learns patterns from examples faster than from explanations. When in doubt, add another example instead of another rule.
+
+**Negative rules are half the skill.**
+
+```text
+Never capitalize the description.
+Never use past tense.
+Never end with a period.
+```
+
+Without these, the agent falls back to its defaults — and its defaults come from every coding blog on the internet, not from your project's standards. Explicit "don't" rules close the gaps that positive rules leave open.
 
 **Skills are living documents.** Your first version will miss things. The agent will produce something unexpected, and you'll realize you never specified that case. Good. Update the skill. Version two is better. Version five is solid. "When the agent gets it wrong, the skill wasn't clear enough" is a more useful mindset than "the agent is broken."
 
