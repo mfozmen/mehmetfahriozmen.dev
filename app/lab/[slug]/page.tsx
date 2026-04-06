@@ -18,6 +18,26 @@ import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 
+function LabMdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
+  if (!src) return null;
+  return (
+    <figure className="my-8">
+      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-[#BA7517]/10">
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-contain" />
+      </div>
+    </figure>
+  );
+}
+
+function LabMdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
+  const childArray = Array.isArray(children) ? children : [children];
+  const hasImage = childArray.some(
+    (child) => typeof child === "object" && child !== null && "type" in child && (child as { type: unknown }).type === LabMdxImage
+  );
+  if (hasImage) return <>{children}</>;
+  return <p>{children}</p>;
+}
+
 function LabMdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <h2 className="mt-12 mb-6 flex items-start gap-2.5">
@@ -34,6 +54,8 @@ function LabMdxH2({ children }: Readonly<{ children?: ReactNode }>) {
 
 const mdxComponents = {
   h2: LabMdxH2,
+  img: LabMdxImage,
+  p: LabMdxParagraph,
   figure: CodeBlockFigure,
   pre: CodePre,
   code: InlineCode,

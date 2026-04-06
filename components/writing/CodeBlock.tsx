@@ -39,11 +39,23 @@ function LanguageBadge({ lang }: Readonly<{ lang: string }>) {
 export function CodePre({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {
   const lang = (props["data-language"] as string) ?? "";
   const hasLabel = lang !== "" && lang !== "text";
+  const isDiff = lang === "diff";
   const code = extractTextContent(children);
+  const preRef = useRef<HTMLPreElement>(null);
+
+  useEffect(() => {
+    if (!isDiff || !preRef.current) return;
+    const lines = preRef.current.querySelectorAll("[data-line]");
+    for (const line of lines) {
+      const text = line.textContent ?? "";
+      if (text.startsWith("+")) line.classList.add("diff", "add");
+      else if (text.startsWith("-")) line.classList.add("diff", "remove");
+    }
+  }, [isDiff]);
 
   return (
-    <pre {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel ? "pt-10" : ""}`}>
-      <LanguageBadge lang={lang} />
+    <pre ref={preRef} {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel && !isDiff ? "pt-10" : ""}`}>
+      {!isDiff && <LanguageBadge lang={lang} />}
       <CopyButton code={code} />
       {children}
     </pre>
@@ -96,6 +108,11 @@ export function CodeBlockFigure({ children, ...props }: Readonly<Record<string, 
 }
 
 export function InlineCode({ children, ...props }: Readonly<Record<string, unknown> & { children?: ReactNode }>) {
+  const lang = props["data-language"] as string | undefined;
+  const isFencedBlock = lang !== undefined && lang !== "text";
+  if (isFencedBlock) {
+    return <code {...props}>{children}</code>;
+  }
   const hasTheme = "data-theme" in props;
   if (hasTheme) {
     const rest = Object.fromEntries(Object.entries(props).filter(([k]) => k !== "style"));

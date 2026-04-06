@@ -86,9 +86,14 @@ Rules:
   ```
 
 ### Visual Content
-- No illustrations or cartoons inside Lab Day posts
+- No Field Notes-style illustrations or cartoons inside Lab Day posts
 - Screenshots when they genuinely help (UI output, terminal output, before/after)
-- Screenshots go in public/lab/[slug]/ directory
+- **Diagrams for dense conceptual sections** — when prose explains a mechanism, process, or abstract relationship, a diagram can break up text and strengthen comprehension. Not every section needs one, but dense explanatory sections benefit from a visual anchor.
+- Diagram visual style: deep navy, cool blue, off-white, grain texture — distinct from Field Notes' amber illustrations
+- **Diagram captions stay baked into the image** — unlike Field Notes (which use separate figcaptions), Lab Day diagrams embed labels inside the visual because the label is part of the diagram's argument. Use descriptive `alt` text for screen readers, but don't duplicate baked-in captions as visible text.
+- **Diagrams are supporting visuals, not hero images** — they stay within the text column (no breakout via negative margins). Standard max-width, `my-8` vertical spacing, amber border treatment.
+- Per-post images (diagrams, screenshots) go in `public/lab/[slug]/` directory
+- Shared cover stays at `public/lab/lab-day-cover.webp` — never per-post
 - Optimize with Squoosh: WebP, quality 80, max 800px width
 
 ## File Locations

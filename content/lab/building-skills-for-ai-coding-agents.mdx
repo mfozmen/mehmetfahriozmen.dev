@@ -27,6 +27,8 @@ An LLM doesn't "know" your project. Every new conversation, the model sees only 
 
 Say you're trying to keep SEO consistent across your website. Every new page needs the right meta tags, OG images, JSON-LD schema, a sitemap update. You tell the agent once and it does a decent job. Next page, it skips the schema. The one after that, it forgets the OG image. It's not being inconsistent on purpose — it literally doesn't know what it did last time. Each response is a fresh statistical prediction, and the prediction drifts.
 
+![Circular flow showing the session reset loop: new session, explain rules, agent produces good output, session ends, back to new session with no memory](/lab/building-skills-for-ai-coding-agents/session-cycle.webp)
+
 And it's not just generic checklists. The real pain is the project-specific stuff you figured out the hard way — things that don't live on the internet because they're yours. Say you're building a game and you've tuned your in-game economy for weeks: drop rates, crafting costs, progression curves. None of that is on Stack Overflow. Without something to hold those rules, the agent will confidently suggest values that break your progression every time you add new content.
 
 And here's the part that changes how you think about this. Skills don't just help you build the right thing — they help you check what's already there. Point the agent at existing content and ask it to audit against your rules, and suddenly you have a second pair of eyes that knows exactly what "correct" looks like in your project. New game items that break balance? Flagged. Pages missing schema markup? Flagged. The same file that teaches the agent how to create the right thing also teaches it how to spot the wrong thing. Skills aren't just instructions for writing — they're specifications for reviewing.
@@ -39,6 +41,8 @@ But a constitution isn't an operating manual. "Follow our SEO rules" is fine for
 
 That's where skills come in. A skill is a focused instruction set for a specific type of task. It doesn't load for every conversation — it activates when the agent encounters a matching task. SEO, game balance, commit messages, endpoint scaffolding, code review, database migrations — each gets its own file with its own rules, examples, and constraints. `CLAUDE.md` points the direction. The skill provides the map.
 
+![Agent routing diagram: two different prompts on the left flow through a central agent to four skills on the right, with active skills highlighted and dormant ones faded](/lab/building-skills-for-ai-coding-agents/skill-routing.webp)
+
 And you don't always have to write them from scratch. There's a growing ecosystem of skills shared by other developers — people who already figured out how to enforce SEO best practices, or run a thorough code review, or scaffold a clean API endpoint. You can grab one, drop it into your project, and customize it to fit your rules. Skills are still early, but the pattern is spreading fast, and the best ones are getting better every month. It's one of those rare moments where you can feel the ground shifting under your feet in a good way.
 
 Now let's see what this looks like in practice.
@@ -47,19 +51,24 @@ Now let's see what this looks like in practice.
 
 Conventional commits follow a simple format: `type(scope): description`. Everyone knows this. The problem is that "everyone" agrees on the format and disagrees on everything else.
 
-Tell your agent "use conventional commits" and watch what happens. It'll pull from whatever source it trained on — or whatever it finds most probable. One commit says `feat(auth): Add login endpoint`. The next one says `feature: added the login endpoint`. Then you get `FEAT: Login endpoint added.` All technically defensible. None of them yours.
+Tell your agent "use conventional commits" and watch what happens. One commit is `feat(auth): Add login endpoint`. The next is `feature: added the login endpoint`. Then `FEAT: Login endpoint added.` All technically defensible. None of them yours.
 
 Is the scope required or optional? Does the description start with a capital letter? Is it `feat` or `feature`? Does the body need a blank line separator? What counts as a breaking change?
 
-The internet has twelve correct answers for each of these questions. Your project has one.
+The internet has many correct answers for each of these questions. Your project has one.
 
-**This is the core insight: a skill doesn't define what's universally correct. It defines what's correct here, in this project, for this team.** The agent's not confused because it's bad at commits. It's confused because there are too many "right" answers out there and you haven't told it which one is yours.
+**This is the core insight: a skill doesn't define what's universally correct. It defines what's correct here, in this project, for this team.** The agent isn't confused because it's bad at commits — it's confused because there are too many "right" answers out there, and you haven't told it which one is yours.
 
 ## Anatomy of a Skill File
 
 Before we write anything, let's look at what goes inside a `SKILL.md` file. Every piece is there for a reason.
 
-**Description** — Tells the agent when to activate this skill. This is the trigger. A bad description: "For commits." A good description: "Use this skill when creating git commit messages for any staged changes in this repository." Be specific. If the trigger is vague, the agent guesses.
+**Description** — Tells the agent when to activate this skill. This is the trigger. Be specific — if the trigger is vague, the agent guesses.
+
+```diff
+- For commits.
++ Use this skill when creating git commit messages for any staged changes in this repository.
+```
 
 **Rules / Procedure** — Step-by-step instructions. What to do, in what order. The agent follows these literally, so sequence matters.
 
