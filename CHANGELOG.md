@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.6.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.5.0...v1.6.0) (2026-04-06)
+
+### Features
+
+* **lab:** add Lab Day section with first post ([#23](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/23)) ([7202b23](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/7202b239fa1219c6338a21d1a8f09392b81982d5))
+
 ## [1.5.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.4.0...v1.5.0) (2026-04-03)
 
 ### Features
