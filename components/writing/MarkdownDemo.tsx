@@ -4,12 +4,12 @@ import { useState, type ReactNode } from "react";
 
 function demoteHeadings(html: string): string {
   return html
-    .replace(/<h1>/g, '<div role="presentation" class="demo-h1">')
-    .replace(/<\/h1>/g, "</div>")
-    .replace(/<h2>/g, '<div role="presentation" class="demo-h2">')
-    .replace(/<\/h2>/g, "</div>")
-    .replace(/<h3>/g, '<div role="presentation" class="demo-h3">')
-    .replace(/<\/h3>/g, "</div>");
+    .replaceAll("<h1>", '<div role="presentation" class="demo-h1">')
+    .replaceAll("</h1>", "</div>")
+    .replaceAll("<h2>", '<div role="presentation" class="demo-h2">')
+    .replaceAll("</h2>", "</div>")
+    .replaceAll("<h3>", '<div role="presentation" class="demo-h3">')
+    .replaceAll("</h3>", "</div>");
 }
 
 function RenderedMarkdown({ html }: Readonly<{ html: string }>) {
