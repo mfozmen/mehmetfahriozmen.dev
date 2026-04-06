@@ -51,12 +51,20 @@ body {
  * component also strips Shiki's inline style (background-color/color) via
  * destructuring `style: _style` so our Tailwind classes win.
  *
+ * WRAP BUG: without `white-space: nowrap`, inline code that lands near
+ * a line break gets split across two lines — half on each line, creating
+ * two separate visual boxes. `nowrap` keeps the code as a single unit
+ * that wraps to the next line whole. For code wider than the viewport
+ * (rare on mobile), `overflow-wrap: break-word` allows emergency breaks.
+ *
  * WATCH OUT if upgrading Shiki or rehype-pretty-code: any change to how
  * inline code is wrapped (new attributes, different elements) could break
  * these selectors. Test inline code rendering after upgrades.
  */
 [data-rehype-pretty-code-figure] code.inline-code {
   display: inline !important;
+  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 [data-rehype-pretty-code-figure] code.inline-code [data-line] {

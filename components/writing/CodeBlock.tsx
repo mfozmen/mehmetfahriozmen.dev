@@ -56,7 +56,7 @@ export function CodePre({ children, ...props }: Readonly<Record<string, unknown>
   return (
     <pre ref={preRef} {...props} className={`group relative overflow-x-auto rounded-lg border border-[#BA7517]/10 p-5 text-[13px] leading-relaxed ${hasLabel && !isDiff ? "pt-10" : ""}`}>
       {!isDiff && <LanguageBadge lang={lang} />}
-      <CopyButton code={code} />
+      {!isDiff && <CopyButton code={code} />}
       {children}
     </pre>
   );
