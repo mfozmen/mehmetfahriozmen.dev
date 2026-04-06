@@ -79,7 +79,7 @@ Rules:
 - **Line numbers** — ` ```ts showLineNumbers ` enables line numbers
 - **Diff highlighting** — prefix lines with `+` or `-` for before/after examples
 - **Collapse for long blocks** — blocks > 400px auto-collapse with "Show more" button. Override with `expandable={false}` or `maxHeight={600}` in the fence meta
-- **Markdown source/rendered toggle** — wrap markdown code blocks with `<MarkdownDemo>` to give readers a Source/Rendered toggle. Use for skill file examples, config files, or any markdown the reader benefits from seeing both raw and formatted:
+- **Markdown examples must always use `<MarkdownDemo>`.** When showing markdown content as an example, always wrap it with `<MarkdownDemo>` for the source/rendered toggle — never use a plain ` ```markdown ` code block. The rendered view shows readers what the content actually looks like as a document, not just raw syntax, and using one consistent component for all markdown examples avoids visual mismatch within a post:
   ```
   <MarkdownDemo>
   ` ` `markdown

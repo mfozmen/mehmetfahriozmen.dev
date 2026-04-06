@@ -336,15 +336,30 @@ One skill is useful. A set of skills that talk to each other is a system.
 
 **Be specific. Painfully specific.**
 
-```diff
-- Write good commit messages
-+ Imperative mood, lowercase, no period, max 72 characters, scope is always a Jira issue number
+Doesn't work:
+
+<MarkdownDemo>
+```markdown
+## Description
+For commits.
 ```
+</MarkdownDemo>
+
+Works:
+
+<MarkdownDemo>
+```markdown
+## Description
+Use this skill when creating git commit messages
+for any staged changes in this repository.
+```
+</MarkdownDemo>
 
 The more precise you are, the less the agent improvises. You don't want improvisation in your commit history.
 
 **One example beats ten rules.** You can write three paragraphs explaining imperative mood, or you can show:
 
+<MarkdownDemo>
 ```markdown
 ## Rules
 Use imperative mood in the description.
@@ -355,6 +370,7 @@ Use imperative mood in the description.
 - "fixed" → wrong
 - "fix" → right
 ```
+</MarkdownDemo>
 
 The agent learns patterns from examples faster than from explanations. When in doubt, add another example instead of another rule.
 
