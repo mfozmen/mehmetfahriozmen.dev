@@ -43,7 +43,7 @@ export function getPostBySlug(slug: string): Post | undefined {
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
     if (data.slug === slug) {
-      return { ...(data as PostMeta), content };
+      return { ...(data as Omit<PostMeta, "readingTime">), readingTime: getReadingTime(content), content };
     }
   }
 

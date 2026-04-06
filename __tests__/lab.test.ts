@@ -40,6 +40,13 @@ describe("getLabPostBySlug", () => {
     expect(post!.content.length).toBeGreaterThan(0);
   });
 
+  it("returns a numeric readingTime", () => {
+    const post = getLabPostBySlug("building-skills-for-ai-coding-agents");
+    expect(post).toBeDefined();
+    expect(typeof post!.readingTime).toBe("number");
+    expect(post!.readingTime).toBeGreaterThan(0);
+  });
+
   it("returns undefined for an invalid slug", () => {
     const post = getLabPostBySlug("nonexistent-post");
     expect(post).toBeUndefined();

@@ -45,7 +45,7 @@ export function getLabPostBySlug(slug: string): LabPost | undefined {
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
     if (data.slug === slug) {
-      return { ...(data as LabPostMeta), content };
+      return { ...(data as Omit<LabPostMeta, "readingTime">), readingTime: getReadingTime(content), content };
     }
   }
 
