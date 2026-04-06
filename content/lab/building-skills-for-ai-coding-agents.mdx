@@ -43,11 +43,11 @@ That's where skills come in. A skill is a focused instruction set for a specific
 
 ![Agent routing diagram: two different prompts on the left flow through a central agent to four skills on the right, with active skills highlighted and dormant ones faded](/lab/building-skills-for-ai-coding-agents/skill-routing.webp)
 
-And you don't always have to write them from scratch. There's a growing ecosystem of skills shared by other developers — people who already figured out how to enforce SEO best practices, or run a thorough code review, or scaffold a clean API endpoint. You can grab one, drop it into your project, and customize it to fit your rules. Skills are still early, but the pattern is spreading fast, and the best ones are getting better every month. It's one of those rare moments where you can feel the ground shifting under your feet in a good way.
+And you don't always have to write them from scratch. There's a growing ecosystem of skills shared by other developers — people who already figured out how to enforce SEO best practices, or run a thorough code review, or scaffold a clean API endpoint. The richest source right now is [GitHub](https://github.com) — search for "claude skills" or browse repositories tagged with skill collections. You can grab one, drop it into your project, and customize it to fit your rules. Skills are still early, but the pattern is spreading fast, and the best ones are getting better every month. It's one of those rare moments where you can feel the ground shifting under your feet in a good way.
 
 Now let's see what this looks like in practice.
 
-## The Problem: Conventional Commits Without a Skill
+## The Problem with Conventional Commits
 
 Conventional commits follow a simple format: `type(scope): description`. Everyone knows this. The problem is that "everyone" agrees on the format and disagrees on everything else.
 
@@ -61,7 +61,11 @@ The internet has many correct answers for each of these questions. Your project 
 
 ## Anatomy of a Skill File
 
-Before we write anything, let's look at what goes inside a `SKILL.md` file. Every piece is there for a reason.
+Before we look at what goes inside a `SKILL.md` file, a quick word on where it lives. In Claude Code, skill files sit in `.claude/skills/` at the root of your project, one file per skill. The agent reads this directory automatically — no registration step, no config, no manual loading. You drop a file in, and the next time the agent encounters a matching task, the skill activates.
+
+Other agents follow similar conventions. The exact directory and filename vary, but the pattern is the same: a markdown file in a known location that the agent picks up on its own. The examples in this post use Claude Code's `SKILL.md` convention, but the principles translate.
+
+Now let's look at what goes inside. Every piece is there for a reason.
 
 **Description** — Tells the agent when to activate this skill. This is the trigger. Be specific — if the trigger is vague, the agent guesses.
 
@@ -107,7 +111,7 @@ When to use this skill. Be specific about the trigger.
 
 That's it. No special syntax, no config files, no build step. A markdown file with clear sections. Let's fill one in.
 
-## Writing Your First Skill: Commit Messages
+## First Skill: Commit Messages
 
 Here's the scenario. Your company uses Jira. You want every commit tied to an issue number. Your format is `type(ISS-123): description` — not the generic `type(scope)` you see in blog posts. The scope _is_ the Jira issue.
 
@@ -195,7 +199,7 @@ Same intent. Completely different output. And it'll be this consistent on commit
 + feat(ISS-142): add login api endpoint
 ```
 
-## Leveling Up: API Endpoint Scaffold
+## Leveling Up: API Scaffold
 
 Commit messages are a formatting skill. Let's write one that encodes an entire workflow.
 
@@ -266,7 +270,7 @@ Every endpoint must have tests for:
 
 This isn't a formatting rule anymore. This is a whole process — file structure, validation pattern, error format, test coverage — encoded in one file. The agent follows it step by step and produces a consistent scaffold every time. New team member joins? They don't need to ask "where do test files go?" The skill already knows.
 
-## The Power Move: Code Review Skill
+## The Power Move: Code Review
 
 Here's where it gets interesting. You can teach your agent to review code the way you would.
 
