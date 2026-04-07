@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.6.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.6.0...v1.6.1) (2026-04-07)
+
+### Performance Improvements
+
+* **hero:** add fetchPriority="high" to LCP profile image ([ac5cfde](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/ac5cfde6f75153f1dc88385c9ad7e9d7a3bb763c))
+
 ## [1.6.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.5.0...v1.6.0) (2026-04-06)
 
 ### Features
