@@ -60,6 +60,7 @@ export default function Hero() {
           width={240}
           height={240}
           priority
+          fetchPriority="high"
           className="relative rounded-full ring-1 ring-neutral-800/50"
         />
       </div>
