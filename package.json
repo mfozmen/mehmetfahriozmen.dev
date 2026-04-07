@@ -24,6 +24,7 @@
     "release": "release-it"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^2.0.0",
     "gray-matter": "^4.0.3",
     "next": "^16.2.1",
     "next-mdx-remote": "^6.0.0",
