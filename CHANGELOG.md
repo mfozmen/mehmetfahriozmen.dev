@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.6.1...v1.7.0) (2026-04-07)
+
+### Features
+
+* add Vercel Speed Insights for real user metrics ([d171ca7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d171ca787d9b2ab7d308cb17cbbf048aab9fe04c))
+
 ## [1.6.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.6.0...v1.6.1) (2026-04-07)
 
 ### Performance Improvements
