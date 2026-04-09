@@ -5,6 +5,7 @@ import { TrackedNextLink } from "@/components/TrackedLink";
 import PageShell from "@/components/PageShell";
 import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type PostMeta } from "@/lib/posts";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
+import { buildArticleMetadata } from "@/lib/articleMetadata";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
@@ -68,29 +69,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
-  const ogImagePath = post.ogImage ?? post.coverImage;
-  const ogImageUrl = `https://mehmetfahriozmen.dev${ogImagePath}`;
-  const ogImageHeight = post.ogImage ? 630 : 800;
-  return {
-    title: post.title,
-    description: post.description,
-    alternates: { canonical: `/writing/${slug}` },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
-      url: `/writing/${slug}`,
-      publishedTime: post.date,
-      authors: ["Mehmet Fahri Özmen"],
-      images: [{ url: ogImageUrl, width: 1200, height: ogImageHeight, alt: post.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-      images: [ogImageUrl],
-    },
-  };
+  return buildArticleMetadata(post, "writing", slug);
 }
 
 /* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */

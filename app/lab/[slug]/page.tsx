@@ -9,6 +9,7 @@ import TagPill from "@/components/lab/TagPill";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
+import { buildArticleMetadata } from "@/lib/articleMetadata";
 import { getReadingTime, formatDate } from "@/lib/posts";
 import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
@@ -74,29 +75,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getLabPostBySlug(slug);
   if (!post) return {};
-  const ogImagePath = post.ogImage ?? post.coverImage;
-  const ogImageUrl = `https://mehmetfahriozmen.dev${ogImagePath}`;
-  const ogImageHeight = post.ogImage ? 630 : 800;
-  return {
-    title: post.title,
-    description: post.description,
-    alternates: { canonical: `/lab/${slug}` },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
-      url: `/lab/${slug}`,
-      publishedTime: post.date,
-      authors: ["Mehmet Fahri Özmen"],
-      images: [{ url: ogImageUrl, width: 1200, height: ogImageHeight, alt: post.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-      images: [ogImageUrl],
-    },
-  };
+  return buildArticleMetadata(post, "lab", slug);
 }
 
 
