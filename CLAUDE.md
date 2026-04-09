@@ -139,7 +139,7 @@ Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 p
 
 ## Blog Post SEO Checklist
 
-When creating or editing blog posts (MDX files in `content/writing/`), verify ALL of the following before committing:
+When creating or editing blog posts (MDX files in `content/posts/`), verify ALL of the following before committing:
 
 1. **`description`** — at least 100 characters
 2. **`coverImage`** — must be set (non-empty)

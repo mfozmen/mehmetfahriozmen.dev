@@ -71,12 +71,12 @@ export async function generateMetadata(
   const ogImage = `https://mehmetfahriozmen.dev${post.coverImage}`;
   return {
     title: post.title,
-    description: post.excerpt,
+    description: post.description,
     alternates: { canonical: `/writing/${slug}` },
     openGraph: {
       type: "article",
       title: post.title,
-      description: post.excerpt,
+      description: post.description,
       url: `/writing/${slug}`,
       publishedTime: post.date,
       authors: ["Mehmet Fahri Özmen"],
@@ -85,14 +85,14 @@ export async function generateMetadata(
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.excerpt,
+      description: post.description,
       images: [ogImage],
     },
   };
 }
 
 /* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */
-function PostHeader({ post }: Readonly<{ post: { date: string; title: string; excerpt: string; coverImage: string; content: string } }>) {
+function PostHeader({ post }: Readonly<{ post: { date: string; title: string; description: string; coverImage: string; content: string } }>) {
   return (
     <>
       <header className="mb-8">
@@ -103,7 +103,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
           {post.title}
         </h1>
         <p className="mt-3 text-lg italic text-neutral-500">
-          {post.excerpt}
+          {post.description}
         </p>
       </header>
       <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
@@ -159,7 +159,7 @@ export default async function PostPage(
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.excerpt, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.description, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Writing", "writing", post.title)) }} />
       <ReadingProgress />
       <PageShell>

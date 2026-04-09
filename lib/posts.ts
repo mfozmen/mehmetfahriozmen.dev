@@ -9,7 +9,7 @@ export type PostMeta = {
   date: string;
   slug: string;
   coverImage: string;
-  excerpt: string;
+  description: string;
   readingTime: number;
 };
 

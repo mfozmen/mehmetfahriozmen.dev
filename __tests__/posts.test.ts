@@ -22,7 +22,7 @@ describe("getAllPosts", () => {
       expect(post.date).toBeDefined();
       expect(post.slug).toBeDefined();
       expect(post.coverImage).toBeDefined();
-      expect(post.excerpt).toBeDefined();
+      expect(post.description).toBeDefined();
       expect(post.readingTime).toBeDefined();
       expect(post.readingTime).toBeGreaterThan(0);
     }
