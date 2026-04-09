@@ -31,6 +31,20 @@ describe("getAllLabPosts", () => {
       expect(post.readingTime).toBeGreaterThan(0);
     }
   });
+
+  it("each post description is between 100 and 160 characters", () => {
+    const posts = getAllLabPosts();
+    for (const post of posts) {
+      expect(
+        post.description.length,
+        `${post.slug} description is too short (${post.description.length} chars, minimum 100)`,
+      ).toBeGreaterThanOrEqual(100);
+      expect(
+        post.description.length,
+        `${post.slug} description is too long (${post.description.length} chars, maximum 160)`,
+      ).toBeLessThanOrEqual(160);
+    }
+  });
 });
 
 describe("getLabPostBySlug", () => {
