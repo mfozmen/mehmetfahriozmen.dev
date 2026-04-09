@@ -45,6 +45,8 @@ Validation before every commit:
 - `coverImage` path exists and file is present
 - Cover image is WebP, optimized (Squoosh: quality 80, max 800px width)
 - Cover image aspect ratio is 3:2 (e.g., 1200x800)
+- OG image variant generated at `public/writing/[slug]/og.webp` (1200x630).
+  See `docs/og-image-workflow.md` for the manual Photopea workflow.
 
 ### Opening Quote Block
 

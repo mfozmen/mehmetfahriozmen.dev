@@ -114,6 +114,11 @@ All Lab Day posts share a single cover image at a fixed path:
 
 This path is hardcoded. Every Lab Day post uses this exact value in its frontmatter — no per-post cover images. Before publishing any Lab Day post, verify that `public/lab/lab-day-cover.webp` exists. If the file is missing, do not publish — report it and stop.
 
+- OG image variant (shared series cover) at `public/lab/lab-day-og.webp`
+  (1200x630) — mirrors the shared cover model. Per-post override optionally
+  at `public/lab/[slug]/og.webp` if a specific post needs a unique OG image.
+  See `docs/og-image-workflow.md` for the manual Photopea workflow.
+
 Visual direction for the cover (generated via ChatGPT, not by Claude Code):
 - Style: same as site illustrations (deep navy, amber, off-white, grain texture)
 - Scene: astronaut working in a lab/workshop setting — focused, hands-on, calm
