@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "vitest";
 import { getAllLabPosts, getLabPostBySlug } from "@/lib/lab";
 
@@ -50,5 +52,68 @@ describe("getLabPostBySlug", () => {
   it("returns undefined for an invalid slug", () => {
     const post = getLabPostBySlug("nonexistent-post");
     expect(post).toBeUndefined();
+  });
+});
+
+describe("ogImage fallback", () => {
+  const testSlug = "building-skills-for-ai-coding-agents";
+  const ogPath = path.join(process.cwd(), "public", "lab", testSlug, "og.webp");
+
+  function withoutOgFile<T>(fn: () => T): T {
+    const backup = fs.existsSync(ogPath) ? fs.readFileSync(ogPath) : null;
+    if (backup !== null) fs.unlinkSync(ogPath);
+    try {
+      return fn();
+    } finally {
+      if (backup !== null) fs.writeFileSync(ogPath, backup);
+    }
+  }
+
+  function withOgFile<T>(fn: () => T): T {
+    const backup = fs.existsSync(ogPath) ? fs.readFileSync(ogPath) : null;
+    fs.writeFileSync(ogPath, Buffer.from([0]));
+    try {
+      return fn();
+    } finally {
+      if (backup !== null) {
+        fs.writeFileSync(ogPath, backup);
+      } else {
+        fs.unlinkSync(ogPath);
+      }
+    }
+  }
+
+  it("getLabPostBySlug returns ogImage=undefined when no og.webp exists", () => {
+    withoutOgFile(() => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBeUndefined();
+    });
+  });
+
+  it("getLabPostBySlug returns the og path when og.webp exists", () => {
+    withOgFile(() => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBe(`/lab/${testSlug}/og.webp`);
+    });
+  });
+
+  it("getAllLabPosts propagates ogImage=undefined when no og.webp exists", () => {
+    withoutOgFile(() => {
+      const posts = getAllLabPosts();
+      const found = posts.find((p) => p.slug === testSlug);
+      expect(found).toBeDefined();
+      expect(found!.ogImage).toBeUndefined();
+    });
+  });
+
+  it("getAllLabPosts propagates the og path when og.webp exists", () => {
+    withOgFile(() => {
+      const posts = getAllLabPosts();
+      const found = posts.find((p) => p.slug === testSlug);
+      expect(found).toBeDefined();
+      expect(found!.ogImage).toBe(`/lab/${testSlug}/og.webp`);
+    });
   });
 });
