@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.8.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.7.0...v1.8.0) (2026-04-09)
+
+### Features
+
+* **og:** OG image fallback system for social previews ([#24](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/24)) ([a57cc7f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a57cc7f029e86673b07a65ef1c32861a2fcda95f))
+
 ## [1.7.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.6.1...v1.7.0) (2026-04-07)
 
 ### Features

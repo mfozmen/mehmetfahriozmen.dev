@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "vitest";
 import { getAllLabPosts, getLabPostBySlug } from "@/lib/lab";
 
@@ -50,5 +52,106 @@ describe("getLabPostBySlug", () => {
   it("returns undefined for an invalid slug", () => {
     const post = getLabPostBySlug("nonexistent-post");
     expect(post).toBeUndefined();
+  });
+});
+
+describe("ogImage fallback", () => {
+  const testSlug = "building-skills-for-ai-coding-agents";
+  const perPostOgPath = path.join(process.cwd(), "public", "lab", testSlug, "og.webp");
+  const sharedOgPath = path.join(process.cwd(), "public", "lab", "lab-day-og.webp");
+
+  function backupFile(p: string): Buffer | null {
+    return fs.existsSync(p) ? fs.readFileSync(p) : null;
+  }
+
+  function restoreFile(p: string, backup: Buffer | null): void {
+    if (backup !== null) {
+      fs.writeFileSync(p, backup);
+    } else if (fs.existsSync(p)) {
+      fs.unlinkSync(p);
+    }
+  }
+
+  function withOgState<T>(state: { perPost: boolean; shared: boolean }, fn: () => T): T {
+    const perPostBackup = backupFile(perPostOgPath);
+    const sharedBackup = backupFile(sharedOgPath);
+
+    if (state.perPost) {
+      fs.writeFileSync(perPostOgPath, Buffer.from([0]));
+    } else if (perPostBackup !== null) {
+      fs.unlinkSync(perPostOgPath);
+    }
+
+    if (state.shared) {
+      fs.writeFileSync(sharedOgPath, Buffer.from([0]));
+    } else if (sharedBackup !== null) {
+      fs.unlinkSync(sharedOgPath);
+    }
+
+    try {
+      return fn();
+    } finally {
+      restoreFile(perPostOgPath, perPostBackup);
+      restoreFile(sharedOgPath, sharedBackup);
+    }
+  }
+
+  it("getLabPostBySlug returns ogImage=undefined when neither per-post nor shared exists", () => {
+    withOgState({ perPost: false, shared: false }, () => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBeUndefined();
+    });
+  });
+
+  it("getLabPostBySlug returns per-slug og path when only per-post og.webp exists", () => {
+    withOgState({ perPost: true, shared: false }, () => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBe(`/lab/${testSlug}/og.webp`);
+    });
+  });
+
+  it("getAllLabPosts propagates ogImage=undefined when neither file exists", () => {
+    withOgState({ perPost: false, shared: false }, () => {
+      const posts = getAllLabPosts();
+      const found = posts.find((p) => p.slug === testSlug);
+      expect(found).toBeDefined();
+      expect(found!.ogImage).toBeUndefined();
+    });
+  });
+
+  it("getAllLabPosts propagates per-slug og path when only per-post og.webp exists", () => {
+    withOgState({ perPost: true, shared: false }, () => {
+      const posts = getAllLabPosts();
+      const found = posts.find((p) => p.slug === testSlug);
+      expect(found).toBeDefined();
+      expect(found!.ogImage).toBe(`/lab/${testSlug}/og.webp`);
+    });
+  });
+
+  it("getLabPostBySlug returns shared og path when only lab-day-og.webp exists", () => {
+    withOgState({ perPost: false, shared: true }, () => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBe("/lab/lab-day-og.webp");
+    });
+  });
+
+  it("getLabPostBySlug prefers per-slug og.webp over shared lab-day-og.webp", () => {
+    withOgState({ perPost: true, shared: true }, () => {
+      const post = getLabPostBySlug(testSlug);
+      expect(post).toBeDefined();
+      expect(post!.ogImage).toBe(`/lab/${testSlug}/og.webp`);
+    });
+  });
+
+  it("getAllLabPosts propagates shared og path when only lab-day-og.webp exists", () => {
+    withOgState({ perPost: false, shared: true }, () => {
+      const posts = getAllLabPosts();
+      const found = posts.find((p) => p.slug === testSlug);
+      expect(found).toBeDefined();
+      expect(found!.ogImage).toBe("/lab/lab-day-og.webp");
+    });
   });
 });

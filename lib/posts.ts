@@ -10,6 +10,7 @@ export type PostMeta = {
   slug: string;
   coverImage: string;
   description: string;
+  ogImage?: string;
   readingTime: number;
 };
 
@@ -22,6 +23,12 @@ export function sortByDateDesc(a: { date: string }, b: { date: string }): number
   return a.date > b.date ? -1 : 1;
 }
 
+function resolveOgImagePath(slug: string): string | undefined {
+  const ogPath = `/writing/${slug}/og.webp`;
+  const fullPath = path.join(process.cwd(), "public", "writing", slug, "og.webp");
+  return fs.existsSync(fullPath) ? ogPath : undefined;
+}
+
 export function getAllPosts(): PostMeta[] {
   const files = fs.readdirSync(postsDirectory).filter((f) => f.endsWith(".mdx"));
 
@@ -29,7 +36,12 @@ export function getAllPosts(): PostMeta[] {
     const filePath = path.join(postsDirectory, filename);
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
-    return { ...(data as Omit<PostMeta, "readingTime">), readingTime: getReadingTime(content) };
+    const meta = data as Omit<PostMeta, "readingTime" | "ogImage">;
+    return {
+      ...meta,
+      readingTime: getReadingTime(content),
+      ogImage: resolveOgImagePath(meta.slug),
+    };
   });
 
   return posts.sort(sortByDateDesc);
@@ -43,7 +55,13 @@ export function getPostBySlug(slug: string): Post | undefined {
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
     if (data.slug === slug) {
-      return { ...(data as Omit<PostMeta, "readingTime">), readingTime: getReadingTime(content), content };
+      const meta = data as Omit<PostMeta, "readingTime" | "ogImage">;
+      return {
+        ...meta,
+        readingTime: getReadingTime(content),
+        ogImage: resolveOgImagePath(meta.slug),
+        content,
+      };
     }
   }
 

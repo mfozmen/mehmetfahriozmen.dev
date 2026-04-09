@@ -74,6 +74,9 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getLabPostBySlug(slug);
   if (!post) return {};
+  const ogImagePath = post.ogImage ?? post.coverImage;
+  const ogImageUrl = `https://mehmetfahriozmen.dev${ogImagePath}`;
+  const ogImageHeight = post.ogImage ? 630 : 800;
   return {
     title: post.title,
     description: post.description,
@@ -85,13 +88,13 @@ export async function generateMetadata(
       url: `/lab/${slug}`,
       publishedTime: post.date,
       authors: ["Mehmet Fahri Özmen"],
-      images: [{ url: `https://mehmetfahriozmen.dev${post.coverImage}`, width: 1200, height: 800, alt: post.title }],
+      images: [{ url: ogImageUrl, width: 1200, height: ogImageHeight, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: [`https://mehmetfahriozmen.dev${post.coverImage}`],
+      images: [ogImageUrl],
     },
   };
 }
