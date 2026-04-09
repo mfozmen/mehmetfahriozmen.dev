@@ -48,7 +48,14 @@ social platforms the way they do today.
 
 9. Save the result as:
    - Field Notes: `public/writing/[slug]/og.webp`
-   - Lab Day: `public/lab/[slug]/og.webp`
+   - Lab Day (shared series cover): `public/lab/lab-day-og.webp`
+   - Lab Day (per-post override, optional): `public/lab/[slug]/og.webp`
+
+   Lab Day posts share `lab-day-cover.webp` as a series brand element,
+   so the OG variant is also shared by default — generate it once and
+   every Lab Day post uses it. Per-post overrides exist if a specific
+   Lab Day post ever needs a unique cover; the code prefers the
+   per-post file when both are present.
 
 The code will automatically detect the file and use it for OG meta
 tags. No frontmatter change is needed.
