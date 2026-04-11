@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.8.0...v1.9.0) (2026-04-11)
+
+### Features
+
+* **og:** add "The Moon, Again" OG variant ([f204058](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f20405857842a8fbb1c08c130552437d91eb211c))
+* **post:** add "The Toilet" illustration asset ([8d8b66d](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/8d8b66dc1d943cc3f2a83ee87e8758525a56db07))
+* **post:** add illustration and refine "The Moon, Again" sections ([a92009e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/a92009e159ca6d8bdc50313ffd6ee07e16b6a386))
+* **post:** add legacy project anecdote to "The Forgotten Legacy" section ([3d5c75e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3d5c75eea244ed8ccc491899401631754dba331b))
+* **post:** add toilet illustration and refine prose in "The Moon, Again" ([d6b0470](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d6b04708e0b5a4d1867a6e91f79b82d16e49e571))
+* **post:** add transition sentence and update publish date ([d23dece](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/d23dece6ab419c018bc215217befbcccf309b938))
+* **posts:** trim descriptions and enforce 100-160 length ([69f0fe7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/69f0fe793d1826af77eeffcecaca10528383aaa0))
+* **writing:** add "Notes from a Test Flight" draft post ([c945e6f](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c945e6fbbb2e6c71a7684256ca141008a127d7fb))
+* **writing:** rename to "The Moon, Again" and add cover image ([bba8cdb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/bba8cdb92406b40edbf3893073b97cd3cf3927c1))
+* **writing:** tighten "Notes from a Test Flight" closing ([1e56c0e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1e56c0e771c66b5903580cb8bfd9e65ac14e25d2))
+
 ## [1.8.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.7.0...v1.8.0) (2026-04-09)
 
 ### Features
