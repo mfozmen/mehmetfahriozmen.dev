@@ -1,0 +1,125 @@
+---
+title: "The Moon, Again"
+date: "2026-04-12"
+description: "NASA flew humans to the Moon for the first time in 53 years. A legacy project revival run in public. What software teams refuse to do, even on camera."
+coverImage: "/writing/the-moon-again/cover.webp"
+slug: "the-moon-again"
+---
+
+> "At least we're not sending rockets to space."
+>
+> — every developer, at 2 a.m., during an outage
+
+On December 19, 1972, three astronauts splashed down in the Pacific Ocean at the end of the Apollo 17 mission. They were the last humans to leave low Earth orbit. Nobody knew that at the time. The plan was to keep going. Apollo 18, 19, 20 were on the books. Then the budget cuts came, the public lost interest, the program wound down, and the engineers who built the Saturn V got reassigned, retired, or moved on. The tooling was scrapped. The rope-memory weavers found other work. The thousands of small handoffs between thousands of subcontractors that made a Moon shot possible quietly stopped happening, because the people who knew how those handoffs worked weren't there anymore.
+
+That was 53 years ago.
+
+This April, four astronauts named Reid Wiseman, Victor Glover, Christina Koch, and Jeremy Hansen flew around the Moon in a capsule called Integrity. They launched on April 1, 2026, aboard a rocket NASA spent more than a decade trying to figure out how to build. They flew past the lunar far side on April 6. They returned to Earth on April 10. It was the first crewed mission beyond low Earth orbit since the Nixon administration. More than half the people alive on Earth right now were not yet born the last time a human being saw the back of the Moon with their own eyes.
+
+A project shut down half a century ago. Team scattered. Documentation incomplete. Vendors gone. Institutional memory in the ground. Somebody decides to bring it back.
+
+Sound familiar?
+
+This is, structurally, the same problem every developer eventually runs into. The legacy system that nobody owns anymore. The codebase the original team left behind. The product that got shelved years ago and is now, for reasons nobody at the leadership level wants to explain, back on the roadmap. Different scale, same shape. You inherit the ambition without the infrastructure. You inherit the goal without the people who knew how to reach it.
+
+I've been watching the [Artemis II](https://www.nasa.gov/mission/artemis-ii/) mission updates more closely than I expected, and what keeps catching me isn't the spectacle. It's that the people running this thing — the most expensive, most-watched legacy revival in human history — are doing things we'd never let ourselves do on our own revival projects. They are openly admitting what they don't know. They are calling the mission a test. They are flying it on a survival hack from 1970. They are giving press briefings about the toilet.
+
+## The Test Flight
+
+NASA calls Artemis II a test flight. Out loud. In press releases. With four humans inside.
+
+"Artemis II is a test flight, and the test has just begun," NASA Associate Administrator Amit Kshatriya said after launch, while the crew was somewhere over the Atlantic doing manual proximity-ops drills around a discarded rocket stage. They are not pretending it's done. They are not pretending it's safe. They are saying: we built the thing, we put people in the thing, now we find out what the thing does.
+
+We do the same thing all the time. We just call it something else. Canary release. Phased rollout. Ring deployment. Feature flag at 1%. Internal dogfood. Limited beta. Every one of these is a test in production. Every one of these has users in it. We've built an entire vocabulary to avoid saying the word "test" with users inside it, because that would sound irresponsible, and the irresponsibility is the part we don't want to look at.
+
+NASA looks at it. They look at it on camera. The rest of us write incident retros about how the canary should have caught the bug, when the canary, by definition, is the bug-catching mechanism we designed.
+
+There's a cost to not calling things by their names.
+
+## The Free Return
+
+On April 13, 1970, about 56 hours into the Apollo 13 mission, an oxygen tank in the service module exploded. The crew lost most of their electrical power. They lost most of their oxygen. Their command module was dying. They were roughly 200,000 miles from Earth and still moving away from it.
+
+What they needed was a path home that didn't require the broken parts of the ship. What they needed already existed on paper.
+
+The free-return trajectory was one of NASA's oldest safety ideas. It was a path shaped so that if you launched on it and then did nothing — no burns, no corrections, no main engine — the Moon's gravity would bend your orbit around and throw you back at Earth. It had been designed into the Apollo program from the beginning as the built-in abort option. Apollo 8, 10, and 11 had flown it as their nominal trajectory. Then Apollo 12 introduced something called a hybrid trajectory, which departed from free-return after launch in exchange for access to better landing sites. It was a trade: safety margin for flexibility. Apollo 13 had made that same trade about 30 hours into its mission, with a small midcourse burn that took it off the free-return path.
+
+When the explosion happened, they were no longer on a path that would bring them home on its own.
+
+Five hours after the explosion, the crew fired the Lunar Module's descent engine to push Apollo 13 back onto the free-return path it had left behind. A few corrective burns followed. Six days after launch, Lovell, Swigert, and Haise were in the water. The trajectory that brought them home was the one NASA had designed as a contingency and then set aside for the sake of a better itinerary.
+
+Artemis II flew that same trajectory last month. Not as a contingency. As the plan.
+
+NASA looked at fifty-some years of lunar mission options and decided that the safest way to send humans around the Moon in 2026 was the path that had been designed from the start as the safe one — the path the Apollo program had moved away from when it started optimizing for reach. The safety margin became the flight plan again. Half a century of hybrid trajectories and we are back where we started, and calling it progress.
+
+The pattern is older than the codebase.
+
+I have watched this happen on every backend team I've worked on. A service gets built with generous retries, aggressive circuit breakers, a conservative rate limiter. Early on, nobody trusts the dependencies yet. Then the system gets faster. The team gets more confident. Somebody points out that the retries are costing money or adding latency. The margin gets trimmed. The breakers get loosened. The rate limiter gets a bypass for premium users. Each change is defensible on its own. Each one buys something real.
+
+Then, eventually, there is an outage, and somebody in the postmortem says the thing everybody already knew: we should have kept the original settings. And the team goes back to the original settings, and writes a design doc about why conservative defaults matter, and presents it at the next engineering all-hands as if it is a new idea.
+
+The disaster recovery was in the architecture the whole time. We took it out. We put it back. We called the second time wisdom.
+
+There is something honest about a space agency admitting that the safest path was the one they had in 1968.
+
+## The Forgotten Legacy
+
+A few years before Artemis II launched, an astronaut named Don Pettit said something in an interview that the conspiracy crowd loves to misquote and the rest of us find quietly unsettling. He said NASA had destroyed the technology that took us to the Moon, and that rebuilding it was a painful process.
+
+He wasn't being mystical. He meant something very specific. He meant the machinists who knew how to weld the F-1 engines were dead. He meant the women who hand-wove the rope memory for the Apollo Guidance Computer had long since been doing other things. He meant the paperwork for half the subsystems was in filing cabinets nobody could find in warehouses nobody had the keys to. He meant the thousand small conversations between engineers — the ones where somebody says "oh, you don't want to do it that way, here's why" — those conversations had not been held for fifty years, and the people who knew the reasons had taken them into retirement and then into the ground.
+
+Here is the thing I keep coming back to. NASA is not rebuilding the Saturn V — the 110-meter rocket that carried every Apollo crew to the Moon. They could have tried. They chose not to. They built a different rocket, with different engines, on a different architecture, leveraging the parts of the Shuttle program they did still remember how to build. The Saturn V is a museum exhibit and it is going to stay a museum exhibit. The forgetting was not reversed. It was accepted, and then worked around.
+
+I think there is a word for this that we don't use often enough when we talk about legacy systems. The word is _amnesty_. You stop asking why something was done the way it was done, and you let the team build what they need now.
+
+Every legacy rewrite I have ever been part of had a version of this in it. The senior engineer who built the original auth layer leaves. Six months later, nobody on the team can explain why a particular piece of middleware exists, but everybody is afraid to remove it because the engineer who wrote it was smart and must have had a reason. The middleware stays. It becomes folklore.
+
+And then one day a rewrite comes along. The team on the rewrite was not there for the original conversation. They have no standing to defend a piece of code they did not write and do not understand. They delete it. Nothing breaks. It turns out the middleware had been written for a reason that stopped applying in 2019, and nobody on the original team had the authority to say so, because they remembered the reason and the reason had once been real.
+
+Sometimes the only way to stop carrying something is to forget why you were carrying it.
+
+Once, a legacy project landed on my desk. No documentation — legacy projects rarely come with documentation. The unusual part wasn't that. The unusual part was that I could not ask anyone. The original developer had died. The project itself ran perfectly — no bugs, no outages, nothing to fix. The problem was that to maintain it, you had to read every line of it, because nobody knew how any of it worked.
+
+![Everything works. It doesn't make any sense.](/writing/the-moon-again/forgetting.webp)
+
+I'm not sure it's a thing to celebrate. People die. Knowledge is lost. Mistakes get re-made that a previous generation had already solved. The grief is real. But there is also a quieter truth underneath it, which is that institutional memory is not always a gift. Sometimes it is a way of making sure that a decision somebody made in 1969, for reasons that made perfect sense in 1969, continues to shape a system in 2026 for reasons nobody can articulate. Sometimes the reason a team cannot move is that it remembers too much.
+
+NASA does not get to go back to the Saturn V. That is a loss. It is also, if you turn it over in your hand and look at the other side, a kind of freedom.
+
+## The Toilet
+
+Early in the Artemis II mission, the Orion capsule's waste management system stopped working correctly. I am using careful language here. Press briefings used less careful language. NASA officials got asked about the toilet for several days in a row. By Tuesday April 7 — the day after the lunar flyby — the official update was that the toilet was, at last, working well again, and a reporter in Houston put that in the lede.
+
+There were bigger problems on the mission. The heat shield had known design flaws — NASA had spent four years investigating cracks from the previous flight. A service module valve needed a redesign. Engineers flagged both for post-flight inspection. But the thing the press kept asking about, the thing that kept making it into the lede, was the toilet.
+
+![It got the least thought. It got the most attention.](/writing/the-moon-again/toilet.webp)
+
+History's most expensive plumbing got daily standup updates from the most-watched space agency on Earth, in front of cameras, on the record, with the names of the officials attached.
+
+Nobody tried to bury it. Nobody labeled it a "minor anomaly under investigation" or a "nominal system behavior outside expected parameters." It was the toilet. The toilet had a bug. The bug got fixed. They told everybody.
+
+Anybody who has worked on a backend long enough knows what the toilet is. It is the queue nobody owns. It is the cron job that runs at 4 a.m. and nobody can remember who wrote it. It is the auth shim that everything depends on and nobody wants to touch. It is the retry logic and the dead-letter handler and the schema migration that broke once in 2022 and now has a # DO NOT REMOVE comment above it. It is every part of the system that nobody puts on the roadmap because you cannot demo it, but if it stops working, nothing works.
+
+We hide our toilets. We keep them out of the sprint review. We do not mention them to leadership unless they catch fire, because mentioning them is admitting that the glamorous parts of the product are being held up by something nobody wants to think about. The demo is about the new feature. The roadmap is about the new feature. The promotion packet is about the new feature. The queue that processes the payments for the new feature is in an incident retrospective from two quarters ago that nobody reread.
+
+There is a second version of this section I could write. It ends with advice — the kind of advice every engineer already knows and nobody wants to hear again. I am not going to write that version. We watch a space agency do it on television. We find it charming and slightly funny. We do not go update our own runbooks.
+
+## The View from Down Here
+
+Reid Wiseman, Victor Glover, Christina Koch, and Jeremy Hansen splashed down in the Pacific Ocean on April 10, ten days after they launched. The mission was, by every public measure, a success. The recovery ship got them out of the capsule. The photographs went around the world. A few people cried in Houston. Somebody wrote a press release with the word "historic" in it and nobody objected.
+
+"At least we're not sending rockets to space" is the thing we tell ourselves. The stakes are different. The failure modes are different. Nobody on our on-call rotation is going to burn up on reentry because the deploy went sideways. All of this is true. All of this has been true for my entire career, and will keep being true for the rest of it. The difference in stakes is real.
+
+NASA called the trip a test flight with four humans inside. We call ours a phased rollout.
+
+NASA flew its crew home on a trajectory it had designed in 1968, set aside for something flashier, and then returned to once it saw the true cost of the trade. We write the design doc twice and present the second version as if it is a new idea.
+
+NASA accepted that the Saturn V was gone and built something else. We spend years trying to reason about code nobody on the team wrote.
+
+NASA held press conferences about the toilet. We do not tell the skip-level the queue is backed up.
+
+I am not saying we should act like we're going to the Moon. I am saying the thing we tell ourselves — that the difference in stakes is what lets them be more honest than we are — is starting to sound, when I sit with it long enough, like it is pointed in the wrong direction. The stakes do not force the honesty. The honesty is just a choice, and people make it or they don't, and sometimes the people who make it are strapping themselves to a rocket and sometimes they're sitting in a Zoom call arguing about a ticket.
+
+Integrity is in the water. The crew is home. The test, as the associate administrator said, has just begun.
+
+So has Monday's deploy.

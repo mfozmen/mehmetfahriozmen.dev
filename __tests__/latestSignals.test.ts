@@ -21,7 +21,7 @@ describe("getLatestSignals", () => {
       expect(item.title).toBeDefined();
       expect(item.date).toBeDefined();
       expect(item.slug).toBeDefined();
-      expect(item.excerpt).toBeDefined();
+      expect(item.description).toBeDefined();
       expect(item.readingTime).toBeGreaterThan(0);
       expect(item.href).toMatch(/^\/(writing|lab)\//);
       expect(["field-notes", "lab-day"]).toContain(item.kind);

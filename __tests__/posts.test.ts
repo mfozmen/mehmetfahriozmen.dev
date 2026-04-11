@@ -24,9 +24,23 @@ describe("getAllPosts", () => {
       expect(post.date).toBeDefined();
       expect(post.slug).toBeDefined();
       expect(post.coverImage).toBeDefined();
-      expect(post.excerpt).toBeDefined();
+      expect(post.description).toBeDefined();
       expect(post.readingTime).toBeDefined();
       expect(post.readingTime).toBeGreaterThan(0);
+    }
+  });
+
+  it("each post description is between 100 and 160 characters", () => {
+    const posts = getAllPosts();
+    for (const post of posts) {
+      expect(
+        post.description.length,
+        `${post.slug} description is too short (${post.description.length} chars, minimum 100)`,
+      ).toBeGreaterThanOrEqual(100);
+      expect(
+        post.description.length,
+        `${post.slug} description is too long (${post.description.length} chars, maximum 160)`,
+      ).toBeLessThanOrEqual(160);
     }
   });
 });

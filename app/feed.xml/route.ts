@@ -11,7 +11,7 @@ export function GET() {
       <title>${escapeXml(post.title)}</title>
       <link>${SITE_URL}/writing/${escapeXml(post.slug)}</link>
       <guid isPermaLink="true">${SITE_URL}/writing/${escapeXml(post.slug)}</guid>
-      <description>${escapeXml(post.excerpt)}</description>
+      <description>${escapeXml(post.description)}</description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     </item>`);
 

@@ -5,6 +5,7 @@ import { TrackedNextLink } from "@/components/TrackedLink";
 import PageShell from "@/components/PageShell";
 import { getAllPosts, getPostBySlug, getReadingTime, formatDate, type PostMeta } from "@/lib/posts";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
+import { buildArticleMetadata } from "@/lib/articleMetadata";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
@@ -68,33 +69,11 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
-  const ogImagePath = post.ogImage ?? post.coverImage;
-  const ogImageUrl = `https://mehmetfahriozmen.dev${ogImagePath}`;
-  const ogImageHeight = post.ogImage ? 630 : 800;
-  return {
-    title: post.title,
-    description: post.excerpt,
-    alternates: { canonical: `/writing/${slug}` },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.excerpt,
-      url: `/writing/${slug}`,
-      publishedTime: post.date,
-      authors: ["Mehmet Fahri Özmen"],
-      images: [{ url: ogImageUrl, width: 1200, height: ogImageHeight, alt: post.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: [ogImageUrl],
-    },
-  };
+  return buildArticleMetadata(post, "writing", slug);
 }
 
 /* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */
-function PostHeader({ post }: Readonly<{ post: { date: string; title: string; excerpt: string; coverImage: string; content: string } }>) {
+function PostHeader({ post }: Readonly<{ post: { date: string; title: string; description: string; coverImage: string; content: string } }>) {
   return (
     <>
       <header className="mb-8">
@@ -105,7 +84,7 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; ex
           {post.title}
         </h1>
         <p className="mt-3 text-lg italic text-neutral-500">
-          {post.excerpt}
+          {post.description}
         </p>
       </header>
       <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
@@ -161,7 +140,7 @@ export default async function PostPage(
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.excerpt, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema({ title: post.title, description: post.description, coverImage: post.coverImage, date: post.date }, "writing", slug)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Writing", "writing", post.title)) }} />
       <ReadingProgress />
       <PageShell>

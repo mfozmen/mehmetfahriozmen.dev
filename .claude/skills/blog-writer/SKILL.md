@@ -43,7 +43,7 @@ Validation before every commit:
 - `description` at least 100 characters
 - `date` valid ISO format
 - `coverImage` path exists and file is present
-- Cover image is WebP, optimized (Squoosh: quality 80, max 800px width)
+- Cover image is WebP, optimized (Squoosh: quality 80, 1200px width for 1200x800 covers)
 - Cover image aspect ratio is 3:2 (e.g., 1200x800)
 - OG image variant generated at `public/writing/[slug]/og.webp` (1200x630).
   See `docs/og-image-workflow.md` for the manual Photopea workflow.
@@ -71,10 +71,10 @@ Every post opens with a blockquote. Rules:
 ### Inline Images
 
 ```mdx
-![Caption text here](/writing/[slug]/image-name.webp)
+![Short editorial punchline here](/writing/[slug]/image-name.webp)
 ```
 
-- Caption: short, deadpan, often the punchline of the image
+- Alt text is a short editorial punchline (5–12 words) that captures the joke or observation of the illustration. The site's `MdxImage` component renders alt text as both the HTML `alt` attribute and the visible `<figcaption>` — one string serves both roles. Match the deadpan tone of the post itself. Examples from existing posts: "Mr. Anderson? No. It's 'Boss' now." / "Humanity reached the stars. Furnished them from the same catalog." / "Declared dead. Twice the price now."
 - Place at natural section breaks or critical transition points
 - Never place directly next to a blockquote
 - Images display at full aspect ratio, never cropped

@@ -36,7 +36,7 @@ function PostCard({ post }: Readonly<{ post: PostMeta }>) {
           {post.title}
         </h3>
         <p className="mt-2 text-[12px] leading-relaxed text-[#a3a3a3]">
-          {post.excerpt}
+          {post.description}
         </p>
       </div>
     </TrackedNextLink>

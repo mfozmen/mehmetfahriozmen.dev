@@ -8,7 +8,7 @@ type SignalItem = {
   title: string;
   date: string;
   slug: string;
-  excerpt: string;
+  description: string;
   readingTime: number;
   href: string;
 };
@@ -35,7 +35,7 @@ export function getLatestSignals(): SignalItem[] {
     title: p.title,
     date: p.date,
     slug: p.slug,
-    excerpt: p.excerpt,
+    description: p.description,
     readingTime: p.readingTime,
     href: `/writing/${p.slug}`,
   }));
@@ -45,7 +45,7 @@ export function getLatestSignals(): SignalItem[] {
     title: p.title.replace(/^Lab Day:\s*/i, ""),
     date: p.date,
     slug: p.slug,
-    excerpt: p.description,
+    description: p.description,
     readingTime: p.readingTime,
     href: `/lab/${p.slug}`,
   }));
@@ -82,7 +82,7 @@ function SignalCard({ item }: Readonly<{ item: SignalItem }>) {
         {item.title}
       </h3>
       <p className="mt-1.5 text-[12px] leading-relaxed text-[#a3a3a3]">
-        {item.excerpt}
+        {item.description}
       </p>
     </TrackedNextLink>
   );
