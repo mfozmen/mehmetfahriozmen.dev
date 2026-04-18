@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.9.0...v1.10.0) (2026-04-18)
+
+### Features
+
+* **cv:** add Insider One as current mission ([27386b0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/27386b05c11526a2ee61b60763458cf230f616fc))
+
 ## [1.9.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.8.0...v1.9.0) (2026-04-11)
 
 ### Features
