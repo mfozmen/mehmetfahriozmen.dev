@@ -46,6 +46,12 @@ export interface CvCoordinate {
 
 export const cvExperience: CvExperienceEntry[] = [
   {
+    role: "Senior Software Engineer",
+    date: "Apr 2026 — Present",
+    company: "Insider One",
+    companyUrl: "https://insiderone.com/",
+  },
+  {
     role: "Head of Software Technologies",
     date: "Dec 2024 — Dec 2025",
     company: "Mayadem",
