@@ -4,7 +4,7 @@ import Image from "next/image";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 
-export default function ErrorPage({ reset }: { reset: () => void }) {
+export default function ErrorPage({ reset }: Readonly<{ reset: () => void }>) {
   return (
     <>
       <Starfield />
