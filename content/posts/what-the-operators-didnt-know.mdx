@@ -1,0 +1,107 @@
+---
+title: "What the Operators Didn't Know"
+date: "2026-04-26"
+slug: "what-the-operators-didnt-know"
+coverImage: "/writing/what-the-operators-didnt-know/cover.webp"
+description: "Building with AI got us shipping faster than we can read. The codebase is too distributed for any one mind to hold. On what we stopped seeing."
+---
+
+> The QA was nervous in the meeting.
+>
+> The system has gotten complex enough that we can't always tell what the AI touched.
+
+Nobody contradicted her. A few people nodded, the kind of nod that means *yes, I've been thinking about this too, but I didn't have the words.* Someone changed the subject. The meeting moved on.
+
+I've been thinking about that nod ever since.
+
+## The wrong reading
+
+The easy reading is that AI writes bad code. That the diffs are too long. That it hallucinates APIs, invents function signatures, breaks conventions. These things happen, but they're not the problem. They're the visible problem. They show up in code review. They get caught.
+
+The harder reading — the one the QA was pointing at without quite naming — is that the system itself has become unreadable. Not because the code is bad. Because the code is everywhere.
+
+## The shape of a modern codebase
+
+A modern codebase is not a repository. It is a constellation.
+
+There are services that talk to other services. There are shared modules — not the bad kind, not `shared-utils` dumping grounds, but legitimate, focused libraries. A `notification-dispatcher` that handles fan-out across channels. An auth client that every service imports. An event schema package that producers and consumers both depend on.
+
+They are also consumed by many services and by many client applications, and that consumption is largely automated. Renovate opens a pull request when a version bumps. Dependabot does the same. The internal package registry pushes notifications. The PRs land in the morning queue, get a green checkmark from CI, and merge — sometimes by a human who scanned the title, sometimes by an automerge rule that trusts the green checkmark more than it trusts any human.
+
+The radius of any change is no longer visible from where the change was made. A modification to `notification-dispatcher` can ripple through services that haven't been touched in months, into client applications maintained by teams who don't know that ripple is coming. The bump arrives. CI passes. Production absorbs it. Nobody read it end to end, because end to end isn't a place anymore.
+
+This was true before AI. It is the natural consequence of building software the way we build software now — modular, distributed, automated. AI did not invent this shape.
+
+But AI is going to make it harder to see.
+
+## The safety button
+
+On the night of April 25, 1986, the operators at the Chernobyl Nuclear Power Plant in northern Soviet Ukraine were preparing to run a safety test on Reactor No. 4. The test was supposed to be routine. They wanted to confirm that, in the event of a power outage, the reactor's cooling pumps could keep running on inertia from the slowing turbines long enough for the backup generators to come online. Bureaucratically, this test had been delayed for years. They wanted to get it done.
+
+A nuclear reactor, in the simplest terms, is a controlled chain reaction. Uranium atoms split, release neutrons, those neutrons split more atoms. The reaction generates heat. The heat boils water. The steam spins a turbine. Electricity comes out the other end. To keep the reaction from running away, control rods made of neutron-absorbing material slide into the reactor core. More rods in, less reaction. Fewer rods, more reaction. This is the dial.
+
+The RBMK reactor at Chernobyl had a peculiarity in its control rods. The tips, for design reasons that don't matter here, were made of graphite — a material that, in the brief moment before the rest of the rod entered the core, would *increase* the reaction rather than slow it. For a few seconds during insertion, pressing the brake meant pressing the accelerator first.
+
+Nobody on the operating floor knew this. The designers knew. It was documented in classified literature. It had not been shared with the people running the plant.
+
+There was also a second condition the operators did not fully understand. After running at low power for too long, the reactor accumulated a neutron-absorbing isotope called xenon. Xenon poisoning made the reaction sluggish, harder to control, easier to lose. To compensate, the operators withdrew most of the control rods — leaving the core in a configuration the reactor's designers had explicitly warned against, in a document the operators had not seen.
+
+So the night of the test, the reactor was running in a state nobody on the floor recognized as dangerous, with a flaw in the control system nobody on the floor knew existed. The test proceeded.
+
+When the reactor began to behave oddly, the shift supervisor pressed AZ-5 — the emergency shutdown button. It was supposed to drive every control rod into the core and stop the reaction.
+
+For three seconds, it accelerated it instead.
+
+The reactor exploded.
+
+You know the rest.
+
+The thing worth pausing on is not the explosion. It is the configuration. The reactor was, in a narrow window of conditions, capable of killing itself. Those conditions were not exotic — they were a combination of an approved test procedure, a known operational state, and a documented design property. Each piece was *somewhere* in the system's collective knowledge. The designers held the graphite tip flaw. The physicists held the xenon dynamics. The operators held the live state of the core. The procedure writers held the test plan.
+
+No single person held all four. The configuration that destroyed the reactor existed only in the gaps between what each group knew.
+
+## Before the AI
+
+Nineteen eighty-six was a long time ago. Software systems were not yet distributed in the way they are now. There were no microservices. There was no `notification-dispatcher` published to an internal registry, consumed by a constellation of services maintained by teams who don't speak to each other except in pull request comments.
+
+But the limit of a single human mind has not changed. We did not get smarter between 1986 and now. We just got better at building systems that exceed us.
+
+Modern codebases are held the same way the RBMK reactor was held. The frontend team knows the design system. The platform team knows the message bus. The payments team knows the auth client. The infrastructure team knows the deploy pipeline. Each team holds its piece. Nobody holds all of them at once. The configuration that brings production down on a Tuesday afternoon — the one specific combination of a flag, a stale cache, a recently bumped library, and a downstream service that hasn't absorbed the new contract yet — that configuration exists only in the gaps between what each team knows.
+
+It was always this way. Senior engineers compensated for it the way humans always compensate: socially. They held a map in their heads — not of the code, but of the *people*. Who wrote that auth client. Who knows what `notification-dispatcher` actually does in the failure case. Who would say "wait, don't bump that yet, payments is mid-migration." This map was not in any document. It lived in hallway conversations, code review comments, the muscle memory of having been at the company for five years. It was unglamorous and irreplaceable.
+
+It was also the last thing holding the reactor together.
+
+## What AI did
+
+AI did not introduce a new danger. It accelerated the existing one, and made it harder to see.
+
+When a human engineer changes the behavior of a shared library, there is — somewhere in the process — a moment of hesitation. *Wait. Who else uses this? Should I ask the platform team before I bump this?* The hesitation may not lead to the right action. They may ask the wrong person, or ask nobody, or ask and get a wrong answer. But the hesitation exists. It is a small, slow, unreliable safety mechanism, and for a long time it was enough.
+
+AI does not hesitate. It cannot. The thing we call hesitation is not a feature of the model — it is a feature of being a person who has worked at a company for five years and remembers the time another team got paged at 2 a.m. because someone changed a default. The AI has the repository. It does not have the 2 a.m. page. It does not have the social map. It does not know whose feelings to spare, whose conventions to honor, whose pager to imagine going off.
+
+This would be manageable if humans were still reading every change. They are not. The PR is generated by an agent, opened by a bot, reviewed by another human who scans the diff at 9:14 a.m. between standups. The green checkmark is doing more and more of the reviewing. The hesitation is gone from both ends — the writer doesn't have it, and the reader doesn't have time for it.
+
+The green checkmark was supposed to drive the rods into the core.
+
+## The QA
+
+The QA is the last person in the pipeline whose job is to ask, end to end, *did this still work.* And the surface area of that question has quietly grown without anyone renaming her role.
+
+She is testing a feature, but she is also testing whether a Renovate bump that landed at 3 a.m. has changed the behavior of a downstream service nobody on her team owns. She is testing whether the AI's refactor of an auth helper preserved a contract that exists only in the production logs of a service nobody has touched in six months. She is testing whether the system is still the system. There is no end to that question.
+
+She does not have words for this yet. None of us do. The vocabulary lags the experience by years. But she has the feeling, and the feeling is correct.
+
+She sees what the rest of us have stopped seeing.
+
+## What to do
+
+I don't have a clean answer. I'm not sure there is one.
+
+Slow down the automerge. Require a human eye on shared library bumps. Write down the social map before the senior engineers leave. Treat the QA's discomfort as a signal, not as a personality trait. None of these will be enough on their own, and all of them are work nobody wants to do.
+
+The harder thing — the thing I keep coming back to — is that we have been building systems that exceed any single mind for forty years, and we have been pretending otherwise for almost as long. The RBMK didn't fail because the operators were careless. It failed because the system had grown beyond what anyone on the floor could hold, and the safety mechanism designed to compensate for that gap was itself a part of the gap.
+
+We are running the same experiment now, faster, with more participants, and the AI is helping us run it.
+
+Trust your sixth sense rather than the perfect machine.
