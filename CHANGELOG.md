@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.11.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.10.0...v1.11.0) (2026-04-27)
+
+### Features
+
+* **writing:** add cover and og images for nuclear reactor post ([740e550](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/740e550d94d2b2cee28be9f1f4dcaed284cbe999))
+* **writing:** add inline illustration to Hesitation section ([3fd6ba0](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3fd6ba0ecd101584f31df278c57cf559aec78135))
+* **writing:** add what-the-operators-didnt-know post (draft) ([0c04465](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0c04465fe391b4cefda9104a2e524e67a9db5b5a))
+* **writing:** retitle post to "The Nuclear Reactor in Your Codebase" ([4cab9ec](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/4cab9ec8ede193947ef9214c33d8e06028b81d91))
+
+### Bug Fixes
+
+* **error:** mark ErrorPage props as readonly ([9499277](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9499277e0f163e6a1a1e23bb563af72cdd36daa4))
+
 ## [1.10.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.9.0...v1.10.0) (2026-04-18)
 
 ### Features
