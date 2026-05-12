@@ -79,10 +79,10 @@ const domainLayout: Record<
   ecommerce: { angle: 1, orbit: 0, offset: { x: -0.07, y: 0.08 } },
   adtech: { angle: 1.8, orbit: 0, offset: { x: 0.1, y: -0.1 } },
   productivity: { angle: 5.2, orbit: 0, offset: { x: 0.07, y: 0.06 } },
-  distributed: { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.07 } },
+  distributed: { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.11 } },
   education: { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
   nonprofit: { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
-  realtime: { angle: 2.2, orbit: 1, offset: { x: -0.1, y: 0.08 } },
+  realtime: { angle: 2.2, orbit: 1, offset: { x: -0.12, y: 0.11 } },
   customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.07, y: 0.08 } },
   analytics: { angle: 0.85, orbit: 1, offset: { x: 0.03, y: -0.07 } },
 };
