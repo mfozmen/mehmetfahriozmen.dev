@@ -227,6 +227,7 @@ export const projects: Project[] = [
   {
     id: "fsd",
     name: "FoodServiceDirect",
+    url: "https://www.foodservicedirect.com/",
     description: "Large-scale food commerce platform",
     importance: "minor",
     domains: ["ecommerce"],
@@ -243,6 +244,7 @@ export const projects: Project[] = [
   {
     id: "megatons",
     name: "20 Megatons",
+    url: "https://www.20megatons.com/",
     importance: "minor",
     domains: ["nonprofit"],
     technologyCategories: [
