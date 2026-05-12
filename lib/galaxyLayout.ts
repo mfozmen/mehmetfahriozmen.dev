@@ -12,6 +12,7 @@ import {
 } from "@/data/systemsGraph";
 
 export const ORBIT_SPEEDS: Record<SystemImportance, number> = {
+  hero: 0.012,
   primary: 0.015,
   secondary: 0.01,
   minor: 0.008,

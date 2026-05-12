@@ -27,7 +27,7 @@ export interface Nebula {
   color: string;
 }
 
-export type SystemImportance = "primary" | "secondary" | "minor";
+export type SystemImportance = "hero" | "primary" | "secondary" | "minor";
 
 // --- Data generators ---
 
@@ -51,6 +51,8 @@ export function generateNebulae(w: number, h: number): Nebula[] {
 
 export function systemStarRadius(importance: SystemImportance, sf: number): number {
   switch (importance) {
+    case "hero":
+      return 11 * sf;
     case "primary":
       return 7 * sf;
     case "secondary":
@@ -377,6 +379,64 @@ export function drawDomainConnections(
 
 // --- System star rendering ---
 
+function drawHeroGlowLayers(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: number, twinkle: number, isHovered: boolean) {
+  // Layer 1 — wide outer halo in the same amber as primary stars (#f0c040 ≈ 240,192,64)
+  const haloR = (isHovered ? 8.5 : 7) * r;
+  const haloAlpha = (isHovered ? 0.24 : 0.18) * twinkle;
+  const halo = ctx.createRadialGradient(sx, sy, r * 0.4, sx, sy, haloR);
+  halo.addColorStop(0, `rgba(240, 192, 64, ${haloAlpha})`);
+  halo.addColorStop(0.35, `rgba(240, 192, 64, ${haloAlpha * 0.35})`);
+  halo.addColorStop(1, "rgba(240, 192, 64, 0)");
+  ctx.beginPath(); ctx.arc(sx, sy, haloR, 0, Math.PI * 2); ctx.fillStyle = halo; ctx.fill();
+
+  // Layer 2 — warm-gold mid glow bridging amber halo → white core
+  const midR = (isHovered ? 4.6 : 3.6) * r;
+  const midAlpha = (isHovered ? 0.5 : 0.42) * twinkle;
+  const mid = ctx.createRadialGradient(sx, sy, r * 0.2, sx, sy, midR);
+  mid.addColorStop(0, `rgba(255, 226, 150, ${midAlpha})`);
+  mid.addColorStop(0.45, `rgba(255, 210, 110, ${midAlpha * 0.4})`);
+  mid.addColorStop(1, "rgba(255, 210, 110, 0)");
+  ctx.beginPath(); ctx.arc(sx, sy, midR, 0, Math.PI * 2); ctx.fillStyle = mid; ctx.fill();
+
+  // Layer 3 — tight, near-white hot inner glow
+  const hotR = (isHovered ? 2.4 : 1.9) * r;
+  const hotAlpha = (isHovered ? 0.7 : 0.62) * twinkle;
+  const hot = ctx.createRadialGradient(sx, sy, 0, sx, sy, hotR);
+  hot.addColorStop(0, `rgba(255, 252, 240, ${hotAlpha})`);
+  hot.addColorStop(0.5, `rgba(255, 244, 210, ${hotAlpha * 0.35})`);
+  hot.addColorStop(1, "rgba(255, 244, 210, 0)");
+  ctx.beginPath(); ctx.arc(sx, sy, hotR, 0, Math.PI * 2); ctx.fillStyle = hot; ctx.fill();
+}
+
+function drawHeroStar(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: number, twinkle: number, isHovered: boolean, isDimmed: boolean) {
+  // A white-hot core wrapped in the site's amber light: max luminance contrast,
+  // astrophysically the hottest star, yet still anchored to the amber palette.
+  drawHeroGlowLayers(ctx, sx, sy, r, twinkle, isHovered);
+
+  // Star body — warm white (#fff6e0), with a small pure-white hot centre
+  ctx.save();
+  ctx.shadowColor = "rgba(255, 238, 200, 0.85)";
+  ctx.shadowBlur = (isHovered ? 28 : 22) * twinkle;
+  ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fillStyle = "#fff6e0"; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(sx, sy, r * 0.42, 0, Math.PI * 2); ctx.fillStyle = "#ffffff"; ctx.fill();
+
+  // Diffraction spikes — long, near-white (bright-star chromatic streaks)
+  const spikeLen = r * (3.5 + twinkle * 2.5);
+  const spikeAlpha = (isDimmed ? 0.15 : 1) * 0.32 * twinkle;
+  ctx.globalAlpha = spikeAlpha;
+  ctx.strokeStyle = "rgba(255, 246, 224, 1)";
+  ctx.lineWidth = 0.6;
+  ctx.beginPath(); ctx.moveTo(sx - spikeLen, sy); ctx.lineTo(sx + spikeLen, sy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sx, sy - spikeLen); ctx.lineTo(sx, sy + spikeLen); ctx.stroke();
+  const diagLen = spikeLen * 0.55;
+  ctx.globalAlpha = spikeAlpha * 0.5;
+  ctx.lineWidth = 0.4;
+  ctx.beginPath(); ctx.moveTo(sx - diagLen, sy - diagLen); ctx.lineTo(sx + diagLen, sy + diagLen); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sx + diagLen, sy - diagLen); ctx.lineTo(sx - diagLen, sy + diagLen); ctx.stroke();
+  ctx.globalAlpha = isDimmed ? 0.15 : 1;
+}
+
 function drawPrimaryStar(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: number, twinkle: number, isHovered: boolean, isDimmed: boolean) {
   const glowR = isHovered ? r * 5 : r * 4;
   const glowAlpha = (isHovered ? 0.4 : 0.3) * twinkle;
@@ -453,7 +513,9 @@ export function drawSystemStar(
 
   ctx.globalAlpha = isDimmed ? 0.15 : 1;
 
-  if (sys.importance === "primary") {
+  if (sys.importance === "hero") {
+    drawHeroStar(ctx, sx, sy, r, twinkle, isHovered, isDimmed);
+  } else if (sys.importance === "primary") {
     drawPrimaryStar(ctx, sx, sy, r, twinkle, isHovered, isDimmed);
   } else if (sys.importance === "secondary") {
     drawSecondaryStar(ctx, sx, sy, r, twinkle, isHovered);
@@ -480,6 +542,7 @@ interface SystemLabelOpts {
 
 function drawSystemLabel(ctx: CanvasRenderingContext2D, opts: SystemLabelOpts) {
   const { sys, x, y, sf, isHovered, isDimmed, isActive } = opts;
+  const isHero = sys.importance === "hero";
   const isPrimary = sys.importance === "primary";
   const isSecondary = sys.importance === "secondary";
 
@@ -490,13 +553,18 @@ function drawSystemLabel(ctx: CanvasRenderingContext2D, opts: SystemLabelOpts) {
   else { labelAlpha = mobileLabelAlpha(sys.importance, sf); }
 
   let labelColor: string;
-  if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
+  if (isHero) { labelColor = "rgba(255, 235, 200, 1)"; }
+  else if (isPrimary) { labelColor = "rgba(240, 220, 170, 1)"; }
   else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
   else { labelColor = "rgba(130, 140, 150, 1)"; }
 
-  const fontSize = mobileLabelSize(isPrimary ? 13 : 11, sf, 11);
+  const baseFont = isHero ? 15 : isPrimary ? 13 : 11;
+  const fontSize = mobileLabelSize(baseFont, sf, isHero ? 12 : 11);
+  let fontWeight = 400;
+  if (isHero) { fontWeight = 600; }
+  else if (isPrimary) { fontWeight = 500; }
   ctx.globalAlpha = labelAlpha;
-  ctx.font = `${isPrimary ? 500 : 400} ${fontSize}px system-ui, -apple-system, sans-serif`;
+  ctx.font = `${fontWeight} ${fontSize}px system-ui, -apple-system, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.fillStyle = labelColor;

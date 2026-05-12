@@ -8,14 +8,16 @@ export function mobileLabelSize(baseSize: number, sf: number, minSize: number): 
 }
 
 export function mobileLabelAlpha(
-  importance: "primary" | "secondary" | "minor",
+  importance: "hero" | "primary" | "secondary" | "minor",
   sf: number,
 ): number {
   if (sf < 0.7) {
+    if (importance === "hero") return 0.95;
     if (importance === "primary") return 0.9;
     if (importance === "secondary") return 0.65;
     return 0.4;
   }
+  if (importance === "hero") return 0.88;
   if (importance === "primary") return 0.8;
   if (importance === "secondary") return 0.55;
   return 0.3;

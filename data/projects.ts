@@ -1,4 +1,4 @@
-export type ProjectImportance = "primary" | "secondary" | "minor";
+export type ProjectImportance = "hero" | "primary" | "secondary" | "minor";
 
 export type Project = {
   id: string;
@@ -12,6 +12,24 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  // Hero — the single brightest star
+  {
+    id: "insiderone",
+    name: "Insider One",
+    url: "https://insiderone.com/",
+    importance: "hero",
+    domains: ["adtech", "distributed", "customer_engagement", "analytics"],
+    technologyCategories: [
+      "databases",
+      "cloud",
+      "devops",
+      "api",
+      "architecture",
+      "messaging",
+      "frameworks",
+      "methodologies",
+    ],
+  },
   // Primary
   {
     id: "mobilet",
