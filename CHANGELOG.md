@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.13.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.12.0...v1.13.0) (2026-05-12)
+
+### Features
+
+* **galaxy:** add project URLs for FoodServiceDirect and 20 Megatons ([9efa23e](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9efa23e83493a48c2491e7bdbfda688346ebca58))
+
 ## [1.12.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.11.0...v1.12.0) (2026-05-12)
 
 ### Features
