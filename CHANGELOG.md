@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.12.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.11.0...v1.12.0) (2026-05-12)
+
+### Features
+
+* **cv:** add Insider One responsibilities as bullets ([187d71a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/187d71a8207ebada0689fd3f22b907a9b84ceeac))
+
 ## [1.11.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.10.0...v1.11.0) (2026-04-27)
 
 ### Features
