@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.14.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.13.0...v1.14.0) (2026-05-13)
+
+### Features
+
+* **galaxy:** add Insider One as the white-hot hero-tier star ([#26](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/26)) ([6ae8157](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6ae81577cabf533e662b3391a85ae6a000fd77a3))
+
 ## [1.13.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.12.0...v1.13.0) (2026-05-12)
 
 ### Features
