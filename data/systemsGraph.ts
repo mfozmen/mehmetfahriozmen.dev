@@ -83,8 +83,8 @@ const domainLayout: Record<
   education: { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
   nonprofit: { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
   realtime: { angle: 2.2, orbit: 1, offset: { x: -0.12, y: 0.11 } },
-  customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.07, y: 0.08 } },
-  analytics: { angle: 0.85, orbit: 1, offset: { x: 0.03, y: -0.07 } },
+  customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.10, y: 0.12 } },
+  analytics: { angle: 0.85, orbit: 1, offset: { x: 0.06, y: -0.13 } },
 };
 
 // --- Galaxy position per tech cluster ---

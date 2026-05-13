@@ -8,6 +8,7 @@ import {
   domains,
   techClusters,
   type SystemNode,
+  type SystemImportance,
   type TechClusterNode,
 } from "@/data/systemsGraph";
 import {
@@ -27,7 +28,7 @@ export interface Nebula {
   color: string;
 }
 
-export type SystemImportance = "hero" | "primary" | "secondary" | "minor";
+export type { SystemImportance };
 
 // --- Data generators ---
 
@@ -380,7 +381,7 @@ export function drawDomainConnections(
 // --- System star rendering ---
 
 function drawHeroGlowLayers(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: number, twinkle: number, isHovered: boolean) {
-  // Layer 1 — wide outer halo in the same amber as primary stars (#f0c040 ≈ 240,192,64)
+  // Outer halo uses the same amber as primary stars so the hero stays anchored to the site palette.
   const haloR = (isHovered ? 8.5 : 7) * r;
   const haloAlpha = (isHovered ? 0.24 : 0.18) * twinkle;
   const halo = ctx.createRadialGradient(sx, sy, r * 0.4, sx, sy, haloR);
@@ -389,7 +390,6 @@ function drawHeroGlowLayers(ctx: CanvasRenderingContext2D, sx: number, sy: numbe
   halo.addColorStop(1, "rgba(240, 192, 64, 0)");
   ctx.beginPath(); ctx.arc(sx, sy, haloR, 0, Math.PI * 2); ctx.fillStyle = halo; ctx.fill();
 
-  // Layer 2 — warm-gold mid glow bridging amber halo → white core
   const midR = (isHovered ? 4.6 : 3.6) * r;
   const midAlpha = (isHovered ? 0.5 : 0.42) * twinkle;
   const mid = ctx.createRadialGradient(sx, sy, r * 0.2, sx, sy, midR);
@@ -398,7 +398,6 @@ function drawHeroGlowLayers(ctx: CanvasRenderingContext2D, sx: number, sy: numbe
   mid.addColorStop(1, "rgba(255, 210, 110, 0)");
   ctx.beginPath(); ctx.arc(sx, sy, midR, 0, Math.PI * 2); ctx.fillStyle = mid; ctx.fill();
 
-  // Layer 3 — tight, near-white hot inner glow
   const hotR = (isHovered ? 2.4 : 1.9) * r;
   const hotAlpha = (isHovered ? 0.7 : 0.62) * twinkle;
   const hot = ctx.createRadialGradient(sx, sy, 0, sx, sy, hotR);
@@ -409,11 +408,9 @@ function drawHeroGlowLayers(ctx: CanvasRenderingContext2D, sx: number, sy: numbe
 }
 
 function drawHeroStar(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: number, twinkle: number, isHovered: boolean, isDimmed: boolean) {
-  // A white-hot core wrapped in the site's amber light: max luminance contrast,
-  // astrophysically the hottest star, yet still anchored to the amber palette.
+  // White-hot core wrapped in amber halo: max luminance contrast against the warm primaries, palette-anchored.
   drawHeroGlowLayers(ctx, sx, sy, r, twinkle, isHovered);
 
-  // Star body — warm white (#fff6e0), with a small pure-white hot centre
   ctx.save();
   ctx.shadowColor = "rgba(255, 238, 200, 0.85)";
   ctx.shadowBlur = (isHovered ? 28 : 22) * twinkle;
@@ -421,7 +418,6 @@ function drawHeroStar(ctx: CanvasRenderingContext2D, sx: number, sy: number, r: 
   ctx.restore();
   ctx.beginPath(); ctx.arc(sx, sy, r * 0.42, 0, Math.PI * 2); ctx.fillStyle = "#ffffff"; ctx.fill();
 
-  // Diffraction spikes — long, near-white (bright-star chromatic streaks)
   const spikeLen = r * (3.5 + twinkle * 2.5);
   const spikeAlpha = (isDimmed ? 0.15 : 1) * 0.32 * twinkle;
   ctx.globalAlpha = spikeAlpha;

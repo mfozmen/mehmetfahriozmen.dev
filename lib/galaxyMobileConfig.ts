@@ -3,12 +3,14 @@
  * Pure functions that return adjusted values based on scale factor.
  */
 
+import type { SystemImportance } from "@/data/systemsGraph";
+
 export function mobileLabelSize(baseSize: number, sf: number, minSize: number): number {
   return Math.max(minSize, Math.round(baseSize * sf));
 }
 
 export function mobileLabelAlpha(
-  importance: "hero" | "primary" | "secondary" | "minor",
+  importance: SystemImportance,
   sf: number,
 ): number {
   if (sf < 0.7) {
