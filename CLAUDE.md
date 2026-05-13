@@ -161,7 +161,7 @@ The systems visualization uses a 3-layer orbital layout with data defined in `da
 - All systems, domains, tech clusters, and orbit configs are defined in `data/systemsGraph.ts`.
 - Components must not hardcode nodes or relationships — they are pure UI renderers.
 - Systems reference domains via `domains: string[]` and tech clusters via `techClusters: string[]`.
-- 3 orbit rings: primary systems (0), secondary systems (1), minor systems (2).
+- 3 orbit rings: hero + primary systems (0), secondary systems (1), minor systems (2).
 - Tech clusters are positioned freely in the interior via `position: { x, y }` (normalized coords relative to center).
 - After modifying any positions, angles, or adding new systems/domains/tech clusters, run `npm test` to verify no labels collide.
 - Layout calculation functions live in `lib/galaxyLayout.ts` — shared between the component and tests. Do not duplicate layout math.
@@ -170,7 +170,7 @@ The systems visualization uses a 3-layer orbital layout with data defined in `da
 // data/systemsGraph.ts — key types
 export type SystemNode = {
   id: string; name: string; url?: string;
-  importance: "primary" | "secondary" | "minor";
+  importance: "hero" | "primary" | "secondary" | "minor";
   domains: string[]; techClusters: string[];
   angle: number; orbit: number;
 };

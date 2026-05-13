@@ -53,13 +53,15 @@ export const orbits: OrbitConfig[] = [
 
 // --- Galaxy layout per project ---
 
+// Ring 0 holds the hero + 6 primaries, spaced ~2π/7 apart for breathing room.
 const projectLayout: Record<string, { angle: number; orbit: number }> = {
-  mobilet: { angle: 0.5, orbit: 0 },
-  shubuo: { angle: 1.55, orbit: 0 },
-  villasepeti: { angle: 2.6, orbit: 0 },
-  magicpags: { angle: 3.65, orbit: 0 },
-  beforesunset: { angle: 4.7, orbit: 0 },
-  decktopus: { angle: 5.75, orbit: 0 },
+  insiderone: { angle: 0.45, orbit: 0 },
+  mobilet: { angle: 1.35, orbit: 0 },
+  shubuo: { angle: 2.25, orbit: 0 },
+  villasepeti: { angle: 3.14, orbit: 0 },
+  magicpags: { angle: 4.04, orbit: 0 },
+  beforesunset: { angle: 4.94, orbit: 0 },
+  decktopus: { angle: 5.84, orbit: 0 },
   ptttrade: { angle: 0.8, orbit: 1 },
   holoh: { angle: 2.2, orbit: 1 },
   ihtiyac: { angle: 4.1, orbit: 1 },
@@ -77,10 +79,12 @@ const domainLayout: Record<
   ecommerce: { angle: 1, orbit: 0, offset: { x: -0.07, y: 0.08 } },
   adtech: { angle: 1.8, orbit: 0, offset: { x: 0.1, y: -0.1 } },
   productivity: { angle: 5.2, orbit: 0, offset: { x: 0.07, y: 0.06 } },
-  distributed: { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.07 } },
+  distributed: { angle: 3, orbit: 0, offset: { x: 0.06, y: -0.11 } },
   education: { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
   nonprofit: { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
-  realtime: { angle: 2.2, orbit: 1, offset: { x: -0.1, y: 0.08 } },
+  realtime: { angle: 2.2, orbit: 1, offset: { x: -0.12, y: 0.11 } },
+  customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.10, y: 0.12 } },
+  analytics: { angle: 0.85, orbit: 1, offset: { x: 0.06, y: -0.13 } },
 };
 
 // --- Galaxy position per tech cluster ---

@@ -30,6 +30,15 @@ describe("hitTest — desktop (no overrides)", () => {
     expect(result!.id).toBe(sys.id);
   });
 
+  it("hits the hero system at its position", () => {
+    const sys = systems.find((s) => s.importance === "hero")!;
+    const pos = getSystemPosition(sys, 0, W, H, CX, CY);
+    const result = hitTest({ mx: pos.x, my: pos.y, time: 0, w: W, h: H, cx: CX, cy: CY, sf: SF });
+    expect(result).not.toBeNull();
+    expect(result!.type).toBe("system");
+    expect(result!.id).toBe(sys.id);
+  });
+
   it("hits a domain at its position", () => {
     const dom = domains[0];
     const pos = getDomainPosition(dom, W, H, CX, CY);
