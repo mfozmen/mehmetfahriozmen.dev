@@ -40,7 +40,7 @@ coverImage: "/writing/[slug]/cover.webp"
 
 Validation before every commit:
 - `title` under 60 characters
-- `description` at least 100 characters
+- `description` **100–160 characters** — hard gate enforced by `__tests__/posts.test.ts`; outside this range fails `npm test` and blocks commit. Confirm the exact count.
 - `date` valid ISO format
 - `coverImage` path exists and file is present
 - Cover image is WebP, optimized (Squoosh: quality 80, 1200px width for 1200x800 covers)
@@ -54,6 +54,8 @@ Every post opens with a blockquote. Rules:
 - Split into two lines if it has a setup + punchline structure
 - Each line is a separate paragraph within the blockquote
 - This quote should NOT repeat verbatim later in the body text
+- **Keep it short — 1–2 short paragraph-units, ~4–24 words.** It teases, it never establishes; the body does the establishing work. A 3+ paragraph blockquote that narrates a full arc breaks the convention (that's an epigraph, not the opening element).
+- Must NOT duplicate the frontmatter `description` — they do different jobs (description = off-page meta; blockquote = on-page atmosphere). Different angle, imagery, and rhythm.
 
 ```mdx
 > Every revolution promises a new world.
@@ -159,6 +161,55 @@ The blog's voice is deadpan humor with honest observations. Watch for these viol
 - **Forced humor** — a joke that doesn't serve the argument. Humor should carry the point, not decorate it
 
 For each violation found, quote the specific text and suggest a rewrite or cut.
+
+### Human Authorship Signal (AI-Prose Detection)
+
+Run this dimension on **every** review, automatically — alongside the voice, pacing, and thesis checks above. It is never optional and never needs to be requested separately.
+
+The goal: catch any sentence that reads as machine-generated rather than written by a human author with a distinct voice. Judge against the **author's established Field Notes voice** — deadpan, observational, "we" perspective, concrete over abstract, hard cuts over smooth transitions, no maxims, no LinkedIn vocabulary, no koans — **not** against a generic "good writing" standard. A sentence that would pass a generic style guide can still fail here.
+
+Scan for these signals:
+
+1. **Balanced-clause cadences** — "not just X, but Y," "more than just X — it's Y," "X isn't X, it's Y." Even one or two flip a reader's sense that a human wrote this.
+2. **Listicle rhythms inside prose** — three parallel clauses where two would do, four where three would do. Especially the triadic "X. Y. Z." cadence repeated across paragraphs.
+3. **Synthetic transitions** — "Moreover," "In essence," "Ultimately," "What's more," "Furthermore," "Indeed." This voice uses hard cuts and paragraph breaks instead.
+4. **Mechanical em-dashes** — an em-dash mid-clause used to soften every assertion, or em-dashes recurring at near-uniform spacing across paragraphs.
+5. **Abstract-noun stacking** — "the dynamics of organizational alignment," "the realities of cross-functional collaboration," "the nature of distributed systems."
+6. **Training-data vocabulary** — navigate, leverage, journey, landscape, ecosystem, delve, tapestry, myriad, underscore, robust, seamless, holistic, synergy, embark, unlock, elevate, harness, and the rest of that family.
+7. **Hedge stacking** — "perhaps," "arguably," "in some sense," "to some degree" appearing in clusters. A human hedges once; an LLM stacks.
+8. **Wisdom-shaped emptiness** — "the work is the work," "the answer is in the question," "we are what we measure." Empty-koan cadence that sounds profound and says nothing.
+9. **Self-telegraphing conclusions** — "And that, in the end, is the real lesson," "Perhaps that's the point," "Which is, ultimately, what it's all about."
+10. **Sentence-opening uniformity** — multiple paragraphs opening with the same construction ("There is…," "It is…," "The fact that…") in close succession.
+
+How to report this dimension:
+
+- **Quote specific sentences, never vague concerns.** For each flag, quote the offending sentence and propose how a human author *in this voice* would write it instead — but **do not apply the fix**. Reporting only.
+- **Single vs. cluster.** Treat one occurrence differently from a pattern. One synthetic transition is a stumble; three across a draft is a pattern. State which you're seeing ("one occurrence" vs. "a pattern of N").
+- **Do not manufacture concerns.** If a category is clean across the draft, say so explicitly (e.g. "Categories 3, 6, 8: clean"). Never pad the report to look thorough — a clean draft should produce a short section.
+- **Net read.** Close with a one-line verdict: does the draft read as human-authored in the Field Notes voice, or are there machine-prose tells that warrant another pass?
+
+### Frontmatter Description & Opening Element Conventions
+
+Run this dimension on **every** review, automatically — alongside the AI-detection and voice/pacing/thesis checks. It governs two adjacent elements (the frontmatter `description` and the opening blockquote) and the relationship between them.
+
+**1. Frontmatter description**
+
+- **Length is a hard gate: 100–160 characters.** Enforced by `__tests__/posts.test.ts` ("each post description is between 100 and 160 characters"). A description outside this range fails `npm test` and blocks commit. It cannot be relaxed without editing the test itself — never quietly exceed it. Always confirm the exact character count.
+- **Voice:** deadpan, observational, lived "we" when possible, concrete over abstract. No LinkedIn vocabulary, no aphorisms that flatten into maxims. (Same bar as the body — see the AI-detection dimension.)
+- **Function:** it earns its place by making a reader who sees *only* the description — link preview, search result, RSS feed — want to click, **without giving the answer.** Good test: would it make someone click without handing them the thesis? Flag descriptions that are pure summary, that spoil a payoff, or that read as SEO filler.
+
+**2. Opening blockquote (empirical convention, derived from existing Field Notes posts)**
+
+- **Length:** 1–2 short paragraph-units, roughly 4–24 words total. (Range across existing posts: "Same shelf. Different apartment." through the ~24-word QA scene fragment in *the-nuclear-reactor-in-your-codebase*.)
+- **Function: tease, never establish.** The blockquote is a compressed hook; the body (or pre-§1 prose / §1 itself) does the establishing work.
+- **Shape:** a single compressed beat — an aphorism, an overheard line, or a scene fragment.
+- **Red flag:** a 3+ paragraph blockquote, or one that narrates a full establishing arc, breaks the convention. That is an epigraph/lead, not the blockquote element — flag it and propose compressing to the tease, or moving it to replace the opening element entirely (a structural choice, not a drop-in).
+
+**3. Description ↔ blockquote relationship**
+
+- **They do different jobs.** The description is *meta-context* (seen off-page: link previews, search, RSS). The blockquote is *body-context* (atmosphere carrying the reader into §1). Each must earn its place independently.
+- **Neither may duplicate the other.** If the description and the blockquote say nearly the same content — same angle, same imagery, same rhythm — one of them isn't earning its place. The fix is to give them different angles, not to trim one.
+- **Always check the two elements together** and explicitly flag any duplication, naming which one should change and what different angle it should take.
 
 ### Repetition Check
 
