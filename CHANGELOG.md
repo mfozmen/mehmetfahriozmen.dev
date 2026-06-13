@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.15.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.14.0...v1.15.0) (2026-06-13)
+
+### Features
+
+* **writing:** add "The Ant Colony" field notes post ([#27](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/27)) ([6d5b817](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/6d5b817fdb8a60f1aa556bce3d90538e316c5c10))
+
 ## [1.14.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.13.0...v1.14.0) (2026-05-13)
 
 ### Features
