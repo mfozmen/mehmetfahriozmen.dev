@@ -66,10 +66,10 @@ npm run release        # Bump version, tag, push to main
 
 ## Content SEO Checklist
 
-When creating or editing MDX files in `content/writing/` or `content/lab/`, verify frontmatter before committing:
+When creating or editing MDX files in `content/posts/` (Field Notes) or `content/lab/` (Lab Day), verify frontmatter before committing:
 
 - `title` — under 60 characters (Lab Day posts must start with "Lab Day: " prefix)
-- `description` — at least 100 characters
+- `description` — 100–160 characters (hard gate enforced by `__tests__/posts.test.ts`)
 - `coverImage` — must be set (Lab Day posts always use `/lab/lab-day-cover.webp`)
 - `date` — ISO format (`YYYY-MM-DD`)
 - `slug` — kebab-case, descriptive, no stop words (Lab Day only)
