@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { codeToHtml } from "shiki";
 import deepSpaceTheme, { PALETTE } from "@/lib/shikiTheme";
 
 describe("deepSpaceTheme", () => {
@@ -37,5 +38,27 @@ describe("deepSpaceTheme", () => {
   it("palette uses dimmed amber for keywords, not full #BA7517", () => {
     expect(PALETTE.keyword).toBe("#A06614");
     expect(PALETTE.keyword).not.toBe("#BA7517");
+  });
+});
+
+describe("deepSpaceTheme applied by shiki", () => {
+  it("assigns distinct colors to js tokens, not one uniform foreground", async () => {
+    const html = await codeToHtml('const greeting = "hello";', {
+      lang: "js",
+      theme: deepSpaceTheme,
+    });
+    const colors = new Set(
+      [...html.matchAll(/<span style="color:(#[0-9A-Fa-f]{6})/gi)].map((m) => m[1].toUpperCase()),
+    );
+    expect(colors.size).toBeGreaterThan(1);
+  });
+
+  it("colors keywords and strings from the palette", async () => {
+    const html = await codeToHtml('const greeting = "hello";', {
+      lang: "js",
+      theme: deepSpaceTheme,
+    });
+    expect(html.toUpperCase()).toContain(PALETTE.keyword.toUpperCase());
+    expect(html.toUpperCase()).toContain(PALETTE.string.toUpperCase());
   });
 });

@@ -42,7 +42,8 @@ const tokenRules: TokenRule[] = [
 const deepSpaceTheme: ThemeRegistrationRaw = {
   name: "deep-space",
   type: "dark",
-  settings: [],
+  // no `settings` key: shiki prefers `settings` over `tokenColors`, and even an
+  // empty array counts as present — it would disable every rule below
   colors: { "editor.background": PALETTE.bg, "editor.foreground": PALETTE.fg },
   tokenColors: [
     { settings: { foreground: PALETTE.fg, background: PALETTE.bg } },
