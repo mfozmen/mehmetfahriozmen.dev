@@ -43,6 +43,20 @@ jobs:
       # claude-code-action authenticates via OIDC and needs this.
       id-token: write
     steps:
+      # The issue_comment `if:` above can only vet the commenter, not the PR's
+      # head repo (the event payload has no PR head). Resolve it via the API and
+      # refuse fork-originated PRs before any checkout (review finding, PR #29).
+      - name: Verify PR head is this repo (comment trigger)
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head_repo=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}" --jq .head.repo.full_name)
+          if [ "$head_repo" != "${{ github.repository }}" ]; then
+            echo "::error::PR head is from fork ($head_repo) — on-demand review is restricted to same-repo PRs."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
