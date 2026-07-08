@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.16.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.16.0...v1.16.1) (2026-07-08)
+
+### Bug Fixes
+
+* **lab:** drop overclaiming 'first since PATCH' from post description ([#30](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/30)) ([0ce7183](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0ce7183fd1297c17df2b7ebbd2843524bf756ff7))
+
 ## [1.16.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.15.0...v1.16.0) (2026-07-08)
 
 ### Features
