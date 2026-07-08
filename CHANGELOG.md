@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.16.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.15.0...v1.16.0) (2026-07-08)
+
+### Features
+
+* **lab:** add HTTP QUERY method post, GFM tables, shiki fix ([#29](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/29)) ([c3f77c9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c3f77c947b385432f296ffc0052fb0e3faf9dff4))
+
 ## [1.15.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.14.0...v1.15.0) (2026-06-13)
 
 ### Features
