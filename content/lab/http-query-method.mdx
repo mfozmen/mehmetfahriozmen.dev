@@ -1,0 +1,136 @@
+---
+title: "Lab Day: The New HTTP QUERY Method"
+description: "HTTP added a new method for the first time since PATCH. What RFC 10008's QUERY fixes, why GET and POST both fall short, and how to send one today."
+date: "2026-07-09"
+slug: "http-query-method"
+coverImage: "/lab/lab-day-cover.webp"
+tags: ["http", "query", "rfc-10008", "api-design", "caching"]
+---
+
+HTTP is a backend developer's favorite kind of technology: it sits still.
+
+It doesn't ship a breaking change on a Tuesday or deprecate your config on a Thursday. GET, POST, PUT, PATCH, DELETE — that set has been muscle memory for most of our careers, and the last time it grew in a way anyone noticed was [PATCH](https://www.rfc-editor.org/rfc/rfc5789), back in 2010. The protocol is boring in the specific way load-bearing things are supposed to be boring.
+
+So when the IETF quietly adds a method, it's worth looking up from the terminal. [RFC 10008](https://www.rfc-editor.org/rfc/rfc10008), published in June 2026, defines QUERY: a request that carries a body, like POST, but is safe and idempotent, like GET. That sounds small. It closes a gap we've been working around — with query strings, with POST, with our own caching layers — for as long as we've been building APIs.
+
+This is where the reader who's been doing this a while says: *wait, isn't that just [SEARCH](https://www.rfc-editor.org/rfc/rfc5323)?* Hold that thought — the answer is a small piece of protocol comedy.
+
+## Two methods, one gap
+
+Say you're building a search endpoint. Users filter by a dozen fields, some nested, some arrays. Both tools in the box are the wrong shape.
+
+**GET** is the natural fit — safe, idempotent, cacheable — but it has nowhere to put the filter except the query string:
+
+```text
+GET /users?role=admin&status=active&sort=desc
+```
+
+That's fine until the query grows up. Long filters hit URL length limits you don't control. The filters land in access logs — a problem the day one of them is a search for someone's email. And arrays and nesting have no standard encoding:
+
+```text
+?roles[0]=admin&roles[1]=editor
+?roles=admin&roles=editor
+?roles[]=admin&roles[]=editor
+```
+
+Three spellings of the same idea, none of them a standard.
+
+A body on GET doesn't rescue you: [RFC 9110 §9.3.1](https://www.rfc-editor.org/rfc/rfc9110#section-9.3.1) says it has no defined meaning and may get the request rejected — and "may" means *will, somewhere you can't see*. It works on your laptop and dies behind someone's corporate firewall.
+
+**POST** is where everyone ends up, and it's the wrong shape in the other direction: neither safe nor idempotent. To CDNs, proxies, and retry libraries, a POST reads as *this changes something*, so a read gets treated like a write — no caching, and every retry is a question mark. You end up rebuilding, at the application layer, what HTTP gives you for free on GET.
+
+So the gap was never "HTTP has no methods." It's that the one combination we needed — a body, safe, idempotent — had no method sitting in it.
+
+## Why not just SEARCH?
+
+Here's the promised comedy. HTTP already *had* a safe, idempotent method with a body: [SEARCH](https://www.rfc-editor.org/rfc/rfc5323), from 2008. It came out of the WebDAV world, expected an XML query body, and carried enough of that heritage that almost nobody reached for it in a plain JSON API.
+
+It gets better. When work on the new method started, [the draft was literally named SEARCH](https://datatracker.ietf.org/doc/draft-ietf-httpbis-safe-method-w-body/) — the plan was to revive the existing one. Somewhere along the way the working group renamed it QUERY. [RFC 10008's Appendix B](https://www.rfc-editor.org/rfc/rfc10008) walks through the decision: the registry already had three safe-and-idempotent candidates — PROPFIND, REPORT, and SEARCH — and they picked a clean name instead of inheriting a decade of assumptions.
+
+Which is a very HTTP way to solve a problem: the protocol invented the same method twice, eighteen years apart, and renamed it on the second try. That's not a knock — slow is why you can still trust it.
+
+## What QUERY actually is
+
+**Semantically it's GET, structurally it's POST.** Both load-bearing words are defined in [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-9.2):
+
+- **Safe** — read-only by contract. A CDN, proxy, or prefetcher may treat a QUERY the way it treats a GET.
+- **Idempotent** — once or five times, you land in the same place. That's what makes automatic retries safe.
+
+The body is where the query lives, and its `Content-Type` is part of the meaning: the same bytes mean different things as `application/json` versus `application/sql` versus a GraphQL document. A resource can advertise what it accepts with the [`Accept-Query`](https://www.rfc-editor.org/rfc/rfc10008) response header, the read-side counterpart to `Accept-Patch`.
+
+Here's the whole argument in one grid:
+
+| | Body | Safe | Idempotent | Cacheable |
+|---|---|---|---|---|
+| **GET** | ✗ | ✓ | ✓ | ✓ |
+| **POST** | ✓ | ✗ | ✗ | ✗ *(effectively)* |
+| **SEARCH** | ✓ | ✓ | ✓ | ✗ *(undefined)* |
+| **QUERY** | ✓ | ✓ | ✓ | ✓ |
+
+That bottom row is the entire reason RFC 10008 exists. Every other row was already on the shelf — SEARCH came closest, and *(undefined)* is what killed it.
+
+## Sending one today
+
+The happy accident that makes QUERY usable right now: **an HTTP method is just a string on the request line.** Your client libraries don't validate it against a fixed list — they'll send whatever token you hand them. With [curl](https://curl.se/docs/manpage.html):
+
+```bash
+curl -X QUERY https://api.example.com/users \
+  -H "Content-Type: application/json" \
+  -d '{"role": "admin", "status": "active"}'
+```
+
+In the browser (and Node ≥ 18), [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch) takes the method as a plain string:
+
+```js
+const res = await fetch("https://api.example.com/users", {
+  method: "QUERY",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ role: "admin", status: "active" }),
+});
+```
+
+One caveat: cross-origin, QUERY is not a [CORS-safelisted method](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#simple_requests), so the browser preflights with `OPTIONS` first. Your server has to answer with `Access-Control-Allow-Methods: QUERY` or the real request never leaves the tab.
+
+Go's [`net/http`](https://pkg.go.dev/net/http#NewRequestWithContext) has taken arbitrary method strings forever, and the server side is just as unceremonious — match on the string like any other route. In Express:
+
+```js
+app.use((req, res, next) => {
+  if (req.method === "QUERY" && req.path === "/users") {
+    return res.json(runFilter(req.body));
+  }
+  next();
+});
+```
+
+Worth being honest about what "works" means: `fetch` would just as happily send `method: "MEHMET"`. What separates QUERY from a verb you made up over lunch isn't the client — it's that the rest of the stack will *eventually* agree on what it means. None of this is framework support; it's the absence of framework resistance. Which is the setup for the part where that stops being enough.
+
+## What you actually get
+
+The verb going through is plumbing. The reason to care is the two things HTTP does for GET and refuses to do for POST.
+
+**Retries stop being a judgment call.** [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-9.2.2) spells out the idempotency guarantee: N identical requests, same intended effect as one. A client, proxy, or load balancer can replay a dropped QUERY without the "did it half-succeed" dread of a POST retry.
+
+**Caching comes back — with the body in the key.** A QUERY response is cacheable under normal [HTTP caching](https://www.rfc-editor.org/rfc/rfc9111) rules, with one twist ([§2.7](https://www.rfc-editor.org/rfc/rfc10008)): the request body is part of what identifies the response. A GET cache keys on the URL alone; a QUERY cache can't, because the URL is the same for every filter. Same body → cache hit; change one field → different entry. The spec even lets caches *normalize* the body — reorder JSON keys, drop whitespace — so semantically identical requests share an entry.
+
+The payoff is sharpest for the API shapes that suffered most under POST: JSON-RPC, GraphQL, elaborate search filters — reads stuffed into POST because they needed a body, losing caching and clean retries the moment they did. For a read-heavy service behind a CDN, that's the difference between the edge answering and every filter round-tripping to origin.
+
+## The stack hasn't caught up
+
+None of this means you should migrate your search endpoints tonight.
+
+Support in 2026 is uneven in the usual way: clients are the easy part, the middle is the hard part. API clients are moving — [Kreya shipped QUERY support](https://kreya.app/blog/new-http-query-method-explained/) in a 2026 release — but proxies, CDNs, WAFs, and corporate firewalls tend to allow a known list of methods and drop the rest. For now, QUERY works until it meets a box that doesn't know the word.
+
+Worth keeping straight:
+
+- **A GET with its data in the URL is still completely fine.** QUERY earns its place when the query outgrows the URL, not before.
+- **A QUERY can't be a link.** No bookmarks, no pasting a filtered view into Slack — the filter lives in a body.
+- **The free caching is the cache's to give.** Body-in-the-key caching is *allowed*; whether your CDN implements it is a thing to verify, not assume.
+- **Cross-origin means a preflight**, and your server has to say yes explicitly.
+
+The honest posture is the spec authors' own: a tool for where GET genuinely doesn't fit, tested against your actual path to the server — not a blanket upgrade.
+
+## The shape of a slow protocol
+
+QUERY won't change your Tuesday. Most GETs will stay GETs, and the proxies will catch up whenever they catch up. Years from now it'll be an unremarkable line in a router, and nobody will remember it was once news.
+
+Which is the whole reason to note it now. HTTP still grows — one argued-over verb at a time, slowly enough to invent the same method twice and rename it on the second pass. We spend our days on stacks that churn under us; the layer underneath took eighteen years to add a single word. The method is a small thing. The patience is the interesting part.

@@ -12,6 +12,22 @@ export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) 
   );
 }
 
+export function MdxTable({ children }: Readonly<{ children?: ReactNode }>) {
+  return (
+    <div className="my-8 overflow-x-auto">
+      <table className="w-full border-collapse text-sm">{children}</table>
+    </div>
+  );
+}
+
+export function MdxTh({ children }: Readonly<{ children?: ReactNode }>) {
+  return <th className="border-b border-[#BA7517]/30 px-4 py-2 text-left font-mono text-xs uppercase tracking-wider text-[#BA7517]">{children}</th>;
+}
+
+export function MdxTd({ children }: Readonly<{ children?: ReactNode }>) {
+  return <td className="border-b border-white/10 px-4 py-2 text-neutral-300">{children}</td>;
+}
+
 const linkClass = "border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:border-solid hover:border-[#BA7517] hover:text-[#BA7517]/80";
 
 export function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {

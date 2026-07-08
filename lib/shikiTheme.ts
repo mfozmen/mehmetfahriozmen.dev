@@ -39,15 +39,20 @@ const tokenRules: TokenRule[] = [
   { scopes: ["meta.embedded", "source.groovy.embedded"], color: PALETTE.fg },
 ];
 
+const themeSettings = [
+  { settings: { foreground: PALETTE.fg, background: PALETTE.bg } },
+  ...buildTokenColors(tokenRules),
+];
+
 const deepSpaceTheme: ThemeRegistrationRaw = {
   name: "deep-space",
   type: "dark",
-  settings: [],
+  // shiki reads `settings` (required by the type) and ignores `tokenColors`
+  // when settings is present — even an empty array. Both keys get the same
+  // rules so either consumer sees them.
+  settings: themeSettings as ThemeRegistrationRaw["settings"],
   colors: { "editor.background": PALETTE.bg, "editor.foreground": PALETTE.fg },
-  tokenColors: [
-    { settings: { foreground: PALETTE.fg, background: PALETTE.bg } },
-    ...buildTokenColors(tokenRules),
-  ] as ThemeRegistrationRaw["tokenColors"],
+  tokenColors: themeSettings as ThemeRegistrationRaw["tokenColors"],
 };
 
 export default deepSpaceTheme;
