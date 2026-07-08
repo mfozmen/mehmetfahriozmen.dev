@@ -1,0 +1,98 @@
+name: Claude AI Review
+
+# Advisory AI code review using anthropics/claude-code-action@v1.
+#
+# Auth: the Claude SUBSCRIPTION via claude_code_oauth_token — NOT an API key.
+# Generate the token locally with `claude setup-token` and store it as the
+# CLAUDE_CODE_OAUTH_TOKEN repo secret. No Anthropic API key exists anywhere
+# in this repo, so reviews draw from the subscription quota.
+
+on:
+  # Review on open/reopen/ready AND on every push (`synchronize`) so the
+  # review re-runs per push and stays current with the diff.
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+  # On-demand re-review by commenting @claude on the PR.
+  issue_comment:
+    types: [created]
+
+# Cancel an in-flight review for the same PR when a newer trigger arrives.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number || github.event.issue.number }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  claude-review:
+    # Fork safety: use `pull_request` (never `pull_request_target`) and only run
+    # when the PR head repo is THIS repo, so the subscription token is never
+    # exposed to forked PRs. For comment-triggered runs, require an actual PR
+    # comment containing @claude from a collaborator-and-above.
+    if: >
+      ( github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository ) ||
+      ( github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request != null &&
+        contains(github.event.comment.body, '@claude') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) )
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      # claude-code-action authenticates via OIDC and needs this.
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Claude review
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Subscription auth — do NOT add an Anthropic API key here.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # allowedTools is what lets the reviewer actually POST its findings:
+          # the inline-comment tool, plus gh for reading the diff and leaving a
+          # top-level summary. Without these the agent analyzes but has no
+          # permitted tool to publish (silent no-op).
+          claude_args: |
+            --max-turns 40
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
+          prompt: |
+            You are reviewing this pull request as an ADVISORY reviewer for
+            mehmetfahriozmen.dev (Next.js 16, React 19, TypeScript, Tailwind v4).
+            Do NOT approve or block the PR — leave the verdict to the human and
+            to the deterministic CI gates (tests, SonarCloud).
+
+            How to publish your review:
+            - Use `mcp__github_inline_comment__create_inline_comment` to leave
+              inline comments on the specific changed lines for concrete findings.
+            - Use `gh pr comment` to leave ONE concise top-level summary. ALWAYS
+              post this summary, even if you find nothing notable (say so
+              briefly), so the run leaves a visible result.
+
+            Review the diff for:
+            - Bugs, security issues, and performance problems.
+            - Project conventions (from CLAUDE.md): functional React components;
+              every user-facing link uses TrackedNextLink/TrackedAnchor with
+              eventName and eventData — never plain Link or <a>; no function
+              over 50 lines; no file over 300 lines (documented exceptions:
+              lib/galaxyRenderLoop.ts, lib/galaxyRenderers.ts).
+            - Tests: non-trivial logic is backed by tests that assert real
+              behavior, not just object shape.
+            - Content (MDX in content/posts or content/lab): frontmatter
+              description 100-160 chars, title under 60 chars, ISO date,
+              Lab Day coverImage exactly "/lab/lab-day-cover.webp", every
+              fenced code block has a language identifier.
+            - Conventional Commits format on commit messages.
+
+            Group findings by severity (Critical / Warning / Suggestion), be
+            concise and specific, and always cite the file and line. Do not
+            nitpick style the linter already enforces.
+
+            Spend turns economically: fetch the diff once with `gh pr diff` and
+            don't re-fetch; leave inline comments only for the most important
+            issues; post the single summary comment last so it always lands.
