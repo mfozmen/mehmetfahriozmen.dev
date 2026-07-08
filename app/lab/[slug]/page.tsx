@@ -11,11 +11,12 @@ import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { buildArticleMetadata } from "@/lib/articleMetadata";
 import { getReadingTime, formatDate } from "@/lib/posts";
-import { MdxBlockquote, MdxLink } from "@/components/writing/MdxComponents";
+import { MdxBlockquote, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
 import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
+import remarkGfm from "remark-gfm";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 
@@ -62,6 +63,9 @@ const mdxComponents = {
   code: InlineCode,
   blockquote: MdxBlockquote,
   a: MdxLink,
+  table: MdxTable,
+  th: MdxTh,
+  td: MdxTd,
   MarkdownDemo: MarkdownDemoServer,
 };
 
@@ -155,7 +159,7 @@ export default async function LabPostPage(
         <article className="mt-8">
           <PostHeader post={post} />
           <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
-            <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
+            <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
           </div>
         </article>
 
