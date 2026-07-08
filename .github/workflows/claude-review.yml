@@ -47,6 +47,10 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          # On issue_comment there is no PR head in the event payload — without
+          # an explicit ref, checkout would land on the base branch and the
+          # on-demand review would read the wrong code (review finding, PR #29).
+          ref: ${{ github.event_name == 'issue_comment' && format('refs/pull/{0}/head', github.event.issue.number) || '' }}
 
       - name: Claude review
         uses: anthropics/claude-code-action@v1
