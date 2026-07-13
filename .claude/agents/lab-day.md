@@ -43,7 +43,7 @@ Reference examples: `public/lab/building-skills-for-ai-coding-agents/*.webp` —
 
 1. Sketch the layout mentally: what is the single takeaway? The amber accent goes there.
 2. Write the SVG to the session scratchpad directory (not the repo).
-3. Render: `node .claude/skills/lab-diagrams/render.mjs <in.svg> public/lab/[slug]/<name>.webp` (run from the repo root; the script uses the repo's `sharp` devDependency and outputs WebP quality 80).
+3. Render: `node .claude/skills/lab-day/render.mjs <in.svg> public/lab/[slug]/<name>.webp` (run from the repo root; the script uses the repo's `sharp` devDependency and outputs WebP quality 80).
 4. **Read the rendered webp and look at it.** Check: text fits inside pills with margin, nothing overlaps, arrowheads touch their targets, caption clear of other elements, stars not crossing text. Iterate — expect 2–4 rounds; never ship the first render unseen.
 5. Embed with `![<alt>](/lab/[slug]/<name>.webp)` where alt describes what the diagram represents and lists the key labels/nodes visible in it (screen readers can't read text inside images).
 6. Delete your scratch SVG when done. Never commit SVG sources or leave test files in the repo.
