@@ -79,7 +79,7 @@ We need the model to reach into an email inbox. Fine — write a tool. `list_ema
 
 Now zoom out. Thousands of teams are building AI systems this quarter. Most of them need email access. Each one is writing the same Gmail tool, slightly differently, with slightly different bugs. Then the same Slack tool. The same database tool. The same calendar tool.
 
-This is the problem **MCP (Model Context Protocol)** exists for. It's a standard way to package tools so they can be written once and plugged into any AI application that speaks the protocol. Someone — a big vendor, a startup, a random developer — builds a Gmail *MCP server*: a small program that exposes `list_emails` and `get_attachment` in the standard format. You connect it to your AI app, and those tools simply appear in the model's tool list:
+This is the problem **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** exists for. It's a standard way to package tools so they can be written once and plugged into any AI application that speaks the protocol. Someone — a big vendor, a startup, a random developer — builds a Gmail *MCP server*: a small program that exposes `list_emails` and `get_attachment` in the standard format. You connect it to your AI app, and those tools simply appear in the model's tool list:
 
 ```text
 Connected MCP server: email
@@ -161,7 +161,7 @@ Goal: process today's invoices
   3. read_pdf("acme.pdf")                          → invoice text
   4. [invoice-categorization skill] → Meals, 420₺
   5. save_result(vendor: Acme, category: Meals)    → logged
-  6. ...repeats for email 2                         → Software, logged
+  6. ...repeats for email 2                        → Software, logged
   7. email 3: read_pdf → no amount found
      → skill says: flag for review, don't guess
   8. save_result(email_3, status: needs_review)    → flagged
