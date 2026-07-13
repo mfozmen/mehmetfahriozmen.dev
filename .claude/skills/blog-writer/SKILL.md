@@ -314,8 +314,7 @@ Only scene changes."
 - Punchier hook, less explanation
 
 ### Rules
-- Never share both platforms on the same day
-- LinkedIn first, X/Twitter 2-3 days later
+- Timing is free — share as soon as the post is live; both platforms on the same day is fine
 - No forced pop culture references without context
 
 ---
