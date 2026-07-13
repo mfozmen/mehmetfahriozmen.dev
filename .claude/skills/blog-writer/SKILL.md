@@ -269,6 +269,8 @@ End every review with:
 
 ## Part 3: Illustration Prompts
 
+**Production is owned by the `blog-writer` agent** (`.claude/agents/blog-writer.md`, Part 2) — it crafts the prompts below, and once the user generates the images in ChatGPT it optimizes and places them via `.claude/skills/blog-writer/optimize.mjs` (sharp, WebP q80 — covers 1200w, inline 800w, og 1200×630 cover-crop; replaces the manual Squoosh and Photopea steps).
+
 Base prompt for all ChatGPT illustrations:
 
 ```
