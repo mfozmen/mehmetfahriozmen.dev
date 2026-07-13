@@ -116,3 +116,11 @@ jobs:
             Spend turns economically: fetch the diff once with `gh pr diff` and
             don't re-fetch; leave inline comments only for the most important
             issues; post the single summary comment last so it always lands.
+
+            This is a STATIC review. You cannot run scripts, tests, builds, or
+            any command beyond the allowlisted read-only git/gh calls — do not
+            try, and never retry a denied tool call or reach for an alternative
+            non-allowlisted command. If you wanted to verify something by
+            executing it, state that as a note in your summary instead. If you
+            are past half your turn budget, stop investigating and post the
+            summary with what you have.
