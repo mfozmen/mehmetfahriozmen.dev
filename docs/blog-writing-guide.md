@@ -90,14 +90,13 @@ Always append when attaching a reference image:
 - **No spoilers** — don't give away the article's best lines or conclusions
 - **No forced pop culture references** without context
 - **Don't over-explain** — let curiosity drive the click
-- **Post on different days**, not the same day
+- **Timing is free** — share as soon as the post is live; both platforms on the same day is fine
 - LinkedIn can be slightly longer if needed
 
 ### LinkedIn
 
 - Slightly more context is OK — 3–4 sentences at most
 - Professional but not corporate. Match the blog's voice
-- Best posting time (Turkey): weekday mornings, 08:00–10:00
 
 ### X/Twitter
 
@@ -123,4 +122,4 @@ These are handled by the site infrastructure — no manual work needed per post:
 5. **Claude Code prompt** — describe what needs to be created/updated (never write code — Claude Code has its own skills)
 6. **Visual review** — Playwright MCP verification at 1440px and 390px
 7. **Deploy** — merge after approval, verify OG tags via LinkedIn Post Inspector and X Card Validator
-8. **Share** — LinkedIn first, X/Twitter 2–3 days later
+8. **Share** — as soon as the post is live, on both platforms
