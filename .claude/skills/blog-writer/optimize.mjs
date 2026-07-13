@@ -5,7 +5,7 @@
 import sharp from "sharp";
 
 const [input, output, width, height] = process.argv.slice(2);
-if (!input || !output) {
+if (!input || !output || (height && !width)) {
   console.error("Usage: node optimize.mjs <input> <output.webp> [width] [height]");
   process.exit(1);
 }
