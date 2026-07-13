@@ -1,5 +1,5 @@
-// Renders a Lab Day diagram SVG to WebP (quality 80), per the lab-diagrams skill.
-// Usage: node .claude/skills/lab-diagrams/render.mjs <input.svg> <output.webp>
+// Renders a Lab Day diagram SVG to WebP (quality 80), per the lab-day agent's diagram spec.
+// Usage: node .claude/skills/lab-day/render.mjs <input.svg> <output.webp>
 import sharp from "sharp";
 import { readFileSync } from "node:fs";
 
