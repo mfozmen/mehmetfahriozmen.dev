@@ -11,7 +11,7 @@ You want AI to do a job for you. Simple enough. You search for how, and within f
 
 Here's the thing: there are only about four actual ideas underneath all of this. The rest is branding.
 
-In this post we'll build one system — on paper, no code to run — and let each concept introduce itself the moment we actually need it. The job: **read incoming invoices, categorize them, and produce a monthly summary.** Boring, universal, and exactly the kind of task this entire ecosystem exists for.
+We'll build one system — on paper, no code to run — and let each concept introduce itself the moment we actually need it. The job: **read incoming invoices, categorize them, and produce a monthly summary.** Boring, universal, and exactly the kind of task this entire ecosystem exists for.
 
 By the end, you'll be able to look at any AI task and answer the only question that matters: *what do I actually need to build?*
 
@@ -96,7 +96,7 @@ The comparison that makes it click: **USB.** Before USB, every device shipped it
 
 Which resolves the question that confuses everyone at first: *tool or MCP — which one do I need?* Wrong question. MCP servers **contain** tools. You're not choosing between them; you're choosing between writing a tool yourself or plugging in a server someone already wrote.
 
-[DIAGRAM: left side — many identical teams each writing their own "Gmail tool" box (duplicated, slightly buggy). Right side — one MCP server feeding many apps. Navy/amber, "write once, plug anywhere" mood.]
+![Before MCP, Team A, Team B, and Team C each maintain their own dashed, duplicated "gmail tool"; after MCP, a single amber "gmail MCP server" connects via arrows to Claude, Cursor, and your app — write once, plug anywhere.](/lab/ai-agent-tool-skill-mcp/mcp-plug.webp)
 
 For our invoice system: we don't write email tools. We connect an email MCP server and move on. Ten minutes instead of two days.
 
@@ -145,7 +145,7 @@ If you want the full treatment — structure, examples, what makes a skill actua
 
 Our system now has hands, reach, and house rules. One thing left: it still waits for us to press start.
 
-## Agents: Removing Yourself From the Loop
+## Agents: Out of the Loop
 
 Everything works, but look at who's driving. You open the chat. You say "process today's invoices." You watch it call the tools. Tomorrow, you do it again. The system has hands, reach, and knowledge — and no initiative.
 
@@ -202,7 +202,7 @@ Back to the only question that matters. Given a job, walk this:
 
 Notice the order. It's sorted by cost. Most tasks die at step 1 or 2, and that's a good death — the system you didn't build is the one that never breaks.
 
-[DIAGRAM: vertical decision flowchart of the four steps above. Each step a navy box with an amber yes/no branch; "done, build nothing" exits highlighted. Amber accent on the terminal nodes. This is the reference diagram — the takeaway image of the post.]
+![Vertical decision flowchart sorted by cost: "Can chat solve it?" — yes leads to "build nothing" (highlighted amber); no leads down to "Must it touch things?" — yes leads to "tool / MCP server"; no leads to "Needs your rules?" — yes leads to "skill"; no leads to "Multi-step, alone?" — yes leads to "agent". Caption: sorted by cost — most jobs die at step one.](/lab/ai-agent-tool-skill-mcp/decision-flow.webp)
 
 | Term | What it actually is | You need it when… |
 |---|---|---|
