@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.17.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.16.1...v1.17.0) (2026-07-13)
+
+### Features
+
+* add blog-writer agent with illustration prompt and image pipeline ([#35](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/35)) ([383ac5c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/383ac5c9cf6cfe3957f6372f0d0eeea34b4670e7))
+* **lab:** add AI agent, tool, skill, MCP terminology post ([#31](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/31)) ([eb4d6e9](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/eb4d6e9c992a3c7606d5cce4da844b7ec2706c41))
+* **lab:** add diagrams to AI terminology post via lab-diagram agent ([#32](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/32)) ([c0ee917](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c0ee917e9db8dabbc0ea9fc7e302fcf48fbb4951))
+
+### Bug Fixes
+
+* **lab:** align agent loop block and link MCP to official site ([#36](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/36)) ([406edd7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/406edd72b0ecdc6f9efc1ad7225b74a97f2f8ad6))
+
 ## [1.16.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.16.0...v1.16.1) (2026-07-08)
 
 ### Bug Fixes
