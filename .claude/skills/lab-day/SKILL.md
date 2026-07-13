@@ -94,13 +94,13 @@ Rules:
 - No Field Notes-style illustrations or cartoons inside Lab Day posts
 - Screenshots when they genuinely help (UI output, terminal output, before/after)
 - **Diagrams for dense conceptual sections** — when prose explains a mechanism, process, or abstract relationship, a diagram can break up text and strengthen comprehension. Not every section needs one, but dense explanatory sections benefit from a visual anchor.
-- Diagram visual style: deep navy, cool blue, off-white, grain texture — distinct from Field Notes' amber illustrations
+- **Diagram production is delegated to the `lab-diagram` agent** (`.claude/agents/lab-diagram.md`) — dispatch it with a content brief and the post slug; it owns the visual style (deep navy, cool blue, off-white, grain), authors SVG, renders WebP to `public/lab/[slug]/`, and returns a ready-to-paste markdown image line with proper alt text. Don't hand-craft diagram styling in the main conversation.
 - **Diagram captions stay baked into the image** — unlike Field Notes (which use separate figcaptions), Lab Day diagrams embed labels inside the visual because the label is part of the diagram's argument. Don't duplicate baked-in captions as visible text.
 - **For technical diagrams** (flowcharts, state machines, architecture diagrams), alt text should describe what the diagram represents and list the key labels/nodes visible in it. Screen readers cannot read text inside images. For decorative or atmospheric images, follow Field Notes convention: short editorial caption.
 - **Diagrams are supporting visuals, not hero images** — they stay within the text column (no breakout via negative margins). Standard max-width, `my-8` vertical spacing, amber border treatment.
 - Per-post images (diagrams, screenshots) go in `public/lab/[slug]/` directory
 - Shared cover stays at `public/lab/lab-day-cover.webp` — never per-post
-- Optimize with Squoosh: WebP, quality 80. Diagrams and screenshots typically 1200px wide.
+- Screenshots: optimize with Squoosh, WebP quality 80, typically 1200px wide. Diagrams: the agent's pipeline handles format and size.
 
 ## File Locations
 - Posts: content/lab/[slug].mdx
