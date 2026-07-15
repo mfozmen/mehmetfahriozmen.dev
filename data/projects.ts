@@ -4,6 +4,7 @@ export type Project = {
   id: string;
   name: string;
   url?: string;
+  role?: string;
   description?: string;
   highlights?: string[];
   importance: ProjectImportance;
@@ -17,6 +18,7 @@ export const projects: Project[] = [
     id: "insiderone",
     name: "Insider One",
     url: "https://insiderone.com/",
+    role: "SENIOR SOFTWARE ENGINEER · 2026 → PRESENT",
     description:
       "Email marketing module of a B2B customer-engagement platform — building and maintaining backend services and APIs on the campaign management side of the product",
     highlights: [

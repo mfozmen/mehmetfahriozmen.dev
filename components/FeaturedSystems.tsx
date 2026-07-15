@@ -20,11 +20,13 @@ function HeroSystemCard({ system }: Readonly<{ system: Project }>) {
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#BA7517]/25 bg-[#BA7517]/[0.06] px-2.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-[#BA7517]/80">
           <span className="h-1.5 w-1.5 animate-[pulse-signal_4s_ease-in-out_infinite] rounded-full bg-[#BA7517]" />
-          CURRENT MISSION
+          {"CURRENT MISSION"}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.12em] text-neutral-500">
-          SENIOR SOFTWARE ENGINEER · 2026 → PRESENT
-        </span>
+        {system.role && (
+          <span className="font-mono text-[10px] tracking-[0.12em] text-neutral-500">
+            {system.role}
+          </span>
+        )}
       </div>
       <h3 className="mt-3 text-[17px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
         {system.name}
