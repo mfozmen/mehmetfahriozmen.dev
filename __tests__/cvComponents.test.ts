@@ -5,7 +5,20 @@ import { cvExperience, cvEarlierRoles, cvSkills, cvCoordinates } from "@/data/cv
 
 describe("CV Experience data", () => {
   it("has main experience entries", () => {
-    expect(cvExperience.length).toBeGreaterThanOrEqual(4);
+    expect(cvExperience.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("main timeline holds only Insider One, Mayadem, and Brew", () => {
+    expect(cvExperience.map((e) => e.company)).toEqual([
+      "Insider One",
+      "Mayadem",
+      "Brew Interactive",
+    ]);
+  });
+
+  it("Datagen and Ptt Trade are in earlier roles, in chronological order", () => {
+    const companies = cvEarlierRoles.map((e) => e.company);
+    expect(companies.slice(0, 3)).toEqual(["Datagen", "Ptt Trade", "Veriyaz"]);
   });
 
   it("each entry has role, company, and date", () => {
