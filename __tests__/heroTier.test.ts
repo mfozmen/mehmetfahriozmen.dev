@@ -32,10 +32,10 @@ describe("Hero tier — Insider One", () => {
     );
   });
 
-  it("Insider One connects to the eight expected tech clusters", () => {
+  it("Insider One connects to the seven expected tech clusters", () => {
     const insider = projects.find((p) => p.id === "insiderone")!;
     expect(new Set(insider.technologyCategories)).toEqual(
-      new Set(["databases", "cloud", "devops", "api", "architecture", "messaging", "frameworks", "methodologies"]),
+      new Set(["databases", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"]),
     );
   });
 
@@ -74,5 +74,12 @@ describe("Hero tier — Insider One", () => {
   it("Insider One sits on the outermost ring (orbit 0)", () => {
     const insider = systems.find((s) => s.id === "insiderone")!;
     expect(insider.orbit).toBe(0);
+  });
+
+  it("Insider One has featured-card content (description + highlights)", () => {
+    const insider = projects.find((p) => p.id === "insiderone")!;
+    expect(insider.description).toBeTruthy();
+    expect(insider.description!.length).toBeGreaterThan(40);
+    expect(insider.highlights?.length).toBe(3);
   });
 });

@@ -4,7 +4,59 @@ import SectionTitle from "@/components/SectionTitle";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 const domainNames = new Map(domains.map((d) => [d.id, d.name]));
+const heroSystem = projects.find((p) => p.importance === "hero");
 const primarySystems = projects.filter((p) => p.importance === "primary");
+
+function HeroSystemCard({ system }: Readonly<{ system: Project }>) {
+  return (
+    <TrackedAnchor
+      href={system.url ?? "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      eventName="featured-system-click"
+      eventData={{ system: system.name }}
+      className="group relative block rounded-lg border border-[#BA7517]/25 bg-[#BA7517]/[0.03] p-5 transition-colors hover:border-[#BA7517]/40 hover:bg-[#BA7517]/[0.05] sm:p-6"
+    >
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#BA7517]/25 bg-[#BA7517]/[0.06] px-2.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-[#BA7517]/80">
+          <span className="h-1.5 w-1.5 animate-[pulse-signal_4s_ease-in-out_infinite] rounded-full bg-[#BA7517]" />
+          CURRENT MISSION
+        </span>
+        <span className="font-mono text-[10px] tracking-[0.12em] text-neutral-500">
+          SENIOR SOFTWARE ENGINEER · 2026 → PRESENT
+        </span>
+      </div>
+      <h3 className="mt-3 text-[17px] font-semibold text-white transition-colors group-hover:text-[#BA7517]">
+        {system.name}
+      </h3>
+      {system.description && (
+        <p className="mt-1.5 text-[12px] leading-relaxed text-[#a3a3a3]">
+          {system.description}
+        </p>
+      )}
+      {system.highlights && system.highlights.length > 0 && (
+        <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-1.5 lg:grid-cols-3">
+          {system.highlights.map((h) => (
+            <li key={h} className="flex gap-2 text-[12px] leading-[1.6] text-[#a3a3a3]">
+              <span className="shrink-0 text-[#BA7517]/40">▸</span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {system.domains.map((domId) => (
+          <span
+            key={domId}
+            className="rounded-full border border-[#BA7517]/[0.12] bg-[#BA7517]/[0.03] px-2 py-0.5 font-mono text-[10px] text-neutral-500"
+          >
+            {domainNames.get(domId) ?? domId}
+          </span>
+        ))}
+      </div>
+    </TrackedAnchor>
+  );
+}
 
 function SystemCard({ system }: Readonly<{ system: Project }>) {
   return (
@@ -83,7 +135,12 @@ export default function FeaturedSystems() {
   return (
     <section id="systems" className="mt-10">
       <SectionTitle title="What I've built" />
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {heroSystem && (
+        <div className="mt-8">
+          <HeroSystemCard system={heroSystem} />
+        </div>
+      )}
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {primarySystems.map((system) => (
           <SystemCard key={system.id} system={system} />
         ))}

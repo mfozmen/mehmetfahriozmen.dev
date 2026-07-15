@@ -17,6 +17,13 @@ export const projects: Project[] = [
     id: "insiderone",
     name: "Insider One",
     url: "https://insiderone.com/",
+    description:
+      "Email marketing module of a B2B customer-engagement platform — building and maintaining backend services and APIs on the campaign management side of the product",
+    highlights: [
+      "Backend services & APIs powering email campaign management",
+      "Email campaign panel — reliable changes to a large, customer-facing system",
+      "Cross-team delivery with frontend, product, and platform teams",
+    ],
     importance: "hero",
     domains: ["adtech", "distributed", "customer_engagement", "analytics"],
     technologyCategories: [
@@ -25,7 +32,6 @@ export const projects: Project[] = [
       "devops",
       "api",
       "architecture",
-      "messaging",
       "frameworks",
       "methodologies",
     ],
