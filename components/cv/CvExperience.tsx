@@ -47,7 +47,7 @@ export default function CvExperience() {
                 <path d="M2 1l4 3-4 3z" />
               </svg>
               <span className="shrink-0 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
-                Earlier Missions (2009–2018)
+                Earlier Missions (2009–2019)
               </span>
               <span className="h-px flex-1 bg-gradient-to-r from-[#BA7517]/30 to-transparent" />
             </button>

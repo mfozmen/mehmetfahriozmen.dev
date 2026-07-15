@@ -226,6 +226,9 @@ export const cvExperience: CvExperienceEntry[] = [
       "CI/CD",
     ],
   },
+];
+
+export const cvEarlierRoles: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     date: "May 2019 — Jul 2019",
@@ -259,9 +262,6 @@ export const cvExperience: CvExperienceEntry[] = [
     ],
     chips: ["Golang", "Node.js", "Elasticsearch", ".NET Core"],
   },
-];
-
-export const cvEarlierRoles: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     date: "Jan 2013 — Jun 2018",
