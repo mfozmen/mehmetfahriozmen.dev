@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.18.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.17.0...v1.18.0) (2026-07-15)
+
+### Features
+
+* **home:** add Insider One current-role card to featured systems ([#38](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/38)) ([7d26711](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/7d26711f57c26dc0bc7b15e764c4ad1b204308d1))
+
 ## [1.17.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.16.1...v1.17.0) (2026-07-13)
 
 ### Features
