@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.19.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.18.0...v1.19.0) (2026-07-15)
+
+### Features
+
+* **cv:** move Datagen and Ptt Trade to Earlier Missions ([#39](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/39)) ([59fcc70](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/59fcc70423659eb70a304e7223317b05de774182))
+
 ## [1.18.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.17.0...v1.18.0) (2026-07-15)
 
 ### Features
