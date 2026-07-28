@@ -49,7 +49,7 @@ A **learning journal across all engineering topics**: backend, leadership, AI, a
 
 ## Illustrations
 
-### Style (ChatGPT generation)
+### Style (Gemini generation — `.claude/skills/blog-writer/generate.mjs`, Google AI Studio API)
 
 Base prompt:
 > "Modern flat editorial illustration, clean and minimal. Color palette: deep navy (#0a0f1e), amber (#BA7517), off-white. Subtle grain texture. Single image, wide composition. [SCENE]. No text. Single scene."
@@ -118,7 +118,7 @@ These are handled by the site infrastructure — no manual work needed per post:
 1. **Brainstorm** — topic, angle, core thesis (Claude + Mehmet in conversation)
 2. **Outline** — section-by-section skeleton with what each section says and why
 3. **Write** — full draft in English, collaborative process
-4. **Illustrations** — ChatGPT prompts based on the finished text, placed at impact points
+4. **Illustrations** — generated via Gemini (`generate.mjs`) from prompts based on the finished text, placed at impact points
 5. **Claude Code prompt** — describe what needs to be created/updated (never write code — Claude Code has its own skills)
 6. **Visual review** — Playwright MCP verification at 1440px and 390px
 7. **Deploy** — merge after approval, verify OG tags via LinkedIn Post Inspector and X Card Validator
