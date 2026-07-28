@@ -6,23 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next.js 16, React 19, TypeScript, and Tailwind CSS v4.
 
-## Commands
-
-- `npm run dev` — start dev server
-- `npm run build` — production build
-- `npm run start` — serve production build
-- `npm run lint` — run ESLint (flat config with next/core-web-vitals and next/typescript)
-- `npm test` — run vitest (includes galaxy overlap detection)
-- `npm run check:overlaps` — run only the galaxy overlap test
-
-## Architecture
-
-- **Next.js App Router** — all pages/layouts live under `app/`
-- `app/layout.tsx` — root layout with Geist font family
-- `app/page.tsx` — homepage
-- `app/globals.css` — Tailwind v4 setup with dark mode via `prefers-color-scheme`
-- Path alias: `@/*` maps to project root
-
 ## Development Workflow
 
 - Work in small, incremental steps with minimal changes.
@@ -82,17 +65,6 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - Use the plugin for all visual QA tasks: full-page screenshots, viewport testing, element screenshots.
 - **Save all screenshots to `screenshots/`** — this folder is gitignored. Use descriptive filenames (e.g. `homepage-desktop-1440.png`, `lab-list-mobile-390.png`). Never save screenshots to the project root or `public/`.
 
-## SonarCloud
-
-- **Quality gates:** Coverage >= 80% on new code, Duplication <= 3% on new code.
-- **Check issues after push:** Fetch the SonarCloud API directly — it's public, no auth needed:
-  ```
-  WebFetch https://sonarcloud.io/api/issues/search?componentKeys=mfozmen_mehmetfahriozmen.dev&pullRequest=<PR_NUMBER>&statuses=OPEN,CONFIRMED&sinceLeakPeriod=true&ps=50
-  ```
-- **Check quality gate status:** Use `gh pr checks <PR_NUMBER>` and look for `SonarCloud Code Analysis`.
-- **Get the summary comment:** Use `gh api repos/mfozmen/mehmetfahriozmen.dev/issues/<PR_NUMBER>/comments --jq '.[] | select(.user.login | contains("sonar")) | .body'`
-- **Common issue types:** unused imports (S1128), duplicate imports (S3863), nested ternaries (S3358), cognitive complexity (S3776). Fix all issues before merging — don't leave open issues.
-
 ## Development & Release Flow
 
 - All development happens on `dev` branch — never commit directly to `main`
@@ -110,18 +82,7 @@ Two content sections with separate routes:
 - **Field Notes** (`/writing`) — essays in `content/posts/*.mdx`
 - **Lab Day** (`/lab`) — technical guides in `content/lab/*.mdx`
 
-Shared components:
-- `PageShell` — skip-to-content, Navigation, Starfield, NebulaGlows, Footer wrapper
-- `SectionTitle` — star icon + mono title + gradient line (accepts optional `icon` prop)
-- `CollectionJsonLd` — parameterized schema.org CollectionPage
-- `BackLink` — "Back to [section]" with href/label props
-- `ShareRow` — copy link + LinkedIn + X sharing with `basePath` prop
-- `MdxComponents` — shared MdxBlockquote and MdxLink
-- `CodeBlock` — CodeBlockFigure (collapse), CodePre (language label + copy), InlineCode
-- `MarkdownDemo` / `MarkdownDemoServer` — source/rendered toggle for markdown code blocks
-- Schema builders in `lib/schema.ts` — `buildArticleSchema` and `buildBreadcrumbSchema`
-- Text extraction in `lib/mdxUtils.ts` — `extractTextContent` for React node trees
-- Content loaders: `lib/posts.ts` and `lib/lab.ts`
+Prefer the existing shared components in `components/` (PageShell, SectionTitle, BackLink, ShareRow, CodeBlock, …) over new one-off ones.
 
 Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 posts) → DeepSpaceFooter → Footer
 
@@ -136,17 +97,6 @@ Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 p
 - Inline code: amber-tinted `border border-[#BA7517]/10 bg-[#BA7517]/[0.04]`
 - **Inline code gotcha:** rehype-pretty-code wraps inline backtick code in `<span data-rehype-pretty-code-figure>` — the same attribute used for fenced blocks. The fenced-block CSS rule `[data-rehype-pretty-code-figure] code { display: grid }` also matches inline code, turning it into a full-width block. The `.inline-code` class on `InlineCode` component + CSS overrides in `globals.css` fix this. CSS also sets `white-space: nowrap` to prevent inline code from splitting across two lines (creating two separate visual boxes), with `overflow-wrap: break-word` as a safety net for code wider than the viewport. After upgrading Shiki or rehype-pretty-code, always verify inline code still renders inline (not as block bars) and doesn't split mid-token at line breaks.
 - **Fenced `text` blocks gotcha:** `defaultLang: "text"` means both inline backticks and fenced ` ```text ` blocks get `data-language="text"`. `InlineCode` distinguishes them by counting `[data-line]` children — fenced blocks have multiple lines, inline has one. If this breaks, check the child counting logic in `InlineCode`.
-
-## Blog Post SEO Checklist
-
-When creating or editing blog posts (MDX files in `content/posts/`), verify ALL of the following before committing:
-
-1. **`description`** — at least 100 characters
-2. **`coverImage`** — must be set (non-empty)
-3. **`date`** — must be in ISO format (`YYYY-MM-DD`)
-4. **`title`** — must be under 60 characters
-
-If any check fails, fix it before committing.
 
 ## Blog Writing Guide
 
@@ -165,16 +115,3 @@ The systems visualization uses a 3-layer orbital layout with data defined in `da
 - Tech clusters are positioned freely in the interior via `position: { x, y }` (normalized coords relative to center).
 - After modifying any positions, angles, or adding new systems/domains/tech clusters, run `npm test` to verify no labels collide.
 - Layout calculation functions live in `lib/galaxyLayout.ts` — shared between the component and tests. Do not duplicate layout math.
-
-```ts
-// data/systemsGraph.ts — key types
-export type SystemNode = {
-  id: string; name: string; url?: string;
-  importance: "hero" | "primary" | "secondary" | "minor";
-  domains: string[]; techClusters: string[];
-  angle: number; orbit: number;
-};
-export type DomainNode = { id: string; name: string; angle: number; orbit: number; offset: { x: number; y: number } };
-export type TechClusterNode = { id: string; name: string; technologies: string[]; position: { x: number; y: number } };
-export type OrbitConfig = { rx: number; ry: number; rotation: number; opacity: number };
-```

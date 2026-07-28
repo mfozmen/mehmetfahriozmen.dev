@@ -331,3 +331,16 @@ Only scene changes."
 - `content/posts/accidental-engineering-manager.mdx` — AI + management; ends with a bold-led tip list; repeats its opening blockquote verbatim in the body (now a rule violation — rule stands)
 - `content/posts/when-everyone-has-a-superpower.mdx` — Homogeneity + creativity; has the corpus's only `_Sources:_` footnote (after a single `---`)
 - `content/posts/the-revolution-has-no-manual.mdx` — AI economy, longest post; Title Case headings; has the corpus's only mid-body blockquote
+
+---
+
+## Pre-Commit SEO Checklist
+
+When creating or editing blog posts (MDX files in `content/posts/`), verify ALL of the following before committing:
+
+1. **`description`** — at least 100 characters
+2. **`coverImage`** — must be set (non-empty)
+3. **`date`** — must be in ISO format (`YYYY-MM-DD`)
+4. **`title`** — must be under 60 characters
+
+If any check fails, fix it before committing.

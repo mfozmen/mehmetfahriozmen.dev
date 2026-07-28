@@ -104,23 +104,23 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 13 specialized sub-skills (+ 2 extensions):
+This skill orchestrates 5 specialized sub-skills:
 
 1. **seo-audit** -- Full website audit with parallel delegation
 2. **seo-page** -- Deep single-page analysis
 3. **seo-technical** -- Technical SEO (9 categories)
-4. **seo-content** -- E-E-A-T and content quality
-5. **seo-schema** -- Schema markup detection and generation
-6. **seo-images** -- Image optimization
-7. **seo-sitemap** -- Sitemap analysis and generation
-8. **seo-geo** -- AI Overviews / GEO optimization
-9. **seo-plan** -- Strategic planning with templates
-10. **seo-programmatic** -- Programmatic SEO analysis and planning
-11. **seo-competitor-pages** -- Competitor comparison page generation
-12. **seo-hreflang** -- Hreflang/i18n SEO audit and generation
-13. **seo-local** -- Local SEO (GBP, NAP, citations, reviews, local schema, multi-location)
-14. **seo-dataforseo** -- Live SEO data via DataForSEO MCP (extension)
-15. **seo-image-gen** -- AI image generation for SEO assets via Gemini (extension)
+4. **seo-images** -- Image optimization
+5. **seo-geo** -- AI Overviews / GEO optimization
+
+The sub-skills for local SEO, hreflang/i18n, programmatic pages, competitor
+comparison pages, strategic planning, schema generation, sitemap generation and
+content/E-E-A-T analysis were removed from this repo: the first five don't apply
+to a single-language personal blog, schema and sitemaps are generated
+automatically (`lib/schema.ts`, Next.js), and post-level content quality is
+enforced by the `blog-writer` skill plus `__tests__/posts.test.ts`.
+
+Note: the `seo-content`, `seo-schema`, `seo-sitemap` and `seo-local` **subagents**
+below still exist and are unaffected -- audits keep their full coverage.
 
 ## Subagents
 
