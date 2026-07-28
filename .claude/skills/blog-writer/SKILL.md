@@ -269,7 +269,7 @@ End every review with:
 
 ## Part 3: Illustration Prompts
 
-**Production is owned by the `blog-writer` agent** (`.claude/agents/blog-writer.md`, Part 2) — it crafts the prompts below, generates the rasters via `.claude/skills/blog-writer/generate.mjs` (Google AI Studio Gemini, `gemini-2.5-flash-image`; needs `GEMINI_API_KEY` in `.env.local`), then optimizes and places them via `.claude/skills/blog-writer/optimize.mjs` (sharp, WebP q80 — covers 1200w, inline 800w, og 1200×630 cover-crop; replaces the manual Squoosh and Photopea steps).
+**Production is owned by the `blog-writer` agent** (`.claude/agents/blog-writer.md`, Part 2) — it crafts the prompts below, generates the rasters via `.claude/skills/blog-writer/generate.mjs` (Google AI Studio Gemini, default `gemini-3.1-flash-image`, `--model` to override; needs `GEMINI_API_KEY` in `.env.local`), then optimizes and places them via `.claude/skills/blog-writer/optimize.mjs` (sharp, WebP q80 — covers 1200w, inline 800w, og 1200×630 cover-crop; replaces the manual Squoosh and Photopea steps).
 
 Base prompt for all illustrations:
 
