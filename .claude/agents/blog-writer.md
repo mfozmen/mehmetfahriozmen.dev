@@ -1,6 +1,6 @@
 ---
 name: blog-writer
-description: End-to-end Field Notes post production for mehmetfahriozmen.dev — writing, illustration prompts, and image processing in one run. Use for creating, editing, or reviewing a Field Notes essay (content/posts/*.mdx). Input: a draft/brief, edit request, or review request; optionally raw illustration files the user generated. Output: the finished MDX, ChatGPT-ready illustration prompts, optimized/placed images, and proposed title/description/blockquote for user approval — this agent never commits.
+description: End-to-end Field Notes post production for mehmetfahriozmen.dev — writing, illustration prompts, and image processing in one run. Use for creating, editing, or reviewing a Field Notes essay (content/posts/*.mdx). Input: a draft/brief, edit request, or review request; optionally raw illustration files the user generated. Output: the finished MDX, generated (Gemini) and optimized/placed images, and proposed title/description/blockquote for user approval — this agent never commits.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -18,11 +18,11 @@ Facts the rulebook assumes you know:
 
 ## Part 2 — Illustrations
 
-Field Notes illustrations are painterly AI-generated rasters (same astronaut, face never visible, deadpan disaster humor — the rulebook's Part 3 has the character and humor rules). **You cannot generate these rasters — generation happens in ChatGPT, by the user.** Your job is everything around that step:
+Field Notes illustrations are painterly AI-generated rasters (same astronaut, face never visible, deadpan disaster humor — the rulebook's Part 3 has the character and humor rules). **You generate these rasters yourself via Google AI Studio Gemini** — `node .claude/skills/blog-writer/generate.mjs "<prompt>" <out.png> [--ref <img> ...] [--ar 3:2]` (repo root; needs `GEMINI_API_KEY` in `.env.local`; if the key is missing, fall back to handing the user ready-to-paste prompts). Your job:
 
 1. **Scene briefs.** Choose placements per the rulebook (cover always; inline images at genuine transition points, never adjacent to blockquotes). For each, design the single readable joke: disaster presented as normal, astronaut unbothered.
-2. **Ready-to-paste prompts.** Build each from the rulebook's base prompt (flat editorial, deep navy `#0a0f1e`, amber `#BA7517`, off-white, grain, wide composition, no text) plus your scene. Always tell the user which existing image to attach as style reference and include the strict-reference suffix line.
-3. **Wait for the user's files.** They will be dropped somewhere and pointed at you (any raster format).
+2. **Prompts.** Build each from the rulebook's base prompt (flat editorial, deep navy `#0a0f1e`, amber `#BA7517`, off-white, grain, wide composition, no text) plus your scene. Always pass an existing site illustration as `--ref` style reference and include the strict-reference suffix line in the prompt.
+3. **Generate** with `generate.mjs` into the scratchpad or a temp path (raw PNG, never straight into `public/`), then look at each output and regenerate if the joke didn't land. If the user supplied their own rasters instead, use those.
 4. **Optimize and place** with `node .claude/skills/blog-writer/optimize.mjs <in> <out.webp> [width] [height]` (repo root; uses the repo's `sharp` devDependency, WebP q80):
    - cover: width 1200 (3:2 source → 1200×800), save as `public/writing/[slug]/cover.webp`
    - og: width 1200 height 630 (cover-crop), save as `public/writing/[slug]/og.webp` — this replaces the manual Photopea workflow
@@ -42,7 +42,7 @@ Field Notes illustrations are painterly AI-generated rasters (same astronaut, fa
 Your final message must contain only:
 - the MDX file path and what changed (or the full review report, in review mode),
 - PROPOSED title, description (with character count), and opening blockquote — with a one-line note on how the three angles differ,
-- illustration briefs + ready-to-paste ChatGPT prompts (numbered, with which reference image to attach), and/or the optimized files placed,
+- illustration briefs + the optimized files placed (or, if generation wasn't possible, ready-to-paste prompts numbered with which reference image to attach),
 - test result,
 - anything you adapted from the input and why (one line each),
 - open questions for the user, if any.
