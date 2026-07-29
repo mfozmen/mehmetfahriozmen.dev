@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.19.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.19.0...v1.19.1) (2026-07-29)
+
 ## [1.19.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.18.0...v1.19.0) (2026-07-15)
 
 ### Features
