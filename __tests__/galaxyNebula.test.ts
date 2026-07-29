@@ -10,7 +10,7 @@ describe("Nebula texture generation", () => {
   it("returns an ImageData of the correct dimensions", () => {
     expect(texture.width).toBe(W);
     expect(texture.height).toBe(H);
-    expect(texture.data.length).toBe(W * H * 4); // RGBA
+    expect(texture.data).toHaveLength(W * H * 4); // RGBA
   });
 
   it("center band (galactic plane) is brighter than edges", () => {

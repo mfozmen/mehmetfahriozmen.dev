@@ -42,3 +42,9 @@ describe("extractTextContent", () => {
     expect(extractTextContent(node)).toBe("text42more");
   });
 });
+
+describe("extractTextContent fallbacks", () => {
+  it("returns empty for an object without props", () => {
+    expect(extractTextContent({} as never)).toBe("");
+  });
+});

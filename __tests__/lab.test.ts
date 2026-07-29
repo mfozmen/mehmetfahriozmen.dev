@@ -1,7 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { getAllLabPosts, getLabPostBySlug } from "@/lib/lab";
+
+describe("missing lab directory", () => {
+  it("returns an empty list and no post when content/lab is absent", () => {
+    const spy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    try {
+      expect(getAllLabPosts()).toEqual([]);
+      expect(getLabPostBySlug("building-skills-for-ai-coding-agents")).toBeUndefined();
+    } finally {
+      spy.mockRestore();
+    }
+  });
+});
 
 describe("getAllLabPosts", () => {
   it("returns an array of posts", () => {

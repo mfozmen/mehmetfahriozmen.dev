@@ -71,7 +71,7 @@ describe("CV Experience data", () => {
 
 describe("CV Skills data", () => {
   it("has 4 skill categories", () => {
-    expect(cvSkills.length).toBe(4);
+    expect(cvSkills).toHaveLength(4);
   });
 
   it("each category has label and items", () => {
@@ -84,7 +84,7 @@ describe("CV Skills data", () => {
 
 describe("CV Coordinates data", () => {
   it("has 4 coordinate entries", () => {
-    expect(cvCoordinates.length).toBe(4);
+    expect(cvCoordinates).toHaveLength(4);
   });
 
   it("each entry has label and value", () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateBgStars, applyStarDrift } from "@/lib/galaxyStars";
+import { generateBgStars, applyStarDrift, lastWrapTimeOnAxis } from "@/lib/galaxyStars";
 
 const W = 948;
 const H = 600;
@@ -46,7 +46,7 @@ describe("Star density distribution", () => {
   const stars = generateBgStars(W, H, STAR_COUNT);
 
   it("generates the expected number of stars", () => {
-    expect(stars.length).toBe(STAR_COUNT);
+    expect(stars).toHaveLength(STAR_COUNT);
   });
 
   it("center region (100px radius) has 3x+ density vs edge band at t=0", () => {
@@ -177,5 +177,34 @@ describe("Star drift behavior", () => {
       expect(mid.fadeIn).toBeGreaterThan(0.2);
       expect(mid.fadeIn).toBeLessThan(0.7);
     });
+  });
+});
+
+// --- lastWrapTimeOnAxis ---
+
+describe("lastWrapTimeOnAxis", () => {
+  it("returns 0 for a velocity below the epsilon (no drift on this axis)", () => {
+    expect(lastWrapTimeOnAxis(0, 500, 100, 948)).toBe(0);
+    expect(lastWrapTimeOnAxis(0.0005, 500, 100, 948)).toBe(0);
+  });
+
+  it("returns 0 when the star has not reached the edge yet", () => {
+    expect(lastWrapTimeOnAxis(-2, -50, 100, 948)).toBe(0);
+    expect(lastWrapTimeOnAxis(2, 50, 100, 948)).toBe(0);
+  });
+
+  it("measures the crossing of the far edge for a positive velocity", () => {
+    // starts at 100, canvas 948 → 848 to the right edge, at 2px/s → 424s
+    expect(lastWrapTimeOnAxis(2, 900, 100, 948)).toBeCloseTo(424, 6);
+  });
+
+  it("measures the crossing of the near edge for a negative velocity", () => {
+    // starts at 100 → 100 to the left edge, at 2px/s → 50s
+    expect(lastWrapTimeOnAxis(-2, -200, 100, 948)).toBeCloseTo(50, 6);
+  });
+
+  it("accounts for full canvas wraps after the first crossing", () => {
+    // 848 to the edge + one full 948 wrap = 1796px at 2px/s → 898s
+    expect(lastWrapTimeOnAxis(2, 2000, 100, 948)).toBeCloseTo(898, 6);
   });
 });

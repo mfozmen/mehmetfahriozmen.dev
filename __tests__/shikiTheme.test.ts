@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { codeToHtml } from "shiki";
 import deepSpaceTheme, { PALETTE } from "@/lib/shikiTheme";
+import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 
 describe("deepSpaceTheme", () => {
   it("has required theme fields", () => {
@@ -60,5 +61,13 @@ describe("deepSpaceTheme applied by shiki", () => {
     });
     expect(html.toUpperCase()).toContain(PALETTE.keyword.toUpperCase());
     expect(html.toUpperCase()).toContain(PALETTE.string.toUpperCase());
+  });
+});
+
+describe("rehypePrettyCodeOptions", () => {
+  it("wires the deep-space theme and a text default language", () => {
+    expect(rehypePrettyCodeOptions.theme).toBe(deepSpaceTheme);
+    expect(rehypePrettyCodeOptions.keepBackground).toBe(true);
+    expect(rehypePrettyCodeOptions.defaultLang).toBe("text");
   });
 });

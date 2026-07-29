@@ -183,3 +183,22 @@ describe("getHighlightedIds", () => {
     }
   });
 });
+
+describe("getHighlightedIds with unknown ids", () => {
+  const empty = new Map<string, string[]>();
+
+  it("returns only the id when the system does not exist", () => {
+    const highlighted = getHighlightedIds("no-such-system", "system", empty, empty);
+    expect([...highlighted]).toEqual(["no-such-system"]);
+  });
+
+  it("returns only the id when the domain has no connected systems", () => {
+    const highlighted = getHighlightedIds("no-such-domain", "domain", empty, empty);
+    expect([...highlighted]).toEqual(["no-such-domain"]);
+  });
+
+  it("returns only the id when the tech cluster has no connected systems", () => {
+    const highlighted = getHighlightedIds("no-such-tech", "tech", empty, empty);
+    expect([...highlighted]).toEqual(["no-such-tech"]);
+  });
+});
