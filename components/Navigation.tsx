@@ -40,6 +40,7 @@ function DrawerHeader({ onClose }: Readonly<{ onClose: () => void }>) {
     <div className="flex items-center justify-between px-6 py-5">
       <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#BA7517]/50">Menu</span>
       <button
+        type="button"
         onClick={onClose}
         className="text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
         aria-label="Close menu"
@@ -121,6 +122,7 @@ export default function Navigation() {
 
       {/* Mobile hamburger */}
       <button
+        type="button"
         onClick={() => setOpen(true)}
         className="sm:hidden text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 rounded-sm p-1"
         aria-label="Open menu"

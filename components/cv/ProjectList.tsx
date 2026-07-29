@@ -31,6 +31,7 @@ export default function ProjectList({ projects }: Readonly<{ projects: CvExperie
       ))}
       {hiddenCount > 0 && !showAll && (
         <button
+          type="button"
           onClick={() => { setShowAll(true); trackEvent("cv-more-projects-toggle"); }}
           className="ml-1 text-[11px] text-[#BA7517]/60 transition-colors hover:text-[#BA7517]"
         >

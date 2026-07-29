@@ -33,6 +33,7 @@ export default function CvExperience() {
         <div className="py-5">
           <div>
             <button
+              type="button"
               onClick={() => setShowEarlier(!showEarlier)}
               aria-expanded={showEarlier}
               className="mb-6 flex w-full items-center gap-2.5 text-left"

@@ -21,7 +21,7 @@ export default function ShareRow({ title, slug, basePath = "writing" }: Readonly
 
   return (
     <>
-      <button onClick={handleCopy} className={linkClass}>
+      <button type="button" onClick={handleCopy} className={linkClass}>
         {copied ? "Copied!" : "Copy link"}
       </button>
       <span className="text-neutral-700">&middot;</span>

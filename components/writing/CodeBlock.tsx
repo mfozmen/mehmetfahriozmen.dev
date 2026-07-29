@@ -18,6 +18,7 @@ function CopyButton({ code }: Readonly<{ code: string }>) {
 
   return (
     <button
+      type="button"
       onClick={handleCopy}
       className="absolute top-1.5 right-1.5 z-10 flex min-h-[44px] min-w-[44px] items-center justify-center rounded border border-[#BA7517]/20 bg-[#0d0d0d]/80 px-2 py-1 font-mono text-[10px] text-[#BA7517] opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 sm:top-3 sm:right-3 sm:min-h-0 sm:min-w-0"
       aria-label="Copy code"
@@ -88,6 +89,7 @@ export function CodeBlockFigure({ children, ...props }: Readonly<Record<string, 
       {showCollapse && (
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-4 pt-16" style={{ background: "linear-gradient(to top, #0d0d0d 20%, transparent)" }}>
           <button
+            type="button"
             onClick={() => setIsCollapsed(false)}
             className="rounded border border-[#BA7517]/30 bg-[#0d0d0d] px-4 py-1.5 font-mono text-[11px] text-[#BA7517] transition-colors hover:border-[#BA7517]/60 hover:text-[#BA7517]/80"
           >
@@ -98,6 +100,7 @@ export function CodeBlockFigure({ children, ...props }: Readonly<Record<string, 
       {expandable && needsCollapse && !isCollapsed && (
         <div className="mt-2 text-center">
           <button
+            type="button"
             onClick={() => setIsCollapsed(true)}
             className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]"
           >

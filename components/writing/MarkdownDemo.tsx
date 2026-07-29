@@ -28,12 +28,14 @@ export default function MarkdownDemo({ children, renderedHtml }: Readonly<{ chil
     <div className="my-8">
       <div className="flex gap-1 rounded-t-lg border border-b-0 border-[#BA7517]/10 bg-[#0d0d0d] px-3 pt-2">
         <button
+          type="button"
           onClick={() => setView("source")}
           className={`rounded-t px-3 py-1.5 font-mono text-[11px] transition-colors ${view === "source" ? "bg-[#BA7517]/10 text-[#BA7517]" : "text-neutral-500 hover:text-neutral-300"}`}
         >
           Source
         </button>
         <button
+          type="button"
           onClick={() => setView("rendered")}
           className={`rounded-t px-3 py-1.5 font-mono text-[11px] transition-colors ${view === "rendered" ? "bg-[#BA7517]/10 text-[#BA7517]" : "text-neutral-500 hover:text-neutral-300"}`}
         >

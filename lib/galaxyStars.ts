@@ -68,11 +68,13 @@ export function seededRandom(seed: number) {
 function pickStarColor(rand: () => number): string {
   const roll = rand();
   let cumulative = 0;
-  for (const entry of STAR_COLORS) {
-    cumulative += entry.weight;
-    if (roll < cumulative) return entry.color;
+  // ponytail: weights sum to 1, so the last color absorbs the remainder — no unreachable fallback
+  const last = STAR_COLORS.length - 1;
+  for (let i = 0; i < last; i++) {
+    cumulative += STAR_COLORS[i].weight;
+    if (roll < cumulative) return STAR_COLORS[i].color;
   }
-  return STAR_COLORS[0].color;
+  return STAR_COLORS[last].color;
 }
 
 function seededGaussian(rand: () => number, spread: number = 0.35): number {
@@ -156,8 +158,8 @@ export interface DriftResult {
   fadeIn: number;
 }
 
-/** Find the time of the last boundary crossing along one axis. */
-function lastWrapTimeOnAxis(
+/** Find the time of the last boundary crossing along one axis. Exported for tests. */
+export function lastWrapTimeOnAxis(
   velocity: number,
   displacement: number,
   starPos: number,

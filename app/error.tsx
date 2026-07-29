@@ -32,6 +32,7 @@ export default function ErrorPage({ reset }: Readonly<{ reset: () => void }>) {
         />
         <div className="mt-8 flex items-center gap-4">
           <button
+            type="button"
             onClick={() => reset()}
             className="cursor-pointer rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >

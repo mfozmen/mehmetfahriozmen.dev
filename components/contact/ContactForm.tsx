@@ -27,6 +27,7 @@ function SuccessMessage({ onReset }: Readonly<{ onReset: () => void }>) {
       </p>
       <div className="mt-6 flex items-center justify-center gap-4">
         <button
+          type="button"
           onClick={onReset}
           className="cursor-pointer font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]"
         >

@@ -554,7 +554,9 @@ function drawSystemLabel(ctx: CanvasRenderingContext2D, opts: SystemLabelOpts) {
   else if (isSecondary) { labelColor = "rgba(190, 210, 230, 1)"; }
   else { labelColor = "rgba(130, 140, 150, 1)"; }
 
-  const baseFont = isHero ? 15 : isPrimary ? 13 : 11;
+  let baseFont = 11;
+  if (isHero) { baseFont = 15; }
+  else if (isPrimary) { baseFont = 13; }
   const fontSize = mobileLabelSize(baseFont, sf, isHero ? 12 : 11);
   let fontWeight = 400;
   if (isHero) { fontWeight = 600; }
