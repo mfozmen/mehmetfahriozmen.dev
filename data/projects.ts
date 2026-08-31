@@ -18,9 +18,9 @@ export const projects: Project[] = [
     id: "insiderone",
     name: "Insider One",
     url: "https://insiderone.com/",
-    role: "SENIOR SOFTWARE ENGINEER · 2026 → PRESENT",
+    role: "SENIOR SOFTWARE ENGINEER · APR 2026 → SEP 2026",
     description:
-      "Email marketing module of a B2B customer-engagement platform — building and maintaining backend services and APIs on the campaign management side of the product",
+      "Email marketing module of a B2B customer-engagement platform — built and maintained backend services and APIs on the campaign management side of the product",
     highlights: [
       "Backend services & APIs powering email campaign management",
       "Email campaign panel — reliable changes to a large, customer-facing system",

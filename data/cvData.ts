@@ -47,17 +47,17 @@ export interface CvCoordinate {
 export const cvExperience: CvExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
-    date: "Apr 2026 — Present",
+    date: "Apr 2026 — Sep 2026",
     company: "Insider One",
     companyUrl: "https://insiderone.com/",
     roles: [
       {
         title: "Senior Software Engineer",
-        date: "Apr 2026 — Present",
+        date: "Apr 2026 — Sep 2026",
         bullets: [
-          "Work on the email marketing module of a B2B customer-engagement platform",
-          "Build and maintain backend services and APIs on the campaign management side of the product",
-          "Partner with frontend, product, and platform teams to ship reliable changes to a large, customer-facing system",
+          "Worked on the email marketing module of a B2B customer-engagement platform",
+          "Built and maintained backend services and APIs on the campaign management side of the product",
+          "Partnered with frontend, product, and platform teams to ship reliable changes to a large, customer-facing system",
         ],
       },
     ],
