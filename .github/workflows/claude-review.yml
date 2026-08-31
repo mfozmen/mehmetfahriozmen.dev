@@ -35,7 +35,9 @@ jobs:
         contains(github.event.comment.body, '@claude') &&
         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) )
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Kept in step with --max-turns below: a read-heavy review needs wall-clock
+    # headroom, otherwise the timeout kills the run before it posts its summary.
+    timeout-minutes: 20
     permissions:
       contents: read
       pull-requests: write
@@ -79,7 +81,7 @@ jobs:
           # entries exist because denied read calls burn turns until the agent
           # gives up without posting (PR #35: 6 turns, 4 denials, no comment).
           claude_args: |
-            --max-turns 40
+            --max-turns 60
             --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Read,Grep,Glob"
           prompt: |
             You are reviewing this pull request as an ADVISORY reviewer for
