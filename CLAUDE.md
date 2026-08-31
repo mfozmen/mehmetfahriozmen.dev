@@ -68,6 +68,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 ## Development & Release Flow
 
 - All development happens on `dev` branch — never commit directly to `main`
+- **Every change goes through a pull request** — never commit directly to `dev` either. Branch off `dev`, push, open a PR, let the Claude AI review and CI run, then merge.
 - **Pull requests always target `dev`** — never create PRs targeting `main`
 - To release: `npm run release` on dev → bumps version, creates tag, pushes to main
 - **Release checklist:** (1) merge PR first (`gh pr merge`), (2) `git pull origin dev`, (3) verify new commits in pull output, (4) only then `npx release-it --ci`. Never run release-it before the PR merge is confirmed.
