@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.20.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.19.1...v1.20.0) (2026-08-31)
+
+### Features
+
+* **cv:** close Insider One role as of Sep 2026 ([71a1e96](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/71a1e969ab180d6d7877b4d886be7fd993f1e6b8))
+
 ## [1.19.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.19.0...v1.19.1) (2026-07-29)
 
 ## [1.19.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.18.0...v1.19.0) (2026-07-15)
