@@ -58,8 +58,17 @@ export const cvExperience: CvExperienceEntry[] = [
           "Worked on the email marketing module of a B2B customer-engagement platform",
           "Built and maintained backend services and APIs on the campaign management side of the product",
           "Partnered with frontend, product, and platform teams to ship reliable changes to a large, customer-facing system",
+          "Built AI agents, skills, and custom tools that removed the friction from my own development workflow — automating the repetitive parts of shipping and the bureaucracy around it",
+          "Turned recurring manual steps — context gathering, reviews, checklists, internal process paperwork — into agent-driven workflows, so engineering time went back into engineering",
         ],
       },
+    ],
+    chips: [
+      "AI agents",
+      "Agent skills",
+      "MCP tools",
+      "Claude Code",
+      "Workflow automation",
     ],
   },
   {
@@ -365,6 +374,18 @@ export const cvSkills: CvSkillCategory[] = [
       "Elasticsearch",
       "Redis",
       "Clickhouse",
+    ],
+  },
+  {
+    label: "AI Engineering",
+    items: [
+      "AI agents",
+      "Agent skills",
+      "MCP tools",
+      "Claude Code",
+      "Codex",
+      "Gemini",
+      "Workflow automation",
     ],
   },
   {

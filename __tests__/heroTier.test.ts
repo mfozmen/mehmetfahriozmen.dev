@@ -32,10 +32,10 @@ describe("Hero tier — Insider One", () => {
     );
   });
 
-  it("Insider One connects to the seven expected tech clusters", () => {
+  it("Insider One connects to the eight expected tech clusters", () => {
     const insider = projects.find((p) => p.id === "insiderone")!;
     expect(new Set(insider.technologyCategories)).toEqual(
-      new Set(["databases", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"]),
+      new Set(["ai", "databases", "cloud", "devops", "api", "architecture", "frameworks", "methodologies"]),
     );
   });
 

@@ -1,7 +1,12 @@
 import { describe, it, expect } from "vitest";
 
 // CV data-driven tests (no DOM required)
-import { cvExperience, cvEarlierRoles, cvSkills, cvCoordinates } from "@/data/cvData";
+import {
+  cvExperience,
+  cvEarlierRoles,
+  cvSkills,
+  cvCoordinates,
+} from "@/data/cvData";
 
 describe("CV Experience data", () => {
   it("has main experience entries", () => {
@@ -48,6 +53,13 @@ describe("CV Experience data", () => {
     expect(veriyaz?.roles?.length).toBeGreaterThanOrEqual(2);
   });
 
+  it("Insider One documents AI tooling work", () => {
+    const insider = cvExperience.find((e) => e.company === "Insider One");
+    const bullets = insider?.roles?.flatMap((r) => r.bullets ?? []) ?? [];
+    expect(bullets.some((b) => /agent/i.test(b))).toBe(true);
+    expect(insider?.chips?.length).toBeGreaterThan(0);
+  });
+
   it("Brew has BeforeSunset AI as a sub-entry", () => {
     const brew = cvExperience.find((e) => e.company === "Brew Interactive");
     expect(brew?.subEntry).toBeTruthy();
@@ -70,8 +82,9 @@ describe("CV Experience data", () => {
 });
 
 describe("CV Skills data", () => {
-  it("has 4 skill categories", () => {
-    expect(cvSkills).toHaveLength(4);
+  it("has 5 skill categories including AI Engineering", () => {
+    expect(cvSkills).toHaveLength(5);
+    expect(cvSkills.map((c) => c.label)).toContain("AI Engineering");
   });
 
   it("each category has label and items", () => {

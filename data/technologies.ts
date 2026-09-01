@@ -15,5 +15,6 @@ export const technologyCategories: TechnologyCategory[] = [
   { id: "frameworks", name: "Frameworks", technologies: ["NestJS / TypeScript", "Node.js / JavaScript", "Laravel / PHP", "Spring Boot / Java", ".NET / C#", "Magento / PHP", "Golang"] },
   { id: "monitoring", name: "Monitoring", technologies: ["Grafana", "Elasticsearch"] },
   { id: "data_analysis", name: "Data Analysis", technologies: ["ClickHouse", "AWS Glue", "Airflow", "Superset", "SSIS"] },
+  { id: "ai", name: "AI", technologies: ["AI agents", "Agent skills", "MCP", "Claude Code", "Codex", "Gemini"] },
   { id: "methodologies", name: "Methodologies", technologies: ["Agile/Scrum", "TDD", "BDD"] },
 ];
