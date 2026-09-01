@@ -83,7 +83,7 @@ const domainLayout: Record<
   education: { angle: 0.2, orbit: 1, offset: { x: 0.07, y: -0.06 } },
   nonprofit: { angle: 4, orbit: 1, offset: { x: -0.07, y: 0.06 } },
   realtime: { angle: 2.2, orbit: 1, offset: { x: -0.12, y: 0.11 } },
-  customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.10, y: 0.12 } },
+  customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.1, y: 0.12 } },
   analytics: { angle: 0.85, orbit: 1, offset: { x: 0.06, y: -0.13 } },
 };
 
@@ -101,6 +101,7 @@ const techClusterPositions: Record<string, { x: number; y: number }> = {
   monitoring: { x: -0.14, y: -0.04 },
   data_analysis: { x: 0.14, y: 0.08 },
   methodologies: { x: -0.1, y: 0.14 },
+  ai: { x: 0.21, y: -0.09 },
 };
 
 // Computed radial positions for mobile — equal angular spacing guarantees no overlaps
@@ -132,6 +133,7 @@ const techClusterRadialOrder = [
   "architecture",
   "monitoring",
   "messaging",
+  "ai",
 ];
 export const techClusterMobilePositions = computeMobilePositions(
   techClusterRadialOrder,

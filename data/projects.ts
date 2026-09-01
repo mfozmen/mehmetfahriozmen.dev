@@ -29,6 +29,7 @@ export const projects: Project[] = [
     importance: "hero",
     domains: ["adtech", "distributed", "customer_engagement", "analytics"],
     technologyCategories: [
+      "ai",
       "databases",
       "cloud",
       "devops",
