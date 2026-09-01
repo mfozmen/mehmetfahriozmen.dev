@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.21.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.20.0...v1.21.0) (2026-09-01)
+
+### Features
+
+* **cv:** surface AI agent and tooling work at Insider One ([#42](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/42)) ([0f90d9c](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0f90d9c506f289af5899e16ca3903591062e3da4))
+
 ## [1.20.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.19.1...v1.20.0) (2026-08-31)
 
 ### Features
