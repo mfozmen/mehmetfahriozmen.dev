@@ -73,6 +73,10 @@ Every post opens with a blockquote. Rules:
 > What they don't mention — the old one hasn't finished collapsing yet.
 ```
 
+### Sentence Mechanics
+
+- **Never start a sentence with "Or."** It reads as a dropped fragment rather than a deliberate cut. Rewrite it as a full sentence, or fold it into the preceding one. Sentence-initial **"And"** and **"But"** are in-register and used throughout the corpus (*the-ant-colony*, *the-moon-again*, *the-nuclear-reactor-in-your-codebase*); "Or" appears in none of them. Check every draft for `^Or ` and `. Or ` before review.
+
 ### Section Headings
 
 - Use `##` (h2) for section titles
