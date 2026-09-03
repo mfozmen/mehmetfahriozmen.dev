@@ -16,6 +16,7 @@ import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import remarkGfm from "remark-gfm";
+import TicketBlock from "@/components/writing/TicketBlock";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import PostNavigation from "@/components/writing/PostNavigation";
 
@@ -58,7 +59,7 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer };
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer, TicketBlock };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));

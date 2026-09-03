@@ -102,6 +102,31 @@ Every post opens with a blockquote. Rules:
 - Never repeat a sentence from the body text
 - Place far from inline images (both are "pause" moments)
 
+### TicketBlock — backlog artifacts
+
+`<TicketBlock>` renders an artifact lifted out of a ticket: acceptance criteria, test cases, a task list, a `Done when` line. It is the third block type on the site, and the three do not overlap:
+
+| Block | Use for | Reads as |
+|---|---|---|
+| Code block (``` ```) | Code, config, terminal output — anything a reader would run | Executable |
+| `MdxBlockquote` (`>`) | A pause in the prose: an overheard line, a story sentence, an epigraph | Atmosphere |
+| `TicketBlock` | Something a reader could paste into their own backlog | Artifact |
+
+Choosing wrong is the common mistake: acceptance criteria in a code block claim to be runnable, and in a blockquote they claim to be a pause. They are neither.
+
+Authoring is a plain markdown list as children — blank lines around the list are required, and props other than `label` are not supported (MDX does not pass array props):
+
+```mdx
+<TicketBlock label="Acceptance criteria">
+
+- The export covers the selected date range and nothing outside it.
+- A range with no tickets still produces a file, headers only.
+
+</TicketBlock>
+```
+
+`label` is sentence case, short, and names the artifact ("Acceptance criteria", "Test cases", "The same case, in given / when / then"). Component lives at `components/writing/TicketBlock.tsx` and is registered for both `/writing` and `/lab`.
+
 ### Code Blocks
 
 Writing posts support the full code block system (same as Lab Day):
