@@ -104,26 +104,58 @@ So the cost didn't go anywhere. The sprint paid it twice: once to build the wron
 
 What we thought we were skipping was documentation. What we were actually skipping was the part where you say, out loud and in advance, how you will know this thing works.
 
-## Red
+## The acceptance criteria
 
 That sentence is a test. It has always been a test. We just weren't in the habit of noticing it, because it was written in English.
 
 Test-driven development has one uncomfortable instruction and the rest is detail: write the failing test first. Not because the test is valuable on its own, but because you cannot write it without deciding what "done" means, and deciding that before the code exists is the entire trick. The red bar is a definition with a timestamp.
 
-An acceptance criterion is the same instruction, one layer up, aimed at behavior instead of a function. *The chosen theme persists across sessions.* There is no code yet. There may be no design yet. The sentence is still specific enough to fail against, which means it is specific enough to build against.
+An acceptance criterion is that instruction one layer up, aimed at behavior instead of a function. It's a sentence about the finished thing that somebody who wasn't in the room can check. There is no code yet and there may be no design yet, and the sentence is still specific enough to fail against. The moment for it is exactly here: after everyone agrees what the story is, before anyone starts building it.
 
-Behavior-driven development is just the grammar. Given, when, then — the same criterion, arranged so the sentence has to name a starting state and a trigger, which is exactly where handwritten criteria go vague.
+<TicketBlock label="Acceptance criteria">
 
-```gherkin
-Scenario: The theme survives a reload
-  Given the user has switched the app to dark
-  When they close the app and open it again
-  Then the app is still in dark
-```
+- The export covers the selected date range and nothing outside it.
+- The file arrives as CSV, with a header row.
+- A range with no tickets still produces a file, headers only.
+- Exports over 50,000 rows are delivered by email instead of the browser.
 
-Nothing about that is clever, and nothing about it is expensive. Three lines, written before anyone opened an editor, and they took less time than the meeting where we argued about the estimate. And it is a test in the only sense that matters — it can be wrong, out loud, in front of everyone, before a line of code has been written.
+</TicketBlock>
+
+That list is the story's definition of done, agreed while it is still cheap to disagree. It settles in advance the argument most teams have at the end, when the work is finished and somebody has to decide whether it counts.
+
+Writing it is also how the questions arrive. Nobody thinks about a 60,000-row export while describing the feature. Somebody thinks about it while writing the fourth line, three days before the sprint, which is the cheapest moment that question will ever be asked.
 
 The teams that dropped the story layer didn't drop paperwork. They dropped the red step. Then they wondered why "done" kept turning out to be an opinion.
+
+## The test cases
+
+Criteria say what must be true. They don't say how anybody finds out, and the gap between those two is where a sprint's worth of assumptions usually lives. A test case closes it: what you would actually do, with the numbers filled in, and what you would see.
+
+<TicketBlock label="Test cases">
+
+- Select a month with 4,000 tickets, export, open the file: 4,000 rows and a header.
+- Select a range with no tickets: the file downloads and contains only the header row.
+- Close a ticket dated after the range ends, export again: the row is absent.
+- Select a range with 60,000 tickets: no browser download, an email arrives with the file.
+
+</TicketBlock>
+
+If your team runs its cases through tooling, the same case goes into the shape that tooling wants, without changing meaning.
+
+<TicketBlock label="The same case, in given / when / then">
+
+- Given the selected range contains 60,000 tickets
+- When the support lead runs the export
+- Then no file downloads in the browser
+- And an email arrives with the file attached
+
+</TicketBlock>
+
+Same case, more scaffolding. One of these is executable if something is there to execute it, and both are worth exactly as much as the thinking that went into the line. The grammar is optional. The sentence is not.
+
+Written on the story rather than discovered later, these do two jobs at once. QA has the test plan without reverse-engineering intent from the pull request or asking a developer what the ticket meant. And the developer knows which tests the work has to pass before choosing how to build it — which is a different thing from finding out afterwards. A case you know about in advance shapes the implementation. A case that turns up in review changes the schedule.
+
+Nothing about any of this is expensive. It took less time to write than the meeting where we argued about the estimate. And it is a test in the only sense that matters — it can be wrong, out loud, in front of everyone, before a line of code exists.
 
 ## The question a machine doesn't ask
 
