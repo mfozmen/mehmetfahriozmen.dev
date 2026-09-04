@@ -54,6 +54,7 @@ Rules:
 - Deadpan humor is welcome but never forced — if it doesn't come naturally, skip it
 - Never: "In this article, we will explore..." / "Let's dive in!" / "Without further ado"
 - Never use "journey" or "game-changer" or "dive deep"
+- Plain sentences over constructed ones. If a sentence has to be re-read to be parsed, split it. One idea per sentence, concrete nouns over abstractions — the same bar as Field Notes (see the blog-writer skill, "Sentence Mechanics").
 
 ### Section Headings
 - Use `##` (h2) for section titles — they render as mono uppercase with terminal prompt icon
