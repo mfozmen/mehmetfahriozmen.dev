@@ -24,7 +24,7 @@ You cannot blame the people ignoring it.
 
 There's nothing in there to read *for*. It isn't a specification that got messy; it's a pile with no claim about which part is still true, and it grows, and every new entry makes the pile slightly less worth opening than it was.
 
-We estimated it in a room anyway. Five points, someone said, and nobody argued, because arguing would have required knowing what it was. The developer picked it up on Monday and picked one of the two readings, the reasonable one, the one the description supported, the one that had been dead since June. QA tested what they could infer from the pull request. The product owner saw it on Thursday and said that wasn't what they meant.
+We estimated it in a room anyway. Five points, someone said, and nobody argued, because arguing would have required knowing what it was. The developer picked it up on Monday and picked one of the two readings, the reasonable one, the one the description supported, the one that had been dead since June. QA tested what they could infer from the pull request. The product owner saw it when it was finished and said that wasn't what they meant.
 
 Nobody had done anything wrong. There was no version of that ticket where they could have.
 
@@ -70,7 +70,7 @@ Somebody answered a required field once, in 2023, and no one has been able to cl
 
 ## The user stories
 
-Everything in a backlog starts as somebody's problem. A customer can't get their numbers out of the system before the board meeting. A support lead answers the same question four times a week and would like to stop. Nobody arrives with an epic, a story or a task. They arrive with a difficulty, described in their own words, with no edges on it.
+Everything in a backlog starts as somebody's problem. A customer can't get their numbers out of the system before the board meeting. A support lead answers the same question every other day and would like to stop. Nobody arrives with an epic, a story or a task. They arrive with a difficulty, described in their own words, with no edges on it.
 
 Planning is the work of putting the edges on. You ask what they need, which is the easy half, and then you ask where it begins and ends, who it is for, and what will be true when it works. *Get the data out* is a need. *A support lead can download last month's tickets as a CSV from the reports page* is a need with borders around it, and the distance between those two sentences is the job.
 
@@ -96,6 +96,8 @@ Nobody sets out to do that. It happens because output is easy to see and outcome
 
 Written down, that sentence is the only artifact the whole team can agree on without reading code. Product can check it says what they meant, QA can test it without asking anyone what the ticket was about, and the developer can build against it and know when to stop.
 
+## The layer we kept in our heads
+
 None of that is difficult. It is, however, writing, and in the room writing never feels necessary: everyone has just heard the same explanation and nodded at the same time, and putting it in the ticket feels like taking minutes of your own conversation.
 
 So it doesn't get written. But dropping the story doesn't delete it, it relocates it — into people's heads, where it is stored for free, retrieved instantly, and copied badly. Eight people leave that meeting with eight private versions of the feature, all of them reasonable, none of them written down. Product remembers what they meant, which is not the same as what they said.
@@ -106,7 +108,7 @@ And the meeting is never the day the work starts. You groom on Thursday, the spr
 
 Then the work gets built at the resolution of whoever was holding it. Not to a spec, there isn't one, but as far as each person understood it — which describes almost every feature any of us has shipped. Where two copies matched, it came out fine. Where they diverged, it came out as a bug that everyone can explain and nobody can be blamed for.
 
-So the cost didn't go anywhere. The sprint paid it twice: once to build the wrong reading, once to build it again after Thursday — the most expensive way anyone has ever found to ask a clarifying question.
+So the cost didn't go anywhere. The sprint paid it twice: once to build the wrong reading, once to build it again after product saw it — the most expensive way anyone has ever found to ask a clarifying question.
 
 What we thought we were skipping was documentation. What we were actually skipping was the part where you say, out loud and in advance, how you will know this thing works.
 
@@ -159,8 +161,6 @@ Same case, more scaffolding. One of them is executable if something is there to 
 
 Written on the story rather than discovered later, these do two jobs at once. QA has the test plan without reverse-engineering intent from the pull request or asking a developer what the ticket meant. And the developer knows which tests the work has to pass before choosing how to build it — which is a different thing from finding out afterwards. A case you know about in advance shapes the implementation. A case that turns up in review changes the schedule.
 
-Which is where the whole thing turns familiar, if you write code for a living.
-
 Test-driven development has one uncomfortable instruction and the rest is detail: write the failing test first. Not because the test is valuable on its own, but because you cannot write it without deciding what "done" means, and deciding that before the code exists is the entire trick. The red bar is a definition with a timestamp.
 
 A criterion and its cases are that same instruction, one layer up, aimed at behavior instead of a function. They can be wrong, out loud, in front of everyone, before a line of code exists. They cost less than the meeting where we argued about the estimate. And they were sitting in the story template the whole time, written in English, which is probably why nobody noticed they were tests.
@@ -207,7 +207,7 @@ Working this way turns a startling amount of conversation into text. The scope t
 
 Keeping it in our heads was never easy. It was free, which is a different thing.
 
-People have lives. Somebody's kid gets sick. Somebody has a good weekend, or a bad one. Somebody takes two weeks off and comes back to four hundred emails. Somebody spends Tuesday on a production incident and never gets back to the feature. None of that is unusual. But after any of it, the details of a half-described feature are simply gone, and what's left is a rough shape and a feeling of having agreed to something.
+People have lives. Somebody's kid gets sick. Somebody has a good weekend, or a bad one. Somebody takes two weeks off and comes back to four hundred emails. Somebody spends a day on a production incident and never gets back to the feature. None of that is unusual. But after any of it, the details of a half-described feature are simply gone, and what's left is a rough shape and a feeling of having agreed to something.
 
 It also worked for exactly as long as everyone who mattered was in the room. Remote work took the room away. Agents took the head. An organization that settles things in the air now has its most productive contributor sitting outside every conversation where anything gets settled.
 
