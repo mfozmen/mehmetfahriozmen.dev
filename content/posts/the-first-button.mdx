@@ -1,6 +1,6 @@
 ---
 title: "The First Button"
-date: "2026-09-02"
+date: "2026-09-04"
 slug: "the-first-button"
 coverImage: "/writing/the-first-button/cover.webp"
 description: "The planning stage everyone skips because it looks like paperwork — epics that never close, stories kept in heads, and the bill that arrives later."
@@ -12,11 +12,11 @@ description: "The planning stage everyone skips because it looks like paperwork 
 
 ## The ticket
 
-One issue for the whole feature, and it was called `Export issue`.
+One issue for the whole feature, and it was called `Export`.
 
 There were three others in the backlog with almost the same name.
 
-That title is the field everybody sees and nobody writes. It's the line in the board, the search result, the notification, the thing a person scans when they're deciding whether this concerns them. It gets less thought than the branch name somebody will type for it an hour later. For about two days it works, because the person who typed it still remembers what they meant. After that it's a string. I have watched the author of a ticket open their own ticket and go quiet.
+That title is the field everybody sees and nobody writes. It's the line in the board, the search result, the notification. It's what a person scans when they're deciding whether this concerns them. It gets less thought than the branch name somebody will type for it an hour later. For about two days it works, because the person who typed it still remembers what they meant. After that it's a string. I have watched the author of a ticket open their own ticket and go quiet.
 
 Under it, the description and the comments. Not a discussion, whatever the threading implies — nobody was really reading. The ticket had become a shared notebook that people wrote in and nobody read: what a customer does when the file is too large, a proposed index on a table, a screenshot with an arrow on it, an argument about naming settled by whoever replied last, a decision somebody made alone on a Tuesday and dropped in as a sentence. A handful of comments, none of them addressed to anyone.
 
@@ -36,17 +36,19 @@ Nobody created that on purpose, exactly. The board required an epic on every iss
 
 That's the mechanism behind most of them. Not a planning decision, a required field. And once the container exists it never has to justify itself again, because everything vaguely qualifies — the same way `Tech Debt`, `Maintenance` and `Bugs` qualify for whatever lands near them. Nobody files the last bug.
 
+![Two hundred issues in. Still nowhere near the last one.](/writing/the-first-button/never-closes.webp)
+
 The better-dressed version is the topic epic. `Authentication`, `Payments`, `Search`, `Platform` — these look like planning. They name real parts of the product, they hold work that genuinely belongs together, and they close exactly as often as `New Improvements` does, because a product doesn't stop having authentication.
 
 Underneath both sits the same belief, held quietly and almost everywhere: an epic is where the big work goes. Big is the criterion.
 
 An epic isn't a big thing. It's a finishable thing, and two properties make it one.
 
-It sits inside a timeframe you could say out loud. A few sprints. This quarter. Before the release in March. Every epic that never closes is quietly scheduled for the only other option, which is forever, and forever cannot be planned around, committed to, or reported on by anyone.
+It sits inside a timeframe you could say out loud. A few sprints. This quarter. Before the summer release. Every epic that never closes is quietly scheduled for the only other option, which is forever, and forever cannot be planned around, committed to, or reported on by anyone.
 
-And it has a stated definition of done — one or two sentences, written before the work starts, that somebody other than the author could check. Without it, closing an epic is a matter of who got tired first.
+And it has a stated definition of done — one or two sentences, written before the work starts, saying what will be true when it's over. Without that, closing an epic is a matter of who got tired first.
 
-Run the backlog past those two, along with the question sitting underneath both — does the title name a piece of work at all — and the sorting goes quickly.
+The test is blunt: if it can never be marked done, it isn't an epic. It's a topic somebody filed as one. Run the backlog past that, and past the question sitting underneath it, which is whether the title names a piece of work at all. The sorting goes quickly.
 
 | Epic | Names the work? | Ends? | Done is checkable? | |
 |---|:---:|:---:|:---:|---|
@@ -62,11 +64,9 @@ Run the backlog past those two, along with the question sitting underneath both 
 
 The last two rows carry it in the title, because the title starts with a verb. `Migrate` and `Add` are things that stop happening. `Payments` isn't.
 
-The test is blunt. If it can never be marked done, it isn't an epic — it's a topic somebody filed as one.
-
 This is the first place the work goes crooked, and it goes crooked quietly, because everything filed underneath inherits the shape of the container above it. Progress stops meaning anything: "New Improvements is 60% done" is noise when the denominator grows every week. And the container outlives everyone who touched it, so two reorgs later nobody in the building can say what done was supposed to look like.
 
-Nobody in that chain was being sloppy. Somebody answered a required field once, in 2023, and no one has been able to close the answer since.
+Somebody answered a required field once, in 2023, and no one has been able to close the answer since.
 
 ## The user stories
 
@@ -90,11 +90,17 @@ It survives because each line does a job, and skipping one is how you find out y
 
 `so that <benefit>` is the line everyone drops, and the only one that can kill the work. It's where somebody gets to say this isn't worth a sprint, or that the same outcome arrives cheaper another way. A story without a benefit is a request nobody is allowed to refuse.
 
+That's where a particular kind of waste comes from, and it's more than anyone counts. A team without benefit lines still ships. It ships steadily, closes tickets, hits its velocity — and some of what it builds is a setting four people will ever open, a screen that duplicates one two clicks away, an option somebody has to maintain now for the next six years. I once watched a quarter go into a feature that had two users in its first month, and one of them was us, checking it worked.
+
+Nobody sets out to do that. It happens because output is easy to see and outcome isn't. Tickets closed is a number you can put on a slide. Whether a support lead stopped answering the same question four times a week is not, unless somebody wrote down that this was the point. Take the benefit line away and a team doesn't become lazy. It becomes busy, which is harder to argue with and worse for everyone.
+
 Written down, that sentence is the only artifact the whole team can agree on without reading code. Product can check it says what they meant, QA can test it without asking anyone what the ticket was about, and the developer can build against it and know when to stop.
 
 None of that is difficult. It is, however, writing, and in the room writing never feels necessary: everyone has just heard the same explanation and nodded at the same time, and putting it in the ticket feels like taking minutes of your own conversation.
 
 So it doesn't get written. But dropping the story doesn't delete it, it relocates it — into people's heads, where it is stored for free, retrieved instantly, and copied badly. Eight people leave that meeting with eight private versions of the feature, all of them reasonable, none of them written down. Product remembers what they meant, which is not the same as what they said.
+
+![One briefing. Four things being built.](/writing/the-first-button/same-meeting.webp)
 
 And the meeting is never the day the work starts. You groom on Thursday, the sprint starts Monday, and in between sits a weekend nobody is obliged to spend thinking about the export feature. That isn't negligence, it's what a weekend is for. What comes back on Monday is the gist, and the first detail to go is the one that belonged to somebody else's job — the qualifier product added for QA, the constraint the backend mentioned for the frontend. Each person keeps their own half and loses the half they were holding for someone else. Someone takes two weeks off mid-sprint and the feature waits entirely, because the only copy of the requirement is on a beach.
 
@@ -106,11 +112,9 @@ What we thought we were skipping was documentation. What we were actually skippi
 
 ## The acceptance criteria
 
-That sentence is a test. It has always been a test. We just weren't in the habit of noticing it, because it was written in English.
+An acceptance criterion is a sentence about the finished thing that somebody who wasn't in the room can judge. Not a description of the work and not a solution to it — a statement that will be plainly true or plainly false once the story is done.
 
-Test-driven development has one uncomfortable instruction and the rest is detail: write the failing test first. Not because the test is valuable on its own, but because you cannot write it without deciding what "done" means, and deciding that before the code exists is the entire trick. The red bar is a definition with a timestamp.
-
-An acceptance criterion is that instruction one layer up, aimed at behavior instead of a function. It's a sentence about the finished thing that somebody who wasn't in the room can check. There is no code yet and there may be no design yet, and the sentence is still specific enough to fail against. The moment for it is exactly here: after everyone agrees what the story is, before anyone starts building it.
+The moment for them is exactly here: after everyone agrees what the story is, before anyone starts building it. There is no code yet and there may be no design yet, and the sentences are still specific enough to argue about, which is the entire point of writing them this early.
 
 <TicketBlock label="Acceptance criteria">
 
@@ -123,9 +127,9 @@ An acceptance criterion is that instruction one layer up, aimed at behavior inst
 
 That list is the story's definition of done, agreed while it is still cheap to disagree. It settles in advance the argument most teams have at the end, when the work is finished and somebody has to decide whether it counts.
 
-Writing it is also how the questions arrive. Nobody thinks about a 60,000-row export while describing the feature. Somebody thinks about it while writing the fourth line, three days before the sprint, which is the cheapest moment that question will ever be asked.
+Writing it is also how the questions arrive. Nobody thinks about a 60,000-row export while describing the feature. Somebody thinks about it while writing the fourth line, three days before the sprint, which is the cheapest moment that question will ever be asked. The alternative isn't that the question goes away. It's that a developer meets it alone, mid-sprint, and answers it by picking whatever seems reasonable at four in the afternoon.
 
-The teams that dropped the story layer didn't drop paperwork. They dropped the red step. Then they wondered why "done" kept turning out to be an opinion.
+A story with criteria can be finished. A story without them can only be stopped, at some point, by somebody deciding it looks finished.
 
 ## The test cases
 
@@ -151,31 +155,69 @@ If your team runs its cases through tooling, the same case goes into the shape t
 
 </TicketBlock>
 
-Same case, more scaffolding. One of these is executable if something is there to execute it, and both are worth exactly as much as the thinking that went into the line. The grammar is optional. The sentence is not.
+Same case, more scaffolding. One of them is executable if something is there to execute it, and both are worth exactly as much as the thinking that went into the line. The grammar is optional. The sentence is not.
 
 Written on the story rather than discovered later, these do two jobs at once. QA has the test plan without reverse-engineering intent from the pull request or asking a developer what the ticket meant. And the developer knows which tests the work has to pass before choosing how to build it — which is a different thing from finding out afterwards. A case you know about in advance shapes the implementation. A case that turns up in review changes the schedule.
 
-Nothing about any of this is expensive. It took less time to write than the meeting where we argued about the estimate. And it is a test in the only sense that matters — it can be wrong, out loud, in front of everyone, before a line of code exists.
+Which is where the whole thing turns familiar, if you write code for a living.
+
+Test-driven development has one uncomfortable instruction and the rest is detail: write the failing test first. Not because the test is valuable on its own, but because you cannot write it without deciding what "done" means, and deciding that before the code exists is the entire trick. The red bar is a definition with a timestamp.
+
+A criterion and its cases are that same instruction, one layer up, aimed at behavior instead of a function. They can be wrong, out loud, in front of everyone, before a line of code exists. They cost less than the meeting where we argued about the estimate. And they were sitting in the story template the whole time, written in English, which is probably why nobody noticed they were tests.
+
+The teams that dropped the story layer didn't drop paperwork. They dropped the red step.
+
+## The tasks
+
+By the time you get here the arguing is over, which is what makes the last layer easy.
+
+The story says what has to be true. The cases say how anyone would check. Everything left is a technical question with a technical answer, so the people who will do the work can answer it themselves, in ten minutes, without product in the room.
+
+<TicketBlock label="Tasks">
+
+- [Backend] Page through the export query and write the CSV
+- [Backend] Send exports over 50,000 rows by email instead of to the browser
+- [Frontend] Date range picker and download button on the reports page
+
+</TicketBlock>
+
+Each of them blocks the story, and that word does more work than it looks. The story can't be verified until these land, and the three of them can run at the same time because they split by discipline. When the sprint slips, that line is where you look first.
+
+Estimating them is possible for the same reason. A task is one thing. Five points on the export ticket was a number attached to a feature nobody had bounded yet. Half a day on *page the query and write the CSV* is a developer estimating work they can see the end of.
 
 ## The question a machine doesn't ask
 
-For a long time this was survivable, because the missing sentence had a backup. A person handed a vague ticket asks at standup. They ask in the hallway. They ask by leaning over a desk and saying *this bit — do you mean the visual editor too?*, and the answer costs four seconds and never gets written down anywhere.
+For a long time this was survivable, because the missing sentence had a backup: somebody asks.
 
-An agent handed the same ticket does not ask. It fills the gap with something plausible, commits it, and the invention surfaces in review, or in production. The failure mode isn't that it gets confused — it's that it doesn't. It reads every comment with nothing marking which parts are current, resolves the contradiction on its own authority, and produces confident code aimed at a target nobody chose.
+A developer picks up the export ticket, gets to the part nobody wrote down, and leans over a desk. *Closed tickets too, or only the ones still open?* Four seconds, one shrug, back to work. The answer never gets written down anywhere and it never needed to be, because the person who needed it had it.
 
-And it has no way to know when to stop. "Am I finished?" is a harder question for a machine than "what do I build?", because without a stated finish line it either stops early or keeps going, adding things nobody asked for, sanding down a feature that was done ten minutes ago. *Done when* is a stopping condition. Acceptance criteria are a verifiable target. The difference between *implement this* and *implement this, and here's how you'll know it worked* used to be a matter of professional courtesy. Now it's the difference between a merged PR and a merged guess.
+An AI agent doesn't lean over anything. Handed the same ticket it fills the gap with something plausible, commits it, and the invention turns up in review, or three weeks later when a support lead's export comes back missing half the rows. The failure mode isn't that it gets confused. It's that it doesn't.
+
+![It never asked which planet.](/writing/the-first-button/wrong-planet.webp)
+
+It also reads everything. A person opens that ticket, skims the pile, decides life is short and goes to ask someone instead. An agent has no such instinct: it loads the arrow screenshot and the naming argument and the decision somebody dropped into the comments in March, none of it marked as current or dead, and then settles the contradiction on its own authority. A story with criteria under it is a smaller room. This behavior, these cases, and nothing else is in scope.
+
+There's also a ceiling. A context window has a bottom, and a long enough ticket reaches it. What gets dropped is whatever nobody marked as mattering, and in a ticket where nothing is marked, that choice is made by luck.
+
+Then there's stopping. "Am I finished?" turns out to be a harder question for a machine than "what do I build?" — with no finish line it stops early, or it keeps going, politely improving a feature that was done ten minutes ago. Criteria are a finish line somebody else wrote down. Test cases are how it checks its own work before handing it over. The difference between *implement this* and *implement this, and here's how you'll know it worked* used to be professional courtesy. Now it's the difference between a merged pull request and a merged guess.
 
 ## Everything has to be written down now
 
-Working this way turns a startling amount of conversation into text. The scope that used to be settled in a hallway becomes a criterion. The ordering that everyone inferred from context becomes an explicit blocker. Everything that used to survive as shared context has to exist as a sentence, in the ticket, before anyone starts — because the fastest worker on the team cannot attend a meeting, cannot read a room, and cannot tell that the description is four months out of date.
+Working this way turns a startling amount of conversation into text. The scope that used to be settled in a hallway becomes a criterion. The order everyone used to infer becomes a line saying which piece has to land first. Everything that survived as shared context now has to exist as a sentence, in the ticket, before anyone starts — because the fastest worker on the team cannot attend a meeting, cannot read a room, and cannot tell that the description was quietly overruled in a comment in June.
 
-Keeping it all in our heads was fast, and it was free, and it worked for exactly as long as everyone who mattered was in the room. Remote work took the room away. Agents took the head: an organization that decides things in the air now has a most productive contributor who is structurally excluded from every decision it makes.
+Keeping it in our heads was never easy. It was free, which is a different thing.
+
+People have lives. Somebody's kid gets sick. Somebody has a good weekend, or a bad one. Somebody takes two weeks off and comes back to four hundred emails. Somebody spends Tuesday on a production incident and never gets back to the feature. None of that is unusual. But after any of it, the details of a half-described feature are simply gone, and what's left is a rough shape and a feeling of having agreed to something.
+
+It also worked for exactly as long as everyone who mattered was in the room. Remote work took the room away. Agents took the head. An organization that settles things in the air now has its most productive contributor sitting outside every conversation where anything gets settled.
 
 So the writing goes up. Not a wiki that rots in a corner: the decisions, at the moment they're made, in the place the work lives. It reads like overhead right up until you count how many meetings existed only to re-derive something somebody had already worked out and never written down.
 
-The team that writes its acceptance criteria has, without anyone announcing it, started doing BDD. They will not call it that. Half of them will tell you they don't have time for BDD.
+That third block earlier, the given / when / then one, has a name: behavior-driven development. A team that writes its criteria this way has started doing BDD without anyone announcing it. They will not call it that. Half of them will tell you they don't have time for BDD.
 
 ## Nobody does it by hand
+
+What still surprises me is how rare any of this is. Not rare among teams cutting corners — rare more or less everywhere. I've watched it go missing in teams shipping to millions of users, in companies whose engineering blog I'd read admiringly the month before, in places with a Jira admin and a QA chapter and a process document nobody had opened since their first week. The stories lived in people's heads there too. What separated those teams from the ones I'd have called careless wasn't the planning. It was that they were better at absorbing what the missing planning cost them.
 
 The cure was never a secret. Every agile book has had it for twenty years, and every team I've worked on has agreed with it in principle, in a meeting, on a Tuesday, and then not done it — because by hand it's a couple of hours of careful writing per feature, and the ticket is right there, and the sprint starts tomorrow.
 
@@ -185,8 +227,6 @@ That gap is the only reason I wrote [Groomie](https://github.com/mfozmen/groomie
 
 If the first button goes into the wrong hole, every button after it is wrong too, and nothing looks wrong until the last one has nowhere to go. That's what makes this hard to argue for in a planning meeting: at the top of the shirt, skipping it genuinely looks like speed.
 
-None of this is new discipline. It's the same discipline, in the same books, that teams have been skipping since before any of us had an agent open in a second terminal.
-
-What changed is what skipping it costs. Ambiguity used to cost a conversation, and the fact that nobody wrote the answer down was a rounding error we could afford for twenty years.
+What changed is what skipping it costs. Ambiguity used to cost a conversation, and the fact that nobody wrote the answer down was a rounding error we could afford for as long as any of us had been doing this.
 
 We can't afford it now, and the interesting part is that nothing had to go wrong for that to become true. The machine didn't break the process. It just stopped covering for the parts we never finished.
