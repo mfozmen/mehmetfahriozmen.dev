@@ -35,6 +35,11 @@ describe("buildLlmsTxt", () => {
     expect(txt).toContain(`${SITE}/sitemap.xml`);
   });
 
+  it("escapes a closing bracket in a title so the markdown link survives", () => {
+    const txt = buildLlmsTxt([{ title: "Lab Day: Arrays [1]", slug: "arrays", description: "d", date: "2026-01-01" }], []);
+    expect(txt).toContain(`- [Lab Day: Arrays [1\\]](${SITE}/writing/arrays): d`);
+  });
+
   it("puts newest writing first", () => {
     const txt = buildLlmsTxt([...posts].reverse(), lab);
     expect(txt.indexOf("the-first-button")).toBeLessThan(txt.indexOf("the-ant-colony"));
