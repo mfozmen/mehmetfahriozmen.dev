@@ -73,6 +73,19 @@ Every post opens with a blockquote. Rules:
 > What they don't mention — the old one hasn't finished collapsing yet.
 ```
 
+### Sentence Mechanics
+
+- **Never start a sentence with "Or."** It reads as a dropped fragment rather than a deliberate cut. Rewrite it as a full sentence, or fold it into the preceding one. Sentence-initial **"And"** and **"But"** are in-register and used throughout the corpus (*the-ant-colony*, *the-moon-again*, *the-nuclear-reactor-in-your-codebase*); "Or" appears in none of them. Check every draft for `^Or ` and `. Or ` before review.
+
+- **Plain sentences over constructed ones.** If a sentence has to be re-read to be parsed, it fails, however elegant it is. Symptom: an abstraction carrying a clever relative clause. Cure: say the lived version in short sentences.
+
+  > ❌ "Developers aren't storage. They're people who were mid-thought when the calendar interrupted them."
+  >
+  > ✅ "People have lives. Somebody's kid gets sick. Somebody takes two weeks off and comes back to four hundred emails. Somebody spends Tuesday on a production incident and never gets back to the feature."
+
+- **Never write from the middle of a book.** No sentence should assume the reader is still holding three earlier clauses in mind. One idea per sentence; break long ones at the natural "and" or "because" seam. Concrete everyday events beat abstract nouns — the sick kid and the two weeks off, not "attention", "working memory" or "cognitive load". Read it aloud: if you have to slow down to keep the referents straight, split it.
+
+
 ### Section Headings
 
 - Use `##` (h2) for section titles
@@ -97,6 +110,31 @@ Every post opens with a blockquote. Rules:
 - Max 1-2 per post besides the opening quote
 - Never repeat a sentence from the body text
 - Place far from inline images (both are "pause" moments)
+
+### TicketBlock — backlog artifacts
+
+`<TicketBlock>` renders an artifact lifted out of a ticket: acceptance criteria, test cases, a task list, a `Done when` line. It is the third block type on the site, and the three do not overlap:
+
+| Block | Use for | Reads as |
+|---|---|---|
+| Code block (``` ```) | Code, config, terminal output — anything a reader would run | Executable |
+| `MdxBlockquote` (`>`) | A pause in the prose: an overheard line, a story sentence, an epigraph | Atmosphere |
+| `TicketBlock` | Something a reader could paste into their own backlog | Artifact |
+
+Choosing wrong is the common mistake: acceptance criteria in a code block claim to be runnable, and in a blockquote they claim to be a pause. They are neither.
+
+Authoring is a plain markdown list as children — blank lines around the list are required, and props other than `label` are not supported (MDX does not pass array props):
+
+```mdx
+<TicketBlock label="Acceptance criteria">
+
+- The export covers the selected date range and nothing outside it.
+- A range with no tickets still produces a file, headers only.
+
+</TicketBlock>
+```
+
+`label` is sentence case, short, and names the artifact ("Acceptance criteria", "Test cases", "The same case, in given / when / then"). Component lives at `components/writing/TicketBlock.tsx` and is registered for both `/writing` and `/lab`.
 
 ### Code Blocks
 
@@ -294,6 +332,18 @@ Only scene changes."
 - Deadpan black humor — disaster presented as completely normal
 - Single clear joke readable at a glance, rewards closer inspection
 - The astronaut is never alarmed — that's the joke
+
+### Replacing an image that already has a URL
+
+Next's image optimizer caches by URL, not by file content. If you overwrite `cover.webp` (or any image the dev server has already served), the page keeps showing the **old** image — `X-Nextjs-Cache: HIT` — even after a browser hard reload, and `curl` will lie to you because it gets a different (JPEG) cache entry than the browser (WebP/AVIF). Deleting `.next/cache/images` while the server is running fails silently (files are locked).
+
+The only reliable sequence:
+
+1. Stop every node process (`Get-Process node | Stop-Process -Force`).
+2. Delete `.next` entirely.
+3. `npm run dev` again.
+
+Then verify with the browser, not curl. Budget for this every time an existing image path gets new bytes.
 
 ### Placement
 - No fixed limit on count — effectiveness is the only criterion

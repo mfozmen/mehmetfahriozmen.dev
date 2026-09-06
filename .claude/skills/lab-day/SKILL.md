@@ -54,6 +54,7 @@ Rules:
 - Deadpan humor is welcome but never forced — if it doesn't come naturally, skip it
 - Never: "In this article, we will explore..." / "Let's dive in!" / "Without further ado"
 - Never use "journey" or "game-changer" or "dive deep"
+- Plain sentences over constructed ones. If a sentence has to be re-read to be parsed, split it. One idea per sentence, concrete nouns over abstractions — the same bar as Field Notes (see the blog-writer skill, "Sentence Mechanics").
 
 ### Section Headings
 - Use `##` (h2) for section titles — they render as mono uppercase with terminal prompt icon
@@ -89,6 +90,31 @@ Rules:
   ` ` `
   </MarkdownDemo>
   ```
+
+### TicketBlock — backlog artifacts
+
+`<TicketBlock>` renders an artifact lifted out of a ticket: acceptance criteria, test cases, a task list, a `Done when` line. It is the third block type on the site, and the three do not overlap:
+
+| Block | Use for | Reads as |
+|---|---|---|
+| Code block (``` ```) | Code, config, terminal output — anything a reader would run | Executable |
+| `MdxBlockquote` (`>`) | A pause in the prose: an overheard line, a story sentence, an epigraph | Atmosphere |
+| `TicketBlock` | Something a reader could paste into their own backlog | Artifact |
+
+Choosing wrong is the common mistake: acceptance criteria in a code block claim to be runnable, and in a blockquote they claim to be a pause. They are neither.
+
+Authoring is a plain markdown list as children — blank lines around the list are required, and props other than `label` are not supported (MDX does not pass array props):
+
+```mdx
+<TicketBlock label="Acceptance criteria">
+
+- The export covers the selected date range and nothing outside it.
+- A range with no tickets still produces a file, headers only.
+
+</TicketBlock>
+```
+
+`label` is sentence case, short, and names the artifact ("Acceptance criteria", "Test cases", "The same case, in given / when / then"). Component lives at `components/writing/TicketBlock.tsx` and is registered for both `/writing` and `/lab`.
 
 ### Visual Content
 - No Field Notes-style illustrations or cartoons inside Lab Day posts

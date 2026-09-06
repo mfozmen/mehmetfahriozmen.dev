@@ -83,7 +83,9 @@ Two content sections with separate routes:
 - **Field Notes** (`/writing`) — essays in `content/posts/*.mdx`
 - **Lab Day** (`/lab`) — technical guides in `content/lab/*.mdx`
 
-Prefer the existing shared components in `components/` (PageShell, SectionTitle, BackLink, ShareRow, CodeBlock, …) over new one-off ones.
+Prefer the existing shared components in `components/` (PageShell, SectionTitle, BackLink, ShareRow, CodeBlock, TicketBlock, …) over new one-off ones.
+
+`TicketBlock` (`components/writing/TicketBlock.tsx`) renders backlog artifacts inside MDX — acceptance criteria, test cases, task lists. Use it instead of a code block (which promises runnable code) or a blockquote (which promises a pause in the prose). Children are a markdown list; MDX does not pass array props, so only `label` is a prop.
 
 Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 posts) → DeepSpaceFooter → Footer
 

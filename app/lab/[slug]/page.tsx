@@ -17,6 +17,7 @@ import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypePrettyCodeOptions from "@/lib/rehypePrettyCode";
 import remarkGfm from "remark-gfm";
+import TicketBlock from "@/components/writing/TicketBlock";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 
@@ -67,6 +68,7 @@ const mdxComponents = {
   th: MdxTh,
   td: MdxTd,
   MarkdownDemo: MarkdownDemoServer,
+  TicketBlock,
 };
 
 export function generateStaticParams() {
