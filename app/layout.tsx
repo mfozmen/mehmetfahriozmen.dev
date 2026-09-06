@@ -68,7 +68,7 @@ function JsonLd() {
     ],
     knowsAbout: [
       "Backend Architecture", "Distributed Systems", "Engineering Leadership",
-      "Node.js", ".NET", "Golang", "PostgreSQL", "Kafka", "Docker", "Kubernetes",
+      "Node.js", ".NET", "PHP", "Laravel", "Java", "Golang", "PostgreSQL", "Kafka", "Docker", "Kubernetes",
     ],
   };
 

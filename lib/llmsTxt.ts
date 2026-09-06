@@ -24,7 +24,7 @@ const HEADER = `# mehmetfahriozmen.dev
 - Email: contact@mehmetfahriozmen.dev
 
 ## Key Expertise
-- Backend architecture (Node.js, .NET, Golang, Java)
+- Backend architecture (Node.js, .NET, PHP/Laravel, Java, Golang)
 - Distributed systems (Kafka, RabbitMQ, microservices)
 - Cloud infrastructure (AWS, Azure, Docker, Kubernetes)
 - Databases (PostgreSQL, Elasticsearch, Redis, MSSQL)
