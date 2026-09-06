@@ -344,9 +344,9 @@ export const cvSkills: CvSkillCategory[] = [
     items: [
       "Node.js",
       ".NET",
-      "SpringBoot",
-      "PHP",
       "Laravel",
+      "PHP",
+      "SpringBoot",
       "Golang",
       "GraphQL",
       "REST",
