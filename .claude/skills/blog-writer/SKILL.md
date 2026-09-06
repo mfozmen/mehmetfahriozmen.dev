@@ -354,18 +354,48 @@ Then verify with the browser, not curl. Budget for this every time an existing i
 
 ## Part 4: Social Sharing
 
-### LinkedIn
-- 3-4 sentences max
-- Personal hook + twist + "I wrote about why/what" + link
-- No spoilers — don't give away the post's best lines
+The share text is not a summary of the post. It is the author, in his own voice, telling a peer why he wrote it. Get the voice wrong and the content doesn't matter — the author rejects drafts on voice first, content second.
+
+### Voice (non-negotiable)
+
+- **The author does this work. He is not confessing.** Never open with "I've skipped this myself" or any self-deprecating admission that undercuts the expertise. The stance is: *I do this properly, it isn't hard, and it still surprises me how few teams do.* Surprise at rarity, never guilt.
+- **Humanize means warm and direct, not soft.** First person, concrete scenes, a question at the end. It does not mean hedging, apologising, or making the practice sound optional.
+- **Keep the credibility details.** "Not sloppy teams — good ones, shipping to millions, with a QA chapter and a Jira admin" survived every trim. Specifics that establish *who* skips this (strong teams) are what make the observation land; a compressed "good teams, too" reads thinner and was passed over.
+- **Name the know-how.** List the actual artifacts the post teaches, plainly, as a mini table of contents: *an epic that can actually close, a story with a real benefit line, acceptance criteria written before anyone opens an editor.* This is what sells a technical reader; wit alone does not.
+- **End with an invitation, not an announcement.** "Would like to hear if it matches what you see in your teams." Dialogue, not broadcast.
+- **No spoilers.** Never quote the post's best lines. Paraphrase the scene loosely (the four-people-four-versions image is fine; "it's that it doesn't" and "merged guess" are not).
+
+### LinkedIn — shape that worked
+
+Three short paragraphs, ~110–140 words. The "3–4 sentences" cap from earlier posts is too tight for a know-how essay; length is fine as long as every sentence is concrete.
+
+1. **The surprising observation + a scene.** What the author keeps seeing, who it happens to, one lived image.
+2. **What I do, why it's cheap, why now.** The artifacts by name, the cost ("half an hour"), and the AI turn in one clause.
+3. **"I wrote it up, with the examples I actually use" + a question.**
+
+Exemplar (used for *The First Button*, 2026-09-06):
+
+> Something that still surprises me: how few teams actually write their stories down. Not sloppy teams — good ones, shipping to millions, with a QA chapter and a Jira admin. The feature gets explained in a meeting, everyone nods, and by Monday it lives in four people's heads in four slightly different versions.
+>
+> I've been doing this properly for years and it's not hard. An epic that can actually close. A story with a real benefit line. Acceptance criteria written before anyone opens an editor. Half an hour of writing that saves a sprint of rework — and now that AI agents do a big part of the building, the cost of skipping it stopped being a conversation and became a merged pull request.
+>
+> I wrote the whole thing up, with the examples I actually use. Would like to hear if it matches what you see in your teams.
 
 ### X/Twitter
-- 2 sentences + link
-- Punchier hook, less explanation
 
-### Rules
-- Timing is free — share as soon as the post is live; both platforms on the same day is fine
-- No forced pop culture references without context
+- 2–3 sentences + link. Same stance, compressed: the surprise, the scene, "wrote up how".
+- Drop the credibility list; keep "good teams, too".
+
+### Turkish version
+
+- Offer it as a **separate** post, never a bilingual one. Same structure, same stance; keep the English artifact names (`epic`, `story`, `acceptance criteria`, `so that`) — that is how the audience says them.
+
+### Process
+
+- Expect 2–3 rounds. First draft is usually rejected on voice ("more humanize"), then on length ("okunsun"). Draft the confident-practitioner version first; it saves a round.
+- Timing is free — share as soon as the post is live; both platforms on the same day is fine.
+- Before sharing, check the OG card once (LinkedIn Post Inspector, X Card Validator) — a wrong card cached on first share is painful to fix.
+- No forced pop culture references without context.
 
 ---
 
