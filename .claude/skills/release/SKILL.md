@@ -53,6 +53,14 @@ gh run list --limit 4                    # tag run = GitHub Release; main run = 
 ```
 The GitHub Release and Vercel prod deploy are created by CI on the tag/main push — in-progress is expected; no further action needed.
 
+## Verifying a route or content change
+
+Vercel **preview** deployments are behind deployment protection: `curl` on the preview URL returns `302` to a login page, so you cannot verify a PR's output there from the shell. Verify **after** the release, on production, with a short poll — prod typically serves the new version 60–90 s after `release-it` finishes:
+
+```bash
+for i in $(seq 1 24); do curl -s https://mehmetfahriozmen.dev/llms.txt | grep -q "<new slug>" && { echo live; break; }; sleep 10; done
+```
+
 ## Common mistakes
 
 - **Releasing before the merge is confirmed.** Always merge the PR, then `git pull origin dev`, and verify the new commit BEFORE `release-it`. (Project rule + lived gotcha.)

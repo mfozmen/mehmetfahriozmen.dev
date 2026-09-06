@@ -160,6 +160,18 @@ Code blocks are rare in Field Notes essays but work when needed.
 
 Do NOT manually create: sitemap entry, Article JSON-LD, OG/Twitter meta tags, OG image, RSS feed entry, BreadcrumbList JSON-LD, reading time, post navigation.
 
+### SEO and AI search — what a post actually gets
+
+Everything below is automatic per post; never hand-write it: sitemap entry, Article + BreadcrumbList JSON-LD, OG/Twitter meta (`og.webp` picked up by path), RSS item, canonical, and a line in `/llms.txt` (a generated route — `lib/llmsTxt.ts` — so a new post is listed by construction; a test fails if it isn't).
+
+What moves discoverability, in order:
+1. **H2 headings that name the artifacts** ("The user stories", "The acceptance criteria", "The test cases"). Headings are the strongest on-page keyword signal and they are already in-register.
+2. **The `description`** — it is the meta description; make sure the searchable nouns are in it (epics, user stories, acceptance criteria), not only the mood.
+3. **TicketBlocks and tables** — passage-level, quotable artifacts are what AI answer engines lift. This is the essay's GEO advantage; keep them.
+4. **Bold does nothing.** Google barely weights `<strong>`, and this voice doesn't use it. Never bold for SEO.
+
+An essay title ("The First Button") carries no search intent, and that is the right editorial call. If a post needs a searchable `<title>`/OG title without changing the H1, the option is an optional `seoTitle` frontmatter field consumed only by `buildArticleMetadata` — not implemented yet; propose it per post rather than assume it.
+
 ### Deployment Checklist
 
 1. Branch created (never commit to main)
