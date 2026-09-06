@@ -44,7 +44,7 @@ const HEADER = `# mehmetfahriozmen.dev
 - [Groomie](https://github.com/mfozmen/groomie): Claude Code plugin that turns a messy Jira issue into an epic → user stories → technical tasks breakdown`;
 
 // Link text sits inside [...]; a stray "]" in a title would end the link early.
-const linkText = (s: string) => s.replaceAll("]", "\\]");
+const linkText = (s: string) => s.replaceAll("]", String.raw`\]`);
 
 function entryLine(section: string, post: LlmsEntry): string {
   return `- [${linkText(post.title)}](${SITE_URL}/${section}/${post.slug}): ${post.description} (${post.date})`;
