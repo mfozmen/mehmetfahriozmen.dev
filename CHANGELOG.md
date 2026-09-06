@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.22.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.21.0...v1.22.0) (2026-09-06)
+
+### Features
+
+* **writing:** add "The First Button" field notes post ([#43](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/43)) ([c3c1d95](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c3c1d9525ca3e204b5a1e3ebf5cb8e17f22e2dd5))
+
 ## [1.21.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.20.0...v1.21.0) (2026-09-01)
 
 ### Features
