@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.23.0...v1.24.0) (2026-09-06)
+
+### Features
+
+* **cv:** rebalance backend skills toward PHP/Laravel ([#50](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/50)) ([cdbf323](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cdbf3231e901198aca8ec0826373c4c5c5a303b8)), closes [#49](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/49)
+
 ## [1.23.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.22.0...v1.23.0) (2026-09-06)
 
 ### Features
