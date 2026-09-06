@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.23.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.22.0...v1.23.0) (2026-09-06)
+
+### Features
+
+* **seo:** generate llms.txt from content and project data ([#45](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/45)) ([06ff9af](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/06ff9afa52d701af4cd723fc7eae42697bd36194))
+
 ## [1.22.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.21.0...v1.22.0) (2026-09-06)
 
 ### Features
