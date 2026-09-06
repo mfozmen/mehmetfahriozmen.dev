@@ -89,6 +89,14 @@ Prefer the existing shared components in `components/` (PageShell, SectionTitle,
 
 Homepage: Hero → Galaxy → FeaturedSystems → LatestSignals (mixed feed, 3 posts) → DeepSpaceFooter → Footer
 
+## Crawler Metadata (SEO / AI search)
+
+Per post, the infrastructure emits sitemap entry, Article + BreadcrumbList JSON-LD, OG/Twitter meta, RSS item and canonical URL automatically — never hand-write these.
+
+`/llms.txt` is a route (`app/llms.txt/route.ts` → `lib/llmsTxt.ts`), not a static file. Posts, Lab Day guides and Notable Systems are generated from `content/` and `data/projects.ts`; `__tests__/llmsTxt.test.ts` fails if a published post is missing or if a static `public/llms.txt` reappears and shadows the route.
+
+**The identity block in `lib/llmsTxt.ts` (`HEADER`) is the only hand-written part and it rots silently.** Whenever the CV, current role, location, profile links or the About page change, update `HEADER` in the same PR. It went stale once already (the role change in 2026 never reached it) — that is why this section exists.
+
 ## Code Blocks
 
 - **Shiki** + **rehype-pretty-code** for server-side syntax highlighting (zero client JS flash)
