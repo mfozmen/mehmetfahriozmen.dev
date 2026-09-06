@@ -73,3 +73,7 @@ When creating or editing MDX files in `content/posts/` (Field Notes) or `content
 - `coverImage` — must be set (Lab Day posts always use `/lab/lab-day-cover.webp`)
 - `date` — ISO format (`YYYY-MM-DD`)
 - `slug` — kebab-case, descriptive, no stop words (Lab Day only)
+
+## License
+
+Code is MIT. Essays and illustrations (`content/`, `public/writing/`, `public/lab/`) are © Mehmet Fahri Özmen, [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) — share with attribution, no commercial use, no derivatives. See [LICENSE](LICENSE).

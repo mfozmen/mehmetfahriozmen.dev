@@ -83,6 +83,8 @@ Two content sections with separate routes:
 - **Field Notes** (`/writing`) — essays in `content/posts/*.mdx`
 - **Lab Day** (`/lab`) — technical guides in `content/lab/*.mdx`
 
+Licensing is split: code is MIT; everything under `content/`, `public/writing/` and `public/lab/` is CC BY-NC-ND 4.0 (see `LICENSE`). New posts and illustrations inherit that automatically — never add a code-style license header to content.
+
 Prefer the existing shared components in `components/` (PageShell, SectionTitle, BackLink, ShareRow, CodeBlock, TicketBlock, …) over new one-off ones.
 
 `TicketBlock` (`components/writing/TicketBlock.tsx`) renders backlog artifacts inside MDX — acceptance criteria, test cases, task lists. Use it instead of a code block (which promises runnable code) or a blockquote (which promises a pause in the prose). Children are a markdown list; MDX does not pass array props, so only `label` is a prop.
