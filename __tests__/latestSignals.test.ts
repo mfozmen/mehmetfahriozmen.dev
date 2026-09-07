@@ -52,4 +52,17 @@ describe("getLatestSignals", () => {
       }
     }
   });
+
+  it("returns 3 newest items, each with a cover; Field Notes covers live under /writing/<slug>/", () => {
+    const items = getLatestSignals();
+    expect(items).toHaveLength(3);
+    const dates = items.map((i) => i.date);
+    expect(dates).toEqual([...dates].sort((a, b) => b.localeCompare(a)));
+    for (const item of items) {
+      expect(item.coverImage).toBeTruthy();
+      if (item.kind === "field-notes") {
+        expect(item.coverImage).toBe(`/writing/${item.slug}/cover.webp`);
+      }
+    }
+  });
 });
