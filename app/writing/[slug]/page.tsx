@@ -10,7 +10,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 import BackLink from "@/components/writing/BackLink";
-import { MdxBlockquote, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
+import { MdxBlockquote, MdxOl, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
 import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -59,7 +59,7 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer, TicketBlock };
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, ol: MdxOl, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer, TicketBlock };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));

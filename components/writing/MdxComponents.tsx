@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
@@ -10,6 +10,24 @@ export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) 
       {children}
     </blockquote>
   );
+}
+
+// Ordered lists appear in Field Notes only as the numbered Sources footnote.
+export function MdxOl({ children }: Readonly<{ children?: ReactNode }>) {
+  let n = 0;
+  const items = Children.map(children, (child) => {
+    if (!isValidElement<{ id?: string; className?: string; children?: ReactNode }>(child) || child.type !== "li") return child;
+    const i = ++n;
+    return cloneElement(child, { id: `src-${i}`, className: "scroll-mt-24 target:text-neutral-200" }, (
+      <>
+        <TrackedAnchor href={`#ref-${i}`} eventName="footnote-return" eventData={{ n: String(i) }} className="mr-1.5 font-mono text-[#BA7517]/70 hover:text-[#BA7517]">
+          {i}.
+        </TrackedAnchor>
+        {child.props.children}
+      </>
+    ));
+  });
+  return <ol className="my-4 space-y-1.5 pl-6 -indent-6 text-[13px] leading-relaxed text-neutral-400">{items}</ol>;
 }
 
 export function MdxTable({ children }: Readonly<{ children?: ReactNode }>) {
@@ -33,6 +51,13 @@ const linkClass = "border-b border-dashed border-[#BA7517]/40 text-[#BA7517] tra
 export function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
   if (!href) return <span className={linkClass}>{children}</span>;
   const text = typeof children === "string" ? children : "link";
+  if (href.startsWith("#")) {
+    return (
+      <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text }} className="text-[#BA7517] no-underline hover:text-[#BA7517]/80">
+        {children}
+      </TrackedAnchor>
+    );
+  }
   if (href.startsWith("http")) {
     return (
       <TrackedAnchor href={href} eventName="outbound-link" eventData={{ href, text }} target="_blank" rel="noopener noreferrer" className={linkClass}>
