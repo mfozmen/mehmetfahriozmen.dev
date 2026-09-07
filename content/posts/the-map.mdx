@@ -18,29 +18,33 @@ I meant it. I also had no idea what writing it down would look like.
 
 Then I spent the summer inside a very large monolith where somebody had, partly, done it.
 
-## The blast radius
+## The agents
 
 The codebase was old enough and big enough that nobody claimed to understand all of it. Ownership was drawn with CODEOWNERS files, so at least every path had a name next to it. That alone put it ahead of most places I've worked.
 
-What I hadn't seen before were the agents. There was one you pointed at a change, and it came back with which other teams depended on the thing you were about to change, and what it would cost them. Not a list of files that imported a module. Teams. Owners. The endpoints they called and the events they listened to. In a monolith where a grep for a function name returned four hundred hits, that agent turned an afternoon of archaeology into a question you asked out loud in the meeting.
+The answer there was to build more agents. Of course it was; this is the AI era.
 
-Another one went after the root cause of a bug instead of the symptom, walking back from the stack trace through the recent changes and the services around them. A knowledge base had indexed the wiki, the repositories and the chat history, and could answer almost anything about the company in seconds, with the link. On top of it sat a chat assistant, which people asked the things they used to ask whoever had been there longest.
+What made them worth writing about is not the models. It is what they were pointed at. One of them you aimed at a change, and it came back with who lives downstream of it. Does this migration touch a table another team reads directly? Does the default value you just added change what a consumer of this endpoint gets back? Is the field you renamed sitting inside an event that two other services listen to? The answer was not a list of files that import a module. It was teams, owners, the endpoints they call and the events they consume. In a monolith where a grep for a function name returns four hundred hits, that is not a small thing.
 
-The first time that first agent answered, the room went quiet the way rooms go quiet when something works better than it should. I have watched a lot of demos. This was not a demo. It was a Tuesday.
+Three more sat next to it. One went after the root cause of a bug instead of the symptom, walking back from the stack trace through the recent changes and the services around them. A knowledge base had indexed the wiki, the repositories and the chat history, and could answer almost anything about the company in seconds, with the link. On top of it sat a chat assistant, which people asked the things they used to ask whoever had been there longest.
 
-And the thing I keep coming back to is that the models underneath were the same models everyone else has. There was nothing special about the intelligence. What was special was what it was allowed to ask.
+The first one is the one I keep thinking about. Someone in a meeting asks who else uses this. Normally that question costs a day: you grep, you read, you ask two people, you come back on Thursday and you are still not sure. Here the answer arrived while the question was still in the air, with team names on it, and the meeting carried on.
+
+The model underneath was the same model everyone else has. The intelligence was not the difference. The difference was that somebody had given the agent somewhere to look.
 
 ## What was underneath
 
-I did not build any of it and I never saw the internals, so what follows is the shape I recognized, not a description of their system.
+Those agents were fast because they were not reading the codebase. They were asking things that already knew it.
 
-Every one of those agents was fast because it was not reading the codebase. It was querying things that already knew the codebase. Ownership came from the CODEOWNERS files, which are just text and can be parsed in a second. Callers came from something that had already walked the code and stored the call graph as a graph, so "who calls this" was a lookup instead of a search. Consumers of an event came from wherever the event schemas were registered. Which services actually talked to which in production came from tracing, which knows things the code does not, because the code does not know what it gets deployed next to. How critical a service was, who was on call for it, and where its runbook lived came from a catalogue.
+Ownership came from the CODEOWNERS files, which are plain text and parse in a second. Callers came from a call graph that had been built in advance, so "who calls this" was a lookup, not a search. Event consumers came from the event schemas. What talks to what in production came from tracing, which knows what the code cannot: the code has no idea what it runs next to. Criticality, who is on call, where the runbook lives, all came from a service catalogue.
 
 None of those sources is exotic. Most mid-sized engineering organizations have all of them, scattered, in five tools nobody has connected. What made the difference was that they had been connected and exposed to the agents as tools: something like *who owns this path*, *who calls this service*, *who consumes this event*, *what tier is this*. The agent did not load the monolith into its context and think hard. It asked six small questions of six systems that each held one true thing, and assembled the answer.
 
 That is also how the knowledge base worked, as far as I could tell from the outside. Connectors into the wiki, the repositories and the chat; an index over all of it; a search that combined plain keyword matching with meaning; and permissions carried through, so it would not tell you what you could not already read. Ask it a question and it retrieved the eight paragraphs that mattered out of ten years of writing and answered from those. The trick was never the answering. The trick was retrieving the right eight paragraphs.
 
-So the wow was not the model. The wow was the map. The agents were only ever as good as what had been written down in a form they could query, and somebody had spent real effort making sure a great deal had been.
+None of this is intelligence. It is plumbing. An agent is only as good as what has been written down in a form it can query, and that part is engineering work like any other.
+
+And once the plumbing exists, the agents built on it should not stay in one team's repository. That is the usual pattern: one team writes a good agent, everyone else keeps doing the work by hand, and the same tool gets written three more times. A company needs an internal marketplace for them, the way it has a package registry. Agents and the tools they call are published there, with what they do and what they are allowed to reach, and any team can install one on its first day instead of building it in its second year. That is the difference between a few engineers who use AI well and a company that builds software with it.
 
 ## Not in the code
 
