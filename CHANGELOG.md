@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.25.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.24.0...v1.25.0) (2026-09-07)
+
+### Features
+
+* **home:** show post covers in Latest Signals on large screens ([#51](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/51)) ([c3725bf](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/c3725bf3a674562a73cfe9725b4240415617d8d0))
+
 ## [1.24.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.23.0...v1.24.0) (2026-09-06)
 
 ### Features
