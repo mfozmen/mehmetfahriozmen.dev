@@ -1,0 +1,161 @@
+---
+title: "The Map"
+date: "2026-09-07"
+slug: "the-map"
+coverImage: "/writing/the-map/cover.webp"
+description: "The AI has the repository and still misreads the system. On the agents that knew who we'd break, what they were reading, and why more context isn't the fix."
+---
+
+> "Who else uses this?"
+>
+> The agent answered before the meeting did.
+
+## The open question
+
+In April I wrote a piece called [The Nuclear Reactor in Your Codebase](/writing/the-nuclear-reactor-in-your-codebase). An agent writes code from whatever fits in its context, and that is all it sees. It does not know where the change lands. It does not know what it breaks on the way. It has the repository, and the repository does not say any of this. I ended that piece without a clean answer. All I had was an instruction: write down what only the senior engineers know, before they leave.
+
+I meant it. I also had no idea what writing it down would look like.
+
+Then I spent the summer inside a very large monolith where somebody had, partly, done it.
+
+## The blast radius
+
+The codebase was old enough and big enough that nobody claimed to understand all of it. Ownership was drawn with CODEOWNERS files, so at least every path had a name next to it. That alone put it ahead of most places I've worked.
+
+What I hadn't seen before were the agents. There was one you pointed at a change, and it came back with which other teams depended on the thing you were about to change, and what it would cost them. Not a list of files that imported a module. Teams. Owners. The endpoints they called and the events they listened to. In a monolith where a grep for a function name returned four hundred hits, that agent turned an afternoon of archaeology into a question you asked out loud in the meeting.
+
+Another one went after the root cause of a bug instead of the symptom, walking back from the stack trace through the recent changes and the services around them. A knowledge base had indexed the wiki, the repositories and the chat history, and could answer almost anything about the company in seconds, with the link. On top of it sat a chat assistant, which people asked the things they used to ask whoever had been there longest.
+
+The first time that first agent answered, the room went quiet the way rooms go quiet when something works better than it should. I have watched a lot of demos. This was not a demo. It was a Tuesday.
+
+And the thing I keep coming back to is that the models underneath were the same models everyone else has. There was nothing special about the intelligence. What was special was what it was allowed to ask.
+
+## What was underneath
+
+I did not build any of it and I never saw the internals, so what follows is the shape I recognized, not a description of their system.
+
+Every one of those agents was fast because it was not reading the codebase. It was querying things that already knew the codebase. Ownership came from the CODEOWNERS files, which are just text and can be parsed in a second. Callers came from something that had already walked the code and stored the call graph as a graph, so "who calls this" was a lookup instead of a search. Consumers of an event came from wherever the event schemas were registered. Which services actually talked to which in production came from tracing, which knows things the code does not, because the code does not know what it gets deployed next to. How critical a service was, who was on call for it, and where its runbook lived came from a catalogue.
+
+None of those sources is exotic. Most mid-sized engineering organizations have all of them, scattered, in five tools nobody has connected. What made the difference was that they had been connected and exposed to the agents as tools: something like *who owns this path*, *who calls this service*, *who consumes this event*, *what tier is this*. The agent did not load the monolith into its context and think hard. It asked six small questions of six systems that each held one true thing, and assembled the answer.
+
+That is also how the knowledge base worked, as far as I could tell from the outside. Connectors into the wiki, the repositories and the chat; an index over all of it; a search that combined plain keyword matching with meaning; and permissions carried through, so it would not tell you what you could not already read. Ask it a question and it retrieved the eight paragraphs that mattered out of ten years of writing and answered from those. The trick was never the answering. The trick was retrieving the right eight paragraphs.
+
+So the wow was not the model. The wow was the map. The agents were only ever as good as what had been written down in a form they could query, and somebody had spent real effort making sure a great deal had been.
+
+## Not in the code
+
+Here is roughly what a change looks like in any system old enough to matter.
+
+```text
+Controller
+    ↓
+Service
+    ↓
+Model
+    ↓
+Event
+   ↙      ↘
+Queue      Listener
+ ↓             ↓
+Service B   Service C
+                ↓
+            Search index
+```
+
+An agent with the repository can find most of this. It can trace the controller to the service, the service to the model, the model to the event. It can find the listener. It may find the queue. Then it runs out of code and the questions do not stop.
+
+Is this event consumed by something outside this repository? Is this behavior business-critical, or is it a leftover that nobody has dared remove? Is the dependency on Service C a technical one, or does another team's quarterly number depend on it? Who owns Service C, and did they agree to this contract or inherit it? Is there production behavior here that no test represents? Is this odd branch historical, or intentional, or both?
+
+Every one of those has an answer. None of the answers is in the code.
+
+The research is starting to say the same thing, from a different direction. A 2026 case study migrated an old VB6 system to modern C# with a coding agent and measured functional equivalence afterwards: around 92% for the simple features, around 47% for the complex ones.<sup id="ref-1" className="scroll-mt-24">[1](#src-1)</sup> The failures were not syntax. The agent ignored behavior hidden in optional parameters and dynamic configuration, and it missed the adjacent modules, the batch jobs and notifications that coexisted with the feature without being named by it. The files were all provided. The system was not.
+
+Scale AI's benchmark of long-horizon engineering tasks made the point numerically. When they removed the human-written requirements and interface descriptions from the problems and left agents with only the repository and the issue, the best model's success rate fell from roughly 23% to roughly 8%.<sup id="ref-2" className="scroll-mt-24">[2](#src-2)</sup> The code had not changed. What had been stated about the code had. And a participant in a 2025 study of experienced maintainers working in their own large repositories said the quiet part plainly: the model doesn't know that we need to take care of this weird case of backwards compatibility.<sup id="ref-3" className="scroll-mt-24">[3](#src-3)</sup>
+
+Nobody wrote that case down. So the model, which can only read, could not read it.
+
+## Too much context
+
+The instinct at this point is to give the agent more. More files, more tokens, a bigger window, the whole wiki, the entire commit history.
+
+It does not work. A study of thirteen models advertising windows of 128,000 tokens or more found that eleven of them dropped below half of their short-context performance by the time the input reached 32,000.<sup id="ref-4" className="scroll-mt-24">[4](#src-4)</sup> Anthropic's own engineering guidance now talks about "context rot" and an "attention budget", and describes the goal as the smallest set of high-signal tokens rather than the largest.<sup id="ref-5" className="scroll-mt-24">[5](#src-5)</sup> The people who build the models are saying that more is not the answer.
+
+There is a sharper finding. Researchers at ETH Zürich tested the repository-level context files that every vendor now recommends, the `AGENTS.md` and `CLAUDE.md` files that describe the codebase to the agent. On real issues, the auto-generated ones made things very slightly worse. The developer-written ones helped by about two points, not enough to be sure it wasn't noise, and both kinds made every task about twenty percent more expensive. Repository overviews, they concluded, are not helpful. What did help was explicit instruction: say which tool to use and the agent uses it.<sup id="ref-6" className="scroll-mt-24">[6](#src-6)</sup>
+
+I read that as good news. It separates two things that get called by the same name. Describing the repository to the agent in prose is not the map. That was tried, and it changes almost nothing. The map is the part the ETH study did not test: who owns this, what breaks if it changes, what must stay true, who has to be in the room. Not more context. A different kind.
+
+[*The First Button*](/writing/the-first-button) was about the boundary of a piece of work: what it is, when it is done. This is about the boundary of the system that piece of work lands in. The first one you can write in an afternoon. The second one is what took that company years.
+
+## The map
+
+What sat next to the code, in the place I described, was roughly this set of layers: architecture, ownership, dependencies, invariants, business flows, operational constraints. None of them lived in one file, and I am not proposing a file. But if you were to write down the smallest version of it for one service, it would look something like this.
+
+```yaml
+service: checkout
+
+owns:
+  - payment_authorization
+  - order_creation
+
+depends_on:
+  - inventory
+  - payment
+  - fraud
+
+critical_paths:
+  - checkout → payment → order
+
+do_not_change_without:
+  - payment-team
+  - load-test
+```
+
+This is only an example. Every organization would draw it differently and most would draw it as a graph, not a document. The point is what it lets the agent reason about. Instead of "here are the files", the agent gets to think: this change touches A, B and C; B crosses a service boundary; that boundary is owned by another team; the change would violate an invariant that team relies on; it therefore needs a migration, and afterwards this one path has to be validated end to end. That is a different job from generating code. It is closer to what a good tech lead does in the first ten minutes of a design review, and it is exactly what that agent did in the meeting.
+
+I should be honest about the evidence. Nobody has published a controlled study showing that a machine-readable map of ownership and invariants improves what agents produce. The closest things are the benchmark above, where writing down what must be true tripled the success rate, and Thoughtworks' work on legacy systems, where they turned code into a graph database first and let the model answer questions against the graph, because, in their words, the mental models existed only in people's heads.<sup id="ref-7" className="scroll-mt-24">[7](#src-7)</sup> What I have is one summer of watching it work. That is an observation, not a result.
+
+## Sideways
+
+AI capability is improving vertically. Better reasoning, better code, longer context, better use of tools. Every quarter the same task gets done better.
+
+The problem in front of a mature system is horizontal. To change one thing safely, the agent needs to see across the repository, then the services around it, then the databases, then the events on the bus, then what actually happens in production, then which teams own which of those, then the business process the whole thing exists to serve, and finally the accumulated knowledge of why any of it is the way it is. Each step outward is a different source with a different owner and a different format, and the last step is not a source at all. It is people.
+
+That is the uncomfortable part. The architecture of a real system is not fully contained in its source. Some of it is in the infrastructure. Some of it is in the data flows. Some of it is in the boundaries between teams, which is to say in the org chart, whether or not anyone drew the org chart on purpose. Some of it is in decisions made in 2019 by someone who left in 2022. A knowledge base that indexes the chat history is, without announcing it, indexing who knew what and who to ask. The agents that impressed me were impressive because somebody had let them read sideways.
+
+## Without the IDE
+
+A thought experiment, not a forecast. Suppose the editor becomes optional: the agent writes and changes the code, and humans describe, review and decide. What becomes mandatory?
+
+Not typing. Not the framework. What becomes mandatory is being able to say what the software means, where its boundaries are, what must not break, and who owns what. An organization that can say those things can hand its codebase to an agent. An organization that cannot has the same agent, and gets what DORA measured in 2025: throughput goes up, stability goes down, and the tooling amplifies whatever the team already was.<sup id="ref-8" className="scroll-mt-24">[8](#src-8)</sup>
+
+Which means the architecture of the organization is becoming part of the context needed to change its software. That sentence would have sounded like consulting five years ago. Now it is a description of what that agent was actually querying.
+
+## Abundant, scarce
+
+For most of my career a senior engineer's value was partly "I know how to write this". That part is being commoditized in front of us, and pretending otherwise helps nobody. Simon Willison put it bluntly this year: delivering new code has dropped in price to almost free, and delivering good code has not.<sup id="ref-9" className="scroll-mt-24">[9](#src-9)</sup>
+
+The part that has not been commoditized is "I know what changing this means to the rest of the system". That knowledge was always the expensive part. It just used to be bundled with the typing, so nobody priced it separately. Now the typing is cheap and the knowledge is exposed, and it turns out most of it was never written anywhere a machine could find it.
+
+Code is becoming abundant. Understanding is staying scarce. The organizations that do well with agents will not be the ones whose agents write the most. They will be the ones that can hand their agents the clearest map of the software they are trusted to change.
+
+## The sixth sense
+
+The reactor piece ended with a line I still believe: trust your sixth sense rather than the perfect machine. The sixth sense was the map. It lived in people who had been there long enough to feel a bad change before they could explain it.
+
+What changed is who is doing the changing. The agent has no sixth sense and cannot grow one; it has whatever we wrote down and nothing else. That sounds like a loss, and it is. It is also the first time the map has had a reader who will actually use all of it.
+
+Maybe the next thing worth building for the agent is not a better tool. Maybe it is an honest description of what our software is.
+
+---
+
+_Sources_
+
+1. [Legacy System Modernization with Coding Agents: A Case Study](https://arxiv.org/abs/2608.28972) — arXiv preprint, 2026. One system, twelve features; functional equivalence 92% on low-complexity, 47% on high-complexity features.
+2. [SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?](https://arxiv.org/abs/2509.16941) — Scale AI, 2025. Removing the human-written requirements and interface specs dropped the best model from 22.7% to 8.2%.
+3. [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) — METR, 2025. Cited for the participant quote only; METR has since described the study's own evidence as weak.
+4. [NoLiMa: Long-Context Evaluation Beyond Literal Matching](https://arxiv.org/abs/2502.05167) — ICML 2025. Eleven of thirteen long-context models fell below half their short-context baseline at 32K tokens.
+5. [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) — Anthropic Engineering, 2025.
+6. [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988) — ETH Zürich / LogicStar, 2026. Generated context files: −0.5 to −2 points; developer-written: +2.4, not significant; cost +20–23%.
+7. [Legacy Modernization meets GenAI](https://martinfowler.com/articles/legacy-modernization-gen-ai.html) — Thoughtworks on martinfowler.com, 2024.
+8. [2025 DORA State of AI-assisted Software Development](https://dora.dev/dora-report-2025/) — Google Cloud, 2025. Survey; correlational.
+9. [Writing code is cheap now](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/) — Simon Willison, 2026.
