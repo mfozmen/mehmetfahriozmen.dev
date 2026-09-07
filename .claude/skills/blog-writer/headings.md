@@ -8,7 +8,9 @@ Headings are read in one pass, from a table of contents or while scrolling. They
 
 > ❌ "The question I left open" → ✅ "The open question"
 >
-> ❌ "The agent that knew who we'd break" → ✅ "The blast radius"
+> ❌ "The agent that knew who we'd break" → ✅ "The agents"
+
+**Name what the whole section is about.** "The blast radius" was a good two-word heading for the impact-analysis agent, and wrong for the section, which covered four agents. Before settling on a heading, check the last paragraph of the section as well as the first.
 
 **Name the thing, don't describe it.** If the section is about impact analysis, use the phrase engineers already say for it. A known two-word term beats an accurate seven-word description — including for non-native readers, who recognise the term but have to parse the description.
 
@@ -39,6 +41,8 @@ Report as a table: heading, word count, verdict, suggested replacement. Do not r
 
 ## Corpus
 
-Good, for calibration: "The meeting room", "What gets caught", "The open question", "The blast radius", "Sideways", "Abundant, scarce", "The map".
+Good, for calibration: "The meeting room", "What gets caught", "The open question", "The agents", "Sideways", "Abundant, scarce", "The map".
+
+These rules are for Field Notes. Lab Day headings render in mono uppercase and have their own limit (under 30 characters, in the lab-day skill); the spirit is the same.
 
 Long ones that survived because the length *is* the joke are rare — if you think you have one, say why before keeping it.

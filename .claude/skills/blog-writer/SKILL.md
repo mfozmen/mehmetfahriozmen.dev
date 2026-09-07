@@ -33,7 +33,7 @@ Every post lives in its own slug directory under `public/writing/`. Never put im
 ---
 title: "Under 60 characters"
 date: "YYYY-MM-DD"
-description: "At least 100 characters — becomes meta description and OG description"
+description: "100–160 characters — becomes meta description and OG description"
 coverImage: "/writing/[slug]/cover.webp"
 ---
 ```
@@ -43,10 +43,7 @@ Validation before every commit:
 - `description` **100–160 characters** — hard gate enforced by `__tests__/posts.test.ts`; outside this range fails `npm test` and blocks commit. Confirm the exact count.
 - `date` valid ISO format
 - `coverImage` path exists and file is present
-- Cover image is WebP, optimized (Squoosh: quality 80, 1200px width for 1200x800 covers)
-- Cover image aspect ratio is 3:2 (e.g., 1200x800)
-- OG image variant generated at `public/writing/[slug]/og.webp` (1200x630).
-  See `docs/og-image-workflow.md` for the manual Photopea workflow.
+- Cover image is WebP, 3:2 (1200x800), and the OG variant exists at `public/writing/[slug]/og.webp` (1200x630). Both come out of `optimize.mjs` (Part 3) — the old manual Squoosh and Photopea steps are retired.
 
 ### Title
 
@@ -101,6 +98,20 @@ Every post opens with a blockquote. Rules:
   >
   > ✅ "Then I spent the summer inside a very large monolith where somebody had, partly, done it."
 
+- **Show the capability through the questions a working engineer asks.** A tool described in the abstract ("it returned which teams depended on the thing you were about to touch") means nothing. Ask the reader's own questions back at them, in their words, and the capability explains itself. Two or three questions; a fourth turns it into a list.
+
+  > ❌ "It came back with which other teams depended on the thing you were about to change, and what it would cost them."
+  >
+  > ✅ "Does this migration touch a table another team reads directly? Does the default value you just added change what a consumer of this endpoint gets back? Is the field you renamed sitting inside an event that two other services listen to?"
+
+- **Check who the first person makes the author in this post.** "I had never seen this before" is a fine, honest line in a post about a discovery — the corpus uses that register often. It fails when the post's authority rests on the author already doing the thing well: there, surprise reads as the junior in the room, and it undercuts every later claim. Decide per post which stance the piece is written from, then keep it consistent.
+
+  > *The Map* is written from "I do this work, and here is what a good version looked like", so: ❌ "What I hadn't seen before were the agents." ✅ "The answer there was to build more agents. Of course it was; this is the AI era."
+
+- **State the obvious move quickly, then move on.** When the reader can predict the answer (in an AI-era post: build agents), do not build suspense around it. Say it flatly, in its own short paragraph, and spend the space on the part that is actually new.
+
+- **A paragraph gets one job.** When a sentence pair concedes something obvious and the next sentences turn to the real subject, split them. Two short paragraphs read faster than one paragraph that changes direction in the middle.
+
 - **Never write from the middle of a book.** No sentence should assume the reader is still holding three earlier clauses in mind. One idea per sentence; break long ones at the natural "and" or "because" seam. Concrete everyday events beat abstract nouns — the sick kid and the two weeks off, not "attention", "working memory" or "cognitive load". Read it aloud: if you have to slow down to keep the referents straight, split it.
 
 
@@ -108,7 +119,7 @@ Every post opens with a blockquote. Rules:
 
 **Headings live in their own file: `headings.md`, next to this one.** Two-to-four words, name the thing instead of describing it, don't spend the punchline, sentence case, plus a standalone audit pass. Read `.claude/skills/blog-writer/headings.md` before naming or renaming any section, and read it alone when the request is only about headings ("başlıkları gözden geçir", "bu başlık uzun mu") — no need to load the rest of this skill. It is the authority; this section does not repeat it.
 
-- Do NOT use `---` horizontal rule separators between sections. One exception: a single `---` before an italic `_Sources:_` footnote at the very end (see *when-everyone-has-a-superpower*). Note: `docs/blog-writing-guide.md` still says to use `---` between sections — that line is outdated; this rule wins.
+- Do NOT use `---` horizontal rule separators between sections. One exception: the single `---` before the `_Sources_` footnote at the very end (see "Sources footnotes" below).
 - Heading hierarchy: h1 (auto-generated title) → h2 (sections) → h3 (rare)
 
 ### Inline Images
@@ -153,6 +164,28 @@ Authoring is a plain markdown list as children — blank lines around the list a
 
 `label` is sentence case, short, and names the artifact ("Acceptance criteria", "Test cases", "The same case, in given / when / then"). Component lives at `components/writing/TicketBlock.tsx` and is registered for both `/writing` and `/lab`.
 
+### Sources footnotes
+
+A post that cites research ends with a numbered, two-way linked footnote. Not a paragraph of links, and not bare URLs in the prose.
+
+In the body, the marker is a superscript link into the footnote:
+
+```mdx
+around 47% for the complex ones.<sup id="ref-1" className="scroll-mt-24">[1](#src-1)</sup>
+```
+
+At the very end of the post, after a single `---`, an italic `_Sources_` line and an ordered list:
+
+```mdx
+---
+
+_Sources_
+
+1. [Title of the paper](https://example.org/paper) — Venue, year. One sentence on what is actually cited, including the caveat if there is one.
+```
+
+`MdxOl` (`components/writing/MdxComponents.tsx`) gives each list item `id="src-N"` and prepends the `N.` back-link to `#ref-N`, so the reader can jump both ways. Numbering is by order of first appearance in the text. Say what each source supports and where it is weak — "correlational", "cited for the participant quote only" — rather than presenting every link as proof.
+
 ### Code Blocks
 
 Writing posts support the full code block system (same as Lab Day):
@@ -191,7 +224,7 @@ An essay title ("The First Button") carries no search intent, and that is the ri
 
 ### Deployment Checklist
 
-1. Branch created (never commit to main)
+1. Branch created off `dev`, PR opened into `dev` (never commit to `dev` or `main` directly)
 2. Frontmatter validates
 3. Images in correct directory and optimized
 4. Build succeeds (`npm run build`)
@@ -273,15 +306,10 @@ Run this dimension on **every** review, automatically — alongside the AI-detec
 **1. Frontmatter description**
 
 - **Length is a hard gate: 100–160 characters.** Enforced by `__tests__/posts.test.ts` ("each post description is between 100 and 160 characters"). A description outside this range fails `npm test` and blocks commit. It cannot be relaxed without editing the test itself — never quietly exceed it. Always confirm the exact character count.
-- **Voice:** deadpan, observational, lived "we" when possible, concrete over abstract. No LinkedIn vocabulary, no aphorisms that flatten into maxims. (Same bar as the body — see the AI-detection dimension.) An established house option is the essayistic "On X, Y, and Z" closing tag (three of seven posts use it: "On perfectionism, team diversity, and earning leadership…") — available, not required.
+- **Voice:** deadpan, observational, lived "we" when possible, concrete over abstract. No LinkedIn vocabulary, no aphorisms that flatten into maxims. (Same bar as the body — see the AI-detection dimension.) An established house option is the essayistic "On X, Y, and Z" closing tag (about half the corpus uses it: "On perfectionism, team diversity, and earning leadership…") — available, not required.
 - **Function:** it earns its place by making a reader who sees *only* the description — link preview, search result, RSS feed — want to click, **without giving the answer.** Good test: would it make someone click without handing them the thesis? Flag descriptions that are pure summary, that spoil a payoff, or that read as SEO filler.
 
-**2. Opening blockquote (empirical convention, derived from existing Field Notes posts)**
-
-- **Length:** 1–2 short paragraph-units, roughly 4–24 words total. (Range across existing posts: "Same shelf. Different apartment." through the ~24-word QA scene fragment in *the-nuclear-reactor-in-your-codebase*.)
-- **Function: tease, never establish.** The blockquote is a compressed hook; the body (or pre-§1 prose / §1 itself) does the establishing work.
-- **Shape:** a single compressed beat — an aphorism, an overheard line, or a scene fragment.
-- **Red flag:** a 3+ paragraph blockquote, or one that narrates a full establishing arc, breaks the convention. That is an epigraph/lead, not the blockquote element — flag it and propose compressing to the tease, or moving it to replace the opening element entirely (a structural choice, not a drop-in).
+**2. Opening blockquote** — the convention lives in Part 1, "Opening Quote Block"; check the draft against it here rather than restating it. The usual failure is a blockquote that establishes instead of teasing, or one over ~24 words.
 
 **3. Title ↔ description ↔ blockquote relationship**
 
@@ -430,7 +458,8 @@ Exemplar (used for *The First Button*, 2026-09-06):
 
 ## Reference: Existing Posts
 
-**Current-voice exemplars — calibrate new posts and reviews against these three:**
+**Current-voice exemplars — calibrate new posts and reviews against these:**
+- `content/posts/the-first-button.mdx` — Planning know-how (epics, stories, acceptance criteria, test cases); the most heavily co-edited post; TicketBlocks and tables inside an essay; plain sentences throughout
 - `content/posts/the-ant-colony.mdx` — Organizational misalignment, lived "we" register, sentence-case headings, sustained metaphor (ant colony), no prescriptive ending
 - `content/posts/the-nuclear-reactor-in-your-codebase.mdx` — AI + systems complexity, extended historical analogy (Chernobyl), "No clean answer" ending
 - `content/posts/the-moon-again.mdx` — Legacy systems via Artemis II; explicitly refuses the advice ending on the page; attribution-style opening blockquote (joke quote + "— every developer…")
@@ -438,18 +467,5 @@ Exemplar (used for *The First Button*, 2026-09-06):
 **Earlier posts — useful for range, but they predate the no-prescription standard (advice endings, bold tip lists, Title Case headings in two):**
 - `content/posts/hardest-refactor.mdx` — Personal narrative, first post; colon-subtitle title; ends with direct advice
 - `content/posts/accidental-engineering-manager.mdx` — AI + management; ends with a bold-led tip list; repeats its opening blockquote verbatim in the body (now a rule violation — rule stands)
-- `content/posts/when-everyone-has-a-superpower.mdx` — Homogeneity + creativity; has the corpus's only `_Sources:_` footnote (after a single `---`)
+- `content/posts/when-everyone-has-a-superpower.mdx` — Homogeneity + creativity; first post to carry a sources footnote, retrofitted in Sept 2026 to the numbered form
 - `content/posts/the-revolution-has-no-manual.mdx` — AI economy, longest post; Title Case headings; has the corpus's only mid-body blockquote
-
----
-
-## Pre-Commit SEO Checklist
-
-When creating or editing blog posts (MDX files in `content/posts/`), verify ALL of the following before committing:
-
-1. **`description`** — at least 100 characters
-2. **`coverImage`** — must be set (non-empty)
-3. **`date`** — must be in ISO format (`YYYY-MM-DD`)
-4. **`title`** — must be under 60 characters
-
-If any check fails, fix it before committing.
