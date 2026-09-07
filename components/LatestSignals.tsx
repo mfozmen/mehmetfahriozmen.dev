@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
 import SectionTitle from "@/components/SectionTitle";
 import { getAllPosts, formatDate, sortByDateDesc } from "@/lib/posts";
@@ -11,6 +12,7 @@ type SignalItem = {
   description: string;
   readingTime: number;
   href: string;
+  coverImage: string;
 };
 
 function StarIcon() {
@@ -38,6 +40,7 @@ export function getLatestSignals(): SignalItem[] {
     description: p.description,
     readingTime: p.readingTime,
     href: `/writing/${p.slug}`,
+    coverImage: p.coverImage,
   }));
 
   const lab: SignalItem[] = getAllLabPosts().map((p) => ({
@@ -48,6 +51,7 @@ export function getLatestSignals(): SignalItem[] {
     description: p.description,
     readingTime: p.readingTime,
     href: `/lab/${p.slug}`,
+    coverImage: p.coverImage,
   }));
 
   return [...writing, ...lab]
@@ -55,15 +59,10 @@ export function getLatestSignals(): SignalItem[] {
     .slice(0, 3);
 }
 
-function SignalCard({ item }: Readonly<{ item: SignalItem }>) {
+function SignalText({ item }: Readonly<{ item: SignalItem }>) {
   const isLab = item.kind === "lab-day";
   return (
-    <TrackedNextLink
-      href={item.href}
-      eventName="latest-signal-click"
-      eventData={{ title: item.title, kind: item.kind }}
-      className="group relative rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] p-5 transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]"
-    >
+    <div className="min-w-0 flex-1">
       <div className="flex items-center gap-1.5">
         {isLab ? <TerminalIcon /> : <StarIcon />}
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-500">
@@ -84,6 +83,33 @@ function SignalCard({ item }: Readonly<{ item: SignalItem }>) {
       <p className="mt-1.5 text-[12px] leading-relaxed text-[#a3a3a3]">
         {item.description}
       </p>
+    </div>
+  );
+}
+
+const CARD_CLASS =
+  "group relative overflow-hidden rounded-lg border border-[#BA7517]/[0.10] bg-[#BA7517]/[0.01] transition-colors hover:border-[#BA7517]/25 hover:bg-[#BA7517]/[0.03]";
+
+function SignalCard({ item }: Readonly<{ item: SignalItem }>) {
+  return (
+    <TrackedNextLink
+      href={item.href}
+      eventName="latest-signal-click"
+      eventData={{ title: item.title, kind: item.kind }}
+      className={`${CARD_CLASS} block`}
+    >
+      <div className="relative hidden aspect-[3/2] w-full overflow-hidden lg:block">
+        <Image
+          src={item.coverImage}
+          alt=""
+          fill
+          sizes="(max-width: 1023px) 0px, 400px"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        />
+      </div>
+      <div className="p-5">
+        <SignalText item={item} />
+      </div>
     </TrackedNextLink>
   );
 }
