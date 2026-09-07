@@ -83,14 +83,31 @@ Every post opens with a blockquote. Rules:
   >
   > ✅ "People have lives. Somebody's kid gets sick. Somebody takes two weeks off and comes back to four hundred emails. Somebody spends Tuesday on a production incident and never gets back to the feature."
 
+- **Write for a reader whose first language is not English.** Most of this audience is not native. Use the everyday word: "the problem here is simple" over "the argument was that", "shows" over "demonstrates", "so" over "consequently". No essay-critic register ("the argument", "the notion", "what the piece contends"), no Latinate verbs where a plain one exists, no idioms that only land for native speakers. Short sentences do this work almost by themselves.
+
+- **Referring back to an earlier post: give the idea, not the scene, and say it in the terms of the post you are writing now.** Link it by title, then state the problem in two or three short sentences. Do not re-stage the anecdote — it belongs to the post that told it, and a reader who followed the link reads it twice. Do not summarise the old post's whole subject either; take the one strand this post continues. Three tries on *The Map* landed here:
+
+  > ❌ scene: "It was about a QA who was nervous in a meeting, and about a codebase that had grown past what any one person in the building could hold."
+  >
+  > ❌ summary, and too long: "The problem there is simple. After a while a codebase gets too big for one person to hold in their head. And the part that keeps it running is not written down anywhere: who gets paged when it breaks, who depends on the thing you are about to change, …"
+  >
+  > ✅ "An agent writes code from whatever fits in its context, and that is all it sees. It does not know where the change lands. It does not know what it breaks on the way. It has the repository, and the repository does not say any of this."
+
+- **A phrase you coined in an older post is not vocabulary yet.** "The 2 a.m. page", "the social map" read as jargon to someone who has not read that post, and stopping to define them costs more than they are worth. Say the plain thing instead: *who gets called when it breaks*, *who knew what and who to ask*. Callbacks work for an idea; they do not work for a coinage.
+
+- **Do not answer the question in the setup.** The paragraph that closes the opening section should leave the reader wanting the next one. If it already names the mechanism the post exists to explain, cut that line and let the section that shows it do the work.
+
+  > ❌ "Then I spent the summer inside a very large monolith where somebody had, partly, done it. Not as a document. As a set of things the agents could ask."
+  >
+  > ✅ "Then I spent the summer inside a very large monolith where somebody had, partly, done it."
+
 - **Never write from the middle of a book.** No sentence should assume the reader is still holding three earlier clauses in mind. One idea per sentence; break long ones at the natural "and" or "because" seam. Concrete everyday events beat abstract nouns — the sick kid and the two weeks off, not "attention", "working memory" or "cognitive load". Read it aloud: if you have to slow down to keep the referents straight, split it.
 
 
 ### Section Headings
 
-- Use `##` (h2) for section titles
-- Short, punchy, often with a twist
-- **Sentence case for new posts** ("The meeting room", "What gets caught"). The corpus is mixed — two April 2026 posts use Title Case h2s — but every post since uses sentence case, and each post must be internally consistent.
+**Headings live in their own file: `headings.md`, next to this one.** Two-to-four words, name the thing instead of describing it, don't spend the punchline, sentence case, plus a standalone audit pass. Read `.claude/skills/blog-writer/headings.md` before naming or renaming any section, and read it alone when the request is only about headings ("başlıkları gözden geçir", "bu başlık uzun mu") — no need to load the rest of this skill. It is the authority; this section does not repeat it.
+
 - Do NOT use `---` horizontal rule separators between sections. One exception: a single `---` before an italic `_Sources:_` footnote at the very end (see *when-everyone-has-a-superpower*). Note: `docs/blog-writing-guide.md` still says to use `---` between sections — that line is outdated; this rule wins.
 - Heading hierarchy: h1 (auto-generated title) → h2 (sections) → h3 (rare)
 
