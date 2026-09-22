@@ -43,12 +43,13 @@ function LabMdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
 }
 
 function LabMdxH2({ children }: Readonly<{ children?: ReactNode }>) {
+  const id = headingId(extractTextContent(children));
   return (
-    <h2 id={headingId(extractTextContent(children))} className="mt-12 mb-6 flex scroll-mt-24 items-start gap-2.5">
+    <h2 id={id} className="mt-12 mb-6 flex scroll-mt-24 items-start gap-2.5">
       <span className="mt-0.5 shrink-0 font-mono text-[13px] text-[#BA7517]" aria-hidden="true">
         &gt;_
       </span>
-      <HeadingLink>{children}</HeadingLink>
+      <HeadingLink id={id}>{children}</HeadingLink>
       <span className="hidden h-px w-10 bg-gradient-to-r from-[#BA7517]/30 to-transparent sm:block" />
     </h2>
   );

@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 import { FootnoteRef } from "@/components/writing/FootnoteRef";
-import { extractTextContent, footnoteIndex, headingId } from "@/lib/mdxUtils";
+import { footnoteIndex } from "@/lib/mdxUtils";
 
 export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
   return (
@@ -77,8 +77,7 @@ export function MdxLink({ href, children }: Readonly<{ href?: string; children?:
 }
 
 // The h2's text, as a link to its own section. Both /writing and /lab h2s use it, so every post gets section links.
-export function HeadingLink({ children }: Readonly<{ children?: ReactNode }>) {
-  const id = headingId(extractTextContent(children));
+export function HeadingLink({ id, children }: Readonly<{ id: string; children?: ReactNode }>) {
   return (
     <TrackedAnchor href={`#${id}`} eventName="heading-anchor" eventData={{ id }} className="group/h font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517] no-underline">
       {children}
