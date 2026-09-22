@@ -22,3 +22,15 @@ export function splitFootnote(text: string, title: string): string {
   const after = text.slice(text.indexOf(title) + title.length);
   return after.replace(/^\s*—\s*/, "").trim();
 }
+
+// "Abundant, scarce" → "abundant-scarce". Stable, so a link to a section keeps working.
+// ponytail: two identical headings in one post would share an id; add a counter if that ever happens.
+export function headingId(text: string): string {
+  return text
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/[\s-]+/g, "-");
+}

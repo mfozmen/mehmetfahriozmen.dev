@@ -11,7 +11,8 @@ import { getAllLabPosts, getLabPostBySlug, type LabPost } from "@/lib/lab";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { buildArticleMetadata } from "@/lib/articleMetadata";
 import { getReadingTime, formatDate } from "@/lib/posts";
-import { MdxBlockquote, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
+import { HeadingLink, MdxBlockquote, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
+import { extractTextContent, headingId } from "@/lib/mdxUtils";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
 import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -43,13 +44,11 @@ function LabMdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
 
 function LabMdxH2({ children }: Readonly<{ children?: ReactNode }>) {
   return (
-    <h2 className="mt-12 mb-6 flex items-start gap-2.5">
+    <h2 id={headingId(extractTextContent(children))} className="mt-12 mb-6 flex scroll-mt-24 items-start gap-2.5">
       <span className="mt-0.5 shrink-0 font-mono text-[13px] text-[#BA7517]" aria-hidden="true">
         &gt;_
       </span>
-      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
-        {children}
-      </span>
+      <HeadingLink>{children}</HeadingLink>
       <span className="hidden h-px w-10 bg-gradient-to-r from-[#BA7517]/30 to-transparent sm:block" />
     </h2>
   );
