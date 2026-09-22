@@ -1,9 +1,9 @@
 ---
 title: "The Map"
-date: "2026-09-07"
+date: "2026-09-22"
 slug: "the-map"
 coverImage: "/writing/the-map/cover.webp"
-description: "The AI has the repository and still misreads the system. On the agents that knew who we'd break, what they were reading, and why more context isn't the fix."
+description: "AI agents keep getting better at code and no better at your company. On what a repository cannot tell them, and a map of the system that keeps itself current."
 ---
 
 > "Who else uses this?"
@@ -31,6 +31,8 @@ Three more sat next to it. One went after the root cause of a bug instead of the
 The first one is the one I keep thinking about. Someone in a meeting asks who else uses this. Normally that question costs a day: you grep, you read, you ask two people, you come back on Thursday and you are still not sure. Here the answer arrived while the question was still in the air, with team names on it, and the meeting carried on.
 
 The model underneath was the same model everyone else has. The intelligence was not the difference. The difference was that somebody had given the agent somewhere to look.
+
+!["Who else uses this?" Asked. Answered. Filed.](/writing/the-map/who-else.webp)
 
 ## What was underneath
 
@@ -90,7 +92,7 @@ I read that as good news. It separates two things that get called by the same na
 
 [*The First Button*](/writing/the-first-button) was about the boundary of a piece of work: what it is, when it is done. This is about the boundary of the system that piece of work lands in. The first one you can write in an afternoon. The second one is what took that company years.
 
-## The map
+## The catalogue
 
 What sat next to the code, in the place I described, was roughly this set of layers: architecture, ownership, dependencies, invariants, business flows, operational constraints. None of them lived in one file, and I am not proposing a file. But one part of this map already has a standard form. Backstage is an open-source service catalogue, first built at Spotify. In Backstage, every service has a small file next to its code. This is the example from its documentation:<sup id="ref-7" className="scroll-mt-24">[7](#src-7)</sup>
 
@@ -121,27 +123,37 @@ I should be honest about the evidence. Nobody has published a controlled study s
 
 ## Written as you go
 
-The obvious objection is that maps rot. Somebody writes the ownership file, the rules, the decision log, and six months later it describes a system that no longer exists. That is true of every map kept by hand. So on that project I stopped keeping it by hand.
+The obvious objection is that maps rot. Somebody writes the ownership file, the rules, the decision log, and six months later it describes a system that no longer exists. That is true of every map kept by hand.
 
-Four agents run on every pull request before it is pushed. None of them writes feature code. Each one keeps one layer of the map true.
+![Accurate as of the last reorg.](/writing/the-map/maps-rot.webp)
 
-The first traces the blast radius. It follows every caller, async consumer, cache and schema the diff can reach, then runs the full test suite to prove they still work. The second attacks the design against the rules that must hold, the ones the domain cannot break and the load the system has to survive. For each rule it asks where it is enforced, in the database or in application code that can race. The third writes the decisions down. Every design choice that lands gets an entry in the decision log, with what it gave up and why that was acceptable, in the same pull request that made it.
+I tried a different way on a recent project. I wrote four agents and ran them on every pull request, before pushing. None of them wrote feature code. Each one had one job: keep one part of the map up to date.
 
-The fourth keeps the test cases for the user journeys, and it is not allowed to read the implementation. It works from the user stories, the same kind *The First Button* was about. A test case written from the code cannot fail, because it asserts what was built. A test case written from the story can, and that is its whole value.
+The first traced the blast radius. It followed every caller, async consumer, cache and schema the diff could reach, then ran the full test suite to prove they still worked. The second attacked the design against the rules that must hold, the ones the domain cannot break and the load the system has to survive. For each rule it asked where it was enforced, in the database or in application code that can race. The third wrote the decisions down. Every design choice that landed got an entry in the decision log, with what it gave up and why that was acceptable, in the same pull request that made it.
+
+The fourth kept the test cases for the user journeys, and it was not allowed to read the implementation. It worked from the user stories, the same kind *The First Button* was about. A test case written from the code cannot fail, because it asserts what was built. A test case written from the story can, and that is its whole value.
+
+Four is not a rule. It is what that project needed. Another codebase will want different ones: one that watches data contracts between services, one that checks security rules, one that keeps the runbooks honest. The set will grow as a team learns what it keeps forgetting. The idea stays the same.
 
 This is context engineering in the literal sense. Not a longer prompt. A repository that explains itself a little more after every merge, so the next agent that opens it, or the next person, finds the answers already written. And nobody has to remember to write them.
 
-One detail surprised me. An agent has no memory between runs, so each of these keeps a small notebook per branch: what it reviewed last time and what it left open. Without that, a reviewer on its fifth pass either reads the whole branch again or forgets what it asked for.
+One detail surprised me. An agent has no memory between runs, so each of mine kept a small notebook per branch: what it reviewed last time and what it left open. Without that, a reviewer on its fifth pass either reads the whole branch again or forgets what it asked for.
 
 ## Sideways
 
 AI capability is improving vertically. Better reasoning, better code, longer context, better use of tools. Every quarter the same task gets done better.
 
-The problem in front of a mature system is horizontal. To change one thing safely, the agent has to see past the repository: the services around it, the events on the bus, what really happens in production, which team owns which part, and the business process the whole thing exists for. Each step outward is a different source, with a different owner and a different format. The last step is not a source at all. It is people.
+I don't think that line keeps going up. At some point, at least with the technology we have now, it will flatten. We have already seen one sign of it: a bigger context window did not make the models read better.
 
-A better model does not take that step for you. It goes deeper into what it already has. The agents that impressed me were impressive because somebody had let them read sideways.
+> The next model will write a better function.
+>
+> It will not know more about your company.
 
-This is also why the same tools give different teams different results. DORA measured it in 2025: with AI, throughput goes up, stability goes down, and the tooling amplifies whatever the team already was.<sup id="ref-9" className="scroll-mt-24">[9](#src-9)</sup> A team that knows what its software means and who owns what gets a faster version of itself. A team that does not gets the same agent, and more of its own problems.
+The real gain is horizontal. To change one thing safely, the agent has to see past the repository: the services around it, the events on the bus, what really happens in production, which team owns which part, and the business process the whole thing exists for. Each step outward is a different source, with a different owner and a different format. The last step is not a source at all. It is people.
+
+A better model does not take that step for you. The agents that impressed me were impressive because somebody had let them read sideways.
+
+This is also why the same tools give different teams different results. DORA, a research program at Google, surveys thousands of software teams every year. In its 2025 report, more AI use went together with faster delivery, and also with less stable releases. The report calls AI an amplifier: it makes a strong team stronger, and a struggling team's problems bigger.<sup id="ref-9" className="scroll-mt-24">[9](#src-9)</sup> A team that knows what its software means and who owns what gets a faster version of itself. A team that does not gets the same agent, and more of its own problems.
 
 ## Abundant, scarce
 
@@ -171,5 +183,5 @@ _Sources_
 6. [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988) — ETH Zürich / LogicStar, 2026. Generated context files: −0.5 to −2 points; developer-written: +2.4, not significant; cost +20–23%.
 7. [Descriptor Format of Catalog Entities: Kind: Component](https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component) — Backstage documentation. The example above is copied from this section as it is.
 8. [Legacy Modernization meets GenAI](https://martinfowler.com/articles/legacy-modernization-gen-ai.html) — Thoughtworks on martinfowler.com, 2024.
-9. [2025 DORA State of AI-assisted Software Development](https://dora.dev/dora-report-2025/) — Google Cloud, 2025. Survey; correlational.
+9. [DORA Research: 2025](https://dora.dev/research/2025/) — DORA, Google Cloud. The 2025 research home; the findings quoted here are in its report, *State of AI-assisted Software Development 2025*. A survey, so these are correlations, not causes. The amplifier line is the report's own framing.
 10. [Writing code is cheap now](https://simonwillison.net/guides/agentic-engineering-patterns/code-is-cheap/) — Simon Willison, 2026.
