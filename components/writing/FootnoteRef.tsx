@@ -22,12 +22,13 @@ export function FootnoteRef({ n, href, children }: Readonly<{ n: number; href: s
 
   return (
     <span className="relative" onMouseEnter={open} onMouseLeave={close} onFocus={open} onBlur={close}>
-      <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text: String(n) }} className="ml-0.5 font-mono text-[#BA7517] no-underline hover:text-[#BA7517]/80">
+      <TrackedAnchor href={href} aria-describedby={source ? `fn-tip-${n}` : undefined} eventName="footnote-jump" eventData={{ href, text: String(n) }} className="ml-0.5 font-mono text-[#BA7517] no-underline hover:text-[#BA7517]/80">
         {children}
       </TrackedAnchor>
       {source && (
         <span
           role="tooltip"
+          id={`fn-tip-${n}`}
           className="absolute bottom-full left-1/2 z-20 hidden w-72 -translate-x-1/2 pb-2 text-left align-baseline text-[13px] font-normal leading-snug [@media(hover:hover)]:block"
         >
           <span className="block rounded-lg border border-[#BA7517]/20 bg-[#0d0d0d] px-4 py-3 shadow-md shadow-black/60">

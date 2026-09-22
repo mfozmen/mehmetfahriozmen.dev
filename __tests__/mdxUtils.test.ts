@@ -93,3 +93,25 @@ describe("section ids in real content", () => {
     }
   });
 });
+
+describe("sources footnotes in real content", () => {
+  const posts = readdirSync("content/posts").filter((f) => f.endsWith(".mdx"));
+  const prose = (file: string) => readFileSync(`content/posts/${file}`, "utf8").replace(/^```[\s\S]*?^```/gm, "");
+
+  it("uses an ordered list only for Sources, because MdxOl styles every ol as a footnote", () => {
+    for (const file of posts) {
+      const body = prose(file).split("_Sources_")[0];
+      expect(body.match(/^\d+\. /gm), file).toBeNull();
+    }
+  });
+
+  it("numbers in-text markers 1..N in order, one per source", () => {
+    for (const file of posts) {
+      const text = prose(file);
+      const refs = [...text.matchAll(/<sup id="ref-(\d+)"[^>]*>\[(\d+)\]\(#src-(\d+)\)<\/sup>/g)];
+      const sources = (text.split("_Sources_")[1] ?? "").match(/^\d+\. /gm) ?? [];
+      expect(refs.map((m) => [Number(m[1]), Number(m[2]), Number(m[3])]), file).toEqual(refs.map((_, i) => [i + 1, i + 1, i + 1]));
+      expect(sources.length, file).toBe(refs.length);
+    }
+  });
+});
