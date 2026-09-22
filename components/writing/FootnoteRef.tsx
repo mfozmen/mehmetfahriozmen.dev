@@ -22,7 +22,7 @@ export function FootnoteRef({ n, href, children }: Readonly<{ n: number; href: s
 
   return (
     <span className="relative" onMouseEnter={open} onMouseLeave={close} onFocus={open} onBlur={close}>
-      <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text: String(n) }} className="text-[#BA7517] no-underline hover:text-[#BA7517]/80">
+      <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text: String(n) }} className="ml-0.5 font-mono text-[#BA7517] no-underline hover:text-[#BA7517]/80">
         {children}
       </TrackedAnchor>
       {source && (
