@@ -66,17 +66,15 @@ Service B   Service C
             Search index
 ```
 
-An agent with the repository can find most of this. It can trace the controller to the service, the service to the model, the model to the event. It can find the listener. It may find the queue. Then it runs out of code and the questions do not stop.
-
-Is this event consumed by something outside this repository? Is this behavior business-critical, or is it a leftover that nobody has dared remove? Is the dependency on Service C a technical one, or does another team's quarterly number depend on it? Who owns Service C, and did they agree to this contract or inherit it? Is there production behavior here that no test represents? Is this odd branch historical, or intentional, or both?
+An agent with the repository can trace most of this: controller to service, service to model, model to event, event to listener. Then it runs out of code, and the questions do not stop. Is this event consumed by something outside this repository? Is that branch business-critical, or a leftover nobody has dared remove? Who owns Service C, and did they agree to this contract or inherit it? Is there production behavior here that no test covers?
 
 Every one of those has an answer. None of the answers is in the code.
 
-The research is starting to say the same thing, from a different direction. A 2026 case study migrated an old VB6 system to modern C# with a coding agent and measured functional equivalence afterwards: around 92% for the simple features, around 47% for the complex ones.<sup id="ref-1" className="scroll-mt-24">[1](#src-1)</sup> The failures were not syntax. The agent ignored behavior hidden in optional parameters and dynamic configuration, and it missed the adjacent modules, the batch jobs and notifications that coexisted with the feature without being named by it. The files were all provided. The system was not.
+The research says the same thing from a different direction. A 2026 case study had a coding agent migrate an old VB6 system to C# and then measured how much behavior survived: around 92% for the simple features, around 47% for the complex ones.<sup id="ref-1" className="scroll-mt-24">[1](#src-1)</sup> The agent had every file. What it missed was behavior hidden in optional parameters and configuration, and the batch jobs and notifications that lived next to a feature without being named in it. The files were all provided. The system was not.
 
-Scale AI's benchmark of long-horizon engineering tasks made the point numerically. When they removed the human-written requirements and interface descriptions from the problems and left agents with only the repository and the issue, the best model's success rate fell from roughly 23% to roughly 8%.<sup id="ref-2" className="scroll-mt-24">[2](#src-2)</sup> The code had not changed. What had been stated about the code had. And a participant in a 2025 study of experienced maintainers working in their own large repositories said the quiet part plainly: the model doesn't know that we need to take care of this weird case of backwards compatibility.<sup id="ref-3" className="scroll-mt-24">[3](#src-3)</sup>
+Scale AI's benchmark of long engineering tasks put a number on it. Take away the human-written requirements and interface descriptions, leave the agent with only the repository and the issue, and the best model drops from roughly 23% to roughly 8%.<sup id="ref-2" className="scroll-mt-24">[2](#src-2)</sup> The code had not changed. What had been written about the code had.
 
-Nobody wrote that case down. So the model, which can only read, could not read it.
+A developer in a 2025 study, working in their own large repository, said it more simply: the model doesn't know that we need to take care of this weird case of backwards compatibility.<sup id="ref-3" className="scroll-mt-24">[3](#src-3)</sup> Nobody wrote that case down. So the model, which can only read, could not read it.
 
 ## Too much context
 
@@ -115,6 +113,8 @@ do_not_change_without:
 ```
 
 This is only an example. Every organization would draw it differently and most would draw it as a graph, not a document. The point is what it lets the agent reason about. Instead of "here are the files", the agent gets to think: this change touches A, B and C; B crosses a service boundary; that boundary is owned by another team; the change would violate an invariant that team relies on; it therefore needs a migration, and afterwards this one path has to be validated end to end. That is a different job from generating code. It is closer to what a good tech lead does in the first ten minutes of a design review, and it is exactly what that agent did in the meeting.
+
+It does not have to be a file at all. On a small project of mine the map is a reviewer agent. It knows the domain rules that must hold, at most one active promotion per product, prices in integer minor units, dates compared in UTC. It knows the two load scenarios the design has to survive and the concurrency cases that have bitten before. You point it at a design or a diff before any code is written, and it attacks: for every rule, where is this enforced, in the database or in application code that can race? It never writes code and it never praises. It is one page of markdown, and it is the closest thing that repository has to a senior engineer who remembers everything. The [source is public](https://github.com/mfozmen/promotion-management-api/blob/main/.claude/agents/architecture-critic.md) if you want to steal the shape.
 
 I should be honest about the evidence. Nobody has published a controlled study showing that a machine-readable map of ownership and invariants improves what agents produce. The closest things are the benchmark above, where writing down what must be true tripled the success rate, and Thoughtworks' work on legacy systems, where they turned code into a graph database first and let the model answer questions against the graph, because, in their words, the mental models existed only in people's heads.<sup id="ref-7" className="scroll-mt-24">[7](#src-7)</sup> What I have is one summer of watching it work. That is an observation, not a result.
 
