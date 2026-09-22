@@ -1,5 +1,7 @@
 import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
+import { FootnoteRef } from "@/components/writing/FootnoteRef";
+import { footnoteIndex } from "@/lib/mdxUtils";
 
 export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
   return (
@@ -51,6 +53,8 @@ const linkClass = "border-b border-dashed border-[#BA7517]/40 text-[#BA7517] tra
 export function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
   if (!href) return <span className={linkClass}>{children}</span>;
   const text = typeof children === "string" ? children : "link";
+  const n = footnoteIndex(href);
+  if (n !== null) return <FootnoteRef n={n} href={href}>{children}</FootnoteRef>;
   if (href.startsWith("#")) {
     return (
       <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text }} className="text-[#BA7517] no-underline hover:text-[#BA7517]/80">
