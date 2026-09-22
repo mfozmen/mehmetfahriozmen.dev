@@ -11,11 +11,11 @@
 ```yaml
 title: "Under 60 characters"
 date: "YYYY-MM-DD"              # ISO format
-description: "At least 100 characters — used as meta description and OG description"
+description: "100-160 characters - meta description and OG description"
 coverImage: "/writing/[slug]/cover.webp"
 ```
 
-- `description` must be **100+ characters** — this is an SEO requirement
+- `description` must be **100–160 characters** — hard gate, enforced by `__tests__/posts.test.ts`
 - `coverImage` is **required** for every post
 - `title` must stay **under 60 characters** for search engine display
 
@@ -24,7 +24,6 @@ coverImage: "/writing/[slug]/cover.webp"
 - **Deadpan humor** — observations delivered straight-faced, absurdity presented as normal
 - **Thought-provoking questions** over prescriptive answers — don't tell the reader what to think
 - **Short, punchy copy** — no verbose paragraphs, no filler
-- **Galaxy/space metaphors** woven throughout where they fit naturally
 - **Leave deliberate ambiguities unanswered** when that's the honest position — not every section needs a neat resolution
 - **No neat endings** — if you don't have the answer, say so. Don't manufacture closure
 
@@ -43,19 +42,13 @@ A **learning journal across all engineering topics**: backend, leadership, AI, a
 
 - **Hook first** — open with a scene, contradiction, or observation. No throat-clearing
 - **Sections earn their place** — every section must say something the previous one didn't. If two sections feel similar, merge or cut
-- **Section dividers** — use `---` between major sections (established convention from first two posts)
+- **No section dividers** — never put `---` between sections. The single exception is the `---` before the `_Sources_` footnote at the end.
 - **No bullet-point lists in the article body** — write in prose. Lists kill the voice
 - **Internal rhythm** — alternate between short punchy lines and longer reflective passages
 
 ## Illustrations
 
-### Style (Gemini generation — `.claude/skills/blog-writer/generate.mjs`, Google AI Studio API)
-
-Base prompt:
-> "Modern flat editorial illustration, clean and minimal. Color palette: deep navy (#0a0f1e), amber (#BA7517), off-white. Subtle grain texture. Single image, wide composition. [SCENE]. No text. Single scene."
-
-Always append when attaching a reference image:
-> "Use this image as strict style reference. Same style, palette, texture. Only scene changes."
+Prompts, palette, the reference-image trick and the generate/optimize scripts live in the blog-writer skill (Part 3). This file keeps only the standing rules below.
 
 ### Character
 
@@ -78,30 +71,17 @@ Always append when attaching a reference image:
 
 ### Image Processing
 
-- Optimize with **Squoosh**: WebP format, quality 80, max 800px width
+- Optimize with `.claude/skills/blog-writer/optimize.mjs` (sharp, WebP q80: covers 1200w, inline 800w, og 1200×630)
 - OG images use the cover illustration directly (not a generated text card)
 - File structure: `public/writing/[slug]/cover.webp`, `secondary.webp`, etc.
 
 ## Social Sharing
 
-### General Rules
+Share text is owned by the blog-writer skill (`.claude/skills/blog-writer/SKILL.md`, Part 4), including voice, the LinkedIn shape that worked, and the Turkish version. Do not draft from this file.
 
-- **2–3 sentences max** — personal hook + twist + "I wrote about why/what" + link
 - **No spoilers** — don't give away the article's best lines or conclusions
 - **No forced pop culture references** without context
-- **Don't over-explain** — let curiosity drive the click
 - **Timing is free** — share as soon as the post is live; both platforms on the same day is fine
-- LinkedIn can be slightly longer if needed
-
-### LinkedIn
-
-- Slightly more context is OK — 3–4 sentences at most
-- Professional but not corporate. Match the blog's voice
-
-### X/Twitter
-
-- Tighter — 2 sentences + link
-- Punchier hook, less explanation
 
 ## SEO (Automatic)
 

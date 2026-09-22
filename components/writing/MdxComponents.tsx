@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
+import { FootnoteRef } from "@/components/writing/FootnoteRef";
+import { footnoteIndex } from "@/lib/mdxUtils";
 
 export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) {
   return (
@@ -10,6 +12,24 @@ export function MdxBlockquote({ children }: Readonly<{ children?: ReactNode }>) 
       {children}
     </blockquote>
   );
+}
+
+// Ordered lists appear in Field Notes only as the numbered Sources footnote.
+export function MdxOl({ children }: Readonly<{ children?: ReactNode }>) {
+  let n = 0;
+  const items = Children.map(children, (child) => {
+    if (!isValidElement<{ id?: string; className?: string; children?: ReactNode }>(child) || child.type !== "li") return child;
+    const i = ++n;
+    return cloneElement(child, { id: `src-${i}`, className: "scroll-mt-24 target:text-neutral-200" }, (
+      <>
+        <TrackedAnchor href={`#ref-${i}`} eventName="footnote-return" eventData={{ n: String(i) }} className="mr-1.5 font-mono text-[#BA7517]/70 hover:text-[#BA7517]">
+          {i}.
+        </TrackedAnchor>
+        {child.props.children}
+      </>
+    ));
+  });
+  return <ol className="my-4 space-y-1.5 pl-6 -indent-6 text-[13px] leading-relaxed text-neutral-400">{items}</ol>;
 }
 
 export function MdxTable({ children }: Readonly<{ children?: ReactNode }>) {
@@ -33,6 +53,15 @@ const linkClass = "border-b border-dashed border-[#BA7517]/40 text-[#BA7517] tra
 export function MdxLink({ href, children }: Readonly<{ href?: string; children?: ReactNode }>) {
   if (!href) return <span className={linkClass}>{children}</span>;
   const text = typeof children === "string" ? children : "link";
+  const n = footnoteIndex(href);
+  if (n !== null) return <FootnoteRef n={n} href={href}>{children}</FootnoteRef>;
+  if (href.startsWith("#")) {
+    return (
+      <TrackedAnchor href={href} eventName="footnote-jump" eventData={{ href, text }} className="text-[#BA7517] no-underline hover:text-[#BA7517]/80">
+        {children}
+      </TrackedAnchor>
+    );
+  }
   if (href.startsWith("http")) {
     return (
       <TrackedAnchor href={href} eventName="outbound-link" eventData={{ href, text }} target="_blank" rel="noopener noreferrer" className={linkClass}>
@@ -44,5 +73,15 @@ export function MdxLink({ href, children }: Readonly<{ href?: string; children?:
     <TrackedNextLink href={href} eventName="internal-link" eventData={{ href, text }} className={linkClass}>
       {children}
     </TrackedNextLink>
+  );
+}
+
+// The h2's text, as a link to its own section. Both /writing and /lab h2s use it, so every post gets section links.
+export function HeadingLink({ id, children }: Readonly<{ id: string; children?: ReactNode }>) {
+  return (
+    <TrackedAnchor href={`#${id}`} eventName="heading-anchor" eventData={{ id }} className="group/h font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517] no-underline">
+      {children}
+      <span className="ml-2 text-[#BA7517]/0 transition-colors group-hover/h:text-[#BA7517]/50 group-focus-visible/h:text-[#BA7517]/50" aria-hidden="true">#</span>
+    </TrackedAnchor>
   );
 }

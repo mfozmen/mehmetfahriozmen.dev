@@ -23,7 +23,7 @@ Trigger: any task involving /lab route, Lab Day content, technical blog posts, c
 ```yaml
 ---
 title: "Lab Day: [Descriptive Title]"
-description: "[100+ chars, SEO-friendly description of what the reader will learn]"
+description: "[100–160 chars, SEO-friendly description of what the reader will learn]"
 date: "YYYY-MM-DD"
 slug: "[kebab-case-descriptive-no-stop-words]"
 coverImage: "/lab/lab-day-cover.webp"
@@ -35,7 +35,7 @@ Rules:
 - Title MUST start with "Lab Day: " prefix
 - Title (after prefix) under 60 characters
 - **Title must be SEO-friendly** — use searchable keywords that developers would actually type into Google. The title is not a tagline or essay headline. It should clearly describe what the post teaches. Good: "Building Skills for AI Coding Agents". Bad: "Teach Your AI How You Work".
-- description minimum 100 characters
+- description 100–160 characters (hard gate, `__tests__/lab.test.ts`)
 - date in YYYY-MM-DD format
 - coverImage is always exactly `"/lab/lab-day-cover.webp"` — this is a fixed value, never changes between posts
 - tags: relevant technical keywords, lowercase
@@ -144,7 +144,7 @@ This path is hardcoded. Every Lab Day post uses this exact value in its frontmat
 - OG image variant (shared series cover) at `public/lab/lab-day-og.webp`
   (1200x630) — mirrors the shared cover model. Per-post override optionally
   at `public/lab/[slug]/og.webp` if a specific post needs a unique OG image.
-  See `docs/og-image-workflow.md` for the manual Photopea workflow.
+  Produce it with `node .claude/skills/blog-writer/optimize.mjs <in> <out.webp> 1200 630` (cover-crop); the manual Photopea workflow is retired.
 
 Visual direction for the cover (generated via ChatGPT, not by Claude Code):
 - Style: same as site illustrations (deep navy, amber, off-white, grain texture)

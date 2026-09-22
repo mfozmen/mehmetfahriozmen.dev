@@ -10,7 +10,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import ShareRow from "@/components/writing/ShareRow";
 import BackLink from "@/components/writing/BackLink";
-import { MdxBlockquote, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
+import { HeadingLink, MdxBlockquote, MdxOl, MdxLink, MdxTable, MdxTh, MdxTd } from "@/components/writing/MdxComponents";
+import { extractTextContent, headingId } from "@/lib/mdxUtils";
 import { CodeBlockFigure, CodePre, InlineCode } from "@/components/writing/CodeBlock";
 import MarkdownDemoServer from "@/components/writing/MarkdownDemoServer";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -22,14 +23,13 @@ import PostNavigation from "@/components/writing/PostNavigation";
 
 /* Fix #2: Keep star + amber mono but shorten gradient line for article h2s */
 function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
+  const id = headingId(extractTextContent(children));
   return (
-    <h2 className="mt-12 mb-6 flex items-start gap-2.5">
+    <h2 id={id} className="mt-12 mb-6 flex scroll-mt-24 items-start gap-2.5">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="#BA7517" className="mt-0.5 shrink-0" aria-hidden="true">
         <path d="M12 2l2.09 6.26L20.18 9l-5.09 3.74L16.18 19 12 15.77 7.82 19l1.09-6.26L3.82 9l6.09-.74z" />
       </svg>
-      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-[#BA7517]">
-        {children}
-      </span>
+      <HeadingLink id={id}>{children}</HeadingLink>
       <span className="hidden h-px w-10 bg-gradient-to-r from-[#BA7517]/30 to-transparent sm:block" />
     </h2>
   );
@@ -59,7 +59,7 @@ function MdxParagraph({ children }: Readonly<{ children?: ReactNode }>) {
   return <p>{children}</p>;
 }
 
-const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer, TicketBlock };
+const mdxComponents = { h2: MdxH2, img: MdxImage, p: MdxParagraph, blockquote: MdxBlockquote, ol: MdxOl, a: MdxLink, table: MdxTable, th: MdxTh, td: MdxTd, figure: CodeBlockFigure, pre: CodePre, code: InlineCode, MarkdownDemo: MarkdownDemoServer, TicketBlock };
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
