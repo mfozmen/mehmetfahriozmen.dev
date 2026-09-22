@@ -26,6 +26,10 @@ Headings are read in one pass, from a table of contents or while scrolling. They
 
 **`##` only.** h1 is the auto-generated post title; h3 is rare and needs a reason.
 
+## Headings are links
+
+Every h2 gets an id from its text (`headingId`: "Abundant, scarce" → `#abundant-scarce`), and readers share those links. **After a post is published, renaming a heading breaks every link to that section.** Settle headings before release; if one must change later, say so in the PR. Two headings in one post that produce the same id fail `__tests__/mdxUtils.test.ts`.
+
 ## Audit pass
 
 Run this on a finished draft, headings only — read them as a list, without the prose:

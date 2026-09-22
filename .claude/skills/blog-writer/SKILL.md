@@ -138,6 +138,8 @@ Every post opens with a blockquote. Rules:
 - Max 1-2 per post besides the opening quote
 - Never repeat a sentence from the body text
 - Place far from inline images (both are "pause" moments)
+- **Plan pauses from a word map, not by feel.** List each section with its word count and what already breaks it; code blocks and tables count as pauses. Put images and the mid-body blockquote into the longest unbroken runs, and leave a short section that already sits between two code blocks alone.
+- A mid-body blockquote can be the post's most quotable pair of lines, lifted out of the paragraph so it is not repeated (*The Map*: "The next model will write a better function. / It will not know more about your company.").
 
 ### TicketBlock — backlog artifacts
 
@@ -185,6 +187,20 @@ _Sources_
 ```
 
 `MdxOl` (`components/writing/MdxComponents.tsx`) gives each list item `id="src-N"` and prepends the `N.` back-link to `#ref-N`, so the reader can jump both ways. Numbering is by order of first appearance in the text. Say what each source supports and where it is weak — "correlational", "cited for the participant quote only" — rather than presenting every link as proof.
+
+Hovering a marker shows the source title and its note in a small card (`FootnoteRef`), read from the `#src-N` item on the page, so the note you write here is also the tooltip text: keep it one or two sentences. `__tests__/mdxUtils.test.ts` enforces the rest: markers run 1..N in order of appearance, there are exactly N Sources items, and a Field Notes body contains no other ordered list (`MdxOl` styles every `ol` as a footnote). Adding a source in the middle means renumbering everything after it, markers and list both.
+
+### Claims and sources
+
+Rules from *The Map*, each learned by getting it wrong first:
+
+- **Never invent an example that looks like a real format.** A made-up YAML with plausible field names reads as industry practice, and a reader who has never seen it assumes they are behind. Use the documented example as it is (Backstage's own `kind: Component`), cite the exact section anchor, and say in the footnote that it is copied.
+- **One citation per paragraph.** Two markers in one paragraph means it is doing two jobs. Split it; the second half usually becomes a better short paragraph.
+- **Introduce every organisation and acronym at first mention.** "DORA measured it" is a wall for a reader who does not know DORA. One clause is enough: "DORA, a research program at Google, surveys thousands of software teams every year."
+- **Say what kind of evidence it is.** A survey finds relationships, not causes: "more AI use went together with faster delivery", never "AI makes throughput go up". Put the caveat in the footnote note too.
+- **The author's forecast is an opinion, so write it as one.** "I don't think that line keeps going up", with the scope ("at least with the technology we have now") and one piece of evidence from the post itself. No new citation is needed for a view; it needs to be recognisable as a view.
+- **Your own setup is one version, not the answer.** Tell it as what you did on a project, in the past tense, and add what another codebase would build instead. Present tense plus a count ("four agents run on every pull request") reads as a rule.
+- **Work done for another company stays unlinked.** A case study or client project is described by what its parts do. No repository link, no domain rules, no names from the brief, even when the repository is public.
 
 ### Code Blocks
 
@@ -380,6 +396,12 @@ When attaching a reference image, append:
 Only scene changes."
 ```
 
+### When the reference image takes over
+
+A style reference often locks the composition too: on *The Map* the first cover came back as a redraw of the reference scene, four astronauts and all. Two fixes, in order: say "NEW SCENE, do not copy the reference composition; use it only for drawing style, palette and the spacesuit" at the top of the prompt, and switch to a reference whose layout is far from the scene you want. Once one image in a post lands, use it as the reference for the rest of that post so the set stays consistent.
+
+Crop covers to exactly 1200×800 (`optimize.mjs in out 1200 800`); Gemini's 3:2 output is not exact.
+
 ### Character
 - Same astronaut in every illustration
 - Face never visible (behind, profile, or helmet visor)
@@ -424,7 +446,15 @@ The share text is not a summary of the post. It is the author, in his own voice,
 
 ### LinkedIn — shape that worked
 
-Three short paragraphs, ~110–140 words. The "3–4 sentences" cap from earlier posts is too tight for a know-how essay; length is fine as long as every sentence is concrete.
+**Default: short, and curious.** Three tiny paragraphs, ~50–60 words: a scene the reader recognises, a turn that withholds the answer, one line on what the post covers. This is what *The Map* went out with, after a 130-word draft was rejected as too long:
+
+> Someone in a meeting asks "who else uses this?" Normally that's a day of grepping, reading and asking around, and you're still not sure.
+>
+> I've watched an agent answer it before the meeting moved on. Not a smarter model. It just had somewhere to look.
+>
+> Wrote up what that somewhere is, and how you build one.
+
+**Longer, ~110–140 words, only when naming the know-how is what sells** — a how-to essay whose artifacts are the point (*The First Button*). Every sentence still has to be concrete.
 
 1. **The surprising observation + a scene.** What the author keeps seeing, who it happens to, one lived image.
 2. **What I do, why it's cheap, why now.** The artifacts by name, the cost ("half an hour"), and the AI turn in one clause.
