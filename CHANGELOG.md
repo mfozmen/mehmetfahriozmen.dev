@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.26.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.25.0...v1.26.0) (2026-09-22)
+
+### Features
+
+* **writing:** The Map, with linkable sources and section headings ([#52](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/52)) ([edbd006](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/edbd006cb4a2c0eee6f348e3ed8db854032e0efb)), closes [#src-N](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/src-N)
+
 ## [1.25.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.24.0...v1.25.0) (2026-09-07)
 
 ### Features
