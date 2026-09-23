@@ -32,11 +32,11 @@ export default function CvHeader() {
         <div className="mt-1 flex flex-wrap items-center justify-center gap-x-3 sm:mt-0">
           <span className="hidden sm:inline">İzmir, Turkey</span>
           <span className="hidden text-neutral-700 sm:inline">·</span>
-          <a href="mailto:contact@mehmetfahriozmen.dev" className="transition-colors hover:text-neutral-300">contact@mehmetfahriozmen.dev</a>
+          <TrackedAnchor href="mailto:contact@mehmetfahriozmen.dev" eventName="social-link-click" eventData={{ platform: "email", source: "cv" }} className="transition-colors hover:text-neutral-300">contact@mehmetfahriozmen.dev</TrackedAnchor>
           <span className="text-neutral-700">·</span>
-          <a href="https://linkedin.com/in/mfozmen" className="transition-colors hover:text-neutral-300">LinkedIn</a>
+          <TrackedAnchor href="https://linkedin.com/in/mfozmen" eventName="social-link-click" eventData={{ platform: "linkedin", source: "cv" }} className="transition-colors hover:text-neutral-300">LinkedIn</TrackedAnchor>
           <span className="text-neutral-700">·</span>
-          <a href="https://github.com/mfozmen" className="transition-colors hover:text-neutral-300">GitHub</a>
+          <TrackedAnchor href="https://github.com/mfozmen" eventName="social-link-click" eventData={{ platform: "github", source: "cv" }} className="transition-colors hover:text-neutral-300">GitHub</TrackedAnchor>
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 import SectionTitle from "@/components/SectionTitle";
 import ContactForm from "@/components/contact/ContactForm";
+import { TrackedAnchor } from "@/components/TrackedLink";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -20,30 +21,36 @@ function DirectChannels() {
         Prefer a direct channel?
       </p>
       <div className="mt-3 flex items-center justify-center gap-4">
-        <a
+        <TrackedAnchor
           href="mailto:contact@mehmetfahriozmen.dev"
+          eventName="social-link-click"
+          eventData={{ platform: "email", source: "contact" }}
           className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]"
         >
           contact@mehmetfahriozmen.dev
-        </a>
+        </TrackedAnchor>
         <span className="text-neutral-700">&middot;</span>
-        <a
+        <TrackedAnchor
           href="https://linkedin.com/in/mfozmen"
+          eventName="social-link-click"
+          eventData={{ platform: "linkedin", source: "contact" }}
           target="_blank"
           rel="noopener noreferrer"
           className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]"
         >
           LinkedIn
-        </a>
+        </TrackedAnchor>
         <span className="text-neutral-700">&middot;</span>
-        <a
+        <TrackedAnchor
           href="https://x.com/mfozmen"
+          eventName="social-link-click"
+          eventData={{ platform: "x", source: "contact" }}
           target="_blank"
           rel="noopener noreferrer"
           className="font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]"
         >
           X
-        </a>
+        </TrackedAnchor>
       </div>
     </div>
   );

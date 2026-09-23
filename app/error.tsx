@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { TrackedAnchor } from "@/components/TrackedLink";
 import Starfield from "@/components/Starfield";
 import NebulaGlows from "@/components/NebulaGlows";
 
@@ -38,12 +39,15 @@ export default function ErrorPage({ reset }: Readonly<{ reset: () => void }>) {
           >
             Try again →
           </button>
-          <a
+          {/* Full reload on purpose: a client-side navigation can land back in the broken tree. */}
+          <TrackedAnchor
             href="/"
+            eventName="cta-click"
+            eventData={{ cta: "return-home", page: "error" }}
             className="rounded-full border border-[#BA7517]/40 px-5 py-2 text-sm text-[#BA7517] transition-colors hover:border-[#BA7517]/70 hover:text-white"
           >
             Return to base →
-          </a>
+          </TrackedAnchor>
         </div>
       </main>
     </>
