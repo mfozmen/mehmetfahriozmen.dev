@@ -35,4 +35,9 @@ describe("emailSubject", () => {
     expect(emailSubject("", "Ada")).toBe("Message from Ada");
     expect(emailSubject(null, "Ada")).toBe("Message from Ada");
   });
+
+  it("keeps the subject on one line so nothing can pose as an extra header", () => {
+    expect(emailSubject("Foo\r\nBcc: x@example.com", "Ada")).toBe("Foo Bcc: x@example.com");
+    expect(emailSubject("", "Ada\r\nB")).toBe("Message from Ada B");
+  });
 });

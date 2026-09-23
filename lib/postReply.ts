@@ -8,5 +8,7 @@ export function replySubject(re: string | null): string | null {
 }
 
 export function emailSubject(typed: string | null, name: string): string {
-  return typed?.trim() || `Message from ${name.trim()}`;
+  const subject = typed?.trim() || `Message from ${name.trim()}`;
+  // One line only: a newline smuggled in via ?re= must not read as an extra mail header.
+  return subject.replace(/\s+/g, " ");
 }
