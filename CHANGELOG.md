@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.27.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.26.0...v1.27.0) (2026-09-23)
+
+### Features
+
+* **contact:** optional subject field, prefilled when replying to a post ([#55](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/55)) ([9e5e4bb](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/9e5e4bb593cfc1a0ad3c08ce2fc71263a542f6ac))
+
+### Bug Fixes
+
+* **analytics:** track the contact, CV, share and error-page links ([#54](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/54)) ([cce5326](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/cce5326dc36df0d0bb0c63abd129ba8b887f2293))
+
 ## [1.26.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.25.0...v1.26.0) (2026-09-22)
 
 ### Features
