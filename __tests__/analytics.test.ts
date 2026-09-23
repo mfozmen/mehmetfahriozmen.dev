@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { trackEvent } from "@/lib/analytics";
 
 describe("trackEvent", () => {
@@ -34,5 +36,23 @@ describe("trackEvent", () => {
   it("does not throw when window is undefined (SSR)", () => {
     vi.stubGlobal("window", undefined);
     expect(() => trackEvent("test-event")).not.toThrow();
+  });
+});
+
+describe("every link in the UI is tracked", () => {
+  // A raw <a> is allowed only inside TrackedLink itself, as a skip link, or
+  // when it wires its own onClick (the CV components call trackEvent directly).
+  const files = ["app", "components"].flatMap((dir) =>
+    readdirSync(dir, { recursive: true, encoding: "utf8" })
+      .filter((f) => f.endsWith(".tsx"))
+      .map((f) => join(dir, f)),
+  );
+
+  it.each(files.filter((f) => !f.endsWith("TrackedLink.tsx")))("%s", (file) => {
+    const src = readFileSync(file, "utf8");
+    const raw = [...src.matchAll(/<a\s/g)]
+      .map((m) => src.slice(m.index, src.indexOf("</a>", m.index)))
+      .filter((el) => !el.includes('href="#main"') && !el.includes("onClick"));
+    expect(raw).toEqual([]);
   });
 });
