@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TrackedAnchor } from "@/components/TrackedLink";
 
 const linkClass = "cursor-pointer font-mono text-[11px] text-neutral-500 transition-colors hover:text-[#BA7517]";
 
@@ -25,23 +26,27 @@ export default function ShareRow({ title, slug, basePath = "writing" }: Readonly
         {copied ? "Copied!" : "Copy link"}
       </button>
       <span className="text-neutral-700">&middot;</span>
-      <a
+      <TrackedAnchor
+        eventName="share-click"
+        eventData={{ platform: "linkedin", slug }}
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
         target="_blank"
         rel="noopener noreferrer"
         className={linkClass}
       >
         LinkedIn
-      </a>
+      </TrackedAnchor>
       <span className="text-neutral-700">&middot;</span>
-      <a
+      <TrackedAnchor
+        eventName="share-click"
+        eventData={{ platform: "x", slug }}
         href={`https://x.com/intent/tweet?url=${encoded}&text=${encodedTitle}`}
         target="_blank"
         rel="noopener noreferrer"
         className={linkClass}
       >
         X
-      </a>
+      </TrackedAnchor>
     </>
   );
 }
