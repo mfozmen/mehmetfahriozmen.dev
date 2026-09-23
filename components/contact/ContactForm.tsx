@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { replySubject, emailSubject } from "@/lib/postReply";
 
 const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
@@ -42,7 +44,7 @@ function SuccessMessage({ onReset }: Readonly<{ onReset: () => void }>) {
   );
 }
 
-function FormFields({ errors }: Readonly<{ errors: Record<string, string> }>) {
+function FormFields({ errors, defaultSubject }: Readonly<{ errors: Record<string, string>; defaultSubject?: string }>) {
   return (
     <>
       <div>
@@ -56,12 +58,22 @@ function FormFields({ errors }: Readonly<{ errors: Record<string, string> }>) {
         {errors.email && <FieldError message={errors.email} />}
       </div>
       <div>
+        <label htmlFor="subject" className={labelClass}>Subject</label>
+        <input id="subject" name="subject" type="text" defaultValue={defaultSubject} className={inputClass} placeholder="What's this about?" />
+      </div>
+      <div>
         <label htmlFor="message" className={labelClass}>Message<RequiredMark /></label>
         <textarea id="message" name="message" rows={5} required className={`${inputClass} resize-none`} placeholder="What's on your mind?" />
         {errors.message && <FieldError message={errors.message} />}
       </div>
     </>
   );
+}
+
+// Posts link here with ?re=<title> so the subject arrives filled in.
+function ReplyAwareFields({ errors }: Readonly<{ errors: Record<string, string> }>) {
+  const subject = replySubject(useSearchParams().get("re")) ?? undefined;
+  return <FormFields errors={errors} defaultSubject={subject} />;
 }
 
 export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -122,7 +134,9 @@ export default function ContactForm() {
 
   return (
     <form key={formKey} onSubmit={handleSubmit} noValidate className="space-y-6">
-      <FormFields errors={errors} />
+      <Suspense fallback={<FormFields errors={errors} />}>
+        <ReplyAwareFields errors={errors} />
+      </Suspense>
       <SubmitSection status={status} />
     </form>
   );
@@ -138,6 +152,8 @@ export default function ContactForm() {
       return;
     }
 
+    // Formspree uses a field named "subject" as the email subject line.
+    form.set("subject", emailSubject(form.get("subject") as string | null, form.get("name") as string));
     setStatus("sending");
     try {
       const res = await fetch(FORMSPREE_URL!, { method: "POST", body: form, headers: { Accept: "application/json" } });

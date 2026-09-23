@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { TrackedNextLink } from "@/components/TrackedLink";
+import { replyHref } from "@/lib/postReply";
 import PageShell from "@/components/PageShell";
 import ShareRow from "@/components/writing/ShareRow";
 import BackLink from "@/components/writing/BackLink";
@@ -128,7 +129,7 @@ function PostEnding({ title, slug }: Readonly<{ title: string; slug: string }>) 
           <span className="relative">See all experiments &rarr;</span>
         </TrackedNextLink>
         <span className="mx-3">&middot;</span>
-        <TrackedNextLink href="/contact" eventName="cta-click" eventData={{ cta: "want to talk about this", page: `/lab/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
+        <TrackedNextLink href={replyHref(title)} eventName="cta-click" eventData={{ cta: "want to talk about this", page: `/lab/${slug}` }} className="group relative inline-block border-b border-dashed border-[#BA7517]/40 text-[#BA7517] transition-colors hover:text-[#BA7517]/80">
           <span className="absolute inset-0 -m-4 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style={{ background: "radial-gradient(circle, rgba(186,117,23,0.06) 0%, transparent 70%)" }} />
           <span className="relative">Want to talk about this? &rarr;</span>
         </TrackedNextLink>
