@@ -14,6 +14,8 @@ export interface GalaxyRefs {
   hoveredIdRef: React.RefObject<string | null>;
   lastHoveredClusterRef: React.RefObject<string | null>;
   satelliteAnimRef: React.RefObject<number>;
+  /** False while the galaxy is scrolled off-screen; unset means always draw. */
+  visibleRef?: React.RefObject<boolean>;
 }
 
 export interface FrameContext {
@@ -26,7 +28,8 @@ export interface FrameContext {
 /**
  * Prepares a single animation frame: acquires context, scales for DPR,
  * advances time, and updates satellite animation.
- * Returns null if canvas/ctx is unavailable (caller should skip rendering).
+ * Returns null if canvas/ctx is unavailable or the galaxy is off-screen
+ * (caller should skip rendering).
  */
 export function prepareFrame(
   canvas: HTMLCanvasElement,
@@ -34,6 +37,8 @@ export function prepareFrame(
   refs: GalaxyRefs,
   dimensions: { width: number; height: number },
 ): FrameContext | null {
+  // Off-screen frames are invisible work: on mobile the galaxy starts below the fold.
+  if (refs.visibleRef?.current === false) return null;
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 

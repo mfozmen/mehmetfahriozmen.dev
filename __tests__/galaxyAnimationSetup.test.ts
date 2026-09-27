@@ -127,4 +127,18 @@ describe("prepareFrame", () => {
     // With dt=0 and no hovered tech, satellite anim should stay at 0
     expect(refs.satelliteAnimRef.current).toBe(0);
   });
+
+  it("skips the frame while the galaxy is off-screen", () => {
+    const canvas = createMockCanvas(createMockCtx());
+    const refs = createRefs({ visibleRef: { current: false } });
+
+    expect(prepareFrame(canvas, 1000, refs, DIMS)).toBeNull();
+  });
+
+  it("draws once the galaxy scrolls into view", () => {
+    const canvas = createMockCanvas(createMockCtx());
+    const refs = createRefs({ visibleRef: { current: true } });
+
+    expect(prepareFrame(canvas, 1000, refs, DIMS)).not.toBeNull();
+  });
 });
