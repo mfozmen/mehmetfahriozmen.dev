@@ -20,6 +20,7 @@ export function useGalaxySetup(opts?: { starCount?: number; centerBias?: number 
   const nebulaeRef = useRef<Nebula[]>([]);
   const nebulaCanvasRef = useRef<OffscreenCanvas | null>(null);
   const timeRef = useRef(0);
+  const visibleRef = useRef(true);
 
   const [dimensions, setDimensions] = useState({ width: 900, height: 563 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -55,6 +56,17 @@ export function useGalaxySetup(opts?: { starCount?: number; centerBias?: number 
     techToSystems.current = techMap;
   }, []);
 
+  // Pause drawing while off-screen (prepareFrame reads visibleRef). No rootMargin:
+  // on mobile the galaxy starts just below the fold, and any margin would keep it
+  // drawing during page load — the cost this pause exists to remove.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => { visibleRef.current = entry.isIntersecting; });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // Measure + generate
   useEffect(() => {
     const el = containerRef.current;
@@ -87,7 +99,7 @@ export function useGalaxySetup(opts?: { starCount?: number; centerBias?: number 
   return {
     canvasRef, containerRef, animFrameRef,
     bgStarsRef, nebulaeRef, nebulaCanvasRef,
-    timeRef, dimensions,
+    timeRef, visibleRef, dimensions,
     hoveredId, setHoveredId, hoveredIdRef,
     hoveredType, setHoveredType, hoveredTypeRef,
     satelliteAnimRef, lastHoveredClusterRef, prevTimestampRef,

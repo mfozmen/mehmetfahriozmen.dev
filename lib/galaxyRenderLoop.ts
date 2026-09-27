@@ -64,6 +64,26 @@ export interface RenderOpts {
   techClusterPositionOverrides?: Record<string, { x: number; y: number }>;
 }
 
+const glowCache = new WeakMap<BgStar, CanvasGradient>();
+
+/**
+ * A star's glow, built once around the origin at unit alpha. The caller
+ * translates to the star and sets globalAlpha, which yields the same pixels
+ * as a per-frame gradient with the alpha baked into the stops — without
+ * rebuilding ~1200 gradients and parsing their colour strings every frame.
+ */
+export function starGlowGradient(ctx: CanvasRenderingContext2D, star: BgStar, glowR: number): CanvasGradient {
+  let g = glowCache.get(star);
+  if (!g) {
+    g = ctx.createRadialGradient(0, 0, star.r * 0.3, 0, 0, glowR);
+    g.addColorStop(0, `rgba(${star.color}, 0.4)`);
+    g.addColorStop(0.5, `rgba(${star.color}, 0.1)`);
+    g.addColorStop(1, `rgba(${star.color}, 0)`);
+    glowCache.set(star, g);
+  }
+  return g;
+}
+
 export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestration, see CLAUDE.md exceptions
   ctx: CanvasRenderingContext2D,
   opts: RenderOpts,
@@ -142,17 +162,14 @@ export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestra
     const baseAlpha = star.alpha * twinkle * (0.4 + falloff * 0.6) * drifted.fadeIn * Math.max(edgeFade, 0);
 
     const glowR = star.r * cfg.glowMul * (star.bright ? 2.25 : 1);
-    const glowGradient = ctx.createRadialGradient(sx, sy, star.r * 0.3, sx, sy, glowR);
-    glowGradient.addColorStop(0, `rgba(${star.color}, ${baseAlpha * 0.4})`);
-    glowGradient.addColorStop(0.5, `rgba(${star.color}, ${baseAlpha * 0.1})`);
-    glowGradient.addColorStop(1, `rgba(${star.color}, 0)`);
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-    ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
-    ctx.fillStyle = glowGradient;
-    ctx.fill();
-
     ctx.globalAlpha = baseAlpha;
+    ctx.translate(sx, sy);
+    ctx.beginPath();
+    ctx.arc(0, 0, glowR, 0, Math.PI * 2);
+    ctx.fillStyle = starGlowGradient(ctx, star, glowR);
+    ctx.fill();
+    ctx.translate(-sx, -sy);
+
     ctx.beginPath();
     ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
     ctx.fillStyle = `rgb(${star.color})`;

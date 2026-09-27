@@ -11,7 +11,7 @@ export default function DesktopGalaxy() {
   const {
     canvasRef, containerRef, animFrameRef,
     bgStarsRef, nebulaeRef, nebulaCanvasRef,
-    timeRef, dimensions,
+    timeRef, visibleRef, dimensions,
     hoveredId, setHoveredId, hoveredIdRef,
     hoveredType, setHoveredType, hoveredTypeRef,
     satelliteAnimRef, lastHoveredClusterRef, prevTimestampRef,
@@ -25,7 +25,7 @@ export default function DesktopGalaxy() {
 
     const refs = {
       canvasRef, animFrameRef, timeRef, prevTimestampRef,
-      hoveredTypeRef, hoveredIdRef, lastHoveredClusterRef, satelliteAnimRef,
+      hoveredTypeRef, hoveredIdRef, lastHoveredClusterRef, satelliteAnimRef, visibleRef,
     };
 
     const animate = (timestamp: number) => {
