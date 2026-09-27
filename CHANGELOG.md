@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.0...v1.27.1) (2026-09-27)
+
+### Performance Improvements
+
+* **galaxy:** skip off-screen frames and reuse star glow gradients ([#59](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/59)) ([fa09ce8](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/fa09ce8ea82a1df95d4d5e1bd3df4a8a53e60fa5)), closes [#57](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/57)
+
 ## [1.27.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.26.0...v1.27.0) (2026-09-23)
 
 ### Features
