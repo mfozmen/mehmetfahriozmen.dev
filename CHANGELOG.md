@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.1...v1.27.2) (2026-09-27)
+
+### Bug Fixes
+
+* **galaxy:** size the canvas even while paused off-screen ([#60](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/60)) ([3c8f3f3](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/3c8f3f3a9fdd1f52f04170ff3b1797adb7c1603a)), closes [#59](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/59)
+
 ## [1.27.1](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.0...v1.27.1) (2026-09-27)
 
 ### Performance Improvements
