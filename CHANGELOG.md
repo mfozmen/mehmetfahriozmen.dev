@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.2...v1.27.3) (2026-09-27)
+
+### Performance Improvements
+
+* **galaxy:** build the dust band once per canvas size ([#61](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/61)) ([dc5396b](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/dc5396b9f68e97617d77dadf2e466c8d15568382))
+
 ## [1.27.2](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.1...v1.27.2) (2026-09-27)
 
 ### Bug Fixes
