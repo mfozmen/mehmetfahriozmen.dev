@@ -37,8 +37,13 @@ export function prepareFrame(
   refs: GalaxyRefs,
   dimensions: { width: number; height: number },
 ): FrameContext | null {
+  const dpr = window.devicePixelRatio || 1;
+  const { width: w, height: h } = dimensions;
   // Off-screen frames are invisible work: on mobile the galaxy starts below the fold.
-  if (refs.visibleRef?.current === false) return null;
+  // A stale size still gets one frame, or the canvas keeps its default 900px inline
+  // width inside a narrower container and the page scrolls sideways.
+  const sized = canvas.width === Math.trunc(w * dpr) && canvas.height === Math.trunc(h * dpr);
+  if (refs.visibleRef?.current === false && sized) return null;
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
@@ -56,8 +61,6 @@ export function prepareFrame(
   refs.satelliteAnimRef.current = satUpdate.anim;
   refs.lastHoveredClusterRef.current = satUpdate.lastCluster;
 
-  const dpr = window.devicePixelRatio || 1;
-  const { width: w, height: h } = dimensions;
   canvas.width = w * dpr;
   canvas.height = h * dpr;
   canvas.style.width = `${w}px`;

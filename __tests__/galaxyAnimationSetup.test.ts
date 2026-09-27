@@ -130,9 +130,32 @@ describe("prepareFrame", () => {
 
   it("skips the frame while the galaxy is off-screen", () => {
     const canvas = createMockCanvas(createMockCtx());
+    Object.assign(canvas, { width: 948 * 2, height: 600 * 2 });
     const refs = createRefs({ visibleRef: { current: false } });
 
     expect(prepareFrame(canvas, 1000, refs, DIMS)).toBeNull();
+  });
+
+  // canvas.width truncates to an integer, so 348 * 2.625 is stored as 913.
+  it("stays paused off-screen on a fractional device pixel ratio", () => {
+    vi.stubGlobal("window", { devicePixelRatio: 2.625 });
+    const canvas = createMockCanvas(createMockCtx());
+    Object.assign(canvas, { width: 913, height: 572 });
+    const refs = createRefs({ visibleRef: { current: false } });
+
+    expect(prepareFrame(canvas, 1000, refs, { width: 348, height: 218 })).toBeNull();
+  });
+
+  // Paused before the first measured frame, the canvas kept its default 900px
+  // inline width inside a 348px mobile container and scrolled the page sideways.
+  it("still sizes the canvas off-screen when its size is stale", () => {
+    const canvas = createMockCanvas(createMockCtx());
+    Object.assign(canvas, { width: 900 * 2, height: 563 * 2 });
+    const refs = createRefs({ visibleRef: { current: false } });
+
+    expect(prepareFrame(canvas, 1000, refs, DIMS)).not.toBeNull();
+    expect(canvas.width).toBe(948 * 2);
+    expect(canvas.style.width).toBe("948px");
   });
 
   it("draws once the galaxy scrolls into view", () => {
