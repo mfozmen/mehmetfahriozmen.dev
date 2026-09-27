@@ -213,13 +213,11 @@ export function drawLightRays(ctx: CanvasRenderingContext2D, cx: number, cy: num
   ctx.restore();
 }
 
-export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
-  ctx.save();
+// The band depends only on the canvas size, so its offscreen canvas is built
+// once per size. Rebuilding it every frame cost roughly half of each frame.
+let dustBandCache: { key: string; canvas: OffscreenCanvas } | null = null;
 
-  ctx.translate(cx, cy);
-  ctx.rotate(-0.1);
-  ctx.translate(-cx, -cy);
-
+function buildDustBand(w: number, h: number, cx: number, cy: number): OffscreenCanvas {
   // Paint dust band with radial alpha falloff using an offscreen canvas
   // so the edges fade smoothly instead of clipping hard
   const off = new OffscreenCanvas(w, h);
@@ -247,9 +245,23 @@ export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number
   mask.addColorStop(1, "rgba(255, 255, 255, 0)");
   oc.fillStyle = mask;
   oc.fillRect(0, 0, w, h);
+  return off;
+}
+
+export function drawDustBand(ctx: CanvasRenderingContext2D, w: number, h: number, cx: number, cy: number) {
+  ctx.save();
+
+  ctx.translate(cx, cy);
+  ctx.rotate(-0.1);
+  ctx.translate(-cx, -cy);
+
+  const key = `${w}x${h}@${cx},${cy}`;
+  if (dustBandCache?.key !== key) {
+    dustBandCache = { key, canvas: buildDustBand(w, h, cx, cy) };
+  }
 
   // Step 3: composite onto main canvas
-  ctx.drawImage(off, 0, 0);
+  ctx.drawImage(dustBandCache.canvas, 0, 0);
 
   // Warm radial glow overlay
   const hFade = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
