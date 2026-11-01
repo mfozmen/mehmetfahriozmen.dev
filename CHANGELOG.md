@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.28.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.3...v1.28.0) (2026-11-01)
+
+### Features
+
+* **home:** make invent.ai the current mission ([#62](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/62)) ([1ff3b9a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/1ff3b9a32f6cfd70e31a2c6cc14caf90910f320f))
+
 ## [1.27.3](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.2...v1.27.3) (2026-09-27)
 
 ### Performance Improvements
