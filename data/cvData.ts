@@ -46,6 +46,12 @@ export interface CvCoordinate {
 
 export const cvExperience: CvExperienceEntry[] = [
   {
+    role: "Staff Software Engineer",
+    date: "Nov 2026 — Present",
+    company: "invent.ai",
+    companyUrl: "https://www.invent.ai/",
+  },
+  {
     role: "Senior Software Engineer",
     date: "Apr 2026 — Sep 2026",
     company: "Insider One",
@@ -105,7 +111,6 @@ export const cvExperience: CvExperienceEntry[] = [
       {
         name: "MagicPags",
         description: "Educational audiobook, analytics, child-safe delivery",
-        url: "https://magicpags.com/",
       },
       {
         name: "Çoknet",

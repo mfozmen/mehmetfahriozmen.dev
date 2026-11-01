@@ -13,8 +13,9 @@ describe("CV Experience data", () => {
     expect(cvExperience.length).toBeGreaterThanOrEqual(3);
   });
 
-  it("main timeline holds only Insider One, Mayadem, and Brew", () => {
+  it("main timeline holds only invent.ai, Insider One, Mayadem, and Brew", () => {
     expect(cvExperience.map((e) => e.company)).toEqual([
+      "invent.ai",
       "Insider One",
       "Mayadem",
       "Brew Interactive",
@@ -51,6 +52,12 @@ describe("CV Experience data", () => {
   it("Veriyaz is in earlier roles with role progression", () => {
     const veriyaz = cvEarlierRoles.find((e) => e.company === "Veriyaz");
     expect(veriyaz?.roles?.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("invent.ai is the current Staff Software Engineer role from Nov 2026", () => {
+    const invent = cvExperience[0];
+    expect(invent.role).toBe("Staff Software Engineer");
+    expect(invent.date).toBe("Nov 2026 — Present");
   });
 
   it("Insider One documents AI tooling work", () => {

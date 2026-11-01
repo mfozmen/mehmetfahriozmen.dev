@@ -15,6 +15,23 @@ export type Project = {
 export const projects: Project[] = [
   // Hero — the single brightest star
   {
+    id: "inventai",
+    name: "invent.ai",
+    url: "https://www.invent.ai/",
+    role: "STAFF SOFTWARE ENGINEER · NOV 2026 → PRESENT",
+    description:
+      "AI decisioning platform for retail — multi-agent AI that plans, allocates, and prices inventory for retailers across apparel, grocery, and specialty retail",
+    highlights: [
+      "Demand forecasting, assortment & buy planning",
+      "Allocation, replenishment & inventory optimization",
+      "Dynamic pricing, promotions & markdowns",
+    ],
+    importance: "hero",
+    domains: ["retail", "analytics"],
+    technologyCategories: ["ai"],
+  },
+  // Primary
+  {
     id: "insiderone",
     name: "Insider One",
     url: "https://insiderone.com/",
@@ -26,7 +43,7 @@ export const projects: Project[] = [
       "Email campaign panel — reliable changes to a large, customer-facing system",
       "Cross-team delivery with frontend, product, and platform teams",
     ],
-    importance: "hero",
+    importance: "primary",
     domains: ["adtech", "distributed", "customer_engagement", "analytics"],
     technologyCategories: [
       "ai",
@@ -39,7 +56,6 @@ export const projects: Project[] = [
       "methodologies",
     ],
   },
-  // Primary
   {
     id: "mobilet",
     name: "Mobilet",
@@ -117,7 +133,6 @@ export const projects: Project[] = [
   {
     id: "magicpags",
     name: "MagicPags",
-    url: "https://magicpags.com/",
     description:
       "Educational platform teaching kids to read — with real-time analytics tracking dozens of in-app learning events across schools",
     highlights: [
@@ -284,3 +299,6 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+// Homepage cards are links, so a primary without a live URL stays in the galaxy only.
+export const cardProjects = projects.filter((p) => p.importance === "primary" && p.url);
