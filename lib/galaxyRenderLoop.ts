@@ -13,6 +13,7 @@ import {
   getSystemPosition,
   getDomainPosition,
   getTechClusterPosition,
+  domainFade,
 } from "@/lib/galaxyLayout";
 import {
   type BgStar,
@@ -312,6 +313,7 @@ export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestra
   ctx.globalAlpha = 1;
 
   // --- 12. Domain nodes ---
+  const starPositions = systems.map((sys) => getSystemPosition(sys, time, w, h, cx, cy));
   for (const dom of domains) {
     const pos = getDomainPosition(dom, w, h, cx, cy);
     const dx = pos.x + px;
@@ -319,7 +321,9 @@ export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestra
     const isActive = highlighted?.has(dom.id);
     const isDimmed = highlighted && !isActive;
 
-    ctx.globalAlpha = isDimmed ? 0.05 : 1;
+    let domAlpha = isActive ? 1 : domainFade(pos, starPositions, sf);
+    if (isDimmed) domAlpha = 0.05;
+    ctx.globalAlpha = domAlpha;
 
     const domR = isActive ? 11 * sf : 7 * sf;
     const pulseR = isActive ? domR + Math.sin(time * 2) * 1.5 : domR;
@@ -346,8 +350,8 @@ export function renderGalaxyFrame( // NOSONAR: S3776 — canvas render orchestra
   ctx.globalAlpha = 1;
 
   // --- 13. System stars ---
-  for (const sys of systems) {
-    const pos = getSystemPosition(sys, time, w, h, cx, cy);
+  for (const [i, sys] of systems.entries()) {
+    const pos = starPositions[i];
     const isHL = !highlighted || highlighted.has(sys.id);
     const isDimmed = highlighted && !isHL;
     let showLabel = true;
