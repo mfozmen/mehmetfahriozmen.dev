@@ -48,6 +48,20 @@ export function getOrbitPosition(
   };
 }
 
+// Domain labels sit near orbit paths, so stars pass over them; fade the label out
+// while one does. Horizontal distance is shrunk because labels are wide and short.
+export function domainFade(
+  dom: { x: number; y: number },
+  stars: { x: number; y: number }[],
+  sf: number,
+): number {
+  const near = 25 * sf;
+  const far = 40 * sf;
+  let d = Infinity;
+  for (const s of stars) d = Math.min(d, Math.hypot((s.x - dom.x) / 2.5, s.y - dom.y));
+  return Math.min(1, Math.max(0, (d - near) / (far - near)));
+}
+
 export function getSystemPosition(
   sys: SystemNode,
   time: number,

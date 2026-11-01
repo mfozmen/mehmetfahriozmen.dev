@@ -13,4 +13,5 @@ export const domains: Domain[] = [
   { id: "realtime", name: "Real-time Collaboration" },
   { id: "customer_engagement", name: "Customer Engagement" },
   { id: "analytics", name: "Analytics" },
+  { id: "retail", name: "Retail" },
 ];

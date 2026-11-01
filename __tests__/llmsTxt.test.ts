@@ -56,7 +56,7 @@ describe("getLlmsTxt (real content)", () => {
 
   it("lists hero and primary systems from data/projects.ts, never a hand-written copy", () => {
     for (const p of projects.filter((p) => p.importance === "hero" || p.importance === "primary")) {
-      expect(txt).toContain(`- [${p.name}](`);
+      expect(txt).toContain(p.url ? `- [${p.name}](` : `- ${p.name}:`);
     }
   });
 

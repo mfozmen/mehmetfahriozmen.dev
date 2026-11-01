@@ -1,11 +1,10 @@
-import { projects, type Project } from "@/data/projects";
+import { projects, cardProjects, type Project } from "@/data/projects";
 import { domains } from "@/data/domains";
 import SectionTitle from "@/components/SectionTitle";
 import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 const domainNames = new Map(domains.map((d) => [d.id, d.name]));
 const heroSystem = projects.find((p) => p.importance === "hero");
-const primarySystems = projects.filter((p) => p.importance === "primary");
 
 function HeroSystemCard({ system }: Readonly<{ system: Project }>) {
   return (
@@ -19,8 +18,8 @@ function HeroSystemCard({ system }: Readonly<{ system: Project }>) {
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#BA7517]/25 bg-[#BA7517]/[0.06] px-2.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-[#BA7517]/80">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#BA7517]/60" />
-          {"LATEST MISSION"}
+          <span className="h-1.5 w-1.5 animate-[pulse-signal_4s_ease-in-out_infinite] rounded-full bg-[#BA7517]" />
+          {"CURRENT MISSION"}
         </span>
         {system.role && (
           <span className="font-mono text-[10px] tracking-[0.12em] text-neutral-500">
@@ -143,7 +142,7 @@ export default function FeaturedSystems() {
         </div>
       )}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {primarySystems.map((system) => (
+        {cardProjects.map((system) => (
           <SystemCard key={system.id} system={system} />
         ))}
       </div>

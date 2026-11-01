@@ -53,15 +53,16 @@ export const orbits: OrbitConfig[] = [
 
 // --- Galaxy layout per project ---
 
-// Ring 0 holds the hero + 6 primaries, spaced ~2π/7 apart for breathing room.
+// Ring 0 holds the hero + 7 primaries, spaced ~2π/8 apart for breathing room.
 const projectLayout: Record<string, { angle: number; orbit: number }> = {
-  insiderone: { angle: 0.45, orbit: 0 },
-  mobilet: { angle: 1.35, orbit: 0 },
-  shubuo: { angle: 2.25, orbit: 0 },
-  villasepeti: { angle: 3.14, orbit: 0 },
-  magicpags: { angle: 4.04, orbit: 0 },
-  beforesunset: { angle: 4.94, orbit: 0 },
-  decktopus: { angle: 5.84, orbit: 0 },
+  inventai: { angle: 0.6, orbit: 0 },
+  insiderone: { angle: 1.39, orbit: 0 },
+  mobilet: { angle: 2.17, orbit: 0 },
+  shubuo: { angle: 2.96, orbit: 0 },
+  villasepeti: { angle: 3.74, orbit: 0 },
+  magicpags: { angle: 4.53, orbit: 0 },
+  beforesunset: { angle: 5.31, orbit: 0 },
+  decktopus: { angle: 6.1, orbit: 0 },
   ptttrade: { angle: 0.8, orbit: 1 },
   holoh: { angle: 2.2, orbit: 1 },
   ihtiyac: { angle: 4.1, orbit: 1 },
@@ -85,6 +86,7 @@ const domainLayout: Record<
   realtime: { angle: 2.2, orbit: 1, offset: { x: -0.12, y: 0.11 } },
   customer_engagement: { angle: 0.5, orbit: 1, offset: { x: 0.1, y: 0.12 } },
   analytics: { angle: 0.85, orbit: 1, offset: { x: 0.06, y: -0.13 } },
+  retail: { angle: 5.65, orbit: 0, offset: { x: 0.09, y: 0.01 } },
 };
 
 // --- Galaxy position per tech cluster ---

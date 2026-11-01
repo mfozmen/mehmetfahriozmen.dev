@@ -1,21 +1,62 @@
 import { describe, it, expect } from "vitest";
-import { projects } from "@/data/projects";
+import { projects, cardProjects } from "@/data/projects";
+import { cvExperience } from "@/data/cvData";
 import { domains as domainDefs } from "@/data/domains";
 import { systems, domains } from "@/data/systemsGraph";
-import { ORBIT_SPEEDS } from "@/lib/galaxyLayout";
+import { ORBIT_SPEEDS, getDomainPosition, getOrbitPosition } from "@/lib/galaxyLayout";
 import { systemStarRadius } from "@/lib/galaxyRenderers";
 import { mobileLabelAlpha } from "@/lib/galaxyMobileConfig";
 
-describe("Hero tier — Insider One", () => {
-  it("exactly one project is the hero tier and it is Insider One", () => {
+describe("Hero tier — invent.ai", () => {
+  it("exactly one project is the hero tier and it is invent.ai", () => {
     const heroes = projects.filter((p) => p.importance === "hero");
-    expect(heroes.map((p) => p.id)).toEqual(["insiderone"]);
-    expect(heroes[0].url).toBe("https://insiderone.com/");
+    expect(heroes.map((p) => p.id)).toEqual(["inventai"]);
+    expect(heroes[0].url).toBe("https://www.invent.ai/");
   });
 
-  it("existing primaries remain primary (none demoted/promoted by accident)", () => {
+  it("invent.ai is the current Staff Software Engineer role", () => {
+    const invent = projects.find((p) => p.id === "inventai")!;
+    expect(invent.role).toBe("STAFF SOFTWARE ENGINEER · NOV 2026 → PRESENT");
+  });
+
+  it("invent.ai connects to the retail and analytics domains and the AI cluster", () => {
+    const invent = projects.find((p) => p.id === "inventai")!;
+    expect(new Set(invent.domains)).toEqual(new Set(["retail", "analytics"]));
+    expect(invent.technologyCategories).toEqual(["ai"]);
+  });
+
+  it("the retail domain exists with a galaxy layout entry", () => {
+    expect(domainDefs.find((d) => d.id === "retail")).toBeDefined();
+    expect(domains.find((d) => d.id === "retail")).toBeDefined();
+  });
+
+  it("the retail label sits clear of every orbit path, so no star ever parks on it", () => {
+    const W = 948, H = 600;
+    const p = getDomainPosition(domains.find((d) => d.id === "retail")!, W, H, W / 2, H / 2);
+    let minDist = Infinity;
+    for (const orbit of [0, 1, 2]) {
+      for (let deg = 0; deg < 360; deg++) {
+        const q = getOrbitPosition(orbit, (deg * Math.PI) / 180, W, H, W / 2, H / 2);
+        minDist = Math.min(minDist, Math.hypot(p.x - q.x, p.y - q.y));
+      }
+    }
+    expect(minDist).toBeGreaterThanOrEqual(45);
+  });
+
+  it("invent.ai sits on the outermost ring (orbit 0)", () => {
+    expect(systems.find((s) => s.id === "inventai")!.orbit).toBe(0);
+  });
+
+  it("invent.ai has featured-card content (description + highlights)", () => {
+    const invent = projects.find((p) => p.id === "inventai")!;
+    expect(invent.description!.length).toBeGreaterThan(40);
+    expect(invent.highlights?.length).toBe(3);
+  });
+
+  it("Insider One steps down to primary, first in line; other primaries unchanged", () => {
     const primaries = projects.filter((p) => p.importance === "primary").map((p) => p.id);
     expect(primaries).toEqual([
+      "insiderone",
       "mobilet",
       "shubuo",
       "villasepeti",
@@ -76,10 +117,27 @@ describe("Hero tier — Insider One", () => {
     expect(insider.orbit).toBe(0);
   });
 
-  it("Insider One has featured-card content (description + highlights)", () => {
+  it("Insider One keeps its card content as a primary system", () => {
     const insider = projects.find((p) => p.id === "insiderone")!;
-    expect(insider.description).toBeTruthy();
     expect(insider.description!.length).toBeGreaterThan(40);
     expect(insider.highlights?.length).toBe(3);
+  });
+
+  it("MagicPags stays in the galaxy but its dead link is gone everywhere", () => {
+    expect(systems.find((s) => s.id === "magicpags")).toBeDefined();
+    expect(projects.find((p) => p.id === "magicpags")!.url).toBeUndefined();
+    const cvProjects = cvExperience.flatMap((e) => e.projects ?? []);
+    expect(cvProjects.find((p) => p.name === "MagicPags")!.url).toBeUndefined();
+  });
+
+  it("homepage cards are links, so only linked primaries get one — six cards, two even rows", () => {
+    expect(cardProjects.map((p) => p.id)).toEqual([
+      "insiderone",
+      "mobilet",
+      "shubuo",
+      "villasepeti",
+      "beforesunset",
+      "decktopus",
+    ]);
   });
 });
