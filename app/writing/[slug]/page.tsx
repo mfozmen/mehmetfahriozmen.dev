@@ -40,12 +40,12 @@ function MdxH2({ children }: Readonly<{ children?: ReactNode }>) {
 function MdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   if (!src) return null;
   return (
-    <figure className="-mx-0 my-10 sm:-mx-8 lg:-mx-16">
+    <figure className="-mx-0 my-10 sm:-mx-8 lg:-mx-16 2xl:-mx-24">
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
-        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-contain" />
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1024px" className="object-contain" />
       </div>
       {alt && alt !== "" && (
-        <figcaption className="mt-2 px-0 text-xs text-neutral-500 sm:px-8 lg:px-16">{alt}</figcaption>
+        <figcaption className="mt-2 px-0 text-xs text-neutral-500 sm:px-8 lg:px-16 2xl:px-24">{alt}</figcaption>
       )}
     </figure>
   );
@@ -75,7 +75,7 @@ export async function generateMetadata(
   return buildArticleMetadata(post, "writing", slug);
 }
 
-/* Fix #1: Single max-w-3xl container, cover breaks out with negative margins */
+/* Fix #1: Single reading container (grows with font on xl/2xl), cover breaks out with negative margins */
 function PostHeader({ post }: Readonly<{ post: { date: string; title: string; description: string; coverImage: string; content: string } }>) {
   return (
     <>
@@ -83,15 +83,15 @@ function PostHeader({ post }: Readonly<{ post: { date: string; title: string; de
         <span className="font-mono text-[11px] text-[#BA7517]/80">
           {formatDate(post.date)} · {getReadingTime(post.content)} min read
         </span>
-        <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+        <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl 2xl:text-6xl">
           {post.title}
         </h1>
-        <p className="mt-3 text-lg italic text-neutral-500">
+        <p className="mt-3 text-lg italic text-neutral-500 2xl:text-xl">
           {post.description}
         </p>
       </header>
-      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
-        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" priority />
+      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)] 2xl:-mx-24 2xl:w-[calc(100%+12rem)]">
+        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1024px" className="object-cover" priority />
       </div>
     </>
   );
@@ -147,12 +147,12 @@ export default async function PostPage(
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Writing", "writing", post.title)) }} />
       <ReadingProgress />
       <PageShell>
-      <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <main id="main" className="relative z-10 mx-auto max-w-3xl px-6 xl:max-w-[820px] 2xl:max-w-[880px] pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink href="/writing" label="Back to Writing" />
 
         <article className="mt-8">
           <PostHeader post={post} />
-          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
+          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300 xl:text-[17px] xl:leading-[1.75] 2xl:text-[18px]">
             <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
           </div>
         </article>
