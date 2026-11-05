@@ -17,7 +17,7 @@ Personal website for Mehmet Fahri Özmen (mehmetfahriozmen.dev). Built with Next
 - TypeScript, functional React components, TailwindCSS.
 - Prefer small reusable components.
 - Avoid unnecessary dependencies.
-- **Track links that carry an analytics signal.** Content, CTA, menu, social and outbound links use `TrackedNextLink` (internal) or `TrackedAnchor` (external) from `@/components/TrackedLink`, with an `eventName` and `eventData`. Menu links share `nav-click` with `{ label, location }`. Home/logo links, the 404 home link, post-submit utility links and skip links stay plain `Link`/`<a>` — their clicks tell us nothing new.
+- **Track links that carry an analytics signal.** Whether a link is tracked, and with which event, is decided by the link-tracking skill (`.claude/skills/link-tracking/SKILL.md`). Read it before adding or reviewing any link. The CI Claude review applies the same skill.
 
 ## Code Quality Rules
 
