@@ -27,6 +27,9 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
+      - name: Test review range script
+        run: python3 .github/scripts/test_review_range.py
+
       - name: Build
         run: npm run build
 
