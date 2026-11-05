@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { getAllPosts, getPostBySlug, getReadingTime, formatDate, sortByDateDesc } from "@/lib/posts";
 
 describe("getAllPosts", () => {
@@ -120,29 +120,19 @@ describe("ogImage fallback", () => {
   const testSlug = "hardest-refactor";
   const ogPath = path.join(process.cwd(), "public", "writing", testSlug, "og.webp");
 
-  function withoutOgFile<T>(fn: () => T): T {
-    const backup = fs.existsSync(ogPath) ? fs.readFileSync(ogPath) : null;
-    if (backup !== null) fs.unlinkSync(ogPath);
+  // Stub existsSync instead of writing to public/: parallel runs used to race on the real file.
+  function withOgExists<T>(exists: boolean, fn: () => T): T {
+    const realExists = fs.existsSync;
+    const spy = vi.spyOn(fs, "existsSync").mockImplementation((p) => (p === ogPath ? exists : realExists(p)));
     try {
       return fn();
     } finally {
-      if (backup !== null) fs.writeFileSync(ogPath, backup);
+      spy.mockRestore();
     }
   }
 
-  function withOgFile<T>(fn: () => T): T {
-    const backup = fs.existsSync(ogPath) ? fs.readFileSync(ogPath) : null;
-    fs.writeFileSync(ogPath, Buffer.from([0]));
-    try {
-      return fn();
-    } finally {
-      if (backup !== null) {
-        fs.writeFileSync(ogPath, backup);
-      } else {
-        fs.unlinkSync(ogPath);
-      }
-    }
-  }
+  const withoutOgFile = <T>(fn: () => T): T => withOgExists(false, fn);
+  const withOgFile = <T>(fn: () => T): T => withOgExists(true, fn);
 
   it("getPostBySlug returns ogImage=undefined when no og.webp exists", () => {
     withoutOgFile(() => {
