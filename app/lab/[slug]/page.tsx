@@ -28,7 +28,7 @@ function LabMdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   return (
     <figure className="my-8">
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-[#BA7517]/10">
-        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 912px" className="object-contain" />
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, (max-width: 1535px) 848px, 912px" className="object-contain" />
       </div>
     </figure>
   );
@@ -86,6 +86,7 @@ export async function generateMetadata(
 }
 
 
+/* Cover width = column - 48px padding + 2 × margin (976, 2xl 1104); inline images = column (848, 2xl 912). Keep `sizes` in step. */
 function PostHeader({ post }: Readonly<{ post: LabPost }>) {
   return (
     <>
@@ -108,7 +109,7 @@ function PostHeader({ post }: Readonly<{ post: LabPost }>) {
         )}
       </header>
       <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)] 2xl:-mx-24 2xl:w-[calc(100%+12rem)]">
-        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1104px" className="object-cover" priority />
+        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, (max-width: 1535px) 976px, 1104px" className="object-cover" priority />
       </div>
     </>
   );
@@ -156,7 +157,7 @@ export default async function LabPostPage(
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Lab", "lab", post.title)) }} />
       <ReadingProgress />
       <PageShell>
-      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 2xl:max-w-[960px] pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <main id="main" className="relative z-10 mx-auto max-w-4xl 2xl:max-w-[960px] px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink href="/lab" label="Back to Lab" />
 
         <article className="mt-8">
