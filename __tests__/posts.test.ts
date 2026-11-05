@@ -123,7 +123,7 @@ describe("ogImage fallback", () => {
   // Stub existsSync instead of writing to public/: parallel runs used to race on the real file.
   function withOgExists<T>(exists: boolean, fn: () => T): T {
     const realExists = fs.existsSync;
-    const spy = vi.spyOn(fs, "existsSync").mockImplementation((p) => (p === ogPath ? exists : realExists(p)));
+    const spy = vi.spyOn(fs, "existsSync").mockImplementation((p) => (path.resolve(String(p)) === ogPath ? exists : realExists(p)));
     try {
       return fn();
     } finally {

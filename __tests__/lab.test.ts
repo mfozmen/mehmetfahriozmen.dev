@@ -90,8 +90,9 @@ describe("ogImage fallback", () => {
   function withOgState<T>(state: { perPost: boolean; shared: boolean }, fn: () => T): T {
     const realExists = fs.existsSync;
     const spy = vi.spyOn(fs, "existsSync").mockImplementation((p) => {
-      if (p === perPostOgPath) return state.perPost;
-      if (p === sharedOgPath) return state.shared;
+      const resolved = path.resolve(String(p));
+      if (resolved === perPostOgPath) return state.perPost;
+      if (resolved === sharedOgPath) return state.shared;
       return realExists(p);
     });
     try {
