@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import path from "path";
 
 export default defineConfig({
@@ -8,6 +8,8 @@ export default defineConfig({
     },
   },
   test: {
+    // Agent worktrees under .claude/ hold stale copies of the suite.
+    exclude: [...configDefaults.exclude, ".claude/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],

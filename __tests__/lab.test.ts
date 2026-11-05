@@ -86,39 +86,18 @@ describe("ogImage fallback", () => {
   const perPostOgPath = path.join(process.cwd(), "public", "lab", testSlug, "og.webp");
   const sharedOgPath = path.join(process.cwd(), "public", "lab", "lab-day-og.webp");
 
-  function backupFile(p: string): Buffer | null {
-    return fs.existsSync(p) ? fs.readFileSync(p) : null;
-  }
-
-  function restoreFile(p: string, backup: Buffer | null): void {
-    if (backup !== null) {
-      fs.writeFileSync(p, backup);
-    } else if (fs.existsSync(p)) {
-      fs.unlinkSync(p);
-    }
-  }
-
+  // Stub existsSync instead of writing to public/: parallel runs used to race on the real files.
   function withOgState<T>(state: { perPost: boolean; shared: boolean }, fn: () => T): T {
-    const perPostBackup = backupFile(perPostOgPath);
-    const sharedBackup = backupFile(sharedOgPath);
-
-    if (state.perPost) {
-      fs.writeFileSync(perPostOgPath, Buffer.from([0]));
-    } else if (perPostBackup !== null) {
-      fs.unlinkSync(perPostOgPath);
-    }
-
-    if (state.shared) {
-      fs.writeFileSync(sharedOgPath, Buffer.from([0]));
-    } else if (sharedBackup !== null) {
-      fs.unlinkSync(sharedOgPath);
-    }
-
+    const realExists = fs.existsSync;
+    const spy = vi.spyOn(fs, "existsSync").mockImplementation((p) => {
+      if (p === perPostOgPath) return state.perPost;
+      if (p === sharedOgPath) return state.shared;
+      return realExists(p);
+    });
     try {
       return fn();
     } finally {
-      restoreFile(perPostOgPath, perPostBackup);
-      restoreFile(sharedOgPath, sharedBackup);
+      spy.mockRestore();
     }
   }
 
