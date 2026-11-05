@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.29.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.28.0...v1.29.0) (2026-11-05)
+
+### Features
+
+* **analytics:** track menu links as nav-click and narrow the tracking rule ([f9baeb4](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/f9baeb4e57735a73d4e2f6d17d710839de5cfb81)), closes [#63](https://github.com/mfozmen/mehmetfahriozmen.dev/issues/63)
+* **feed:** sort RSS items by date and link the feed from the footer ([74b8657](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/74b86574618b2b88bcbb7b5fad2652fda91e9c20))
+* **lab:** scale reading column and type on wide screens ([317102a](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/317102a3d4cccb83a7fe46a611c4a912e0d80538))
+* **writing:** scale reading column and type on wide screens ([79439a7](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/79439a70e3b65aea81d6d699465f57ecd2da732f))
+
+### Bug Fixes
+
+* **footer:** hide decorative social icons from screen readers ([55c035d](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/55c035d290d2f1b4b8b9c11de7718b80d3bfb6aa))
+
+### Performance Improvements
+
+* **writing,lab:** match image sizes hints to rendered width below 2xl ([be2cb98](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/be2cb9819071deb220a95488a549cdf83decaa33))
+* **writing:** add lg step to image sizes hints ([0bcce75](https://github.com/mfozmen/mehmetfahriozmen.dev/commit/0bcce750f9fc610bd9ec00df41a3b9f7fdcb5d4a))
+
 ## [1.28.0](https://github.com/mfozmen/mehmetfahriozmen.dev/compare/v1.27.3...v1.28.0) (2026-11-01)
 
 ### Features
