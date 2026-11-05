@@ -106,9 +106,11 @@ jobs:
 
             Review the diff for:
             - Bugs, security issues, and performance problems.
-            - Project conventions (from CLAUDE.md): functional React components;
-              every user-facing link uses TrackedNextLink/TrackedAnchor with
-              eventName and eventData — never plain Link or <a>; no function
+            - Link tracking: if the diff adds or changes any Link, <a>,
+              TrackedNextLink or TrackedAnchor, Read
+              .claude/skills/link-tracking/SKILL.md and apply its "Review"
+              section. Not every link must be tracked; the skill decides.
+            - Project conventions (from CLAUDE.md): functional React components; no function
               over 50 lines; no file over 300 lines (documented exceptions:
               lib/galaxyRenderLoop.ts, lib/galaxyRenderers.ts).
             - Tests: non-trivial logic is backed by tests that assert real
