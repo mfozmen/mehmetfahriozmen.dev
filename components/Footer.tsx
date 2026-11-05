@@ -42,11 +42,22 @@ function EmailIcon() {
   );
 }
 
+function RssIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 11a9 9 0 0 1 9 9" />
+      <path d="M4 4a16 16 0 0 1 16 16" />
+      <circle cx="5" cy="19" r="1" />
+    </svg>
+  );
+}
+
 const socialLinks = [
   { platform: "github", href: "https://github.com/mfozmen", label: "GitHub", icon: GithubIcon, external: true },
   { platform: "linkedin", href: "https://linkedin.com/in/mfozmen", label: "LinkedIn", icon: LinkedInIcon, external: true },
   { platform: "x", href: "https://x.com/mfozmen", label: "X", icon: XIcon, external: true },
   { platform: "email", href: "mailto:contact@mehmetfahriozmen.dev", label: "Email", icon: EmailIcon, external: false },
+  { platform: "rss", href: "/feed.xml", label: "RSS feed", icon: RssIcon, external: false },
 ] as const;
 
 function SocialLinks() {
