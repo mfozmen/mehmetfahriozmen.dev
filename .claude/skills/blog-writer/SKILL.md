@@ -242,10 +242,11 @@ An essay title ("The First Button") carries no search intent, and that is the ri
 
 1. Branch created off `dev`, PR opened into `dev` (never commit to `dev` or `main` directly)
 2. Frontmatter validates
-3. Images in correct directory and optimized
-4. Build succeeds (`npm run build`)
-5. Playwright MCP verification at 1440px and 390px
-6. OG tags verified post-deploy (LinkedIn Post Inspector + X Card Validator)
+3. Unslop report-only pass run on the prose and its flags resolved (see "Unslop pass" in Part 2)
+4. Images in correct directory and optimized
+5. Build succeeds (`npm run build`)
+6. Playwright MCP verification at 1440px and 390px
+7. OG tags verified post-deploy (LinkedIn Post Inspector + X Card Validator)
 
 ---
 
@@ -314,6 +315,16 @@ How to report this dimension:
 - **Single vs. cluster.** Treat one occurrence differently from a pattern. One synthetic transition is a stumble; three across a draft is a pattern. State which you're seeing ("one occurrence" vs. "a pattern of N").
 - **Do not manufacture concerns.** If a category is clean across the draft, say so explicitly (e.g. "Categories 3, 6, 8: clean"). Never pad the report to look thorough — a clean draft should produce a short section.
 - **Net read.** Close with a one-line verdict: does the draft read as human-authored in the Field Notes voice, or are there machine-prose tells that warrant another pass?
+
+#### Unslop pass
+
+After the checklist above, run the `unslop` skill in report-only mode on the post body (`/unslop cleanup --report <file>` — "flag, change nothing"). Do this on every review and after every new draft.
+
+- **Prose only.** Skip frontmatter, code blocks, `TicketBlock` contents and image markup.
+- **This skill's voice wins.** Unslop presets (`crisp`, `warm`, …) do not override the Field Notes voice. If an unslop suggestion contradicts a rule here (e.g. it smooths a deliberate hard cut, adds a transition, or prescribes advice), drop it.
+- **Merge, don't duplicate.** Fold unslop's flags into the Human Authorship Signal report above; note which ones only unslop caught.
+- **Report, don't rewrite.** Same rule as above: quote and propose, never apply without the author's go-ahead. Use `/unslop rewrite` only when the author asks for it.
+- If the unslop skill is not installed, say so and rely on the checklist above.
 
 ### Frontmatter Description & Opening Element Conventions
 
