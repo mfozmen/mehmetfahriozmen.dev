@@ -13,7 +13,7 @@ Ask: **"What would I learn from this click that I can't see from the next page v
 
 | Track (`TrackedNextLink` / `TrackedAnchor`) | Leave plain (`Link` / `<a>`) |
 |---|---|
-| Menu links (header, mobile drawer, footer): which section people pick, and from where | Logo / home links: "went home" says nothing |
+| Menu links (header, mobile drawer, footer; not the logo): which section people pick, and from where | Logo / home links: "went home" says nothing |
 | CTAs and cards (post cards, featured systems, latest signals, "try the Lab") | 404 page home link: the 404 view is already counted |
 | Outbound links: the next page view happens on another site, so it is invisible | Post-submit utility links (e.g. "back home" after the contact form): the submit is the signal |
 | Social, share, RSS and download links | Skip links (`href="#main"`) and other accessibility-only anchors |
@@ -24,7 +24,7 @@ If a link is not covered by the table, track it only if you can name the questio
 ## How
 
 - Internal: `TrackedNextLink` from `@/components/TrackedLink`. External: `TrackedAnchor`. Both need `eventName` and `eventData`. `TrackedNextLink` accepts `onClick`, which runs after tracking (for example to close the drawer).
-- Reuse an existing event before you invent one. Put the variation in `eventData`, not in the name:
+- Reuse an existing event before you invent one (`grep -rn 'eventName=\|trackEvent(' app components` shows the live list; the one below can drift). Put the variation in `eventData`, not in the name:
   - `nav-click` `{ label, location: "header" | "drawer" | "footer" }`
   - `cta-click`, `post-card-click`, `featured-system-click`, `latest-signal-click`, `post-nav-click`
   - `social-link-click` `{ platform }`, `share-click`, `outbound-link`, `internal-link`
