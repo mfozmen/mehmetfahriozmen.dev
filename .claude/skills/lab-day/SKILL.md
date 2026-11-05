@@ -56,6 +56,13 @@ Rules:
 - Never use "journey" or "game-changer" or "dive deep"
 - Plain sentences over constructed ones. If a sentence has to be re-read to be parsed, split it. One idea per sentence, concrete nouns over abstractions — the same bar as Field Notes (see the blog-writer skill, "Sentence Mechanics").
 
+### Unslop Pass
+After every draft or edit, and before publishing, run the `unslop` skill in report-only mode on the post body (`/unslop cleanup --report <file>`). Same rules as the blog-writer skill's "Unslop pass":
+- Prose only — skip frontmatter, code blocks, `TicketBlock` contents and image markup
+- The Lab Day tone above wins over unslop presets; drop suggestions that contradict it
+- Quote each flag with a proposed fix; don't apply fixes without the author's go-ahead (`/unslop rewrite` only on request)
+- If the unslop skill is not installed, say so and continue
+
 ### Section Headings
 - Use `##` (h2) for section titles — they render as mono uppercase with terminal prompt icon
 - **Keep headings under 30 characters when possible.** Mono uppercase headings wrap awkwardly on mobile (390px) when they're long. Short and punchy is better. Good: "Your First Skill". Bad: "Writing Your First Skill: Commit Messages".
