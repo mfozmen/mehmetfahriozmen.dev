@@ -136,6 +136,6 @@ jobs:
             summary with what you have.
 
             IMPORTANT: you are already in the repository root. Run every
-            command bare (e.g. `gh pr diff 19`), never prefixed with `cd`,
+            command bare (e.g. `gh pr diff <PR number>`), never prefixed with `cd`,
             `&&`, pipes or subshells: the tool allowlist matches on the exact
             command start and prefixed commands are denied.
