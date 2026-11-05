@@ -29,7 +29,7 @@ import uuid
 from pathlib import Path
 
 # A whole line only: prose that merely mentions the marker is not a head.
-REVIEWED_HEAD = re.compile(r"^REVIEWED-HEAD: ([0-9a-f]{7,40})$", re.MULTILINE)
+REVIEWED_HEAD = re.compile(r"^REVIEWED-HEAD: ([0-9a-f]{7,40})\r?$", re.MULTILINE)
 # Only the action's own finished comment counts: a human cannot post as the
 # Actions bot, and a review still in progress has not got the signature yet.
 REVIEWER_LOGIN = "github-actions[bot]"
@@ -52,10 +52,10 @@ def last_review(comments):
     return found
 
 
-def choose_mode(base, head, is_ancestor):
-    """full without a usable earlier review, unchanged when it already saw this head,
-    incremental otherwise. `is_ancestor(base, head)` asks git."""
-    if not base:
+def choose_mode(base, head, is_ancestor, on_demand=False):
+    """full without a usable earlier review or on an @claude request, unchanged when
+    it already saw this head, incremental otherwise. `is_ancestor(base, head)` asks git."""
+    if not base or on_demand:
         return "full"
     if head.startswith(base) or base.startswith(head):
         return "unchanged"
@@ -131,7 +131,8 @@ def main():
     pr = github_get(f"https://api.github.com/repos/{repo}/pulls/{number}", token)
     head, base_ref = pr["head"]["sha"], f"origin/{pr['base']['ref']}"
     base, previous = last_review(fetch_bodies(repo, number, token))
-    mode = choose_mode(base or "", head, is_ancestor)
+    on_demand = os.environ.get("GITHUB_EVENT_NAME") == "issue_comment"
+    mode = choose_mode(base or "", head, is_ancestor, on_demand)
     commits = own_commits(base, head, base_ref) if mode == "incremental" else ""
     if mode == "incremental" and not commits:
         mode = "unchanged"  # only merges from dev arrived: nothing of its own to review

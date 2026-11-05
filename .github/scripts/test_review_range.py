@@ -51,6 +51,11 @@ check(
     "abc1234",
 )
 check(
+    "a head line ending in CRLF still counts",
+    last_review([(BOT, DONE + "findings\r\nREVIEWED-HEAD: abc1234\r\n")])[0],
+    "abc1234",
+)
+check(
     "SPOOF: a human REVIEWED-HEAD is ignored",
     last_review([review("abc1234"), ("someone", "REVIEWED-HEAD: 0000000")])[0],
     "abc1234",
@@ -86,6 +91,11 @@ check(
 check(
     "force-push / rebase made it unreachable -> full",
     choose_mode("abc1234", "f" * 40, never),
+    "full",
+)
+check(
+    "an on-demand @claude request -> full, even with an earlier review",
+    choose_mode("abc1234", "f" * 40, always, on_demand=True),
     "full",
 )
 
