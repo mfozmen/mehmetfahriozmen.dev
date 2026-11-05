@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { TrackedNextLink } from "@/components/TrackedLink";
 
 const links = [
   { label: "Writing", href: "/writing" },
@@ -75,14 +76,16 @@ function MobileDrawer({ open, onClose, pathname }: Readonly<{ open: boolean; onC
             const active = isActive(pathname, link.href);
             return (
               <li key={link.label}>
-                <Link
+                <TrackedNextLink
                   href={link.href}
+                  eventName="nav-click"
+                  eventData={{ label: link.label, location: "drawer" }}
                   onClick={onClose}
                   className={`block rounded-lg px-3 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 ${active ? "text-[#BA7517] bg-[#BA7517]/[0.06]" : "text-neutral-300 hover:bg-[#BA7517]/[0.06] hover:text-white"}`}
                   aria-current={active ? "page" : undefined}
                 >
                   {link.label}
-                </Link>
+                </TrackedNextLink>
               </li>
             );
           })}
@@ -108,13 +111,15 @@ export default function Navigation() {
           const active = isActive(pathname, link.href);
           return (
             <li key={link.label}>
-              <Link
+              <TrackedNextLink
                 href={link.href}
+                eventName="nav-click"
+                eventData={{ label: link.label, location: "header" }}
                 className={`text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BA7517]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] rounded-sm ${active ? "text-[#BA7517] font-medium" : "text-neutral-400 hover:text-white"}`}
                 aria-current={active ? "page" : undefined}
               >
                 {link.label}
-              </Link>
+              </TrackedNextLink>
             </li>
           );
         })}

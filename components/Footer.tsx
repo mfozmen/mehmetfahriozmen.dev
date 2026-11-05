@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TrackedAnchor } from "@/components/TrackedLink";
+import { TrackedAnchor, TrackedNextLink } from "@/components/TrackedLink";
 
 const internalLinks = [
   { label: "Writing", href: "/writing" },
@@ -89,13 +89,15 @@ export default function Footer() {
       </p>
       <div className="mt-6 flex items-center justify-center gap-6">
         {internalLinks.map((link) => (
-          <Link
+          <TrackedNextLink
             key={link.label}
             href={link.href}
+            eventName="nav-click"
+            eventData={{ label: link.label, location: "footer" }}
             className="text-sm text-neutral-500 transition-colors hover:text-[#BA7517]"
           >
             {link.label}
-          </Link>
+          </TrackedNextLink>
         ))}
       </div>
       <SocialLinks />

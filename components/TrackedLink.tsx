@@ -32,13 +32,17 @@ export function TrackedNextLink({
   eventName,
   eventData,
   children,
+  onClick,
   ...props
-}: TrackedProps & Omit<React.ComponentProps<typeof Link>, "onClick">) {
+}: TrackedProps & React.ComponentProps<typeof Link>) {
   return (
     <Link
       href={href}
       {...props}
-      onClick={() => trackEvent(eventName, eventData)}
+      onClick={(e) => {
+        trackEvent(eventName, eventData);
+        onClick?.(e);
+      }}
     >
       {children}
     </Link>
