@@ -28,7 +28,7 @@ function LabMdxImage({ src, alt }: Readonly<{ src?: string; alt?: string }>) {
   return (
     <figure className="my-8">
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-[#BA7517]/10">
-        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-contain" />
+        <Image src={src} alt={alt ?? ""} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 912px" className="object-contain" />
       </div>
     </figure>
   );
@@ -93,10 +93,10 @@ function PostHeader({ post }: Readonly<{ post: LabPost }>) {
         <span className="font-mono text-[11px] text-[#BA7517]/80">
           {formatDate(post.date)} · {getReadingTime(post.content)} min read
         </span>
-        <h1 className="mt-2 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h1 className="mt-2 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl 2xl:text-5xl">
           {post.title}
         </h1>
-        <p className="mt-3 text-lg text-neutral-500">
+        <p className="mt-3 text-lg text-neutral-500 2xl:text-xl">
           {post.description}
         </p>
         {post.tags.length > 0 && (
@@ -107,8 +107,8 @@ function PostHeader({ post }: Readonly<{ post: LabPost }>) {
           </div>
         )}
       </header>
-      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)]">
-        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 896px" className="object-cover" priority />
+      <div className="relative -mx-0 mb-10 aspect-[3/2] w-[calc(100%)] overflow-hidden rounded-lg sm:-mx-8 sm:w-[calc(100%+4rem)] lg:-mx-16 lg:w-[calc(100%+8rem)] 2xl:-mx-24 2xl:w-[calc(100%+12rem)]">
+        <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1104px" className="object-cover" priority />
       </div>
     </>
   );
@@ -156,12 +156,12 @@ export default async function LabPostPage(
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema("Lab", "lab", post.title)) }} />
       <ReadingProgress />
       <PageShell>
-      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <main id="main" className="relative z-10 mx-auto max-w-4xl px-6 2xl:max-w-[960px] pt-16 pb-24 sm:pt-24 sm:pb-32">
         <BackLink href="/lab" label="Back to Lab" />
 
         <article className="mt-8">
           <PostHeader post={post} />
-          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300">
+          <div className="space-y-6 text-[15px] leading-[1.8] text-neutral-300 xl:text-[17px] xl:leading-[1.75] 2xl:text-[18px]">
             <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]] } }} />
           </div>
         </article>
